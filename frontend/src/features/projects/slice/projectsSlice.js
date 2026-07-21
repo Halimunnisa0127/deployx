@@ -28,8 +28,17 @@ const projectsSlice = createSlice({
   name: 'projects',
   initialState,
   reducers: {
-    // Reducers for create/edit/delete will be added in later steps
+    createProject: (state, action) => {
+      const { name } = action.payload;
+      state.items.push({
+        id: crypto.randomUUID(),
+        name,
+        status: 'not deployed',
+        lastDeployed: null,
+      });
+    },
   },
 });
 
+export const { createProject } = projectsSlice.actions;
 export default projectsSlice.reducer;
