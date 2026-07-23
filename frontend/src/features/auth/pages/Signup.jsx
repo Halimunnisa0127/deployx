@@ -5,28 +5,27 @@ import GoogleIcon from '../../../assets/icons/GoogleIcon';
 import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import Divider from '../../../components/ui/Divider';
-import LoginForm from '../components/LoginForm';
+import SignupForm from '../components/SignupForm';
 import { setCredentials } from '../slice/authSlice';
-import deployxLogo from '../../../assets/logos/deployx-logo.jpg';
 
-export default function Login() {
+export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleOAuthLogin = () => {
+  const handleOAuthSignup = () => {
     // Placeholder for OAuth logic
   };
 
-  const handleEmailLogin = (data) => {
+  const handleEmailSignup = (data) => {
     // Dummy auth — replace with actual API call later
-    dispatch(setCredentials({ user: { email: data.email }, token: 'dummy-token' }));
+    dispatch(setCredentials({ user: { email: data.email, name: data.fullName }, token: 'dummy-token' }));
     navigate('/dashboard');
   };
 
   return (
     <Card animated>
       <div style={headerStyle}>
-        <h2 style={headingStyle}>⚡Deploy Your Projects with Confidence</h2>
+        <h2 style={headingStyle}>⚡Create your account</h2>
         <p style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>
       </div>
 
@@ -53,14 +52,11 @@ export default function Login() {
 
       <Divider>OR</Divider>
 
-      <LoginForm onSubmit={handleEmailLogin} isLoading={false} />
+      <SignupForm onSubmit={handleEmailSignup} isLoading={false} />
 
       <div style={footerStyle}>
-        <div style={linkContainer}>
-          <Link to="/forgot-password" className="auth-link" style={linkStyle}>Forgot Password?</Link>
-        </div>
         <p style={switchText}>
-          Don't have an account? <Link to="/signup" className="auth-link-highlight" style={linkHighlight}>Sign Up</Link>
+          Already have an account? <Link to="/login" className="auth-link-highlight" style={linkHighlight}>Sign In</Link>
         </p>
       </div>
     </Card>
@@ -108,21 +104,6 @@ const footerStyle = {
   gap: '16px',
 };
 
-const linkContainer = {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-};
-
-const linkStyle = {
-  fontSize: '13px',
-  color: '#94a3b8',
-  textDecoration: 'none',
-  fontFamily: "'Inter', sans-serif",
-  fontWeight: 500,
-  transition: 'color 0.2s',
-};
-
 const switchText = {
   margin: 0,
   fontSize: '14px',
@@ -135,10 +116,4 @@ const linkHighlight = {
   textDecoration: 'none',
   fontWeight: 600,
   transition: 'color 0.2s',
-};
-
-const logoStyle = {
-  width: '300px',
-  marginBottom: '32px',
-  objectFit: 'contain',
 };

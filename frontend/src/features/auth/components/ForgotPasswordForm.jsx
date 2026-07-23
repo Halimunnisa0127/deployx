@@ -2,17 +2,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Input from '../../../components/ui/Input';
-import PasswordInput from '../../../components/ui/PasswordInput';
 import Button from '../../../components/ui/Button';
 
-const loginSchema = z.object({
+const forgotPasswordSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
 });
 
-export default function LoginForm({ onSubmit, isLoading }) {
+export default function ForgotPasswordForm({ onSubmit, isLoading }) {
   const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(forgotPasswordSchema),
   });
 
   return (
@@ -26,17 +24,9 @@ export default function LoginForm({ onSubmit, isLoading }) {
         error={errors.email?.message}
         {...register('email')}
       />
-      <PasswordInput
-        id="password"
-        label="Password"
-        placeholder="••••••••"
-        autoComplete="current-password"
-        error={errors.password?.message}
-        {...register('password')}
-      />
       
       <Button type="submit" variant="primary" fullWidth isLoading={isLoading} style={{ marginTop: '12px' }}>
-        Sign in
+        Send Reset Link
       </Button>
     </form>
   );
