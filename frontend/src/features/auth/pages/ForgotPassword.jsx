@@ -15,10 +15,6 @@ export default function ForgotPassword() {
   return (
     <Card animated>
       <div style={headerStyle}>
-        <div style={brandStyle}>
-          <span style={logoStyle}>⚡</span>
-          <h1 style={titleStyle}>DeployX</h1>
-        </div>
         <h2 style={headingStyle}>Reset Password</h2>
         <p style={subtitleStyle}>
           {isSubmitted 
@@ -48,28 +44,6 @@ const headerStyle = {
   alignItems: 'center',
   textAlign: 'center',
   marginBottom: '36px',
-};
-
-const brandStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '10px',
-  marginBottom: '16px',
-};
-
-const logoStyle = {
-  fontSize: '28px',
-  lineHeight: 1,
-};
-
-const titleStyle = {
-  margin: 0,
-  fontSize: '26px',
-  fontWeight: 700,
-  color: '#f8fafc',
-  fontFamily: "'Inter', sans-serif",
-  letterSpacing: '-0.5px',
 };
 
 const headingStyle = {

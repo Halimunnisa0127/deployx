@@ -11,13 +11,9 @@ const signupSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  confirmPassword: z.string().min(1, 'Please confirm your password'),
   agreeToTerms: z.boolean().refine((val) => val === true, {
     message: 'You must agree to the Terms of Service',
   }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
 });
 
 export default function SignupForm({ onSubmit, isLoading }) {
@@ -52,14 +48,6 @@ export default function SignupForm({ onSubmit, isLoading }) {
         autoComplete="new-password"
         error={errors.password?.message}
         {...register('password')}
-      />
-      <PasswordInput
-        id="confirmPassword"
-        label="Confirm Password"
-        placeholder="••••••••"
-        autoComplete="new-password"
-        error={errors.confirmPassword?.message}
-        {...register('confirmPassword')}
       />
       
       <Checkbox
