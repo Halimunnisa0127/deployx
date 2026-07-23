@@ -1,15 +1,14 @@
-import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 import deployxLogo from '../../../assets/logos/deployx-logo.jpg';
 
 /**
- * Login page — owns the full-screen centering layout.
- * LoginForm owns the card, fields, and Redux-driven form state.
+ * Register page
  */
-export default function Login() {
+export default function Register() {
   return (
     <div style={pageStyle}>
       <img src={deployxLogo} alt="DeployX Logo" style={logoStyle} />
-      <LoginForm />
+      <RegisterForm />
     </div>
   );
 }

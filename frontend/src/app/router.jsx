@@ -1,19 +1,23 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import { Login } from "../features/auth";
+import Home from "../pages/Home";
+import { Login, Register } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList } from "../features/projects";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
-    // Root redirects to login; once logged in, PrivateRoute sends to /dashboard
     path: "/",
-    element: <Navigate to="/login" replace />,
+    element: <Home />,
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
   {
     path: "/dashboard",
