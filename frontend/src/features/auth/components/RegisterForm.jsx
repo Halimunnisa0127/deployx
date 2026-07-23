@@ -7,22 +7,25 @@ import Form from '../../../components/ui/Form';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // ── Local form state (no longer in Redux) ──────────────────────
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const handleChange = (setter) => (e) => {
     setter(e.target.value);
-    if (error) setError(''); // Clear error on typing
+    if (error) setError('');
   };
 
   const handleSubmit = () => {
-    // Basic validation — real API validation comes later
+    if (!name.trim()) {
+      setError('Name is required.');
+      return;
+    }
     if (!email.trim()) {
       setError('Email is required.');
       return;
@@ -32,8 +35,7 @@ export default function LoginForm() {
       return;
     }
 
-    // Dummy auth — replaced by real API thunk later
-    dispatch(setCredentials({ user: { email }, token: 'dummy-token' }));
+    dispatch(setCredentials({ user: { email, name }, token: 'dummy-token' }));
     navigate('/dashboard');
   };
 
@@ -49,17 +51,25 @@ export default function LoginForm() {
         border: '1px solid rgba(255,255,255,0.08)',
       }}
     >
-      {/* Brand */}
       <div style={brandStyle}>
         <span style={logoStyle}>⚡</span>
         <h1 style={titleStyle}>DeployX</h1>
       </div>
-      <p style={subtitleStyle}>Sign in to your account</p>
+      <p style={subtitleStyle}>Create a new account</p>
 
-      {/* Form — uses reusable Form, Input, Button */}
       <Form onSubmit={handleSubmit}>
         <Input
-          id="login-email"
+          id="register-name"
+          label="Full Name"
+          type="text"
+          value={name}
+          onChange={handleChange(setName)}
+          placeholder="John Doe"
+          autoComplete="name"
+          required
+        />
+        <Input
+          id="register-email"
           label="Email"
           type="email"
           value={email}
@@ -69,27 +79,26 @@ export default function LoginForm() {
           required
         />
         <Input
-          id="login-password"
+          id="register-password"
           label="Password"
           type="password"
           value={password}
           onChange={handleChange(setPassword)}
           placeholder="••••••••"
-          autoComplete="current-password"
+          autoComplete="new-password"
           required
         />
 
-        {/* Form-level error (shown once below both fields) */}
         {error && <p style={errorStyle}>{error}</p>}
 
         <Button type="submit" variant="primary" fullWidth>
-          Sign in
+          Register
         </Button>
       </Form>
-
+      
       <div style={linkContainerStyle}>
-        <span style={linkTextStyle}>Don't have an account? </span>
-        <Link to="/register" style={linkStyle}>Register</Link>
+        <span style={linkTextStyle}>Already have an account? </span>
+        <Link to="/login" style={linkStyle}>Sign in</Link>
       </div>
     </Card>
   );
