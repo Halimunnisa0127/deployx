@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import RocketBackground from '../../components/ui/RocketBackground';
+import { Footer } from '../../components/layout/Footer';
 import { motion } from 'framer-motion';
 import { 
   Zap, 
@@ -280,27 +281,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 bg-[#0a0a0a] pt-16 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Rocket className="w-6 h-6 text-indigo-500" />
-              <span className="text-lg font-bold text-white">DeployX</span>
-            </div>
-            <p className="text-gray-500 text-sm">
-              © {new Date().getFullYear()} DeployX. All rights reserved.
-            </p>
-            <div className="flex gap-4">
-              <a href="#" className="text-gray-500 hover:text-white transition-colors">
-                <GithubIcon className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-500 hover:text-white transition-colors">
-                <Globe className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
