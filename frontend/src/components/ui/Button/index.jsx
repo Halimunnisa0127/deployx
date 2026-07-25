@@ -1,15 +1,20 @@
 import { forwardRef, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
 /**
  * Reusable Button component
  *
  * Props:
- *  - variant: 'primary' | 'secondary' | 'ghost' | 'danger' | 'oauth' (default: 'primary')
- *  - size:    'sm' | 'md' | 'lg'                                     (default: 'md')
+ *  - variant:  'primary' | 'secondary' | 'ghost' | 'danger' | 'oauth' (default: 'primary')
+ *  - size:     'sm' | 'md' | 'lg'                                     (default: 'md')
  *  - fullWidth: boolean                                              (default: false)
- *  - disabled: boolean
+ *  - iconOnly:  boolean                                              (default: false)
+ *  - disabled:  boolean
  *  - isLoading: boolean
- *  - iconLeft: ReactNode
+ *  - iconLeft:  ReactNode
+ *  - to:        string (React Router navigation link)
+ *  - href:      string (External link)
+ *  - as:        ElementType (Custom component, e.g. Link / NavLink)
  *  - onClick, type, children, id, ...rest (any native button attr)
  */
 
@@ -65,13 +70,23 @@ const SIZES = {
   lg: { padding: '16px 32px', fontSize: '16px', height: '52px' },
 };
 
+const ICON_SIZES = {
+  sm: { width: '32px', height: '32px', padding: 0 },
+  md: { width: '40px', height: '40px', padding: 0 },
+  lg: { width: '48px', height: '48px', padding: 0 },
+};
+
 const Button = forwardRef(({
   variant = 'primary',
   size = 'md',
   fullWidth = false,
+  iconOnly = false,
   disabled = false,
   isLoading = false,
   iconLeft,
+  to,
+  href,
+  as: ComponentProp,
   children,
   style: extraStyle,
   onMouseEnter,
@@ -94,6 +109,8 @@ const Button = forwardRef(({
       dynamicStyle = { background: '#334155', transform: 'translateY(-1px)' };
     } else if (variant === 'ghost') {
       dynamicStyle = { background: 'rgba(255,255,255,0.05)', color: '#f1f5f9' };
+    } else if (variant === 'secondary') {
+      dynamicStyle = { background: 'rgba(255,255,255,0.1)', color: '#ffffff' };
     }
   }
 
@@ -101,26 +118,43 @@ const Button = forwardRef(({
     dynamicStyle = { ...dynamicStyle, transform: 'scale(0.97)' };
   }
 
+  const sizeStyle = iconOnly ? (ICON_SIZES[size] ?? ICON_SIZES.md) : (SIZES[size] ?? SIZES.md);
+
   const computedStyle = {
     ...BASE,
     ...baseVariantStyle,
-    ...(SIZES[size] ?? SIZES.md),
-    width: fullWidth ? '100%' : undefined,
+    ...sizeStyle,
+    width: fullWidth ? '100%' : iconOnly ? sizeStyle.width : undefined,
     opacity: disabled || isLoading ? 0.6 : 1,
     pointerEvents: disabled || isLoading ? 'none' : 'auto',
     ...dynamicStyle,
     ...extraStyle,
   };
 
+  let Tag = ComponentProp || 'button';
+  if (!ComponentProp) {
+    if (to) Tag = Link;
+    else if (href) Tag = 'a';
+  }
+
+  const tagProps = {};
+  if (Tag === Link || Tag === NavLink) {
+    tagProps.to = to;
+  } else if (Tag === 'a') {
+    tagProps.href = href;
+  } else if (Tag === 'button') {
+    tagProps.disabled = disabled || isLoading;
+  }
+
   return (
-    <button
+    <Tag
       ref={ref}
       style={computedStyle}
-      disabled={disabled || isLoading}
       onMouseEnter={(e) => { setIsHovered(true); if (onMouseEnter) onMouseEnter(e); }}
       onMouseLeave={(e) => { setIsHovered(false); setIsActive(false); if (onMouseLeave) onMouseLeave(e); }}
       onMouseDown={(e) => { setIsActive(true); if (onMouseDown) onMouseDown(e); }}
       onMouseUp={(e) => { setIsActive(false); if (onMouseUp) onMouseUp(e); }}
+      {...tagProps}
       {...rest}
     >
       {isLoading ? (
@@ -132,7 +166,7 @@ const Button = forwardRef(({
         iconLeft
       ) : null}
       {children}
-    </button>
+    </Tag>
   );
 });
 

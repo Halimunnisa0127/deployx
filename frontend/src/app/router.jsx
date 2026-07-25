@@ -1,10 +1,11 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import { Login, Signup, ForgotPassword } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
-import { ProjectsList } from "../features/projects";
+import { ProjectsList, ProjectDetails } from "../features/projects";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -33,9 +34,9 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <PrivateRoute>
-        <MainLayout>
+        <DashboardLayout>
           <Dashboard />
-        </MainLayout>
+        </DashboardLayout>
       </PrivateRoute>
     ),
   },
@@ -43,9 +44,19 @@ const router = createBrowserRouter([
     path: "/dashboard/projects",
     element: (
       <PrivateRoute>
-        <MainLayout>
+        <DashboardLayout>
           <ProjectsList />
-        </MainLayout>
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/projects/:id",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <ProjectDetails />
+        </DashboardLayout>
       </PrivateRoute>
     ),
   },
