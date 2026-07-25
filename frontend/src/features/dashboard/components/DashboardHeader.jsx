@@ -31,7 +31,7 @@ export default function DashboardHeader({ onToggleMobile }) {
     : 'Dashboard';
 
   return (
-    <header className="sticky top-0 z-20 h-16 w-full bg-[#0a0a0a]/85 backdrop-blur-xl border-b border-slate-800/80 px-4 md:px-8 flex items-center justify-between gap-4 select-none">
+    <header className="sticky top-0 z-20 h-16 w-full bg-white/85 dark:bg-[#0a0a0a]/85 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/80 px-4 md:px-8 flex items-center justify-between gap-4 select-none transition-colors duration-300">
       {/* ── Left: Mobile Toggle, Breadcrumbs & Page Title ──────────────── */}
       <div className="flex items-center gap-3 min-w-0">
         {/* Mobile Sidebar Toggle Button */}
@@ -44,7 +44,7 @@ export default function DashboardHeader({ onToggleMobile }) {
               onClick={onToggleMobile}
               aria-label="Toggle Navigation Menu"
             >
-              <Menu className="w-5 h-5 text-slate-300" />
+              <Menu className="w-5 h-5 text-slate-700 dark:text-slate-300 transition-colors" />
             </Button>
           </div>
         )}
@@ -54,7 +54,7 @@ export default function DashboardHeader({ onToggleMobile }) {
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-400">
             <Link
               to="/dashboard"
-              className="flex items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors"
+              className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
             >
               <Home className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Home</span>
@@ -69,13 +69,13 @@ export default function DashboardHeader({ onToggleMobile }) {
                 <div key={url} className="flex items-center gap-1.5 min-w-0">
                   <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
                   {isLast ? (
-                    <span className="font-semibold text-slate-200 truncate" aria-current="page">
+                    <span className="font-semibold text-slate-800 dark:text-slate-200 truncate transition-colors" aria-current="page">
                       {label}
                     </span>
                   ) : (
                     <Link
                       to={url}
-                      className="text-slate-400 hover:text-slate-200 transition-colors truncate"
+                      className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors truncate"
                     >
                       {label}
                     </Link>
@@ -86,7 +86,7 @@ export default function DashboardHeader({ onToggleMobile }) {
           </nav>
 
           {/* Page Title */}
-          <h1 className="text-sm font-bold text-slate-100 tracking-tight hidden sm:block truncate mt-0.5">
+          <h1 className="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight hidden sm:block truncate mt-0.5 transition-colors">
             {currentPageTitle}
           </h1>
         </div>
@@ -105,14 +105,14 @@ export default function DashboardHeader({ onToggleMobile }) {
         />
 
         {/* Notifications Button */}
-        <button
-          type="button"
-          className="relative p-2 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800/80 hover:border-slate-700 text-slate-300 hover:text-white transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        <Link
+          to="/dashboard/notifications"
+          className="relative p-2 rounded-xl bg-slate-100 dark:bg-slate-900/60 hover:bg-slate-200 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           aria-label="View notifications"
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-indigo-500 ring-2 ring-[#0a0a0a]" />
-        </button>
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-indigo-500 ring-2 ring-white dark:ring-[#0a0a0a]" />
+        </Link>
       </div>
     </header>
   );

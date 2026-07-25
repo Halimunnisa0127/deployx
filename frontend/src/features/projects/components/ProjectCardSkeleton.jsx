@@ -3,10 +3,10 @@ import Skeleton from '../../../components/ui/Skeleton';
 
 export default function ProjectCardSkeleton() {
   return (
-    <Card style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '24px' }}>
+    <Card className="flex flex-col gap-4 p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)]">
       {/* Top row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
           <Skeleton variant="circular" width="28px" height="28px" />
           <Skeleton width="120px" height="18px" />
         </div>
@@ -17,7 +17,7 @@ export default function ProjectCardSkeleton() {
       <Skeleton width="180px" height="14px" />
 
       {/* Bottom row: Branch & time */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+      <div className="flex items-center justify-between mt-1 pt-2 border-t border-slate-200 dark:border-white/5 transition-colors">
         <Skeleton width="80px" height="14px" />
         <Skeleton width="90px" height="14px" />
       </div>

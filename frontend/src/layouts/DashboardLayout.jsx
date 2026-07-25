@@ -12,7 +12,7 @@ import { DashboardSidebar, DashboardHeader } from '../features/dashboard';
  */
 export default function DashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a] text-slate-100 font-sans antialiased">
+    <div className="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 font-sans antialiased transition-colors duration-300">
       {/* Sidebar placement */}
       <DashboardSidebar />
 

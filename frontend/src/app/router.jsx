@@ -6,6 +6,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import { Login, Signup, ForgotPassword } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList, ProjectDetails } from "../features/projects";
+import { Profile, Security, UpgradePro } from "../features/settings";
+import { Notifications } from "../features/notifications";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -56,6 +58,46 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <ProjectDetails />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/settings/profile",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <Profile />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/settings/security",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <Security />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/upgrade",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <UpgradePro />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/notifications",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <Notifications />
         </DashboardLayout>
       </PrivateRoute>
     ),

@@ -98,15 +98,15 @@ export default function ProjectsList() {
   const isLoading = statusState === 'loading';
 
   return (
-    <div style={pageContainerStyle}>
+    <div className="w-full font-inter">
       {/* Top Header Row */}
-      <div style={headerRowStyle}>
-        <div style={headerTitleGroupStyle}>
-          <h1 style={headingStyle}>Projects</h1>
-          <p style={subStyle}>
+      <div className="flex items-start justify-between mb-7 flex-wrap gap-5">
+        <div className="flex flex-col">
+          <h1 className="m-0 text-[26px] font-bold tracking-tight text-slate-900 dark:text-slate-50 transition-colors">Projects</h1>
+          <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400 transition-colors">
             Manage, monitor, and deploy your web applications and services.
           </p>
-          <div style={{ marginTop: '14px' }}>
+          <div className="mt-3.5">
             <ProjectsHeaderStats
               total={stats.total}
               live={stats.live}
@@ -132,9 +132,9 @@ export default function ProjectsList() {
       </div>
 
       {/* Toolbar: Search, Filter Chips, Sort Dropdown */}
-      <div style={toolbarStyle}>
+      <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
         {/* Left: Search input */}
-        <div style={searchWrapperStyle}>
+        <div className="flex-[1_1_280px] max-w-[380px]">
           <SearchBar
             id="projects-search-input"
             placeholder="Search projects by name..."
@@ -147,9 +147,9 @@ export default function ProjectsList() {
         </div>
 
         {/* Right: Filters and Sort */}
-        <div style={filterSortGroupStyle}>
+        <div className="flex items-center gap-3 flex-wrap">
           {/* Filter Chips */}
-          <div style={chipsContainerStyle} role="tablist" aria-label="Project Status Filters">
+          <div className="flex items-center gap-1.5 bg-slate-200/50 dark:bg-slate-900/40 p-1 rounded-[10px] border border-slate-300 dark:border-white/5 transition-colors" role="tablist" aria-label="Project Status Filters">
             {FILTER_OPTIONS.map((tab) => {
               const isActive = activeFilter === tab.id;
               const count = filterCounts[tab.id] ?? 0;
@@ -160,20 +160,11 @@ export default function ProjectsList() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveFilter(tab.id)}
-                  style={{
-                    ...chipStyle,
-                    background: isActive ? 'rgba(99, 102, 241, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                    color: isActive ? '#818cf8' : '#94a3b8',
-                    borderColor: isActive ? 'rgba(99, 102, 241, 0.4)' : 'rgba(255, 255, 255, 0.08)',
-                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-[13px] font-medium transition-all outline-none ${isActive ? 'bg-indigo-100 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-300 dark:border-indigo-500/40 shadow-sm' : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:text-slate-900 dark:hover:text-slate-300'}`}
                 >
                   {tab.label}
                   <span
-                    style={{
-                      ...chipBadgeStyle,
-                      background: isActive ? 'rgba(99, 102, 241, 0.25)' : 'rgba(255, 255, 255, 0.06)',
-                      color: isActive ? '#a5b4fc' : '#64748b',
-                    }}
+                    className={`text-[11px] font-semibold px-1.5 py-[1px] rounded-full transition-colors ${isActive ? 'bg-indigo-200 dark:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300' : 'bg-slate-300/50 dark:bg-white/5 text-slate-700 dark:text-slate-500'}`}
                   >
                     {count}
                   </span>
@@ -185,7 +176,7 @@ export default function ProjectsList() {
           {/* Sort Dropdown */}
           <Dropdown
             trigger={
-              <div style={sortTriggerStyle}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-900/60 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 text-[13px] font-medium cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-sm">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M11 5h10" />
                   <path d="M11 9h7" />
@@ -211,7 +202,7 @@ export default function ProjectsList() {
 
       {/* Main Content Area */}
       {isLoading ? (
-        <div style={gridStyle}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
           {[1, 2, 3, 4, 5, 6].map((idx) => (
             <ProjectCardSkeleton key={idx} />
           ))}
@@ -227,7 +218,7 @@ export default function ProjectsList() {
           onResetFilters={handleResetFilters}
         />
       ) : (
-        <div style={gridStyle}>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5">
           {filteredAndSortedItems.map((project) => (
             <ProjectCard
               key={project.id}
@@ -252,135 +243,3 @@ export default function ProjectsList() {
   );
 }
 
-/* ── Styles ─────────────────────────────────────────────────────── */
-
-const pageContainerStyle = {
-  width: '100%',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const headerRowStyle = {
-  display: 'flex',
-  alignItems: 'flex-start',
-  justifyContent: 'space-between',
-  marginBottom: '28px',
-  flexWrap: 'wrap',
-  gap: '20px',
-};
-
-const headerTitleGroupStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-};
-
-const headingStyle = {
-  margin: 0,
-  fontSize: '26px',
-  fontWeight: 700,
-  color: '#f8fafc',
-  letterSpacing: '-0.02em',
-};
-
-const subStyle = {
-  margin: '6px 0 0',
-  fontSize: '14px',
-  color: '#94a3b8',
-};
-
-const toolbarStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: '16px',
-  marginBottom: '24px',
-  flexWrap: 'wrap',
-};
-
-const searchWrapperStyle = {
-  flex: '1 1 280px',
-  maxWidth: '380px',
-};
-
-const searchIconStyle = {
-  position: 'absolute',
-  left: '12px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  pointerEvents: 'none',
-  zIndex: 1,
-};
-
-const clearSearchButtonStyle = {
-  position: 'absolute',
-  right: '12px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  background: 'none',
-  border: 'none',
-  color: '#64748b',
-  cursor: 'pointer',
-  fontSize: '12px',
-  padding: '4px',
-  lineHeight: 1,
-};
-
-const filterSortGroupStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  flexWrap: 'wrap',
-};
-
-const chipsContainerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
-  background: 'rgba(15, 23, 42, 0.4)',
-  padding: '4px',
-  borderRadius: '10px',
-  border: '1px solid rgba(255, 255, 255, 0.06)',
-};
-
-const chipStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '6px',
-  padding: '6px 12px',
-  borderRadius: '7px',
-  border: '1px solid transparent',
-  fontSize: '13px',
-  fontWeight: 500,
-  cursor: 'pointer',
-  transition: 'all 0.15s ease',
-  outline: 'none',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const chipBadgeStyle = {
-  fontSize: '11px',
-  fontWeight: 600,
-  padding: '1px 6px',
-  borderRadius: '999px',
-};
-
-const sortTriggerStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '8px',
-  padding: '8px 14px',
-  borderRadius: '8px',
-  background: 'rgba(15, 23, 42, 0.6)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  color: '#cbd5e1',
-  fontSize: '13px',
-  fontWeight: 500,
-  cursor: 'pointer',
-  fontFamily: "'Inter', sans-serif",
-  transition: 'all 0.15s ease',
-};
-
-const gridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-  gap: '20px',
-};

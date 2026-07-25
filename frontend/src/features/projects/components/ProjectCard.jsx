@@ -54,30 +54,16 @@ export default function ProjectCard({
       onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '14px',
-        padding: '20px 22px',
-        maxWidth: '100%',
-        background: isHovered ? 'rgba(15, 23, 42, 0.75)' : 'rgba(15, 23, 42, 0.5)',
-        borderColor: isHovered ? 'rgba(99, 102, 241, 0.4)' : 'rgba(255, 255, 255, 0.08)',
-        boxShadow: isHovered
-          ? '0 12px 28px -6px rgba(0, 0, 0, 0.6), 0 0 20px 0 rgba(99, 102, 241, 0.12)'
-          : '0 4px 12px 0 rgba(0, 0, 0, 0.3)',
-        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
-        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-        cursor: 'pointer',
-      }}
+      className={`flex flex-col gap-3.5 p-5 max-w-full cursor-pointer transition-all duration-200 ease-out border rounded-xl ${isHovered ? 'bg-indigo-50 dark:bg-slate-900/75 border-indigo-200 dark:border-indigo-500/40 shadow-md dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_0_rgba(99,102,241,0.12)] -translate-y-0.5' : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)] translate-y-0'}`}
     >
       {/* Top row: name + status badge */}
-      <div style={topRowStyle}>
-        <div style={titleGroupStyle}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5 min-w-0">
           {/* Framework icon badge */}
-          <div style={iconContainerStyle}>
-            <span style={frameworkIconStyle}>{framework[0]}</span>
+          <div className="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-500/15 border border-indigo-200 dark:border-indigo-500/30 flex items-center justify-center shrink-0 transition-colors">
+            <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 font-inter transition-colors">{framework[0]}</span>
           </div>
-          <span style={nameStyle} title={name}>
+          <span className="font-inter font-semibold text-[15px] text-slate-900 dark:text-slate-50 truncate transition-colors" title={name}>
             {name}
           </span>
         </div>
@@ -88,13 +74,13 @@ export default function ProjectCard({
       </div>
 
       {/* URL / Subtitle */}
-      <div style={urlRowStyle}>
+      <div className="flex items-center">
         <a
           href={`https://${defaultUrl}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          style={urlStyle}
+          className="inline-flex items-center gap-1 text-[13px] text-slate-500 dark:text-slate-400 no-underline font-inter truncate transition-colors hover:text-slate-800 dark:hover:text-slate-200"
           title={`https://${defaultUrl}`}
         >
           {defaultUrl}
@@ -107,18 +93,18 @@ export default function ProjectCard({
       </div>
 
       {/* Footer info: branch + last deployed */}
-      <div style={footerStyle}>
-        <div style={branchBadgeStyle}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-white/5 transition-colors">
+        <div className="inline-flex items-center gap-1.5">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="text-slate-400 dark:text-slate-500" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="6" y1="3" x2="6" y2="15" />
             <circle cx="18" cy="6" r="3" />
             <circle cx="6" cy="18" r="3" />
             <path d="M18 9a9 9 0 0 1-9 9" />
           </svg>
-          <span style={branchTextStyle}>{branch}</span>
+          <span className="text-xs text-slate-600 dark:text-slate-400 font-mono transition-colors">{branch}</span>
         </div>
 
-        <span style={dateStyle}>
+        <span className="text-xs text-slate-500 dark:text-slate-400 font-inter transition-colors">
           {formatDate(lastDeployed)}
         </span>
       </div>
@@ -126,92 +112,3 @@ export default function ProjectCard({
   );
 }
 
-/* ── Styles ─────────────────────────────────────────────────────── */
-
-const topRowStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: '12px',
-};
-
-const titleGroupStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-  minWidth: 0,
-};
-
-const iconContainerStyle = {
-  width: '28px',
-  height: '28px',
-  borderRadius: '8px',
-  background: 'rgba(99, 102, 241, 0.15)',
-  border: '1px solid rgba(99, 102, 241, 0.3)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexShrink: 0,
-};
-
-const frameworkIconStyle = {
-  fontSize: '12px',
-  fontWeight: 700,
-  color: '#818cf8',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const nameStyle = {
-  fontFamily: "'Inter', sans-serif",
-  fontWeight: 600,
-  fontSize: '15px',
-  color: '#f8fafc',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-};
-
-const urlRowStyle = {
-  display: 'flex',
-  alignItems: 'center',
-};
-
-const urlStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '4px',
-  fontSize: '13px',
-  color: '#64748b',
-  textDecoration: 'none',
-  fontFamily: "'Inter', sans-serif",
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  transition: 'color 0.15s ease',
-};
-
-const footerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  paddingTop: '8px',
-  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
-};
-
-const branchBadgeStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '5px',
-};
-
-const branchTextStyle = {
-  fontSize: '12px',
-  color: '#94a3b8',
-  fontFamily: "'Inter', monospace",
-};
-
-const dateStyle = {
-  fontSize: '12px',
-  color: '#64748b',
-  fontFamily: "'Inter', sans-serif",
-};
