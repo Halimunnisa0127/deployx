@@ -1,5 +1,16 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, GitBranch, ExternalLink, RefreshCw, RotateCcw } from 'lucide-react';
+import {
+  ArrowLeft,
+  GitBranch,
+  ExternalLink,
+  RefreshCw,
+  RotateCcw,
+  Copy,
+  Check,
+  Globe,
+} from 'lucide-react';
+
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 import { STATUS_VARIANT_MAP } from '../utils/projectMockData';
@@ -22,57 +33,137 @@ const GithubIcon = (props) => (
 );
 
 export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) {
+  const [copied, setCopied] = useState(false);
+
   const badgeVariant = STATUS_VARIANT_MAP[project?.status] ?? 'neutral';
 
+  const repoName = project?.name
+    ? project.name.toLowerCase().replace(/[^a-z0-9-]/g, '')
+    : 'app';
+  const repoPath = `github.com/deployx/${repoName}`;
+  const repoUrl = `https://${repoPath}`;
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(`https://${defaultUrl}`);
+    setCopied(true);
+    if (onAction) onAction('Copy Production URL');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 font-sans select-none">
       {/* Back Navigation Link */}
       <Link
         to="/dashboard/projects"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors select-none"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Projects
       </Link>
 
-      {/* Header Main Info Row */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="space-y-1.5 min-w-0">
-          <div className="flex items-center gap-3">
+      {/* Main Header Container */}
+      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-5 pb-2 border-b border-slate-800/60">
+        {/* Left Column: Title, Badges & Metadata */}
+        <div className="space-y-2.5 min-w-0 flex-1">
+          {/* Title & Badges Row */}
+          <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-2xl font-bold text-slate-100 tracking-tight truncate">
-              {project.name}
+              {project?.name || 'DeployX Application'}
             </h1>
+
+            {/* Status Badge */}
             <Badge variant={badgeVariant}>
-              {project.status}
+              {project?.status || 'live'}
+            </Badge>
+
+            {/* Environment Badge */}
+            <Badge variant="info" dot={true}>
+              Production
+            </Badge>
+
+            {/* Framework Badge */}
+            <Badge variant="neutral" dot={false}>
+              {project?.framework || 'Vite / React'}
+            </Badge>
+
+            {/* Region Badge */}
+            <Badge variant="neutral" dot={false}>
+              {project?.region || 'us-east-1'}
+            </Badge>
+
+            {/* Node Version Badge */}
+            <Badge variant="neutral" dot={false}>
+              Node v20.x
             </Badge>
           </div>
 
-          {/* Repository & Metadata Info */}
-          <div className="flex items-center gap-4 text-xs text-slate-400 flex-wrap">
-            <span className="flex items-center gap-1.5">
+          {/* Repository & Link Metadata Row */}
+          <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
+            >
               <GithubIcon className="text-slate-400" />
-              <span className="text-slate-300 font-medium">github.com/deployx/{project.name}</span>
-            </span>
+              <span className="font-medium">{repoPath}</span>
+            </a>
+
             <span className="text-slate-700">•</span>
-            <span className="flex items-center gap-1.5">
+
+            <span className="inline-flex items-center gap-1.5">
               <GitBranch className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-mono text-slate-300">{project.branch || 'main'}</span>
+              <span className="font-mono text-slate-300">{project?.branch || 'main'}</span>
             </span>
+
             <span className="text-slate-700">•</span>
+
             <a
               href={`https://${defaultUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 transition-colors"
             >
+              <Globe className="w-3.5 h-3.5" />
               <span>{defaultUrl}</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         </div>
 
-        {/* Quick Action Buttons */}
-        <div className="flex items-center gap-2.5 flex-shrink-0">
+        {/* Right Column: Complete Quick Actions Toolbar */}
+        <div className="flex items-center gap-2 flex-wrap lg:flex-nowrap flex-shrink-0">
+          <Button
+            variant="secondary"
+            size="sm"
+            iconLeft={copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            onClick={handleCopyUrl}
+          >
+            {copied ? 'Copied URL' : 'Copy URL'}
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            iconLeft={<GithubIcon />}
+          >
+            Open GitHub
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="sm"
+            href={`https://${defaultUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            iconLeft={<ExternalLink className="w-3.5 h-3.5" />}
+          >
+            Open Production
+          </Button>
+
           <Button
             variant="secondary"
             size="sm"
@@ -95,3 +186,4 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
     </div>
   );
 }
+

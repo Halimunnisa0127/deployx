@@ -25,7 +25,7 @@ const Tabs = forwardRef(({
   return (
     <div
       ref={ref}
-      className={`flex items-center gap-1 overflow-x-auto select-none ${
+      className={`flex items-center gap-1 overflow-x-auto flex-nowrap whitespace-nowrap select-none scrollbar-none w-full max-w-full ${
         variant === 'line' ? 'border-b border-slate-800' : 'p-1 rounded-xl bg-slate-900/60 border border-slate-800/80'
       } ${className}`}
       style={extraStyle}
@@ -45,7 +45,7 @@ const Tabs = forwardRef(({
               aria-selected={isActive}
               disabled={isDisabled}
               onClick={() => !isDisabled && onChange && onChange(tab.id)}
-              className={`flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg transition-all whitespace-nowrap ${
+              className={`flex items-center justify-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg transition-all whitespace-nowrap flex-shrink-0 ${
                 fullWidth ? 'flex-1' : ''
               } ${
                 isDisabled
@@ -75,7 +75,7 @@ const Tabs = forwardRef(({
             aria-selected={isActive}
             disabled={isDisabled}
             onClick={() => !isDisabled && onChange && onChange(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-t-sm ${
+            className={`flex items-center gap-2 px-4 py-2.5 text-xs font-semibold border-b-2 transition-all whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-t-sm flex-shrink-0 ${
               fullWidth ? 'flex-1 justify-center' : ''
             } ${
               isDisabled
