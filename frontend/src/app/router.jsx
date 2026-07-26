@@ -69,6 +69,11 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <Profile />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
     path: "/dashboard/deployments",
     element: (
       <PrivateRoute>
@@ -104,6 +109,11 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <Notifications />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
     path: "/dashboard/deployments/:id",
     element: (
       <PrivateRoute>
