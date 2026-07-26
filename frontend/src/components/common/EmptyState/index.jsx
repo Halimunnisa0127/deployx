@@ -1,3 +1,4 @@
+import React from 'react';
 import Card from '../../ui/Card';
 import Button from '../../ui/Button';
 
@@ -5,16 +6,13 @@ import Button from '../../ui/Button';
  * Reusable EmptyState component for DeployX
  *
  * Props:
- *  - icon:           ReactNode — icon element (e.g. <Key className="w-6 h-6 text-indigo-400" />)
- *  - title:          string    — main heading
- *  - description:    string    — descriptive helper text
- *  - primaryAction:  ReactNode — custom primary action button or element
- *  - actionLabel:    string    — text for default primary button if primaryAction not passed
- *  - onActionClick:  function  — click handler for default primary button
- *  - actionIcon:     ReactNode — left icon for default primary button
- *  - card:           boolean   — wrap inside glassmorphic Card container (default: true)
- *  - style:          object    — extra inline style overrides
- *  - className:      string    — extra CSS classes
+ *  - icon:            ReactNode — icon element (e.g. <Layers className="w-6 h-6 text-indigo-400" />)
+ *  - title:           string    — main heading
+ *  - description:     string    — descriptive helper text
+ *  - primaryAction:   object | ReactNode — { label, onClick, icon } or custom button element
+ *  - secondaryAction: object | ReactNode — { label, onClick, icon } or custom button element
+ *  - card:            boolean   — wrap inside glassmorphic Card container (default: true)
+ *  - className:       string    — extra CSS classes
  */
 
 export default function EmptyState({
@@ -22,6 +20,7 @@ export default function EmptyState({
   title,
   description,
   primaryAction,
+  secondaryAction,
   actionLabel,
   onActionClick,
   actionIcon,
@@ -29,12 +28,31 @@ export default function EmptyState({
   style: extraStyle,
   className = '',
 }) {
+  const renderAction = (action, defaultVariant = 'primary') => {
+    if (!action) return null;
+    if (React.isValidElement(action)) return action;
+
+    if (typeof action === 'object' && action.label) {
+      return (
+        <Button
+          variant={action.variant || defaultVariant}
+          size="sm"
+          iconLeft={action.icon}
+          onClick={action.onClick}
+        >
+          {action.label}
+        </Button>
+      );
+    }
+    return null;
+  };
+
   const content = (
     <div
       className={`flex flex-col items-center justify-center text-center py-10 px-4 select-none font-sans ${className}`}
     >
       <div className="max-w-md mx-auto space-y-4">
-        {/* Icon Circle */}
+        {/* Icon Container */}
         {icon && (
           <div className="w-14 h-14 mx-auto rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shadow-lg shadow-indigo-500/10">
             {icon}
@@ -55,21 +73,23 @@ export default function EmptyState({
           )}
         </div>
 
-        {/* Primary Action Button */}
-        {(primaryAction || actionLabel) && (
-          <div className="pt-2 flex items-center justify-center gap-3">
-            {primaryAction ? (
-              primaryAction
-            ) : (
-              <Button
-                variant="primary"
-                size="sm"
-                iconLeft={actionIcon}
-                onClick={onActionClick}
-              >
-                {actionLabel}
-              </Button>
+        {/* Action Buttons */}
+        {(primaryAction || secondaryAction || actionLabel) && (
+          <div className="pt-2 flex items-center justify-center gap-3 flex-wrap">
+            {renderAction(primaryAction, 'primary') || (
+              actionLabel && (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  iconLeft={actionIcon}
+                  onClick={onActionClick}
+                >
+                  {actionLabel}
+                </Button>
+              )
             )}
+
+            {renderAction(secondaryAction, 'secondary')}
           </div>
         )}
       </div>

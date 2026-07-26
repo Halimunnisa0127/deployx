@@ -65,9 +65,9 @@ const VARIANTS = {
 };
 
 const SIZES = {
-  sm: { padding: '8px 16px', fontSize: '13px', height: '32px' },
-  md: { padding: '12px 24px', fontSize: '14px', height: '44px' },
-  lg: { padding: '16px 32px', fontSize: '16px', height: '52px' },
+  sm: { padding: '6px 14px', fontSize: '13px', height: '32px', gap: '6px' },
+  md: { padding: '10px 20px', fontSize: '14px', height: '40px', gap: '8px' },
+  lg: { padding: '14px 28px', fontSize: '16px', height: '48px', gap: '10px' },
 };
 
 const ICON_SIZES = {
@@ -124,6 +124,7 @@ const Button = forwardRef(({
     ...BASE,
     ...baseVariantStyle,
     ...sizeStyle,
+    gap: sizeStyle.gap || BASE.gap,
     width: fullWidth ? '100%' : iconOnly ? sizeStyle.width : undefined,
     opacity: disabled || isLoading ? 0.6 : 1,
     pointerEvents: disabled || isLoading ? 'none' : 'auto',
