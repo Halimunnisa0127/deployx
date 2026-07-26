@@ -35,8 +35,8 @@ export default function SidebarItem({
           isCollapsed ? 'justify-center px-0 w-10 h-10 mx-auto' : 'w-full'
         } ${
           active
-            ? 'bg-gradient-to-r from-indigo-600/20 to-violet-600/10 text-white font-semibold border border-indigo-500/30 shadow-[0_0_15px_rgba(99,102,241,0.15)]'
-            : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 border border-transparent'
+            ? 'bg-gradient-to-r from-indigo-50 dark:from-indigo-600/20 to-violet-50 dark:to-violet-600/10 text-indigo-700 dark:text-white font-semibold border border-indigo-200 dark:border-indigo-500/30 shadow-sm dark:shadow-[0_0_15px_rgba(99,102,241,0.15)]'
+            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-transparent'
         }`;
       }}
     >
@@ -58,7 +58,7 @@ export default function SidebarItem({
             {Icon && (
               <span
                 className={`flex-shrink-0 transition-all duration-200 ${
-                  active ? 'text-indigo-400 scale-110' : 'text-slate-400 group-hover:text-indigo-300'
+                  active ? 'text-indigo-600 dark:text-indigo-400 scale-110' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300'
                 }`}
               >
                 {typeof Icon === 'function' || typeof Icon === 'object' && Icon.$$typeof ? (
@@ -78,8 +78,8 @@ export default function SidebarItem({
                   <span
                     className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-md border ${
                       active
-                        ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40'
-                        : 'bg-slate-800 text-slate-400 border-slate-700/60 group-hover:border-slate-600'
+                        ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/40'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/60 group-hover:border-slate-300 dark:group-hover:border-slate-600'
                     }`}
                   >
                     {badge}
