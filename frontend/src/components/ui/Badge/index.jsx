@@ -32,9 +32,19 @@ const VARIANTS = {
     text: '#9ca3af',
   },
   info: {
-    dot: '#6366f1',
+    dot: '#6366f1', // Indigo
     badge: 'rgba(99,102,241,0.15)',
     text: '#818cf8',
+  },
+  primary: {
+    dot: '#3b82f6', // Blue
+    badge: 'rgba(59,130,246,0.15)',
+    text: '#60a5fa',
+  },
+  purple: {
+    dot: '#a855f7', // Purple
+    badge: 'rgba(168,85,247,0.15)',
+    text: '#c084fc',
   },
 };
 
