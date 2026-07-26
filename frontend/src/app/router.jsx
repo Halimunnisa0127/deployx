@@ -8,6 +8,7 @@ import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList, ProjectDetails } from "../features/projects";
 import { Profile, Security, UpgradePro } from "../features/settings";
 import { Notifications } from "../features/notifications";
+import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <Profile />
+    path: "/dashboard/deployments",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <DeploymentsPage />
         </DashboardLayout>
       </PrivateRoute>
     ),
@@ -98,6 +104,11 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <Notifications />
+    path: "/dashboard/deployments/:id",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <DeploymentDetailsPage />
         </DashboardLayout>
       </PrivateRoute>
     ),
