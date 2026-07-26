@@ -6,7 +6,7 @@ import DeploymentCard from '../components/DeploymentCard';
 import DeploymentSkeleton from '../components/DeploymentSkeleton';
 import DeploymentsEmptyState from '../components/DeploymentsEmptyState';
 import { mockDeployments } from '../data/mockDeployments';
-import { Layers, Activity } from 'lucide-react';
+import { Layers, Activity, RefreshCw } from 'lucide-react';
 
 export default function Deployments() {
   const navigate = useNavigate();
@@ -68,11 +68,31 @@ export default function Deployments() {
     navigate(`/dashboard/deployments/${deployment.id}`);
   };
 
+  const [notification, setNotification] = useState(null);
+
+  const handleRedeploy = (deployment) => {
+    setNotification({
+      type: 'success',
+      message: `Triggered redeployment for ${deployment.projectName} (${deployment.id})`,
+    });
+    setTimeout(() => setNotification(null), 4000);
+  };
+
   const hasActiveFilter = searchQuery.trim().length > 0 || activeTab !== 'all';
 
   return (
-    <div className="space-y-6 md:space-y-8 pb-10 text-left">
-      
+    <div className="space-y-6 md:space-y-8 pb-10 text-left animate-in fade-in duration-300">
+      {/* Toast notification feedback */}
+      {notification && (
+        <div className="p-4 rounded-xl border flex items-center justify-between text-xs font-semibold shadow-lg animate-in fade-in slide-in-from-top-2 duration-200 bg-emerald-950/80 border-emerald-500/40 text-emerald-300">
+          <div className="flex items-center gap-2">
+            <RefreshCw className="w-4 h-4 text-emerald-400 animate-spin" />
+            <span>{notification.message}</span>
+          </div>
+          <button onClick={() => setNotification(null)} className="hover:underline text-xs">Dismiss</button>
+        </div>
+      )}
+
       {/* 1. Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/60 pb-6">
         <div>
@@ -131,6 +151,7 @@ export default function Deployments() {
               key={deployment.id}
               deployment={deployment}
               onClick={handleCardClick}
+              onRedeploy={handleRedeploy}
             />
           ))}
         </div>

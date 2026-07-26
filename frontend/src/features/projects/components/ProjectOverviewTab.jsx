@@ -62,7 +62,7 @@ const STAT_ACCENT_MAP = {
 };
 
 const TIMELINE_ICON_MAP = {
-  success: <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />,
+  success: <Check className="w-3.5 h-3.5 text-emerald-400" />,
   env: <Key className="w-3.5 h-3.5 text-amber-400" />,
   domain: <Globe className="w-3.5 h-3.5 text-sky-400" />,
   rollback: <RotateCcw className="w-3.5 h-3.5 text-rose-400" />,
@@ -285,8 +285,8 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
             <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
               Branch
             </span>
-            <span className="font-mono text-slate-200 font-semibold block flex items-center gap-1.5">
-              <GitBranch className="w-3.5 h-3.5 text-slate-400" />
+            <span className="font-mono text-slate-200 font-semibold flex items-center gap-1.5">
+              <GitBranch className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               {latestDeployment.branch}
             </span>
           </div>
@@ -295,8 +295,8 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
             <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
               Triggered By
             </span>
-            <span className="text-slate-200 font-medium block flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-200 font-medium flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               {latestDeployment.triggeredBy || 'GitHub Push by @alex-dev'}
             </span>
           </div>
@@ -305,8 +305,8 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
             <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
               Duration & Timestamp
             </span>
-            <span className="text-slate-200 font-medium block flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-slate-200 font-medium flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               {latestDeployment.time} ({latestDeployment.duration})
             </span>
           </div>
@@ -338,13 +338,13 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
         </div>
 
-        <div className="relative pl-6 space-y-5 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-px before:bg-slate-800">
+        <div className="relative pl-7 space-y-5 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-px before:bg-slate-800">
           {activities.map((act) => (
             <div key={act.id} className="relative flex items-start gap-3 group">
               <div
-                className={`absolute -left-6 top-0.5 p-1.5 rounded-full border ${
+                className={`absolute -left-7 top-0.5 w-6 h-6 rounded-full border ${
                   TIMELINE_DOT_BG[act.type] || 'bg-slate-800 border-slate-700'
-                } flex-shrink-0 z-10 bg-[#0c121e]`}
+                } flex items-center justify-center flex-shrink-0 z-10 bg-[#0c121e]`}
               >
                 {TIMELINE_ICON_MAP[act.type] || (
                   <Activity className="w-3.5 h-3.5 text-slate-400" />
