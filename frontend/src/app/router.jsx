@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import { Login, Signup, ForgotPassword } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList, ProjectDetails } from "../features/projects";
+import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -56,6 +57,26 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <ProjectDetails />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/deployments",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <DeploymentsPage />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/deployments/:id",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <DeploymentDetailsPage />
         </DashboardLayout>
       </PrivateRoute>
     ),
