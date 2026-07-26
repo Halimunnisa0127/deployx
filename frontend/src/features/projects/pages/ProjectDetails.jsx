@@ -128,15 +128,19 @@ export default function ProjectDetails() {
         )}
 
         {activeTab === 'deployments' && (
-          <ProjectDeploymentsTab deployments={mockDeployments} />
+          <ProjectDeploymentsTab
+            project={project}
+            deployments={mockDeployments}
+            onAction={handleAction}
+          />
         )}
 
         {activeTab === 'env' && (
-          <ProjectEnvTab onAction={handleAction} />
+          <ProjectEnvTab project={project} onAction={handleAction} />
         )}
 
         {activeTab === 'domains' && (
-          <ProjectDomainsTab defaultUrl={defaultUrl} onAction={handleAction} />
+          <ProjectDomainsTab project={project} defaultUrl={defaultUrl} onAction={handleAction} />
         )}
 
         {activeTab === 'settings' && (
