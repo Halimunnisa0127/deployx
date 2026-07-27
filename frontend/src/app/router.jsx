@@ -9,6 +9,9 @@ import { ProjectsList, ProjectDetails } from "../features/projects";
 import { Profile, Security, UpgradePro } from "../features/settings";
 import { Notifications } from "../features/notifications";
 import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments";
+import { Domains, DomainDetails } from "../features/domains";
+import { Logs } from "../features/logs";
+import { Github, RepositoryDetails } from "../features/github";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -109,6 +112,56 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <Notifications />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/logs",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <Logs />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/github",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <Github />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/github/:id",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <RepositoryDetails />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/domains",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <Domains />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/domains/:id",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <DomainDetails />
         </DashboardLayout>
       </PrivateRoute>
     ),
