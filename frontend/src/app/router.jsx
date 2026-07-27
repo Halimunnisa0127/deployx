@@ -77,11 +77,11 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings",
-    element: <Navigate to="/dashboard/settings/profile" replace />,
+    path: "/dashboard/account",
+    element: <Navigate to="/dashboard/account/profile" replace />,
   },
   {
-    path: "/dashboard/settings/profile",
+    path: "/dashboard/account/profile",
     element: (
       <PrivateRoute>
         <DashboardLayout>
@@ -93,7 +93,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings/security",
+    path: "/dashboard/account/security",
     element: (
       <PrivateRoute>
         <DashboardLayout>
@@ -105,7 +105,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings/preferences",
+    path: "/dashboard/account/preferences",
     element: (
       <PrivateRoute>
         <DashboardLayout>
@@ -117,7 +117,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings/billing",
+    path: "/dashboard/account/billing",
     element: (
       <PrivateRoute>
         <DashboardLayout>
@@ -129,7 +129,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings/danger-zone",
+    path: "/dashboard/account/danger-zone",
     element: (
       <PrivateRoute>
         <DashboardLayout>
@@ -139,6 +139,14 @@ const router = createBrowserRouter([
         </DashboardLayout>
       </PrivateRoute>
     ),
+  },
+  {
+    path: "/dashboard/settings",
+    element: <Navigate to="/dashboard/account/profile" replace />,
+  },
+  {
+    path: "/dashboard/settings/*",
+    element: <Navigate to="/dashboard/account/profile" replace />,
   },
   {
     path: "/dashboard/upgrade",

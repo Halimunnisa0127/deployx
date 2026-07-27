@@ -2,11 +2,11 @@ import { Link, useLocation, Outlet } from 'react-router-dom';
 import { User, ShieldCheck, Sliders, CreditCard, AlertTriangle } from 'lucide-react';
 
 const SETTINGS_NAV_ITEMS = [
-  { id: 'profile', label: 'Profile', href: '/dashboard/settings/profile', icon: User },
-  { id: 'security', label: 'Security', href: '/dashboard/settings/security', icon: ShieldCheck },
-  { id: 'preferences', label: 'Preferences', href: '/dashboard/settings/preferences', icon: Sliders },
-  { id: 'billing', label: 'Billing', href: '/dashboard/settings/billing', icon: CreditCard },
-  { id: 'danger-zone', label: 'Danger Zone', href: '/dashboard/settings/danger-zone', icon: AlertTriangle, variant: 'danger' },
+  { id: 'profile', label: 'Profile', href: '/dashboard/account/profile', icon: User },
+  { id: 'security', label: 'Security', href: '/dashboard/account/security', icon: ShieldCheck },
+  { id: 'preferences', label: 'Preferences', href: '/dashboard/account/preferences', icon: Sliders },
+  { id: 'billing', label: 'Billing', href: '/dashboard/account/billing', icon: CreditCard },
+  { id: 'danger-zone', label: 'Danger Zone', href: '/dashboard/account/danger-zone', icon: AlertTriangle, variant: 'danger' },
 ];
 
 export default function SettingsLayout({ children }) {
@@ -18,7 +18,7 @@ export default function SettingsLayout({ children }) {
         {/* Module Header */}
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white transition-colors">
-            Account Settings
+            Account
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 transition-colors">
             Manage your account credentials, security preferences, team access, and billing information.

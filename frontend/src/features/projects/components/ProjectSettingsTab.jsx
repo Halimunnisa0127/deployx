@@ -3,12 +3,14 @@ import {
   Settings,
   GitBranch,
   Terminal,
+  Key,
   AlertTriangle,
   Trash2,
   RefreshCw,
   Unlink,
   ArrowRightLeft,
   Check,
+  ExternalLink,
 } from 'lucide-react';
 
 import Card from '../../../components/ui/Card';
@@ -24,22 +26,21 @@ export default function ProjectSettingsTab({ project, onAction }) {
 
   // Form states
   const [generalForm, setGeneralForm] = useState({
-    name: mockSettings.name,
-    description: mockSettings.description,
-    framework: mockSettings.framework,
+    name: mockSettings.name || project?.name || '',
+    framework: mockSettings.framework || 'Vite / React',
+    rootDirectory: mockSettings.rootDirectory || './',
   });
 
-  const [githubForm, setGithubForm] = useState({
-    repository: mockSettings.repository,
-    branch: mockSettings.branch,
+  const [gitForm, setGitForm] = useState({
+    repository: mockSettings.repository || 'github.com/org/repo',
+    branch: mockSettings.branch || 'main',
+    autoDeploy: true,
   });
 
   const [buildForm, setBuildForm] = useState({
-    installCommand: mockSettings.installCommand,
-    buildCommand: mockSettings.buildCommand,
-    outputDirectory: mockSettings.outputDirectory,
-    rootDirectory: mockSettings.rootDirectory,
-    nodeVersion: mockSettings.nodeVersion,
+    buildCommand: mockSettings.buildCommand || 'npm run build',
+    outputDirectory: mockSettings.outputDirectory || 'dist',
+    installCommand: mockSettings.installCommand || 'npm install',
   });
 
   // Feedback states
@@ -56,20 +57,20 @@ export default function ProjectSettingsTab({ project, onAction }) {
     setTimeout(() => setSavedGeneral(false), 2000);
   };
 
-  // Handle GitHub Reconnect / Disconnect
-  const handleReconnectGitHub = () => {
-    if (onAction) onAction('Reconnected GitHub repository');
+  // Handle Git Reconnect / Disconnect
+  const handleReconnectGit = () => {
+    if (onAction) onAction('Reconnected Git repository');
   };
 
-  const handleDisconnectGitHub = () => {
-    if (onAction) onAction('Disconnected GitHub repository');
+  const handleDisconnectGit = () => {
+    if (onAction) onAction('Disconnected Git repository');
   };
 
   // Handle Build save
   const handleSaveBuild = (e) => {
     e.preventDefault();
     setSavedBuild(true);
-    if (onAction) onAction('Saved Build & Development Settings');
+    if (onAction) onAction('Saved Build Settings');
     setTimeout(() => setSavedBuild(false), 2000);
   };
 
@@ -83,7 +84,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
 
   return (
     <div className="space-y-6 font-sans">
-      {/* 1. GENERAL SETTINGS */}
+      {/* 1. GENERAL */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
           <div className="flex items-center gap-2.5">
@@ -92,10 +93,10 @@ export default function ProjectSettingsTab({ project, onAction }) {
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-100 tracking-tight">
-                General Settings
+                General
               </h2>
               <p className="text-xs text-slate-400">
-                Update basic information and preset configurations for your project.
+                Configure core settings and directory structure for your project.
               </p>
             </div>
           </div>
@@ -110,22 +111,23 @@ export default function ProjectSettingsTab({ project, onAction }) {
           />
 
           <Input
-            label="Description"
-            value={generalForm.description}
-            onChange={(e) => setGeneralForm((prev) => ({ ...prev, description: e.target.value }))}
-            placeholder="Brief project description..."
+            label="Framework"
+            value={generalForm.framework}
+            onChange={(e) => setGeneralForm((prev) => ({ ...prev, framework: e.target.value }))}
+            placeholder="e.g. Vite / React, Next.js"
           />
 
           <Input
-            label="Framework Preset"
-            value={generalForm.framework}
-            onChange={(e) => setGeneralForm((prev) => ({ ...prev, framework: e.target.value }))}
-            placeholder="e.g. Vite / React, Next.js, Remix"
+            label="Root Directory"
+            value={generalForm.rootDirectory}
+            onChange={(e) => setGeneralForm((prev) => ({ ...prev, rootDirectory: e.target.value }))}
+            placeholder="e.g. ./"
+            helperText="The directory within your repository where your project code resides."
           />
 
           <div className="pt-2 flex items-center gap-3">
             <Button type="submit" variant="primary" size="sm">
-              {savedGeneral ? 'Saved General Settings' : 'Save Changes'}
+              {savedGeneral ? 'Saved Changes' : 'Save Changes'}
             </Button>
             {savedGeneral && (
               <span className="text-xs font-semibold text-emerald-400 inline-flex items-center gap-1">
@@ -136,7 +138,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
         </form>
       </Card>
 
-      {/* 2. GITHUB SETTINGS */}
+      {/* 2. GIT REPOSITORY */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
         <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
           <div className="flex items-center gap-2.5">
@@ -146,14 +148,14 @@ export default function ProjectSettingsTab({ project, onAction }) {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-bold text-slate-100 tracking-tight">
-                  GitHub Integration
+                  Git Repository
                 </h2>
                 <Badge variant="success" dot={true}>
                   Connected
                 </Badge>
               </div>
               <p className="text-xs text-slate-400">
-                Manage connected git repository and automated deployment trigger branch.
+                Manage connected git repository, branch, and automatic deployment triggers.
               </p>
             </div>
           </div>
@@ -162,18 +164,40 @@ export default function ProjectSettingsTab({ project, onAction }) {
         <div className="space-y-4 max-w-xl">
           <Input
             label="Repository"
-            value={githubForm.repository}
-            onChange={(e) => setGithubForm((prev) => ({ ...prev, repository: e.target.value }))}
+            value={gitForm.repository}
+            onChange={(e) => setGitForm((prev) => ({ ...prev, repository: e.target.value }))}
             placeholder="github.com/org/repo"
           />
 
           <Input
-            label="Production Branch"
-            value={githubForm.branch}
-            onChange={(e) => setGithubForm((prev) => ({ ...prev, branch: e.target.value }))}
+            label="Branch"
+            value={gitForm.branch}
+            onChange={(e) => setGitForm((prev) => ({ ...prev, branch: e.target.value }))}
             placeholder="e.g. main or master"
             helperText="Pushes to this branch trigger automatic production builds."
           />
+
+          {/* Auto Deploy Toggle */}
+          <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div>
+              <span className="text-xs font-semibold text-slate-200 block">
+                Auto Deploy
+              </span>
+              <span className="text-[11px] text-slate-400">
+                Automatically trigger deployments when code is pushed to the target branch.
+              </span>
+            </div>
+
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={gitForm.autoDeploy}
+                onChange={(e) => setGitForm((prev) => ({ ...prev, autoDeploy: e.target.checked }))}
+                className="sr-only peer"
+              />
+              <div className="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+            </label>
+          </div>
 
           <div className="pt-2 flex items-center gap-3 flex-wrap">
             <Button
@@ -181,7 +205,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
               variant="secondary"
               size="sm"
               iconLeft={<RefreshCw className="w-3.5 h-3.5" />}
-              onClick={handleReconnectGitHub}
+              onClick={handleReconnectGit}
             >
               Reconnect Repository
             </Button>
@@ -191,7 +215,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
               variant="secondary"
               size="sm"
               iconLeft={<Unlink className="w-3.5 h-3.5 text-rose-400" />}
-              onClick={handleDisconnectGitHub}
+              onClick={handleDisconnectGit}
               style={{ color: '#f87171' }}
             >
               Disconnect
@@ -209,23 +233,16 @@ export default function ProjectSettingsTab({ project, onAction }) {
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-100 tracking-tight">
-                Build & Development Settings
+                Build Settings
               </h2>
               <p className="text-xs text-slate-400">
-                Override build commands, output artifact directories, and runtime engines.
+                Override build commands, output artifact directories, and install scripts.
               </p>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSaveBuild} className="space-y-4 max-w-xl">
-          <Input
-            label="Install Command"
-            value={buildForm.installCommand}
-            onChange={(e) => setBuildForm((prev) => ({ ...prev, installCommand: e.target.value }))}
-            placeholder="e.g. npm install"
-          />
-
           <Input
             label="Build Command"
             value={buildForm.buildCommand}
@@ -241,17 +258,10 @@ export default function ProjectSettingsTab({ project, onAction }) {
           />
 
           <Input
-            label="Root Directory"
-            value={buildForm.rootDirectory}
-            onChange={(e) => setBuildForm((prev) => ({ ...prev, rootDirectory: e.target.value }))}
-            placeholder="e.g. ./"
-          />
-
-          <Input
-            label="Node.js Version"
-            value={buildForm.nodeVersion}
-            onChange={(e) => setBuildForm((prev) => ({ ...prev, nodeVersion: e.target.value }))}
-            placeholder="e.g. 20.x or 18.x"
+            label="Install Command"
+            value={buildForm.installCommand}
+            onChange={(e) => setBuildForm((prev) => ({ ...prev, installCommand: e.target.value }))}
+            placeholder="e.g. npm install"
           />
 
           <div className="pt-2 flex items-center gap-3">
@@ -267,7 +277,55 @@ export default function ProjectSettingsTab({ project, onAction }) {
         </form>
       </Card>
 
-      {/* 4. DANGER ZONE */}
+      {/* 4. ENVIRONMENT VARIABLES */}
+      <Card style={{ padding: '24px', maxWidth: '100%' }}>
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+              <Key className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-100 tracking-tight">
+                Environment Variables
+              </h2>
+              <p className="text-xs text-slate-400">
+                Manage environment variables configured for your build and runtime environments.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-4 max-w-xl">
+          <p className="text-xs text-slate-300">
+            Environment variables are encrypted and automatically injected into production and preview deployments.
+          </p>
+
+          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between gap-4">
+            <div>
+              <span className="text-xs font-bold text-slate-200 block">
+                Project Environment Variables
+              </span>
+              <span className="text-[11px] text-slate-400">
+                Configure API keys, database URLs, and secret tokens.
+              </span>
+            </div>
+
+            <Button
+              type="button"
+              variant="secondary"
+              size="sm"
+              iconRight={<ExternalLink className="w-3.5 h-3.5" />}
+              onClick={() => {
+                if (onAction) onAction('Opened Environment Variables Manager');
+              }}
+            >
+              Manage Variables
+            </Button>
+          </div>
+        </div>
+      </Card>
+
+      {/* 5. DANGER ZONE */}
       <Card
         style={{
           padding: '24px',
@@ -293,7 +351,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
         </div>
 
         <div className="space-y-6">
-          {/* Transfer Project (Disabled Placeholder) */}
+          {/* Transfer Project Ownership (UI only) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
             <div>
               <div className="flex items-center gap-2">
@@ -301,21 +359,23 @@ export default function ProjectSettingsTab({ project, onAction }) {
                   Transfer Project Ownership
                 </span>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-500 border border-slate-700">
-                  Disabled
+                  UI Only
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                Transfer ownership of this project to another organization or user team.
+                Transfer ownership of this project to another organization or user workspace.
               </p>
             </div>
 
             <Button
               variant="secondary"
               size="sm"
-              disabled={true}
               iconLeft={<ArrowRightLeft className="w-3.5 h-3.5" />}
+              onClick={() => {
+                if (onAction) onAction('Transfer Project Ownership initiated');
+              }}
             >
-              Transfer Project (Disabled)
+              Transfer Project
             </Button>
           </div>
 

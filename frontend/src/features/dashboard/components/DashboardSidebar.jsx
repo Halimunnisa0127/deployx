@@ -8,7 +8,6 @@ import {
   Rocket,
   Globe,
   Terminal,
-  Settings,
   ChevronsUpDown,
   Check,
   Plus,
@@ -68,7 +67,6 @@ const NAV_ITEMS = [
   { id: 'domains', label: 'Domains', href: '/dashboard/domains', icon: Globe },
   { id: 'logs', label: 'Logs', href: '/dashboard/logs', icon: Terminal },
   { id: 'github', label: 'GitHub', href: '/dashboard/github', icon: GithubIcon },
-  { id: 'settings', label: 'Settings', href: '/dashboard/settings/profile', icon: Settings },
 ];
 
 export default function DashboardSidebar({ onToggleMobileExternal }) {
