@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FolderPlus, GitBranch, Terminal, Globe, ArrowUpRight, Zap } from 'lucide-react';
+import { FolderPlus, GitBranch, Terminal, Globe, Key, PlusCircle, Users, ArrowUpRight, Zap } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import { MOCK_QUICK_ACTIONS } from '../data/mockDashboardData';
 
@@ -8,6 +8,9 @@ const ACTION_ICON_MAP = {
   GitBranch: <GitBranch className="w-5 h-5 text-emerald-400" />,
   Terminal: <Terminal className="w-5 h-5 text-amber-400" />,
   Globe: <Globe className="w-5 h-5 text-sky-400" />,
+  Key: <Key className="w-5 h-5 text-purple-400" />,
+  PlusCircle: <PlusCircle className="w-5 h-5 text-cyan-400" />,
+  Users: <Users className="w-5 h-5 text-rose-400" />,
 };
 
 const ACCENT_BG = {
@@ -15,6 +18,9 @@ const ACCENT_BG = {
   GitBranch: 'bg-emerald-500/10 border-emerald-500/20 group-hover:bg-emerald-500/20',
   Terminal: 'bg-amber-500/10 border-amber-500/20 group-hover:bg-amber-500/20',
   Globe: 'bg-sky-500/10 border-sky-500/20 group-hover:bg-sky-500/20',
+  Key: 'bg-purple-500/10 border-purple-500/20 group-hover:bg-purple-500/20',
+  PlusCircle: 'bg-cyan-500/10 border-cyan-500/20 group-hover:bg-cyan-500/20',
+  Users: 'bg-rose-500/10 border-rose-500/20 group-hover:bg-rose-500/20',
 };
 
 export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
@@ -57,3 +63,4 @@ export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
     </Card>
   );
 }
+

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
-import { GitBranch, Clock, ArrowUpRight, Rocket } from 'lucide-react';
+import { GitBranch, Clock, ArrowUpRight, Rocket, Timer, ExternalLink } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
+import Button from '../../../components/ui/Button';
+import GithubIcon from '../../../components/ui/GithubIcon';
 import { MOCK_RECENT_DEPLOYMENTS } from '../data/mockDashboardData';
 
 const STATUS_VARIANT_MAP = {
@@ -9,6 +11,12 @@ const STATUS_VARIANT_MAP = {
   building: 'info',
   failed: 'danger',
   queued: 'neutral',
+};
+
+const ENV_VARIANT_MAP = {
+  Production: 'primary',
+  Preview: 'info',
+  Development: 'neutral',
 };
 
 export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOYMENTS }) {
@@ -40,43 +48,79 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
         <div className="divide-y divide-slate-800/60">
           {deployments.slice(0, 5).map((item) => {
             const variant = STATUS_VARIANT_MAP[item.status] || 'neutral';
+            const envVariant = ENV_VARIANT_MAP[item.environment] || 'neutral';
 
             return (
               <div
                 key={item.id}
-                className="py-3.5 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group hover:bg-slate-800/30 -mx-2 px-2 rounded-xl transition-colors"
+                className="py-3.5 first:pt-0 last:pb-0 flex flex-col md:flex-row md:items-center justify-between gap-3 group hover:bg-slate-800/40 -mx-2 px-3 rounded-xl transition-all duration-200"
               >
-                {/* Left: Project Info & Branch */}
-                <div className="space-y-1 min-w-0">
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <span className="text-sm font-semibold text-slate-200 group-hover:text-white truncate">
-                      {item.projectName}
-                    </span>
-                    <Badge variant={variant} dot>
-                      {item.statusLabel}
-                    </Badge>
+                {/* Left: Repository Icon, Project Info & Badges */}
+                <div className="flex items-start gap-3 min-w-0">
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-300 flex-shrink-0 group-hover:border-indigo-500/30 transition-colors">
+                    <GithubIcon className="w-4 h-4" />
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
-                    <span className="inline-flex items-center gap-1 text-slate-400 bg-slate-900/60 border border-slate-800 px-2 py-0.5 rounded-md font-mono">
-                      <GitBranch className="w-3 h-3 text-slate-400" />
-                      {item.branch}
-                    </span>
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm font-bold text-slate-200 group-hover:text-white truncate">
+                        {item.projectName}
+                      </span>
 
-                    <span className="font-mono text-slate-400">
-                      #{item.commitHash}
-                    </span>
+                      {/* Status Badge */}
+                      <Badge variant={variant} dot>
+                        {item.statusLabel}
+                      </Badge>
 
-                    <span className="hidden md:inline text-slate-400 truncate max-w-[200px]">
-                      {item.commitMessage}
-                    </span>
+                      {/* Environment Badge */}
+                      {item.environment && (
+                        <Badge variant={envVariant}>
+                          {item.environment}
+                        </Badge>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
+                      <span className="inline-flex items-center gap-1 text-slate-400 bg-slate-900/60 border border-slate-800 px-2 py-0.5 rounded-md font-mono">
+                        <GitBranch className="w-3 h-3 text-slate-400" />
+                        {item.branch}
+                      </span>
+
+                      <span className="font-mono text-slate-400">
+                        #{item.commitHash}
+                      </span>
+
+                      <span className="hidden lg:inline text-slate-400 truncate max-w-[180px]">
+                        {item.commitMessage}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Right: Time */}
-                <div className="flex items-center gap-1.5 text-xs text-slate-400 flex-shrink-0">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{item.timeAgo}</span>
+                {/* Right: Build Duration, Time & View Deployment Button */}
+                <div className="flex items-center gap-3 text-xs text-slate-400 flex-shrink-0 justify-between md:justify-end">
+                  <div className="flex items-center gap-3 text-[11px] text-slate-400">
+                    {item.duration && (
+                      <span className="flex items-center gap-1 bg-slate-900/50 border border-slate-800/80 px-2 py-0.5 rounded text-slate-300">
+                        <Timer className="w-3 h-3 text-indigo-400" />
+                        {item.duration}
+                      </span>
+                    )}
+
+                    <span className="flex items-center gap-1 text-slate-400">
+                      <Clock className="w-3.5 h-3.5 text-slate-400" />
+                      {item.timeAgo}
+                    </span>
+                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    to={`/dashboard/deployments/${item.id}`}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 hover:bg-slate-800/80 font-medium"
+                  >
+                    View Details →
+                  </Button>
                 </div>
               </div>
             );
@@ -86,3 +130,4 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
     </Card>
   );
 }
+
