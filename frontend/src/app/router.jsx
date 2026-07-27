@@ -6,7 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import { Login, Signup, ForgotPassword } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList, ProjectDetails } from "../features/projects";
-import { Profile, Security, UpgradePro } from "../features/settings";
+import { SettingsLayout, Profile, Security, Preferences, Billing, DangerZone, UpgradePro } from "../features/settings";
 import { Notifications } from "../features/notifications";
 import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments";
 import { Domains, DomainDetails } from "../features/domains";
@@ -67,16 +67,6 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings/profile",
-    element: (
-      <PrivateRoute>
-        <DashboardLayout>
-          <Profile />
-        </DashboardLayout>
-      </PrivateRoute>
-    ),
-  },
-  {
     path: "/dashboard/deployments",
     element: (
       <PrivateRoute>
@@ -87,14 +77,76 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard/settings/security",
+    path: "/dashboard/account",
+    element: <Navigate to="/dashboard/account/profile" replace />,
+  },
+  {
+    path: "/dashboard/account/profile",
     element: (
       <PrivateRoute>
         <DashboardLayout>
-          <Security />
+          <SettingsLayout>
+            <Profile />
+          </SettingsLayout>
         </DashboardLayout>
       </PrivateRoute>
     ),
+  },
+  {
+    path: "/dashboard/account/security",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <SettingsLayout>
+            <Security />
+          </SettingsLayout>
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/account/preferences",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <SettingsLayout>
+            <Preferences />
+          </SettingsLayout>
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/account/billing",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <SettingsLayout>
+            <Billing />
+          </SettingsLayout>
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/account/danger-zone",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <SettingsLayout>
+            <DangerZone />
+          </SettingsLayout>
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/settings",
+    element: <Navigate to="/dashboard/account/profile" replace />,
+  },
+  {
+    path: "/dashboard/settings/*",
+    element: <Navigate to="/dashboard/account/profile" replace />,
   },
   {
     path: "/dashboard/upgrade",

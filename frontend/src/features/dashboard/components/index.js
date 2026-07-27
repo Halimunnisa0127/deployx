@@ -9,3 +9,7 @@ export { default as ProjectOverviewCard } from './ProjectOverviewCard';
 export { default as RecentActivityTimeline } from './RecentActivityTimeline';
 export { default as QuickActionsCard } from './QuickActionsCard';
 export { default as EmptyDashboardState } from './EmptyDashboardState';
+export { default as UsageSummaryCard } from './UsageSummaryCard';
+export { default as DeploymentTrendsCard } from './DeploymentTrendsCard';
+export { default as DashboardSkeleton } from './DashboardSkeleton';
+
