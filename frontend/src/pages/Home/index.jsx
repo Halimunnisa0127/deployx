@@ -17,7 +17,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-gray-100 font-sans selection:bg-indigo-500/30 relative">
+    <div className="min-h-screen bg-[#0a0a0a] text-gray-100 font-sans selection:bg-blue-500/30 relative">
       {/* Ambient Rocket Background */}
       <RocketBackground />
 
@@ -26,9 +26,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Brand */}
-            <Link to="/" className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg">
-              <div className="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-                <Rocket className="w-5 h-5 text-indigo-500" />
+            <Link to="/" className="flex items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
+              <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                <Rocket className="w-5 h-5 text-blue-500" />
               </div>
               <span className="text-xl font-bold tracking-tight text-white">DeployX</span>
             </Link>
@@ -47,7 +47,7 @@ export default function Home() {
               <Link to="/login" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
                 Sign In
               </Link>
-              <Link to="/register" className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)]">
+              <Link to="/register" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)]">
                 Get Started
               </Link>
             </div>
@@ -100,7 +100,7 @@ export default function Home() {
               <Link 
                 to="/register" 
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-2 mt-4 text-center text-base font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-lg"
+                className="block px-3 py-2 mt-4 text-center text-base font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-lg"
               >
                 Get Started
               </Link>

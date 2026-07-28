@@ -48,7 +48,7 @@ export default function WhyDeployXSection() {
           variants={fadeInUp}
           className="text-center max-w-3xl mx-auto mb-20"
         >
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-3">
+          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             COMPARISON
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -88,11 +88,11 @@ export default function WhyDeployXSection() {
           </div>
 
           {/* DeployX Card (Highlighted) */}
-          <div className="p-8 sm:p-10 rounded-2xl bg-indigo-950/25 border border-indigo-500/40 relative space-y-7 shadow-[0_0_50px_rgba(79,70,229,0.15)]">
-            <div className="flex items-center justify-between pb-5 border-b border-indigo-500/20">
+          <div className="p-8 sm:p-10 rounded-2xl bg-blue-950/25 border border-blue-500/40 relative space-y-7 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
+            <div className="flex items-center justify-between pb-5 border-b border-blue-500/20">
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-bold text-white">DeployX</h3>
-                <Sparkles className="w-4 h-4 text-indigo-400" />
+                <Sparkles className="w-4 h-4 text-blue-400" />
               </div>
               <span className="text-xs text-emerald-400 font-semibold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
                 Automated & Fast
@@ -102,7 +102,7 @@ export default function WhyDeployXSection() {
             <div className="space-y-6">
               {comparisonItems.map((item, index) => (
                 <div key={index} className="space-y-1.5">
-                  <div className="text-xs font-semibold text-indigo-300 uppercase tracking-wider">{item.topic}</div>
+                  <div className="text-xs font-semibold text-blue-300 uppercase tracking-wider">{item.topic}</div>
                   <div className="flex items-start gap-2.5 text-sm font-medium text-white">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                     <span>{item.deployx}</span>

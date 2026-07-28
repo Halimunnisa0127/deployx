@@ -40,7 +40,7 @@ export default function HowItWorksSection() {
       step: "Step 1",
       title: "Sign In",
       description: "Create your free account or sign in effortlessly using your GitHub profile.",
-      icon: <UserCheck className="w-5 h-5 text-indigo-400" />,
+      icon: <UserCheck className="w-5 h-5 text-blue-400" />,
       snippet: "OAuth 2.0 Single Sign-On"
     },
     {
@@ -48,7 +48,7 @@ export default function HowItWorksSection() {
       step: "Step 2",
       title: "Connect GitHub",
       description: "Authorize DeployX to access your GitHub repositories with zero-friction OAuth.",
-      icon: <GithubIcon className="w-5 h-5 text-indigo-400" />,
+      icon: <GithubIcon className="w-5 h-5 text-blue-400" />,
       snippet: "1-Click Repository Authorization"
     },
     {
@@ -56,7 +56,7 @@ export default function HowItWorksSection() {
       step: "Step 3",
       title: "Select Repository",
       description: "Pick any public or private project repository you wish to deploy.",
-      icon: <GitBranch className="w-5 h-5 text-indigo-400" />,
+      icon: <GitBranch className="w-5 h-5 text-blue-400" />,
       snippet: "main / production branch"
     },
     {
@@ -64,7 +64,7 @@ export default function HowItWorksSection() {
       step: "Step 4",
       title: "Configure Build",
       description: "Set your build command, output directory, and environment variables.",
-      icon: <Settings className="w-5 h-5 text-indigo-400" />,
+      icon: <Settings className="w-5 h-5 text-blue-400" />,
       snippet: "npm run build &bull; dist/"
     },
     {
@@ -72,7 +72,7 @@ export default function HowItWorksSection() {
       step: "Step 5",
       title: "Deploy",
       description: "Hit deploy and watch your project go live globally in under a minute.",
-      icon: <Rocket className="w-5 h-5 text-indigo-400" />,
+      icon: <Rocket className="w-5 h-5 text-blue-400" />,
       snippet: "https://your-project.deployx.app"
     }
   ];
@@ -89,7 +89,7 @@ export default function HowItWorksSection() {
           variants={fadeInUp}
           className="text-center max-w-3xl mx-auto mb-24"
         >
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-3">
+          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             WORKFLOW
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -104,7 +104,7 @@ export default function HowItWorksSection() {
         <div className="max-w-4xl mx-auto relative">
           
           {/* Vertical Connecting Line */}
-          <div className="hidden md:block absolute left-[31px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-indigo-500/40 via-indigo-600/20 to-transparent pointer-events-none" />
+          <div className="hidden md:block absolute left-[31px] top-10 bottom-10 w-[2px] bg-gradient-to-b from-blue-500/40 via-blue-600/20 to-transparent pointer-events-none" />
 
           <motion.div 
             initial="hidden"
@@ -121,9 +121,9 @@ export default function HowItWorksSection() {
               >
                 {/* Step Circle Icon */}
                 <div className="flex items-center gap-4 shrink-0">
-                  <div className="w-16 h-16 rounded-2xl bg-[#0e1017] border border-white/10 group-hover:border-indigo-500/50 flex items-center justify-center relative shadow-lg z-10 transition-colors">
+                  <div className="w-16 h-16 rounded-2xl bg-[#0e1017] border border-white/10 group-hover:border-blue-500/50 flex items-center justify-center relative shadow-lg z-10 transition-colors">
                     {step.icon}
-                    <span className="absolute -top-2 -right-2 text-[10px] font-bold font-mono text-indigo-300 bg-indigo-950 border border-indigo-500/40 px-1.5 py-0.5 rounded-full">
+                    <span className="absolute -top-2 -right-2 text-[10px] font-bold font-mono text-blue-300 bg-blue-950 border border-blue-500/40 px-1.5 py-0.5 rounded-full">
                       {step.num}
                     </span>
                   </div>
@@ -132,7 +132,7 @@ export default function HowItWorksSection() {
                 {/* Step Card Content */}
                 <div className="flex-1 p-6 sm:p-7 rounded-2xl bg-white/[0.02] border border-white/5 group-hover:border-white/15 group-hover:bg-white/[0.04] transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
-                    <div className="text-xs font-semibold uppercase tracking-wider text-indigo-400 mb-1">
+                    <div className="text-xs font-semibold uppercase tracking-wider text-blue-400 mb-1">
                       {step.step}
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">
@@ -144,8 +144,8 @@ export default function HowItWorksSection() {
                   </div>
 
                   {/* Micro Code/UI Snippet Tag */}
-                  <div className="shrink-0 bg-black/60 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono text-indigo-300 flex items-center gap-2">
-                    <Code2 className="w-3.5 h-3.5 text-indigo-400" />
+                  <div className="shrink-0 bg-black/60 border border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono text-blue-300 flex items-center gap-2">
+                    <Code2 className="w-3.5 h-3.5 text-blue-400" />
                     <span>{step.snippet}</span>
                   </div>
                 </div>

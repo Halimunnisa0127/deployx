@@ -37,9 +37,9 @@ const BASE = {
 
 const VARIANTS = {
   primary: {
-    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+    background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
     color: '#fff',
-    boxShadow: '0 4px 14px 0 rgba(99, 102, 241, 0.39)',
+    boxShadow: '0 4px 14px 0 rgba(37, 99, 235, 0.39)',
   },
   secondary: {
     background: 'rgba(255, 255, 255, 0.05)',
