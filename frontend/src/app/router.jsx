@@ -12,6 +12,7 @@ import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments"
 import { Domains, DomainDetails } from "../features/domains";
 import { Logs } from "../features/logs";
 import { Github, RepositoryDetails } from "../features/github";
+import { AdminDashboardPage, UsersPage, ProjectsPage } from "../features/admin";
 import PrivateRoute from "../routes/PrivateRoute";
 
 const router = createBrowserRouter([
@@ -72,6 +73,36 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <DeploymentsPage />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/admin",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <AdminDashboardPage />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/admin/users",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <UsersPage />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/admin/projects",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <ProjectsPage />
         </DashboardLayout>
       </PrivateRoute>
     ),
