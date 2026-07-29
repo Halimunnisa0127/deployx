@@ -6,6 +6,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import { Login, Signup, ForgotPassword } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList, ProjectDetails } from "../features/projects";
+import { CreateProjectWizard } from "../features/project-creation";
 import { SettingsLayout, Profile, Security, Preferences, Billing, DangerZone, UpgradePro } from "../features/settings";
 import { Notifications } from "../features/notifications";
 import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments";
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
         <DashboardLayout>
           <ProjectsList />
         </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/projects/new",
+    element: (
+      <PrivateRoute>
+        <CreateProjectWizard />
       </PrivateRoute>
     ),
   },

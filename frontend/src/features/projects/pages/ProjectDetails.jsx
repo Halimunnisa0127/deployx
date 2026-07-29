@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Lock } from 'lucide-react';
 
 import Button from '../../../components/ui/Button';
 import Skeleton from '../../../components/ui/Skeleton';
@@ -14,6 +14,7 @@ import {
   ProjectEnvTab,
   ProjectDomainsTab,
   ProjectSettingsTab,
+  ProjectLogsTab,
 } from '../components';
 
 import { PROJECT_DETAILS_TABS, getMockDeployments } from '../utils/projectMockData';
@@ -84,6 +85,29 @@ export default function ProjectDetails() {
     );
   }
 
+  // 3. Deployment Incomplete Access Restriction Guard
+  if (project.status === 'not deployed' || project.isDeployed === false) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-20 text-center select-none font-sans animate-fade-in">
+        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-4 shadow-xl shadow-amber-500/10">
+          <Lock className="w-8 h-8" />
+        </div>
+        <h2 className="text-2xl font-extrabold text-slate-100 mb-2 tracking-tight">Access Restricted</h2>
+        <p className="text-xs sm:text-sm text-slate-400 max-w-md mb-6 leading-relaxed">
+          The dashboard for <span className="font-semibold text-slate-200">{project.name}</span> is locked. Complete the initial project deployment before accessing dashboard management settings.
+        </p>
+        <div className="flex items-center gap-3">
+          <Button variant="secondary" size="md" onClick={() => navigate('/dashboard/projects')}>
+            Return to Projects
+          </Button>
+          <Button variant="primary" size="md" onClick={() => navigate('/dashboard/projects/new')}>
+            Deploy Project
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   const defaultUrl = project.url || `${project.name.toLowerCase().replace(/[^a-z0-9-]/g, '')}.deployx.app`;
 
   return (
@@ -145,6 +169,10 @@ export default function ProjectDetails() {
 
         {activeTab === 'settings' && (
           <ProjectSettingsTab project={project} onAction={handleAction} />
+        )}
+
+        {activeTab === 'logs' && (
+          <ProjectLogsTab project={project} onAction={handleAction} />
         )}
       </div>
     </div>
