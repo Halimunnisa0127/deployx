@@ -1,4 +1,5 @@
-import { FolderPlus, Layers, Globe, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { FolderPlus, Layers, Globe, Zap, TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import { MOCK_STAT_METRICS } from '../data/mockDashboardData';
 
@@ -10,37 +11,70 @@ const ICON_MAP = {
 };
 
 const ACCENT_BG_MAP = {
-  FolderPlus: 'bg-indigo-500/10 border-indigo-500/20',
-  Layers: 'bg-purple-500/10 border-purple-500/20',
-  Globe: 'bg-sky-500/10 border-sky-500/20',
-  Zap: 'bg-emerald-500/10 border-emerald-500/20',
+  FolderPlus: 'bg-indigo-500/10 border-indigo-500/20 group-hover:bg-indigo-500/20',
+  Layers: 'bg-purple-500/10 border-purple-500/20 group-hover:bg-purple-500/20',
+  Globe: 'bg-sky-500/10 border-sky-500/20 group-hover:bg-sky-500/20',
+  Zap: 'bg-emerald-500/10 border-emerald-500/20 group-hover:bg-emerald-500/20',
 };
 
 export default function StatCards({ metrics = MOCK_STAT_METRICS }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-      {metrics.map((item) => (
-        <Card
-          key={item.id}
-          style={{ maxWidth: '100%', padding: '20px 24px' }}
-          className="hover:border-slate-700/80 transition-all duration-200"
-        >
-          <div className="flex items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                {item.title}
-              </span>
-              <div className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight">
-                {item.value}
-              </div>
-            </div>
+      {metrics.map((item) => {
+        const isUp = item.trend !== 'down';
+        const TrendIcon = isUp ? TrendingUp : TrendingDown;
 
-            <div className={`p-3 rounded-xl border ${ACCENT_BG_MAP[item.iconName] || 'bg-slate-800 border-slate-700'} flex-shrink-0`}>
-              {ICON_MAP[item.iconName] || <FolderPlus className="w-5 h-5 text-slate-400" />}
-            </div>
-          </div>
-        </Card>
-      ))}
+        return (
+          <Link
+            key={item.id}
+            to={item.link || '#'}
+            className="block group focus:outline-none focus:ring-2 focus:ring-indigo-500/80 rounded-2xl transition-all"
+            aria-label={`${item.title}: ${item.value}, ${item.change} ${item.period}`}
+          >
+            <Card
+              style={{ maxWidth: '100%', padding: '20px 24px' }}
+              className="relative overflow-hidden group-hover:-translate-y-1 group-hover:border-indigo-500/40 group-hover:shadow-xl group-hover:shadow-indigo-500/10 transition-all duration-300 border-slate-800/80"
+            >
+              {/* Subtle Ambient Hover Background Glow */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+              <div className="relative space-y-4">
+                {/* Header: Title & Icon */}
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-slate-300 transition-colors">
+                    {item.title}
+                  </span>
+
+                  <div className="flex items-center gap-1.5">
+                    <div className={`p-2.5 rounded-xl border ${ACCENT_BG_MAP[item.iconName] || 'bg-slate-800 border-slate-700'} flex-shrink-0 transition-colors duration-200`}>
+                      {ICON_MAP[item.iconName] || <FolderPlus className="w-5 h-5 text-slate-400" />}
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-slate-500 opacity-0 group-hover:opacity-100 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+                  </div>
+                </div>
+
+                {/* Main Metric Value */}
+                <div className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight group-hover:text-white transition-colors">
+                  {item.value}
+                </div>
+
+                {/* Footer: Trend Indicator & Comparison */}
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60 text-xs">
+                  <div className={`flex items-center gap-1 font-semibold ${isUp ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    <TrendIcon className="w-3.5 h-3.5" />
+                    <span>{item.change}</span>
+                  </div>
+
+                  <span className="text-[11px] text-slate-400 truncate">
+                    {item.period || 'Compared to last 7 days'}
+                  </span>
+                </div>
+              </div>
+            </Card>
+          </Link>
+        );
+      })}
     </div>
   );
 }
+

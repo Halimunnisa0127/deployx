@@ -53,7 +53,7 @@ export default function FaqSection() {
           variants={fadeInUp}
           className="text-center max-w-2xl mx-auto mb-20"
         >
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-3">
+          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             FAQ
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -79,19 +79,19 @@ export default function FaqSection() {
                 key={index} 
                 className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isOpen 
-                    ? "bg-white/[0.04] border-indigo-500/40 shadow-[0_0_25px_rgba(79,70,229,0.1)]" 
+                    ? "bg-white/[0.04] border-blue-500/40 shadow-[0_0_25px_rgba(37,99,235,0.15)]" 
                     : "bg-white/[0.015] border-white/5 hover:border-white/15 hover:bg-white/[0.03]"
                 }`}
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-5 flex items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-2xl"
+                  className="w-full px-6 py-5 flex items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
                   aria-expanded={isOpen}
                 >
                   <span className="text-base sm:text-lg font-semibold text-white">
                     {faq.question}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-indigo-400 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                  <ChevronDown className={`w-5 h-5 text-blue-400 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 <AnimatePresence initial={false}>

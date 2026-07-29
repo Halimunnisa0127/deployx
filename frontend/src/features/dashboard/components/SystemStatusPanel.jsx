@@ -1,13 +1,19 @@
-import { Activity, Server, Database, Cpu, Layers } from 'lucide-react';
+import { Activity, Server, Database, Cpu, Layers, HardDrive, Clock } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
 import { MOCK_SYSTEM_SERVICES } from '../data/mockDashboardData';
 
 const SERVICE_ICON_MAP = {
-  api_server: <Server className="w-4 h-4 text-slate-300" />,
-  database: <Database className="w-4 h-4 text-slate-300" />,
-  docker_engine: <Cpu className="w-4 h-4 text-slate-300" />,
-  build_queue: <Layers className="w-4 h-4 text-slate-300" />,
+  api: <Server className="w-4 h-4 text-indigo-400" />,
+  database: <Database className="w-4 h-4 text-emerald-400" />,
+  docker: <Cpu className="w-4 h-4 text-sky-400" />,
+  queue_worker: <Layers className="w-4 h-4 text-amber-400" />,
+  storage: <HardDrive className="w-4 h-4 text-purple-400" />,
+
+  // Backward compatibility keys
+  api_server: <Server className="w-4 h-4 text-indigo-400" />,
+  docker_engine: <Cpu className="w-4 h-4 text-sky-400" />,
+  build_queue: <Layers className="w-4 h-4 text-amber-400" />,
 };
 
 export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
@@ -41,7 +47,7 @@ export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
         {services.map((service) => (
           <div
             key={service.id}
-            className="flex items-center justify-between gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80"
+            className="flex items-center justify-between gap-3 p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 transition-colors"
           >
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="p-2 rounded-lg bg-slate-800/80 border border-slate-700/60 flex-shrink-0">
@@ -51,8 +57,9 @@ export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
                 <div className="text-xs font-semibold text-slate-200 truncate">
                   {service.name}
                 </div>
-                <div className="text-[11px] text-slate-400 truncate">
-                  {service.detail}
+                <div className="flex items-center gap-1 text-[11px] text-slate-400 font-mono">
+                  <Clock className="w-3 h-3 text-slate-400" />
+                  <span>{service.responseTime || service.detail}</span>
                 </div>
               </div>
             </div>
@@ -66,3 +73,4 @@ export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
     </Card>
   );
 }
+

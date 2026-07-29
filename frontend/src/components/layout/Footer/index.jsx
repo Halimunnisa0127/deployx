@@ -14,7 +14,7 @@ export const Footer = () => {
           {/* Branding Section */}
           <div className="flex flex-col space-y-3 md:col-span-1">
             <div className="flex items-center gap-2">
-              <Rocket className="w-6 h-6 text-indigo-500" />
+              <Rocket className="w-6 h-6 text-blue-500" />
               <span className="text-xl font-bold text-white tracking-tight">DeployX</span>
             </div>
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
@@ -31,7 +31,7 @@ export const Footer = () => {
               <li>
                 <a
                   href="#features"
-                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-sm"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
                 >
                   Features
                 </a>
@@ -39,7 +39,7 @@ export const Footer = () => {
               <li>
                 <a
                   href="#how-it-works"
-                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-sm"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
                 >
                   How It Works
                 </a>
@@ -64,7 +64,7 @@ export const Footer = () => {
                   href="https://github.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-sm"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
                 >
                   GitHub
                 </a>
@@ -120,7 +120,7 @@ export const Footer = () => {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-sm"
+              className="inline-flex items-center gap-1.5 text-gray-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
               aria-label="GitHub"
             >
               <GithubIcon size={15} />
