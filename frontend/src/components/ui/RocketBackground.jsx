@@ -27,7 +27,7 @@ export default function RocketBackground() {
       {smokeParticles.map((particle) => (
         <motion.div
           key={particle.id}
-          className="absolute bottom-[-150px] rounded-full bg-indigo-500/10 blur-[40px]"
+          className="absolute bottom-[-150px] rounded-full bg-blue-500/10 blur-[40px]"
           style={{
             left: `${particle.x}%`,
             width: particle.size,
@@ -52,7 +52,7 @@ export default function RocketBackground() {
       {rockets.map((rocket) => (
         <motion.div
           key={rocket.id}
-          className="absolute bottom-[-100px] text-indigo-500/20"
+          className="absolute bottom-[-100px] text-blue-500/20"
           style={{ left: `${rocket.x}%` }}
           animate={{
             y: [-50, -1500],

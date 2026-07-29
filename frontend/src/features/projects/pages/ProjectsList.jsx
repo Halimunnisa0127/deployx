@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
 import ProjectCardSkeleton from '../components/ProjectCardSkeleton';
 import ProjectsHeaderStats from '../components/ProjectsHeaderStats';
 import ProjectsEmptyState from '../components/ProjectsEmptyState';
-import CreateProjectModal from '../components/CreateProjectModal';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Dropdown from '../../../components/ui/Dropdown';
@@ -25,10 +25,10 @@ const SORT_OPTIONS = [
 ];
 
 export default function ProjectsList() {
+  const navigate = useNavigate();
   const items = useSelector((state) => state.projects.items);
   const statusState = useSelector((state) => state.projects.status);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeSort, setActiveSort] = useState('recent');
@@ -119,7 +119,7 @@ export default function ProjectsList() {
         <Button
           id="create-project-btn"
           variant="primary"
-          onClick={() => setIsModalOpen(true)}
+          to="/dashboard/projects/new"
           iconLeft={
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <line x1="12" y1="5" x2="12" y2="19" />
@@ -127,7 +127,7 @@ export default function ProjectsList() {
             </svg>
           }
         >
-          Create Project
+          New Project
         </Button>
       </div>
 
@@ -210,7 +210,7 @@ export default function ProjectsList() {
       ) : items.length === 0 ? (
         <ProjectsEmptyState
           type="no-projects"
-          onCreateClick={() => setIsModalOpen(true)}
+          onCreateClick={() => navigate('/dashboard/projects/new')}
         />
       ) : filteredAndSortedItems.length === 0 ? (
         <ProjectsEmptyState
@@ -233,12 +233,6 @@ export default function ProjectsList() {
           ))}
         </div>
       )}
-
-      {/* Create Project Modal */}
-      <CreateProjectModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
     </div>
   );
 }

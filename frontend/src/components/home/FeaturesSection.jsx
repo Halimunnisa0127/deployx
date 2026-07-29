@@ -31,7 +31,7 @@ export default function FeaturesSection() {
   return (
     <section id="features" className="py-28 lg:py-36 bg-[#0d0e14] border-t border-white/[0.06] relative overflow-hidden">
       {/* Background radial accent */}
-      <div className="absolute top-1/3 right-0 w-[550px] h-[550px] bg-indigo-600/10 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/3 right-0 w-[550px] h-[550px] bg-blue-600/15 rounded-full blur-[150px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
@@ -43,12 +43,12 @@ export default function FeaturesSection() {
           variants={fadeInUp}
           className="text-center max-w-3xl mx-auto mb-24"
         >
-          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-400 mb-3">
+          <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             FEATURES
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-6">
             Everything you need to ship <br className="hidden sm:inline" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">
               without friction
             </span>
           </h2>
@@ -70,7 +70,7 @@ export default function FeaturesSection() {
           >
             {/* Text Side */}
             <div className="lg:col-span-5 space-y-6 text-left">
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                 <GithubIcon className="w-6 h-6" />
               </div>
 
@@ -84,15 +84,15 @@ export default function FeaturesSection() {
 
               <ul className="space-y-3 pt-2 text-sm text-gray-300">
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Automatic branch sync & commit triggers</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Support for public and private repositories</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Zero manual server setup or webhooks required</span>
                 </li>
               </ul>
@@ -100,12 +100,12 @@ export default function FeaturesSection() {
 
             {/* Static UI Visual Side */}
             <div className="lg:col-span-7 rounded-2xl border border-white/10 bg-[#08090c] p-6 sm:p-8 shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
               <div className="space-y-4 text-left font-mono text-xs">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
                   <div className="flex items-center gap-2 text-gray-300 font-sans font-semibold">
-                    <GitPullRequest className="w-4 h-4 text-indigo-400" />
+                    <GitPullRequest className="w-4 h-4 text-blue-400" />
                     <span>GitHub Continuous Deployment</span>
                   </div>
                   <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-sans font-medium">
@@ -120,7 +120,7 @@ export default function FeaturesSection() {
                   </div>
                   <div className="flex items-center justify-between text-gray-400">
                     <span>Trigger Branch</span>
-                    <span className="text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded font-bold">main</span>
+                    <span className="text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded font-bold">main</span>
                   </div>
                   <div className="flex items-center justify-between text-gray-400">
                     <span>Build Command</span>
@@ -128,12 +128,12 @@ export default function FeaturesSection() {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-indigo-950/40 border border-indigo-500/30 flex items-center justify-between font-sans">
+                <div className="p-3.5 rounded-lg bg-blue-950/40 border border-blue-500/30 flex items-center justify-between font-sans">
                   <div className="flex items-center gap-3">
-                    <Zap className="w-4 h-4 text-indigo-400" />
+                    <Zap className="w-4 h-4 text-blue-400" />
                     <span className="text-xs text-white">Push to main detected &bull; Deploying commit <code>#a4b9c1</code></span>
                   </div>
-                  <span className="text-[11px] font-medium text-indigo-300">In Progress (14s)</span>
+                  <span className="text-[11px] font-medium text-blue-300">In Progress (14s)</span>
                 </div>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function FeaturesSection() {
               <div className="space-y-4 text-left font-mono text-xs">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10 font-sans">
                   <div className="flex items-center gap-2 text-gray-300 font-semibold">
-                    <Terminal className="w-4 h-4 text-indigo-400" />
+                    <Terminal className="w-4 h-4 text-blue-400" />
                     <span>Real-time Logs & Env Configuration</span>
                   </div>
                   <div className="flex items-center gap-1.5 text-gray-400 text-xs">
@@ -163,10 +163,10 @@ export default function FeaturesSection() {
 
                 {/* Simulated Log Output */}
                 <div className="p-4 rounded-xl bg-black/80 border border-white/10 space-y-1.5 text-gray-400 text-[11px]">
-                  <p><span className="text-indigo-400">[BUILD]</span> Loading environment variables (DATABASE_URL, API_KEY)</p>
-                  <p><span className="text-indigo-400">[BUILD]</span> Compiling TypeScript files (32 modules)</p>
+                  <p><span className="text-blue-400">[BUILD]</span> Loading environment variables (DATABASE_URL, API_KEY)</p>
+                  <p><span className="text-blue-400">[BUILD]</span> Compiling TypeScript files (32 modules)</p>
                   <p><span className="text-emerald-400">[SUCCESS]</span> Bundle optimized: index.js (142 kB)</p>
-                  <p><span className="text-indigo-400">[DEPLOY]</span> Routing traffic to global edge instances</p>
+                  <p><span className="text-blue-400">[DEPLOY]</span> Routing traffic to global edge instances</p>
                 </div>
 
                 {/* Env Var Preview Cards */}
@@ -187,7 +187,7 @@ export default function FeaturesSection() {
 
             {/* Text Side (Right) */}
             <div className="lg:col-span-5 lg:order-2 order-1 space-y-6 text-left">
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                 <Terminal className="w-6 h-6" />
               </div>
 
@@ -201,15 +201,15 @@ export default function FeaturesSection() {
 
               <ul className="space-y-3 pt-2 text-sm text-gray-300">
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Real-time log streaming with instant error highlighting</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>AES-256 encrypted environment variable storage</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Environment scoping for Development, Staging & Production</span>
                 </li>
               </ul>
@@ -226,7 +226,7 @@ export default function FeaturesSection() {
           >
             {/* Text Side */}
             <div className="lg:col-span-5 space-y-6 text-left">
-              <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
                 <Globe className="w-6 h-6" />
               </div>
 
@@ -240,15 +240,15 @@ export default function FeaturesSection() {
 
               <ul className="space-y-3 pt-2 text-sm text-gray-300">
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Automatic Let's Encrypt SSL provision & auto-renewal</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>1-Click rollback to any historic build artifact</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle className="w-4 h-4 text-indigo-400 shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Global edge DNS resolution with automated SSL wildcarding</span>
                 </li>
               </ul>
@@ -259,7 +259,7 @@ export default function FeaturesSection() {
               <div className="space-y-4 text-left">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
                   <div className="flex items-center gap-2 text-gray-300 font-semibold">
-                    <Globe className="w-4 h-4 text-indigo-400" />
+                    <Globe className="w-4 h-4 text-blue-400" />
                     <span>Domain & Rollback Control Panel</span>
                   </div>
                   <span className="text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
@@ -272,7 +272,7 @@ export default function FeaturesSection() {
                     <div className="text-sm font-semibold text-white">app.yourcompany.com</div>
                     <div className="text-xs text-gray-400 mt-0.5">CNAME cname.deployx.app &bull; Valid SSL</div>
                   </div>
-                  <span className="text-xs text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-500/20 font-medium">
+                  <span className="text-xs text-blue-300 bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20 font-medium">
                     Verified
                   </span>
                 </div>
@@ -280,7 +280,7 @@ export default function FeaturesSection() {
                 <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-semibold text-gray-300 flex items-center gap-1.5">
-                      <RefreshCw className="w-3.5 h-3.5 text-indigo-400" /> Deployment History (Rollback Ready)
+                      <RefreshCw className="w-3.5 h-3.5 text-blue-400" /> Deployment History (Rollback Ready)
                     </span>
                   </div>
 
@@ -297,7 +297,7 @@ export default function FeaturesSection() {
                       <span className="text-gray-300 font-medium">v1.4.1 (Stable Build)</span>
                       <span className="text-gray-500 block text-[11px]">Deployed 2 days ago</span>
                     </div>
-                    <button className="text-xs text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 px-3 py-1 rounded transition-colors">
+                    <button className="text-xs text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-1 rounded transition-colors">
                       Rollback to this
                     </button>
                   </div>

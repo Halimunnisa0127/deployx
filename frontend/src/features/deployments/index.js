@@ -15,7 +15,8 @@ export { default as BuildLogToolbar } from './components/BuildLogToolbar';
 export { default as BuildLogsEmptyState } from './components/BuildLogsEmptyState';
 export { default as BuildLogsSkeleton } from './components/BuildLogsSkeleton';
 
-// STAGE 7/8 Skeleton Components
+export { default as DeploymentProgressScreen } from './components/DeploymentProgressScreen';
+export { default as DeploymentSuccessScreen } from './components/DeploymentSuccessScreen';
 export { default as DeploymentCardSkeleton } from './components/DeploymentCardSkeleton';
 export { default as DeploymentOverviewSkeleton } from './components/DeploymentOverviewSkeleton';
 export { default as TimelineSkeleton } from './components/TimelineSkeleton';

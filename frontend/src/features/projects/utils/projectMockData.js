@@ -4,6 +4,7 @@ export const PROJECT_DETAILS_TABS = [
   { id: 'env', label: 'Environment Variables' },
   { id: 'domains', label: 'Domains' },
   { id: 'settings', label: 'Settings' },
+  { id: 'logs', label: 'Logs' },
 ];
 
 export const STATUS_VARIANT_MAP = {

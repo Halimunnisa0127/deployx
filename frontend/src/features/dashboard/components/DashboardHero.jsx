@@ -10,14 +10,14 @@ export default function DashboardHero() {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-950/80 border border-slate-800/80 p-6 md:p-8 shadow-xl">
       {/* Subtle Background Glow Accent */}
-      <div className="absolute -top-24 -right-24 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-72 h-72 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="space-y-3 max-w-2xl">
           <div className="flex items-center gap-2.5 flex-wrap">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight">
-              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">{userName}</span> 👋
+              Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">{userName}</span> 👋
             </h1>
           </div>
           <p className="text-sm md:text-base text-slate-400 font-normal leading-relaxed">
@@ -27,7 +27,7 @@ export default function DashboardHero() {
           {/* SaaS Workspace Metadata Pill Indicators */}
           <div className="flex items-center gap-3 pt-1 flex-wrap text-xs text-slate-300">
             <Badge variant="primary" className="flex items-center gap-1.5 px-3 py-1 font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
               <span>Pro Plan</span>
             </Badge>
 
@@ -59,7 +59,7 @@ export default function DashboardHero() {
             size="md"
             to="/dashboard/projects/new"
             iconLeft={<Plus className="w-4 h-4" />}
-            className="shadow-lg shadow-indigo-500/20"
+            className="shadow-lg shadow-blue-500/20"
           >
             New Project
           </Button>
