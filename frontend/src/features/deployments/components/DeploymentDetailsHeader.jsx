@@ -82,7 +82,7 @@ export default function DeploymentDetailsHeader({
   };
 
   return (
-    <div className="space-y-4 pb-6 border-b border-slate-800/60 font-sans text-left">
+    <div className="space-y-4 pb-6 border-b border-slate-200 dark:border-slate-800/60 font-sans text-left">
       {/* Back Navigation Button */}
       <button
         onClick={() => navigate('/dashboard/deployments')}
@@ -103,13 +103,13 @@ export default function DeploymentDetailsHeader({
 
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {projectName}
               </h1>
-              <span className="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-500/20 font-medium">
+              <span className="text-xs font-mono text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-200 dark:border-indigo-500/20 font-medium">
                 {id}
               </span>
-              <span className="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-md border border-slate-700/60">
+              <span className="text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700/60">
                 #{deploymentNumber}
               </span>
               <Badge variant={envVariant} dot={false}>
@@ -125,7 +125,7 @@ export default function DeploymentDetailsHeader({
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Deployment details, real-time build logs, and environment metadata.
             </p>
           </div>

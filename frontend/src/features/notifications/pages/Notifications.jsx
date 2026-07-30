@@ -250,7 +250,7 @@ export default function Notifications() {
     <div className="w-full max-w-4xl mx-auto space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* ── Page Header ────────────────────────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-xl transition-all">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/60 dark:bg-slate-900/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-800/80 shadow-xl backdrop-blur-xl transition-all">
         <div className="flex items-center gap-4">
           <div className="relative w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/10">
             <Bell className="w-6 h-6 text-indigo-400" />
@@ -261,11 +261,11 @@ export default function Notifications() {
             )}
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-100">
+            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
               Notifications
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-              You have <span className="font-semibold text-indigo-400 font-mono">{unreadCount} unread</span> notification{unreadCount === 1 ? '' : 's'}
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              You have <span className="font-semibold text-indigo-500 dark:text-indigo-400 font-mono">{unreadCount} unread</span> notification{unreadCount === 1 ? '' : 's'}
             </p>
           </div>
         </div>
@@ -302,7 +302,7 @@ export default function Notifications() {
             iconOnly
             onClick={() => setIsSettingsModalOpen(true)}
             aria-label="Notification Preferences"
-            className="text-slate-400 hover:text-slate-200 border border-slate-800/80 bg-slate-900/60"
+            className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/60"
           >
             <Settings className="w-4 h-4" />
           </Button>
@@ -310,7 +310,7 @@ export default function Notifications() {
       </div>
 
       {/* ── Controls: Search Bar & Filters ─────────────────────────── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/40 p-4 rounded-2xl border border-slate-800/60 backdrop-blur-lg">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/40 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800/60 backdrop-blur-lg">
         {/* Reusable Search Bar */}
         <SearchBar
           placeholder="Search notifications..."
@@ -331,8 +331,8 @@ export default function Notifications() {
                 onClick={() => setActiveFilter(tab.id)}
                 className={`px-3 py-1.5 rounded-xl font-semibold transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
                   isActive
-                    ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 shadow-sm'
-                    : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700'
+                    ? 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/40 shadow-sm'
+                    : 'bg-white/60 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                 }`}
               >
                 {tab.label}
@@ -343,7 +343,7 @@ export default function Notifications() {
       </div>
 
       {/* ── Notifications Content Container ───────────────────────── */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-xl overflow-hidden">
+      <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-xl overflow-hidden">
         {isLoading ? (
           /* 4. Skeleton Loading State */
           <div className="p-6 space-y-6">
@@ -383,17 +383,17 @@ export default function Notifications() {
           />
         ) : (
           /* Grouped Timeline List (Today, Yesterday, Earlier) */
-          <div className="divide-y divide-slate-800/80">
+          <div className="divide-y divide-slate-200 dark:divide-slate-800/80">
             {Object.entries(groupedData).map(([groupTitle, items]) => {
               if (items.length === 0) return null;
 
               return (
                 <div key={groupTitle} className="p-4 sm:p-6 space-y-3">
                   {/* Timeline Group Header */}
-                  <div className="flex items-center gap-2 pb-2 text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-400" />
+                  <div className="flex items-center gap-2 pb-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-mono">
+                    <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                     <span>{groupTitle}</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-normal">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-normal">
                       {items.length}
                     </span>
                   </div>
@@ -408,8 +408,8 @@ export default function Notifications() {
                           key={notification.id}
                           className={`group relative flex flex-col sm:flex-row sm:items-start justify-between gap-4 p-4 rounded-xl border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${
                             notification.unread
-                              ? 'bg-indigo-950/20 border-indigo-500/30 hover:border-indigo-500/50'
-                              : 'bg-slate-900/40 border-slate-800/80 hover:border-slate-700/80'
+                              ? 'bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-500/30 hover:border-indigo-300 dark:hover:border-indigo-500/50'
+                              : 'bg-white/40 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700/80'
                           }`}
                         >
                           {/* Unread Indicator Pill */}
@@ -420,14 +420,14 @@ export default function Notifications() {
                           {/* Left: Icon & Text Content */}
                           <div className="flex items-start gap-3.5 min-w-0 flex-1">
                             {/* Type Icon */}
-                            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 shrink-0 group-hover:border-indigo-500/30 transition-colors">
-                              {NOTIFICATION_ICONS[notification.type] || <Bell className="w-5 h-5 text-slate-400" />}
+                            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shrink-0 group-hover:border-indigo-300 dark:group-hover:border-indigo-500/30 transition-colors">
+                              {NOTIFICATION_ICONS[notification.type] || <Bell className="w-5 h-5 text-slate-500 dark:text-slate-400" />}
                             </div>
 
                             <div className="space-y-1 min-w-0 flex-1">
                               <div className="flex items-center gap-2 flex-wrap">
                                 <h3 className={`text-sm font-bold truncate transition-colors ${
-                                  notification.unread ? 'text-slate-100' : 'text-slate-300'
+                                  notification.unread ? 'text-slate-900 dark:text-slate-100' : 'text-slate-700 dark:text-slate-300'
                                 }`}>
                                   {notification.title}
                                 </h3>
@@ -437,19 +437,19 @@ export default function Notifications() {
                                 </Badge>
                               </div>
 
-                              <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
                                 {notification.message}
                               </p>
 
-                              <div className="flex items-center gap-3 pt-1 text-sm text-slate-400 font-mono flex-wrap">
-                                <span className="flex items-center gap-1 text-slate-400">
-                                  <Clock className="w-3 h-3 text-slate-400" />
+                              <div className="flex items-center gap-3 pt-1 text-sm text-slate-500 dark:text-slate-400 font-mono flex-wrap">
+                                <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+                                  <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                                   {formatTime(notification.timestamp)}
                                 </span>
 
                                 {notification.projectName && (
-                                  <span className="flex items-center gap-1 text-slate-400">
-                                    <Layers className="w-3 h-3 text-slate-400" />
+                                  <span className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+                                    <Layers className="w-3 h-3 text-slate-400 dark:text-slate-500" />
                                     {notification.projectName}
                                   </span>
                                 )}
@@ -458,16 +458,16 @@ export default function Notifications() {
                           </div>
 
                           {/* Right: Actions */}
-                          <div className="flex items-center gap-1 sm:self-center shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-800/80">
+                          <div className="flex items-center gap-1 sm:self-center shrink-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-200 dark:border-slate-800/80">
                             {/* Toggle Read/Unread */}
                             <button
                               type="button"
                               onClick={() => toggleReadStatus(notification.id)}
                               title={notification.unread ? 'Mark as read' : 'Mark as unread'}
                               aria-label={notification.unread ? 'Mark as read' : 'Mark as unread'}
-                              className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                             >
-                              {notification.unread ? <MailOpen className="w-4 h-4 text-indigo-400" /> : <Mail className="w-4 h-4" />}
+                              {notification.unread ? <MailOpen className="w-4 h-4 text-indigo-500 dark:text-indigo-400" /> : <Mail className="w-4 h-4" />}
                             </button>
 
                             {/* View Details */}
@@ -476,7 +476,7 @@ export default function Notifications() {
                               onClick={() => handleViewDetails(notification)}
                               title="View Details"
                               aria-label="View Details"
-                              className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-indigo-300 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
@@ -487,7 +487,7 @@ export default function Notifications() {
                               onClick={() => setItemToDelete(notification)}
                               title="Delete notification"
                               aria-label="Delete notification"
-                              className="p-2 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500/50"
+                              className="p-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-500/10 text-slate-500 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500/50"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -511,11 +511,11 @@ export default function Notifications() {
         maxWidth="460px"
       >
         <div className="space-y-4 pt-1">
-          <p className="text-sm text-slate-300 leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Are you sure you want to clear all notifications? This action cannot be undone.
           </p>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
             <Button
               variant="secondary"
               size="sm"
@@ -544,11 +544,11 @@ export default function Notifications() {
       >
         {itemToDelete && (
           <div className="space-y-4 pt-1">
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Are you sure you want to delete <span className="font-bold text-slate-100">"{itemToDelete.title}"</span>? This action cannot be undone.
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              Are you sure you want to delete <span className="font-bold text-slate-900 dark:text-slate-100">"{itemToDelete.title}"</span>? This action cannot be undone.
             </p>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
               <Button
                 variant="secondary"
                 size="sm"
@@ -577,18 +577,18 @@ export default function Notifications() {
         maxWidth="500px"
       >
         <div className="space-y-4 pt-1">
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
             Configure which events trigger real-time workspace notifications.
           </p>
 
           <div className="space-y-3">
             {/* Deployment Notifications */}
-            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3">
-                <ShieldCheck className="w-5 h-5 text-indigo-400" />
+                <ShieldCheck className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
                 <div>
-                  <div className="text-xs font-bold text-slate-200">Deployment Notifications</div>
-                  <div className="text-sm text-slate-400">Build success, failures, and triggers.</div>
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Deployment Notifications</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Build success, failures, and triggers.</div>
                 </div>
               </div>
               <input
@@ -600,12 +600,12 @@ export default function Notifications() {
             </div>
 
             {/* Domain Notifications */}
-            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3">
-                <Globe className="w-5 h-5 text-sky-400" />
+                <Globe className="w-5 h-5 text-sky-500 dark:text-sky-400" />
                 <div>
-                  <div className="text-xs font-bold text-slate-200">Domain Notifications</div>
-                  <div className="text-sm text-slate-400">SSL certificates and DNS updates.</div>
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Domain Notifications</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">SSL certificates and DNS updates.</div>
                 </div>
               </div>
               <input
@@ -617,12 +617,12 @@ export default function Notifications() {
             </div>
 
             {/* GitHub Notifications */}
-            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3">
-                <GitBranch className="w-5 h-5 text-emerald-400" />
+                <GitBranch className="w-5 h-5 text-emerald-500 dark:text-emerald-400" />
                 <div>
-                  <div className="text-xs font-bold text-slate-200">GitHub Notifications</div>
-                  <div className="text-sm text-slate-400">Repository sync & branch commits.</div>
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">GitHub Notifications</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Repository sync & branch commits.</div>
                 </div>
               </div>
               <input
@@ -634,12 +634,12 @@ export default function Notifications() {
             </div>
 
             {/* Email Notifications */}
-            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-950 border border-slate-800">
+            <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-purple-400" />
+                <Mail className="w-5 h-5 text-purple-500 dark:text-purple-400" />
                 <div>
-                  <div className="text-xs font-bold text-slate-200">Email Notifications</div>
-                  <div className="text-sm text-slate-400">Digest emails for critical alerts.</div>
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Email Notifications</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Digest emails for critical alerts.</div>
                 </div>
               </div>
               <input
@@ -672,31 +672,31 @@ export default function Notifications() {
       >
         {selectedNotification && (
           <div className="space-y-4 pt-2">
-            <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-800">
+            <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
               <Badge variant={BADGE_VARIANTS[selectedNotification.type] || 'neutral'}>
                 {selectedNotification.type.toUpperCase()}
               </Badge>
 
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
                 {new Date(selectedNotification.timestamp).toLocaleString()}
               </span>
             </div>
 
             <div className="space-y-2">
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 Message Overview
               </h4>
-              <p className="text-sm text-slate-200 leading-relaxed bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+              <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed bg-slate-100/50 dark:bg-slate-900/80 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800">
                 {selectedNotification.message}
               </p>
             </div>
 
             {selectedNotification.details && (
               <div className="space-y-2">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   Technical Details
                 </h4>
-                <p className="text-xs font-mono text-slate-300 bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 leading-relaxed whitespace-pre-wrap">
+                <p className="text-xs font-mono text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-950 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 leading-relaxed whitespace-pre-wrap">
                   {selectedNotification.details}
                 </p>
               </div>

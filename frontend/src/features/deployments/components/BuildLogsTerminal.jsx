@@ -102,22 +102,22 @@ function BuildLogsTerminal({
           <span
             className={`px-2.5 py-1 rounded-md border text-xs font-semibold flex items-center gap-1.5 ${
               errorCount > 0
-                ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
-                : 'bg-slate-900 text-slate-400 border-slate-800'
+                ? 'bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30'
+                : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800'
             }`}
           >
-            <XCircle className={`w-3.5 h-3.5 ${errorCount > 0 ? 'text-rose-400' : 'text-slate-500'}`} />
+            <XCircle className={`w-3.5 h-3.5 ${errorCount > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-500'}`} />
             {errorCount} {errorCount === 1 ? 'Error' : 'Errors'}
           </span>
 
           <span
             className={`px-2.5 py-1 rounded-md border text-xs font-semibold flex items-center gap-1.5 ${
               warningCount > 0
-                ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                : 'bg-slate-900 text-slate-400 border-slate-800'
+                ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30'
+                : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800'
             }`}
           >
-            <AlertTriangle className={`w-3.5 h-3.5 ${warningCount > 0 ? 'text-amber-400' : 'text-slate-500'}`} />
+            <AlertTriangle className={`w-3.5 h-3.5 ${warningCount > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-500'}`} />
             {warningCount} {warningCount === 1 ? 'Warning' : 'Warnings'}
           </span>
         </div>
@@ -158,7 +158,7 @@ function BuildLogsTerminal({
         <div 
           ref={scrollRef}
           style={{ maxHeight: isFullscreen ? 'calc(100vh - 120px)' : maxHeight }}
-          className="p-5 overflow-y-auto overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 text-xs leading-relaxed space-y-1 text-slate-300 flex-1"
+          className="p-5 overflow-y-auto overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800 text-xs leading-relaxed space-y-1 text-slate-700 dark:text-slate-300 flex-1"
         >
           {isLoading ? (
             <BuildLogsSkeleton count={6} />

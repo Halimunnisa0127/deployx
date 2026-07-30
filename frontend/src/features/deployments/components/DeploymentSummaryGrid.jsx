@@ -64,7 +64,7 @@ export default function DeploymentSummaryGrid({ deployment }) {
         
         {/* Item 1: Status */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Status</span>
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Status</span>
           <div className="flex items-center gap-2 pt-0.5">
             {statusIcon}
             <Badge variant={statusVariant}>
@@ -75,13 +75,13 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 2: Git Branch & Commit Hash */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Git Branch & Commit</span>
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Git Branch & Commit</span>
           <div className="flex items-center gap-2 pt-0.5 font-mono text-xs">
-            <span className="text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 flex items-center gap-1">
+            <span className="text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-500/20 flex items-center gap-1">
               <GitBranch className="w-3 h-3" />
               {branch}
             </span>
-            <span className="text-slate-300 bg-slate-800 px-2 py-0.5 rounded border border-slate-700/60">
+            <span className="text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700/60">
               {commitHash}
             </span>
           </div>
@@ -89,13 +89,13 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 3: Environment & Framework */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Environment & Framework</span>
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Environment & Framework</span>
           <div className="flex items-center gap-2 pt-0.5">
             <Badge variant={envVariant} dot={false}>
               {environment}
             </Badge>
-            <span className="text-xs font-medium text-slate-300 bg-slate-800/60 px-2 py-0.5 rounded border border-slate-700/50 flex items-center gap-1">
-              <Cpu className="w-3 h-3 text-indigo-400" />
+            <span className="text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/60 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700/50 flex items-center gap-1">
+              <Cpu className="w-3 h-3 text-indigo-500 dark:text-indigo-400" />
               {framework}
             </span>
           </div>
@@ -103,8 +103,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 4: Build Duration */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Build Duration</span>
-          <div className="text-sm font-semibold text-white flex items-center gap-1.5 pt-0.5">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Build Duration</span>
+          <div className="text-sm font-semibold text-slate-800 dark:text-white flex items-center gap-1.5 pt-0.5">
             <Clock className="w-3.5 h-3.5 text-slate-400" />
             {duration}
           </div>
@@ -112,7 +112,7 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 5: Deployment URL */}
         <div className="space-y-1 sm:col-span-2">
-          <span className="text-xs font-medium text-slate-400">Deployment URL</span>
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Deployment URL</span>
           <div className="pt-0.5">
             <a
               href={url}
@@ -129,8 +129,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 6: Triggered By */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Triggered By</span>
-          <div className="text-sm font-medium text-slate-200 flex items-center gap-1.5 pt-0.5">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Triggered By</span>
+          <div className="text-sm font-medium text-slate-700 dark:text-slate-200 flex items-center gap-1.5 pt-0.5">
             <User className="w-3.5 h-3.5 text-slate-400" />
             {triggeredBy}
           </div>
@@ -138,8 +138,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 7: Deployed At */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Deployment Time</span>
-          <div className="text-sm font-medium text-slate-200 pt-0.5">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Deployment Time</span>
+          <div className="text-sm font-medium text-slate-700 dark:text-slate-200 pt-0.5">
             {deployedAt}
           </div>
         </div>
