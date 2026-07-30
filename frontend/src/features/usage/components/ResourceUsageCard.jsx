@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Wifi, HardDrive, Clock, Cpu, TrendingUp, TrendingDown } from 'lucide-react';
+import { Wifi, HardDrive, Clock, Cpu, TrendingUp, TrendingDown, ShieldCheck, AlertTriangle, AlertCircle } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import ResourceProgressBar from './ResourceProgressBar';
 import SparklineChart from './SparklineChart';
@@ -53,27 +53,41 @@ const METRIC_CONFIG = {
 export default function ResourceUsageCard({ item }) {
   if (!item) return null;
 
-  const [hovered, setHovered] = useState(false);
-
   const Icon = METRIC_ICONS[item.id] || Wifi;
   const config = METRIC_CONFIG[item.id] || METRIC_CONFIG.bandwidth;
   const TrendIcon = item.isUp ? TrendingUp : TrendingDown;
+
+  // Goal Tracking Logic
+  const goalLimit = Math.floor(item.limit * 0.7);
+  const forecastVal = Math.floor(item.forecastUsed || 0);
+
+  const isCritical = forecastVal > item.limit;
+  const isWarning = forecastVal > goalLimit && !isCritical;
+
+  let statusKey = 'On Track';
+  let StatusIcon = ShieldCheck;
+  let statusCss = 'text-emerald-600 dark:text-emerald-400';
+
+  if (isCritical) {
+    statusKey = 'Critical';
+    StatusIcon = AlertCircle;
+    statusCss = 'text-rose-600 dark:text-rose-400';
+  } else if (isWarning) {
+    statusKey = 'Warning';
+    StatusIcon = AlertTriangle;
+    statusCss = 'text-amber-600 dark:text-amber-400';
+  }
 
   return (
     <Card
       style={{ maxWidth: '100%', padding: '22px 24px' }}
       className={`relative overflow-visible border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group ${config.glowBorder}`}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
     >
       <div className="space-y-5">
-
         {/* Header: Icon + Name + Trend Badge */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div
-              className={`p-2.5 rounded-xl border ${config.badgeBg} transition-transform duration-300 group-hover:scale-105`}
-            >
+            <div className={`p-2.5 rounded-xl border ${config.badgeBg} transition-transform duration-300 group-hover:scale-105`}>
               <Icon className={`w-4 h-4 ${config.iconColor}`} />
             </div>
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
@@ -82,13 +96,11 @@ export default function ResourceUsageCard({ item }) {
           </div>
 
           {/* Trend Badge */}
-          <div
-            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+          <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold border ${
               item.isUp
                 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
                 : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
-            }`}
-          >
+            }`}>
             <TrendIcon className="w-3 h-3" />
             <span>{item.trend}</span>
           </div>
@@ -104,7 +116,7 @@ export default function ResourceUsageCard({ item }) {
               </span>
             </div>
             <div className="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-1.5">
-              of {item.limit} {item.unit} limit
+              of {item.limit} {item.unit} limit ({item.percent}%)
             </div>
           </div>
 
@@ -127,47 +139,22 @@ export default function ResourceUsageCard({ item }) {
           height="h-1.5"
         />
 
-      </div>
-
-      {/* Hover Tooltip — Used / Remaining / Percentage */}
-      <div
-        className={`absolute left-0 right-0 -bottom-[1px] z-20 transition-all duration-200 ease-out ${
-          hovered
-            ? 'opacity-100 translate-y-full pointer-events-auto'
-            : 'opacity-0 translate-y-[calc(100%-4px)] pointer-events-none'
-        }`}
-      >
-        <div className="mx-1 mt-1 rounded-xl border border-slate-200 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl px-4 py-3">
-          <div className="grid grid-cols-3 gap-3 text-xs">
-            {/* Used */}
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] uppercase font-semibold tracking-wide text-slate-400 dark:text-slate-500">
-                Used
-              </span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
-                {item.used} {item.unit}
-              </span>
-            </div>
-
-            {/* Remaining */}
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[10px] uppercase font-semibold tracking-wide text-slate-400 dark:text-slate-500">
-                Remaining
-              </span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
-                {item.remaining} {item.unit}
-              </span>
-            </div>
-
-            {/* Percentage */}
-            <div className="flex flex-col gap-0.5 items-end">
-              <span className="text-[10px] uppercase font-semibold tracking-wide text-slate-400 dark:text-slate-500">
-                Usage
-              </span>
-              <span className="font-black text-slate-900 dark:text-white">
-                {item.percent}%
-              </span>
-            </div>
+        {/* Detailed Metrics Block */}
+        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 dark:border-white/5">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Remaining</span>
+            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.remaining} {item.unit}</span>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Forecast (EOM)</span>
+            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.forecastUsed} {item.unit}</span>
+          </div>
+          <div className="flex flex-col gap-0.5 items-end">
+            <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Status</span>
+            <span className={`text-xs font-bold flex items-center gap-1 ${statusCss}`}>
+              <StatusIcon className="w-3 h-3" />
+              {statusKey}
+            </span>
           </div>
         </div>
       </div>

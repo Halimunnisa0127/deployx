@@ -4,10 +4,8 @@ import UsageHeader          from '../components/UsageHeader';
 import UsageSummaryCards    from '../components/UsageSummaryCards';
 import InfrastructureEfficiency from '../components/InfrastructureEfficiency';
 import UsageTrendChart      from '../components/UsageTrendChart';
-import UsageSpikes          from '../components/UsageSpikes';
 import UsageBreakdown       from '../components/UsageBreakdown';
-import UsageForecast        from '../components/UsageForecast';
-import UsageGoals           from '../components/UsageGoals';
+
 import UsageHistoryTable    from '../components/UsageHistoryTable';
 import UsageAlerts          from '../components/UsageAlerts';
 import OptimizationTips     from '../components/OptimizationTips';
@@ -66,7 +64,7 @@ export default function UsagePage() {
       {/* ── 2. Overview cards ─────────────────────────────────── */}
       {/* Prominent — full opacity, generous gap below */}
       <div className="mt-6 md:mt-8">
-        <UsageSummaryCards summary={data.summary} />
+        <UsageSummaryCards summary={data.summary} forecasts={data.forecastUsage} />
       </div>
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -79,52 +77,36 @@ export default function UsagePage() {
         {/* Infrastructure Efficiency */}
         <InfrastructureEfficiency score={88} tipsCount={data.optimizationTips?.length || 0} />
 
-        {/* Usage Goals — brand new tracker */}
-        <UsageGoals goals={data.forecastUsage} />
-
-        {/* Usage Trends — hero card: ring + shadow lifted */}
-        <div className="ring-1 ring-slate-200/80 dark:ring-white/10 rounded-2xl
-                        shadow-md dark:shadow-2xl">
-          <UsageTrendChart
-            dailyData={data.dailyConsumption}
-            weeklyData={data.weeklyConsumption}
-            monthlyData={data.monthlyConsumption}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            chartPeriod={chartPeriod}
-            setChartPeriod={setChartPeriod}
-          />
+        {/* Usage Trends & History — Grouped tightly */}
+        <div className="flex flex-col gap-3">
+          <div className="ring-1 ring-slate-200/80 dark:ring-white/10 rounded-2xl shadow-md dark:shadow-2xl">
+            <UsageTrendChart
+              dailyData={data.dailyConsumption}
+              weeklyData={data.weeklyConsumption}
+              monthlyData={data.monthlyConsumption}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              chartPeriod={chartPeriod}
+              setChartPeriod={setChartPeriod}
+            />
+          </div>
+          <div className="ring-1 ring-slate-200/80 dark:ring-white/10 rounded-2xl shadow-sm dark:shadow-xl">
+            <UsageHistoryTable history={data.history} activeTab={activeTab} />
+          </div>
         </div>
 
-        {/* Usage Spikes — immediately below trends */}
-        <div className="ring-1 ring-slate-200/60 dark:ring-white/8 rounded-2xl
-                        shadow-sm dark:shadow-xl">
-          <UsageSpikes spikes={data.spikes} />
-        </div>
-
-        {/* Monthly Quotas — co-primary */}
+        {/* Top Resource Consumers */}
         <div className="ring-1 ring-slate-200/60 dark:ring-white/8 rounded-2xl
                         shadow-sm dark:shadow-xl">
           <UsageBreakdown
             consumers={data.topConsumers}
-            quotas={data.monthlyQuotas}
           />
         </div>
 
-        {/* Forecast Usage — below quotas, same primary zone */}
-        <UsageForecast forecasts={data.forecastUsage} />
+
       </div>
 
-      {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-          SECONDARY ZONE  ·  History table
-          Smaller gap from primary, muted label, reduced card opacity.
-      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <div className="mt-6 md:mt-7">
-        <SectionLabel muted>History</SectionLabel>
-        <div className="opacity-90">
-          <UsageHistoryTable history={data.history} />
-        </div>
-      </div>
+
 
       {/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
           TERTIARY ZONE  ·  Alerts + Recommendations

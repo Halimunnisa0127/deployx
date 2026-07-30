@@ -83,9 +83,8 @@ function MiniBar({ pct }) {
 }
 
 /* ─── main component ────────────────────────────────────────── */
-export default function UsageHistoryTable({ history = [], isLoading = false }) {
+export default function UsageHistoryTable({ history = [], isLoading = false, activeTab = 'all' }) {
   const [search,          setSearch]         = useState('');
-  const [filterResource,  setFilterResource]  = useState('all');
   const [filterStatus,    setFilterStatus]    = useState('all');
   const [sortField,       setSortField]       = useState('date');
   const [sortOrder,       setSortOrder]       = useState('desc');
@@ -104,16 +103,24 @@ export default function UsageHistoryTable({ history = [], isLoading = false }) {
       item.used.toLowerCase().includes(q) ||
       item.remaining.toLowerCase().includes(q);
 
+    const tabMap = {
+      bandwidth: 'bandwidth',
+      storage: 'storage',
+      build_minutes: 'buildminutes',
+      function_executions: 'functions'
+    };
+    const mappedTab = tabMap[activeTab] || 'all';
+
     const matchResource =
-      filterResource === 'all' ||
-      item.resource.toLowerCase().replace(/\s+/g, '') === filterResource.toLowerCase().replace(/\s+/g, '');
+      mappedTab === 'all' ||
+      item.resource.toLowerCase().replace(/\s+/g, '') === mappedTab;
 
     const matchStatus =
       filterStatus === 'all' ||
       item.status.toLowerCase().replace(/\s+/g, '') === filterStatus.toLowerCase().replace(/\s+/g, '');
 
     return matchSearch && matchResource && matchStatus;
-  }), [history, search, filterResource, filterStatus]);
+  }), [history, search, activeTab, filterStatus]);
 
   /* sort */
   const sorted = useMemo(() => [...filtered].sort((a, b) => {
@@ -149,7 +156,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false }) {
   };
 
   const handleReset = () => {
-    setSearch(''); setFilterResource('all'); setFilterStatus('all'); setCurrentPage(1);
+    setSearch(''); setFilterStatus('all'); setCurrentPage(1);
   };
 
   const handleExportCSV = () => {
@@ -246,20 +253,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false }) {
             />
           </div>
 
-          <select
-            value={filterResource}
-            onChange={(e) => { setFilterResource(e.target.value); setCurrentPage(1); }}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900
-                       border border-slate-200 dark:border-slate-800
-                       text-sm font-semibold text-slate-700 dark:text-slate-200
-                       outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
-          >
-            <option value="all">All Resources</option>
-            <option value="bandwidth">Bandwidth</option>
-            <option value="storage">Storage</option>
-            <option value="buildminutes">Build Minutes</option>
-            <option value="functions">Functions</option>
-          </select>
+
 
           <select
             value={filterStatus}
@@ -275,7 +269,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false }) {
             <option value="nearinglimit">Nearing Limit / Critical</option>
           </select>
 
-          {(search || filterResource !== 'all' || filterStatus !== 'all') && (
+          {(search || filterStatus !== 'all') && (
             <button
               type="button"
               onClick={handleReset}

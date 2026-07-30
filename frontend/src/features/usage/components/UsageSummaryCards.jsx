@@ -1,7 +1,10 @@
 import ResourceUsageCard from './ResourceUsageCard';
 
-export default function UsageSummaryCards({ summary = {} }) {
-  const cards = Object.values(summary);
+export default function UsageSummaryCards({ summary = {}, forecasts = [] }) {
+  const cards = Object.values(summary).map(item => {
+    const forecast = forecasts.find(f => f.id === item.id) || {};
+    return { ...item, forecastUsed: forecast.forecastUsed };
+  });
 
   return (
     <div className="space-y-4">

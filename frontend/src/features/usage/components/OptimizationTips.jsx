@@ -104,12 +104,12 @@ export default function OptimizationTips({ tips = [] }) {
 
               {/* ── Title + Description ──────────────────────── */}
               <div>
-                <h3 className="text-[13px] font-extrabold text-slate-900 dark:text-slate-100
+                <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100
                                group-hover:text-indigo-600 dark:group-hover:text-indigo-400
                                transition-colors leading-snug line-clamp-1">
                   {tip.title}
                 </h3>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed line-clamp-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed line-clamp-2">
                   {tip.description}
                 </p>
               </div>
@@ -117,19 +117,19 @@ export default function OptimizationTips({ tips = [] }) {
               {/* ── Savings block ────────────────────────────── */}
               <div className="rounded-xl bg-slate-50 dark:bg-slate-800/60
                               border border-slate-200/80 dark:border-slate-700/60
-                              px-2.5 py-2 flex items-center justify-between gap-2 mt-auto">
+                              px-3 py-2.5 flex items-center justify-between gap-2 mt-auto">
                 <div>
-                  <span className="block text-[9px] font-bold uppercase tracking-wider
+                  <span className="block text-[10px] font-bold uppercase tracking-wider
                                    text-slate-400 dark:text-slate-500 mb-0.5">
                     Est. Savings
                   </span>
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-[15px] font-black text-emerald-600 dark:text-emerald-400
+                    <span className="text-lg font-black text-emerald-600 dark:text-emerald-400
                                      tracking-tight leading-none">
                       {estimatedSavings}
                     </span>
                     {monthlyCostSavings && (
-                      <span className="text-[10px] font-bold text-emerald-600/80 dark:text-emerald-400/80">
+                      <span className="text-xs font-bold text-emerald-600/80 dark:text-emerald-400/80">
                         ({monthlyCostSavings})
                       </span>
                     )}
@@ -138,34 +138,34 @@ export default function OptimizationTips({ tips = [] }) {
               </div>
 
               {/* ── Metadata row: Difficulty | Time | Impact ─── */}
-              <div className="grid grid-cols-3 gap-1 pt-1 border-t border-slate-100 dark:border-white/5">
+              <div className="grid grid-cols-3 gap-1 pt-1.5 border-t border-slate-100 dark:border-white/5">
                 {/* Difficulty */}
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
                     Difficulty
                   </span>
-                  <span className={`inline-flex items-center gap-1 self-start px-1.5 py-0.5 rounded text-[10px] font-bold border ${diffStyle.pill}`}>
-                    <span className={`w-1 h-1 rounded-full shrink-0 ${diffStyle.dot}`} />
+                  <span className={`inline-flex items-center gap-1.5 self-start px-2 py-0.5 rounded text-[11px] font-bold border ${diffStyle.pill}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${diffStyle.dot}`} />
                     {difficulty}
                   </span>
                 </div>
 
                 {/* Time */}
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
                     Time
                   </span>
-                  <span className="text-[11px] font-bold font-mono text-slate-700 dark:text-slate-300 pt-0.5">
+                  <span className="text-xs font-bold font-mono text-slate-700 dark:text-slate-300 pt-0.5">
                     {timeRequired}
                   </span>
                 </div>
 
                 {/* Impact */}
-                <div className="flex flex-col gap-0.5">
-                  <span className="text-[9px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
                     Impact
                   </span>
-                  <span className={`text-[11px] font-extrabold leading-tight pt-0.5 ${impactStyle}`}>
+                  <span className={`text-xs font-extrabold leading-tight pt-0.5 ${impactStyle}`}>
                     {impact.replace(' Impact', '')}
                   </span>
                 </div>

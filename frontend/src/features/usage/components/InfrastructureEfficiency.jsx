@@ -85,8 +85,8 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
       </div>
 
       {/* Right Circular Progress */}
-      <div className="relative flex items-center justify-center shrink-0">
-        <svg className="w-24 h-24 transform -rotate-90">
+      <div className="relative flex items-center justify-center shrink-0 w-24 h-24">
+        <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 96 96">
           <circle
             className="stroke-slate-100 dark:stroke-slate-800/80"
             strokeWidth="8"
@@ -111,7 +111,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
           <span className="text-2xl font-black text-slate-900 dark:text-white leading-none tracking-tighter">
             {score}
           </span>
-          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
             Score
           </span>
         </div>
