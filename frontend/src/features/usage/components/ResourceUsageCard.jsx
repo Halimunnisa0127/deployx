@@ -80,23 +80,23 @@ export default function ResourceUsageCard({ item }) {
 
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '22px 24px' }}
-      className={`relative overflow-visible border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group ${config.glowBorder}`}
+      style={{ maxWidth: '100%', padding: '20px 24px' }}
+      className={`relative h-full flex flex-col overflow-hidden border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group ${config.glowBorder}`}
     >
-      <div className="space-y-5">
+      <div className="flex flex-col h-full gap-5">
         {/* Header: Icon + Name + Trend Badge */}
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
-            <div className={`p-2.5 rounded-xl border ${config.badgeBg} transition-transform duration-300 group-hover:scale-105`}>
+            <div className={`shrink-0 p-2 rounded-xl border ${config.badgeBg} transition-transform duration-300 group-hover:scale-105`}>
               <Icon className={`w-4 h-4 ${config.iconColor}`} />
             </div>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight whitespace-normal">
               {item.title}
             </span>
           </div>
 
           {/* Trend Badge */}
-          <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-bold border ${
+          <div className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border ${
               item.isUp
                 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
                 : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
@@ -107,54 +107,57 @@ export default function ResourceUsageCard({ item }) {
         </div>
 
         {/* Large Usage Value + Sparkline */}
-        <div className="flex items-end justify-between gap-3">
+        <div className="flex items-end justify-between gap-2 flex-1">
           <div>
-            <div className="text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
+            <div className="text-4xl font-bold text-slate-900 dark:text-white tracking-tight leading-none whitespace-nowrap">
               {item.used}
-              <span className="text-sm font-semibold text-slate-400 dark:text-slate-500 ml-1.5">
+              <span className="text-base font-semibold text-slate-400 dark:text-slate-500 ml-1.5">
                 {item.unit}
               </span>
             </div>
-            <div className="text-sm font-medium text-slate-400 dark:text-slate-500 mt-1.5">
-              of {item.limit} {item.unit} limit ({item.percent}%)
+            <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 whitespace-nowrap">
+              {item.percent}% of {item.limit} {item.unit} limit
             </div>
           </div>
 
           {/* Sparkline */}
-          <div className="w-20 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-[56px] shrink-0 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
             <SparklineChart
               data={item.sparkline || config.sparklineData}
               color={config.hexColor}
-              height={30}
-              width={80}
+              height={28}
+              width={56}
             />
           </div>
         </div>
 
-        {/* Progress Bar */}
-        <ResourceProgressBar
-          percent={item.percent}
-          color={config.barColor}
-          showLabels={false}
-          height="h-1.5"
-        />
+        {/* Progress Bar & Bottom Stats Section */}
+        <div className="space-y-4 mt-auto">
+          {/* Progress Bar */}
+          <ResourceProgressBar
+            percent={item.percent}
+            color={config.barColor}
+            showLabels={false}
+            height="h-1.5"
+          />
 
-        {/* Detailed Metrics Block */}
-        <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 dark:border-white/5">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Remaining</span>
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.remaining} {item.unit}</span>
-          </div>
-          <div className="flex flex-col gap-0.5">
-            <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Forecast (EOM)</span>
-            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.forecastUsed} {item.unit}</span>
-          </div>
-          <div className="flex flex-col gap-0.5 items-end">
-            <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Status</span>
-            <span className={`text-xs font-bold flex items-center gap-1 ${statusCss}`}>
-              <StatusIcon className="w-3 h-3" />
-              {statusKey}
-            </span>
+          {/* Detailed Metrics Block */}
+          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-white/5">
+            <div className="flex flex-col gap-1">
+              <span className="text-[10px] font-semibold tracking-wider text-slate-400 dark:text-slate-500">Remaining</span>
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.remaining} {item.unit}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-[10px] font-semibold tracking-wider text-slate-400 dark:text-slate-500">Forecast</span>
+              <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.forecastUsed} {item.unit}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-[10px] font-semibold tracking-wider text-slate-400 dark:text-slate-500">Status</span>
+              <span className={`text-xs font-bold flex items-center gap-1 ${statusCss}`}>
+                <StatusIcon className="w-3 h-3 shrink-0" />
+                <span>{statusKey}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

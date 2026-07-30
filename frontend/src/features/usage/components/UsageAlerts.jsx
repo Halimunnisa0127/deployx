@@ -75,12 +75,12 @@ export default function UsageAlerts({ alerts = [] }) {
 
   return (
     <Card 
-      style={{ maxWidth: '100%' }}
-      className="border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl overflow-hidden p-0"
+      style={{ maxWidth: '100%', padding: 0 }}
+      className="h-full flex flex-col border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl overflow-hidden"
     >
       
       {/* Header */}
-      <div className="px-5 py-4 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 shadow-sm shrink-0">
             <BellRing className="w-4 h-4" />
@@ -104,7 +104,7 @@ export default function UsageAlerts({ alerts = [] }) {
       </div>
 
       {/* Alerts List */}
-      <div className="flex flex-col">
+      <div className="flex flex-col flex-1">
         {sortedAlerts.length === 0 ? (
           <div className="p-8 text-center flex flex-col items-center justify-center space-y-3">
             <CheckCircle2 className="w-8 h-8 text-emerald-500" />
@@ -120,7 +120,7 @@ export default function UsageAlerts({ alerts = [] }) {
               const SeverityIcon = style.icon;
 
               return (
-                <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                <div key={item.id} className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 p-3 sm:p-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
                   
                   {/* Left: Icon & Details */}
                   <div className="flex items-start gap-4 min-w-0 flex-1">
@@ -140,7 +140,7 @@ export default function UsageAlerts({ alerts = [] }) {
                       </div>
                       
                       {/* Description */}
-                      <p className="text-xs text-slate-600 dark:text-slate-300 truncate" title={item.description}>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1" title={item.description}>
                         {item.description}
                       </p>
 
@@ -162,8 +162,8 @@ export default function UsageAlerts({ alerts = [] }) {
 
                   {/* Right: Action Button */}
                   {item.actionLabel && (
-                    <div className="shrink-0 ml-12 sm:ml-0 self-start sm:self-center mt-2 sm:mt-0">
-                      <Button variant="secondary" size="sm" className="text-xs px-3 py-1.5 min-h-0 h-auto font-semibold">
+                    <div className="shrink-0 ml-11 xl:ml-0 self-start xl:self-center mt-1 xl:mt-0">
+                      <Button variant="secondary" size="sm" className="text-[11px] px-2.5 py-1 min-h-0 h-auto font-semibold">
                         {item.actionLabel}
                       </Button>
                     </div>

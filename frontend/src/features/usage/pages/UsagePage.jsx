@@ -74,8 +74,13 @@ export default function UsagePage() {
       <div className="mt-8 md:mt-10 space-y-5">
         <SectionLabel>Analytics & Tracking</SectionLabel>
 
-        {/* Infrastructure Efficiency */}
-        <InfrastructureEfficiency score={88} tipsCount={data.optimizationTips?.length || 0} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {/* Infrastructure Efficiency */}
+          <InfrastructureEfficiency score={88} tipsCount={data.optimizationTips?.length || 0} />
+          
+          {/* Recent Usage Alerts */}
+          <UsageAlerts alerts={data.alerts} />
+        </div>
 
         {/* Usage Trends & History — Grouped tightly */}
         <div className="flex flex-col gap-3">
@@ -114,10 +119,7 @@ export default function UsagePage() {
           Visually recedes — users who need it can still find it.
       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
       <div className="mt-5 md:mt-6 space-y-4">
-        <SectionLabel muted>Alerts &amp; Recommendations</SectionLabel>
-        <div className="opacity-85">
-          <UsageAlerts alerts={data.alerts} />
-        </div>
+        <SectionLabel muted>Recommendations &amp; Optimization</SectionLabel>
         <div className="opacity-85">
           <OptimizationTips tips={data.optimizationTips} />
         </div>

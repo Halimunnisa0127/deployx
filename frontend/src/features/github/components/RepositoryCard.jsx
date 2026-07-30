@@ -62,20 +62,20 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
       </div>
 
       {/* Middle Row: Branch, Sync */}
-      <div className="py-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Default Branch</span>
+      <div className="py-4 grid grid-cols-2 gap-4">
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-medium text-slate-400">Default Branch</span>
           <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
             <GitBranch className="w-4 h-4 text-indigo-400" />
-            <span className="font-mono bg-indigo-500/10 text-indigo-300 px-1.5 py-0.5 rounded-md text-xs">{repo.defaultBranch}</span>
+            <span className="font-mono bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded-md text-xs">{repo.defaultBranch}</span>
           </div>
         </div>
         
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Last Sync</span>
-          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
-            <Clock className="w-4 h-4 text-slate-400" />
-            {formatDate(repo.lastSync)}
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-medium text-slate-400">Last Sync</span>
+          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300 truncate">
+            <Clock className="w-4 h-4 text-slate-500" />
+            <span className="truncate">{formatDate(repo.lastSync)}</span>
           </div>
         </div>
       </div>

@@ -36,84 +36,85 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <Card className="border border-slate-200/80 dark:border-white/10 rounded-2xl
+    <Card className="h-full border border-slate-200/80 dark:border-white/10 rounded-2xl
                      backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
-                     shadow-sm dark:shadow-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                     shadow-sm dark:shadow-xl p-5 sm:p-6 flex flex-col gap-6">
       
-      {/* Left Details */}
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-2.5">
-          <div className={`p-2 rounded-lg border ${bgClass} ${colorClass}`}>
-            <Zap className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
-              Infrastructure Efficiency
-            </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-              Overall resource utilization and health score
-            </p>
-          </div>
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className={`p-2 rounded-lg border ${bgClass} ${colorClass}`}>
+          <Zap className="w-4 h-4" />
         </div>
+        <div>
+          <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
+            Infrastructure Efficiency
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
+            Overall resource utilization and health score
+          </p>
+        </div>
+      </div>
 
-        <div className="flex gap-8 mt-1">
-          <div>
-            <div className="text-xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-              Grade
-            </div>
-            <div className={`text-2xl leading-none font-black ${colorClass}`}>
-              {grade}
-            </div>
-          </div>
-          <div>
-            <div className="text-xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-              Resource Health
-            </div>
-            <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-              {health}
-            </div>
-          </div>
-          <div>
-            <div className="text-xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-              Opportunities
-            </div>
-            <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-              {tipsCount} <span className="text-xs font-semibold text-slate-400 dark:text-slate-500">pending</span>
-            </div>
+      {/* Main Score (Centered) */}
+      <div className="flex-1 flex items-center justify-center py-2">
+        <div className="relative flex items-center justify-center w-36 h-36">
+          <svg className="w-36 h-36 transform -rotate-90" viewBox="0 0 96 96">
+            <circle
+              className="stroke-slate-100 dark:stroke-slate-800/80"
+              strokeWidth="8"
+              fill="transparent"
+              r={radius}
+              cx="48"
+              cy="48"
+            />
+            <circle
+              className={`${strokeClass} transition-all duration-1000 ease-out`}
+              strokeWidth="8"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              fill="transparent"
+              r={radius}
+              cx="48"
+              cy="48"
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-5xl font-black text-slate-900 dark:text-white leading-none tracking-tighter">
+              {score}
+            </span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+              Score
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Right Circular Progress */}
-      <div className="relative flex items-center justify-center shrink-0 w-24 h-24">
-        <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 96 96">
-          <circle
-            className="stroke-slate-100 dark:stroke-slate-800/80"
-            strokeWidth="8"
-            fill="transparent"
-            r={radius}
-            cx="48"
-            cy="48"
-          />
-          <circle
-            className={`${strokeClass} transition-all duration-1000 ease-out`}
-            strokeWidth="8"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            fill="transparent"
-            r={radius}
-            cx="48"
-            cy="48"
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-2xl font-black text-slate-900 dark:text-white leading-none tracking-tighter">
-            {score}
-          </span>
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-0.5">
-            Score
-          </span>
+      {/* Grid of Stats */}
+      <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-white/5">
+        <div className="text-center flex flex-col gap-1">
+          <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+            Grade
+          </div>
+          <div className={`text-xl leading-none font-black ${colorClass}`}>
+            {grade}
+          </div>
+        </div>
+        <div className="text-center border-l border-slate-100 dark:border-white/5 flex flex-col gap-1">
+          <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+            Health
+          </div>
+          <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
+            {health}
+          </div>
+        </div>
+        <div className="text-center border-l border-slate-100 dark:border-white/5 flex flex-col gap-1">
+          <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+            Pending
+          </div>
+          <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
+            {tipsCount} <span className="font-semibold text-slate-400 dark:text-slate-500 text-xs">tips</span>
+          </div>
         </div>
       </div>
     </Card>
