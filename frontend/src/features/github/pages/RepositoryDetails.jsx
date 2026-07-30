@@ -117,10 +117,10 @@ export default function RepositoryDetails() {
       </div>
 
       {/* 2. Branches Table Section */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-800/70 bg-slate-800/30 flex items-center justify-between">
+      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800/70 bg-slate-50 dark:bg-slate-800/30 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
               <GitBranch className="w-4 h-4 text-indigo-400" /> Repository Branches
             </h3>
             <p className="text-xs text-slate-400 mt-1">Manage and deploy specific branches.</p>
@@ -133,9 +133,9 @@ export default function RepositoryDetails() {
       </div>
 
       {/* 3. Recent Commits Section */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-800/70 bg-slate-800/30">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800/70 bg-slate-50 dark:bg-slate-800/30">
+          <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
             <GitCommit className="w-4 h-4 text-indigo-400" /> Recent Commits
           </h3>
           <p className="text-xs text-slate-400 mt-1">Timeline of the latest code changes pushed to this repository.</p>

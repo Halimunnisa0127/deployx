@@ -122,15 +122,15 @@ function BuildLogsTerminal({
           </span>
         </div>
 
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-900 text-slate-300 border border-slate-800 text-xs font-mono font-medium">
-          <Clock className="w-3.5 h-3.5 text-indigo-400" />
-          Duration: <strong className="text-white">{duration}</strong>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-mono font-medium">
+          <Clock className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
+          Duration: <strong className="text-slate-900 dark:text-white">{duration}</strong>
         </span>
       </div>
 
       {/* Terminal Container */}
       <div
-        className={`rounded-2xl border border-slate-800/80 bg-[#050608] shadow-2xl overflow-hidden font-mono transition-all duration-200 ${
+        className={`rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#050608] shadow-sm dark:shadow-2xl overflow-hidden font-mono transition-all duration-200 ${
           isFullscreen
             ? 'fixed inset-4 z-50 flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.9)] max-h-none border-indigo-500/50'
             : `relative ${className}`
@@ -196,15 +196,15 @@ function BuildLogsTerminal({
         </div>
 
         {/* Terminal Footer */}
-        <div className="px-5 py-3 border-t border-slate-800/80 bg-[#08090d] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-400 font-sans select-none">
+        <div className="px-5 py-3 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#08090d] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 font-sans select-none">
           <div className="flex items-center gap-3">
-            <span className="text-emerald-400 flex items-center gap-1.5 font-semibold text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-emerald-500 dark:text-emerald-400 flex items-center gap-1.5 font-semibold text-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
               Ready
             </span>
-            <span className="text-slate-700">•</span>
-            <span>Env: <strong className="text-slate-300">{environment}</strong></span>
-            {deploymentId && <span>• ID: <strong className="text-slate-400 font-mono">{deploymentId}</strong></span>}
+            <span className="text-slate-400 dark:text-slate-700">•</span>
+            <span>Env: <strong className="text-slate-700 dark:text-slate-300">{environment}</strong></span>
+            {deploymentId && <span>• ID: <strong className="text-slate-600 dark:text-slate-400 font-mono">{deploymentId}</strong></span>}
           </div>
           
           <div className="flex items-center gap-3 text-xs font-mono text-slate-500">

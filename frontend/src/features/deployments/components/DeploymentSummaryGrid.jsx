@@ -54,8 +54,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
   const statusIcon = STATUS_ICON_MAP[status] || STATUS_ICON_MAP.queued;
 
   return (
-    <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-xl space-y-6">
-      <h3 className="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800/60 pb-3">
+    <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-6">
+      <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-800/60 pb-3">
         Deployment Overview
       </h3>
 
@@ -147,9 +147,9 @@ export default function DeploymentSummaryGrid({ deployment }) {
       </div>
 
       {/* Commit Message Box */}
-      <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 text-left space-y-1">
-        <span className="text-sm font-semibold uppercase tracking-wider text-slate-400">Commit Message</span>
-        <p className="text-sm font-mono text-slate-200 leading-relaxed">
+      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/60 text-left space-y-1">
+        <span className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Commit Message</span>
+        <p className="text-sm font-mono text-slate-700 dark:text-slate-200 leading-relaxed">
           {commitMessage}
         </p>
       </div>

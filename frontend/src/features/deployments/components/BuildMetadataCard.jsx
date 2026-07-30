@@ -34,10 +34,10 @@ function BuildMetadataCard({ deployment }) {
   };
 
   return (
-    <div className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80 shadow-xl space-y-6 text-left">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800/60">
-        <h3 className="text-base font-bold text-white flex items-center gap-2">
-          <Terminal className="w-4 h-4 text-sky-400" />
+    <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-6 text-left">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/60">
+        <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
+          <Terminal className="w-4 h-4 text-sky-500 dark:text-sky-400" />
           Build Metadata & Infrastructure
         </h3>
         <span className="text-xs font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">
@@ -155,20 +155,20 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Build Command */}
         <div className="space-y-1.5 sm:col-span-2">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
+          <span className="font-medium text-slate-500 dark:text-slate-400 block uppercase tracking-wider text-sm">
             Build Command
           </span>
-          <div className="font-mono text-emerald-400 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800/80 font-medium">
+          <div className="font-mono text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-950 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/80 font-medium">
             {metadata.buildCommand}
           </div>
         </div>
 
         {/* Image Digest */}
         <div className="space-y-1.5 sm:col-span-2">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
+          <span className="font-medium text-slate-500 dark:text-slate-400 block uppercase tracking-wider text-sm">
             Image Digest
           </span>
-          <div className="font-mono text-indigo-300 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800/80 font-medium truncate" title={metadata.imageDigest}>
+          <div className="font-mono text-indigo-600 dark:text-indigo-300 bg-slate-100 dark:bg-slate-950 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/80 font-medium truncate" title={metadata.imageDigest}>
             {metadata.imageDigest}
           </div>
         </div>
