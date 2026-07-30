@@ -75,13 +75,13 @@ export default function Badge({
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '6px',
-        padding: '3px 10px',
+        gap: '5px',
+        padding: '2px 8px',
         borderRadius: '999px',
         background: s.badge,
         color: s.text,
-        fontSize: '12px',
-        fontWeight: 500,
+        fontSize: '10px',
+        fontWeight: 600,
         fontFamily: "'Inter', sans-serif",
         whiteSpace: 'nowrap',
         flexShrink: 0,
@@ -92,8 +92,8 @@ export default function Badge({
         <span
           className={isBuilding ? 'animate-ping' : undefined}
           style={{
-            width: '7px',
-            height: '7px',
+            width: '5px',
+            height: '5px',
             borderRadius: '50%',
             background: s.dot,
             flexShrink: 0,

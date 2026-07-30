@@ -32,13 +32,13 @@ export default function StatCards({ metrics = MOCK_STAT_METRICS }) {
             aria-label={`${item.title}: ${item.value}, ${item.change} ${item.period}`}
           >
             <Card
-              style={{ maxWidth: '100%', padding: '20px 24px' }}
+              style={{ maxWidth: '100%', padding: '16px 20px' }}
               className="relative overflow-hidden border-slate-200 dark:border-white/5 rounded-2xl backdrop-blur-xl shadow-sm dark:shadow-xl group-hover:-translate-y-1 group-hover:border-indigo-500/40 dark:group-hover:border-indigo-500/30 group-hover:shadow-lg dark:group-hover:shadow-indigo-500/20 transition-all duration-300"
             >
               {/* Subtle Ambient Hover Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-              <div className="relative space-y-4">
+              <div className="relative space-y-2.5">
                 {/* Header: Title & Icon */}
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-300 transition-colors">

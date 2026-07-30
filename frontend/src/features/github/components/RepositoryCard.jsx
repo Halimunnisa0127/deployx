@@ -32,22 +32,25 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
   return (
     <div 
       onClick={() => onClick(repo)}
-      className="group relative bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 sm:p-6 hover:bg-slate-800/40 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-lg shadow-transparent hover:shadow-indigo-500/5"
+      className="group relative bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 hover:bg-slate-800/40 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-lg shadow-transparent hover:shadow-indigo-500/5"
     >
       {/* Top Row: Icon, Title, Status */}
-      <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-800/70">
+      <div className="flex items-start justify-between gap-4 pb-3 border-b border-slate-800/70">
         <div className="flex items-center gap-3.5">
           <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700/50 group-hover:scale-105 group-hover:bg-indigo-500/10 group-hover:border-indigo-500/30 group-hover:text-indigo-400 transition-all duration-300 shadow-inner">
             <Github className="w-5 h-5 text-slate-300 group-hover:text-indigo-400 transition-colors" />
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <h3 className="text-base font-bold text-slate-200 group-hover:text-white transition-colors truncate max-w-[200px] sm:max-w-xs">
+            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+              <h3 className="text-base font-bold text-slate-200 group-hover:text-white transition-colors truncate max-w-[200px] sm:max-w-[180px]">
                 {repo.name}
               </h3>
-              <Badge variant="neutral" className="capitalize px-1.5 py-0 text-xs bg-slate-800/50">
-                {repo.visibility}
-              </Badge>
+              <div className="flex items-center gap-1.5">
+                <Badge variant="neutral" className="capitalize px-1.5 py-0 text-xs bg-slate-800/50">
+                  {repo.visibility}
+                </Badge>
+                {getStatusBadge()}
+              </div>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-500">
               <Shield className="w-3.5 h-3.5" />
@@ -55,14 +58,10 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
             </div>
           </div>
         </div>
-        
-        <div className="flex items-center gap-2">
-          {getStatusBadge()}
-        </div>
       </div>
 
       {/* Middle Row: Branch, Sync */}
-      <div className="py-4 grid grid-cols-2 gap-4">
+      <div className="py-3 grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-1.5">
           <span className="text-xs font-medium text-slate-400">Default Branch</span>
           <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
@@ -81,7 +80,7 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
       </div>
 
       {/* Bottom Row: Language & Actions */}
-      <div className="pt-4 flex items-center justify-between gap-3 border-t border-slate-800/50 mt-1">
+      <div className="pt-3 flex items-center justify-between gap-3 border-t border-slate-800/50">
         <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
           <Code className={`w-3.5 h-3.5 ${getLanguageColor(repo.language)}`} />
           <span>{repo.language}</span>

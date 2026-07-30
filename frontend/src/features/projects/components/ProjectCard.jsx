@@ -54,7 +54,7 @@ export default function ProjectCard({
       onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`flex flex-col gap-3.5 p-5 max-w-full cursor-pointer transition-all duration-200 ease-out border rounded-xl ${isHovered ? 'bg-indigo-50 dark:bg-slate-900/75 border-indigo-200 dark:border-indigo-500/40 shadow-md dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_0_rgba(99,102,241,0.12)] -translate-y-0.5' : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)] translate-y-0'}`}
+      className={`flex flex-col gap-2.5 p-4 max-w-full cursor-pointer transition-all duration-200 ease-out border rounded-xl ${isHovered ? 'bg-indigo-50 dark:bg-slate-900/75 border-indigo-200 dark:border-indigo-500/40 shadow-md dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_0_rgba(99,102,241,0.12)] -translate-y-0.5' : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)] translate-y-0'}`}
     >
       {/* Top row: name + status badge */}
       <div className="flex items-center justify-between gap-3">
