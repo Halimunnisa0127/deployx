@@ -38,7 +38,7 @@ export default function BranchesTable({ branches, onDeploy }) {
                 <GitBranch className="w-4 h-4 text-slate-400" />
                 <span className="font-medium text-slate-200">{branch.name}</span>
                 {branch.isDefault && (
-                  <Badge variant="neutral" className="uppercase text-[10px] px-1.5 py-0">Default</Badge>
+                  <Badge variant="neutral" className="uppercase text-xs px-1.5 py-0">Default</Badge>
                 )}
               </div>
             </TableCell>

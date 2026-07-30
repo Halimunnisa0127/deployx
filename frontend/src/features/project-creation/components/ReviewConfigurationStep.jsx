@@ -142,23 +142,23 @@ export default function ReviewConfigurationStep({
               <Key className="w-4 h-4 text-blue-400" />
               <span>Environment Variables</span>
             </div>
-            <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-semibold">
+            <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold">
               {envVars.filter((e) => e.key.trim()).length} Variable(s)
             </span>
           </div>
 
           <div className="space-y-1.5">
             {envVars.filter((e) => e.key.trim()).length === 0 ? (
-              <p className="text-slate-500 text-[11px] italic">No environment variables configured.</p>
+              <p className="text-slate-500 text-sm italic">No environment variables configured.</p>
             ) : (
               envVars
                 .filter((e) => e.key.trim())
                 .map((env) => (
-                  <div key={env.id} className="flex items-center justify-between text-[11px] bg-slate-900/60 p-1.5 rounded border border-slate-800">
+                  <div key={env.id} className="flex items-center justify-between text-sm bg-slate-900/60 p-1.5 rounded border border-slate-800">
                     <span className="font-mono text-slate-200 font-semibold">{env.key}</span>
                     <div className="flex items-center gap-1">
                       {env.environments.map((e) => (
-                        <span key={e} className="text-[9px] px-1 py-0.2 rounded bg-slate-800 text-slate-400">
+                        <span key={e} className="text-xs px-1 py-0.2 rounded bg-slate-800 text-slate-400">
                           {e[0]}
                         </span>
                       ))}

@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
  *  - ...rest — any native div attrs
  */
 
-const Card = forwardRef(({ children, style: extraStyle, onClick, animated = false, ...rest }, ref) => {
+const Card = forwardRef(({ children, style: extraStyle, onClick, animated = false, className = '', ...rest }, ref) => {
   const Component = animated ? motion.div : 'div';
   const animationProps = animated ? {
     initial: { opacity: 0, y: 15 },
@@ -24,17 +24,9 @@ const Card = forwardRef(({ children, style: extraStyle, onClick, animated = fals
     <Component
       ref={ref}
       onClick={onClick}
+      className={`bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-white/5 rounded-[18px] shadow-sm dark:shadow-xl text-slate-900 dark:text-slate-100 transition-all duration-[250ms] ease-out hover:-translate-y-1 hover:shadow-md dark:hover:shadow-2xl dark:hover:shadow-indigo-500/10 ${onClick ? 'cursor-pointer' : 'cursor-default'} w-full max-w-[460px] ${className}`}
       style={{
-        background: 'rgba(15, 23, 42, 0.6)',
-        backdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
-        borderRadius: '16px',
         padding: '48px 40px',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.02) inset',
-        transition: 'border-color 0.2s, transform 0.15s',
-        cursor: onClick ? 'pointer' : 'default',
-        width: '100%',
-        maxWidth: '460px',
         ...extraStyle,
       }}
       {...animationProps}

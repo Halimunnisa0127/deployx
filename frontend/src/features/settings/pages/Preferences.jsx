@@ -42,16 +42,16 @@ export default function Preferences() {
       )}
 
       {/* Main Container */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl shadow-xl space-y-8">
+      <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl shadow-xl space-y-8">
         
         {/* Header */}
-        <div className="flex items-center gap-2 pb-2 border-b border-slate-800/80">
+        <div className="flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800/80">
           <Sliders className="w-5 h-5 text-indigo-400" />
           <div>
-            <h3 className="text-base font-bold text-slate-100">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
               Workspace Preferences
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               Customize your interface theme, notification delivery, and regional datetime formatting.
             </p>
           </div>
@@ -59,7 +59,7 @@ export default function Preferences() {
 
         {/* 1. Theme Selector */}
         <div className="space-y-3">
-          <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block font-mono">
+          <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block font-mono">
             Interface Theme
           </label>
 
@@ -79,11 +79,11 @@ export default function Preferences() {
                   onClick={() => setPreferences({ ...preferences, theme: item.id })}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border text-xs font-semibold transition-all ${
                     isSelected
-                      ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300 shadow-sm'
-                      : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                      ? 'bg-indigo-50/80 dark:bg-indigo-500/20 border-indigo-200 dark:border-indigo-500/40 text-indigo-700 dark:text-indigo-300 shadow-sm'
+                      : 'bg-slate-50/60 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 shrink-0 ${isSelected ? 'text-indigo-500 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -91,22 +91,22 @@ export default function Preferences() {
           </div>
         </div>
 
-        <hr className="border-slate-800/80" />
+        <hr className="border-slate-200 dark:border-slate-800/80" />
 
         {/* 2. Notifications Controls */}
         <div className="space-y-4">
-          <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block font-mono">
+          <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block font-mono">
             Notification Delivery
           </label>
 
           <div className="space-y-3">
             {/* Email Notifications */}
-            <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+            <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-indigo-400 shrink-0" />
                 <div>
-                  <div className="text-xs font-bold text-slate-200">Email Notifications</div>
-                  <div className="text-[11px] text-slate-400">Receive build logs and deployment failure reports via email.</div>
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Email Notifications</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Receive build logs and deployment failure reports via email.</div>
                 </div>
               </div>
 
@@ -119,12 +119,12 @@ export default function Preferences() {
             </div>
 
             {/* Browser Push Notifications */}
-            <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-slate-950/60 border border-slate-800">
+            <div className="flex items-center justify-between gap-4 p-4 rounded-xl bg-slate-50/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-3">
                 <BellRing className="w-5 h-5 text-sky-400 shrink-0" />
                 <div>
-                  <div className="text-xs font-bold text-slate-200">Browser Push Notifications</div>
-                  <div className="text-[11px] text-slate-400">Receive real-time desktop popups when builds succeed or fail.</div>
+                  <div className="text-xs font-bold text-slate-800 dark:text-slate-200">Browser Push Notifications</div>
+                  <div className="text-sm text-slate-500 dark:text-slate-400">Receive real-time desktop popups when builds succeed or fail.</div>
                 </div>
               </div>
 
@@ -138,13 +138,13 @@ export default function Preferences() {
           </div>
         </div>
 
-        <hr className="border-slate-800/80" />
+        <hr className="border-slate-200 dark:border-slate-800/80" />
 
         {/* 3. DateTime Formatting */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Time Format */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5 font-mono">
               <Clock className="w-3.5 h-3.5 text-indigo-400" />
               <span>Time Format</span>
             </label>
@@ -160,8 +160,8 @@ export default function Preferences() {
                   onClick={() => setPreferences({ ...preferences, timeFormat: tf.id })}
                   className={`p-3 rounded-xl border text-xs font-semibold transition-all ${
                     preferences.timeFormat === tf.id
-                      ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300'
-                      : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                      ? 'bg-indigo-50/80 dark:bg-indigo-500/20 border-indigo-200 dark:border-indigo-500/40 text-indigo-700 dark:text-indigo-300'
+                      : 'bg-slate-50/60 dark:bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
                   }`}
                 >
                   {tf.label}
@@ -172,7 +172,7 @@ export default function Preferences() {
 
           {/* Date Format */}
           <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+            <label className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5 font-mono">
               <Calendar className="w-3.5 h-3.5 text-indigo-400" />
               <span>Date Format</span>
             </label>
@@ -180,7 +180,7 @@ export default function Preferences() {
             <select
               value={preferences.dateFormat}
               onChange={(e) => setPreferences({ ...preferences, dateFormat: e.target.value })}
-              className="w-full bg-slate-950 border border-slate-800 text-slate-200 text-xs rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+              className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
             >
               <option value="MM/DD/YYYY">MM/DD/YYYY (12/31/2026)</option>
               <option value="DD/MM/YYYY">DD/MM/YYYY (31/12/2026)</option>
@@ -190,7 +190,7 @@ export default function Preferences() {
         </div>
 
         {/* Save Actions */}
-        <div className="flex justify-end pt-4 border-t border-slate-800/80">
+        <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800/80">
           <Button
             variant="primary"
             onClick={handleSave}

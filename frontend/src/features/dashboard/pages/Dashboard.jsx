@@ -6,7 +6,7 @@ import ProjectOverviewCard from '../components/ProjectOverviewCard';
 import QuickActionsCard from '../components/QuickActionsCard';
 import SystemStatusPanel from '../components/SystemStatusPanel';
 import RecentActivityTimeline from '../components/RecentActivityTimeline';
-import UsageSummaryCard from '../components/UsageSummaryCard';
+import InfrastructureUsageCard from '../components/InfrastructureUsageCard';
 import Skeleton from '../../../components/ui/Skeleton';
 
 // Lazy-load DeploymentTrendsCard to optimize bundle size and render performance
@@ -29,14 +29,12 @@ function Dashboard() {
 
           <ProjectOverviewCard />
 
-          {/* Side-by-side Usage Summary and Deployment Trends Grid below Project Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <UsageSummaryCard />
+          {/* Stacked Usage Summary and Deployment Trends (shown one by one) */}
+          <InfrastructureUsageCard />
 
-            <Suspense fallback={<Skeleton height="240px" borderRadius="16px" />}>
-              <DeploymentTrendsCard />
-            </Suspense>
-          </div>
+          <Suspense fallback={<Skeleton height="280px" borderRadius="16px" />}>
+            <DeploymentTrendsCard />
+          </Suspense>
         </div>
 
         {/* Right Column (Quick Actions, Infrastructure Health & Activity Timeline) */}

@@ -22,7 +22,7 @@ export default function DashboardLayout({ children }) {
         <DashboardHeader />
 
         {/* Dynamic page content */}
-        <div className="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto">
+        <div className="flex-1 p-4 md:py-8 md:px-6 w-full mx-auto">
           {children || <Outlet />}
         </div>
       </main>

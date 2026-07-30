@@ -103,7 +103,7 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
                     <Badge variant={envVariant} dot={false}>
                       {dep.environment || 'Production'}
                     </Badge>
-                    <span className="font-mono text-[11px] font-semibold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
+                    <span className="font-mono text-sm font-semibold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
                       {dep.id}
                     </span>
                   </div>
@@ -134,7 +134,7 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
                       <GitBranch className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
                       <span className="font-mono truncate">{dep.branch || 'main'}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-400 text-[11px] truncate">
+                    <div className="flex items-center gap-1.5 text-slate-400 text-sm truncate">
                       <User className="w-3 h-3 text-slate-500 flex-shrink-0" />
                       <span className="truncate">{dep.triggeredBy || 'GitHub Push'}</span>
                     </div>
@@ -142,7 +142,7 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
 
                   {/* Build Duration (Cols 10-12) */}
                   <div className="md:col-span-3 text-xs md:text-right space-y-1">
-                    <span className="text-slate-400 text-[11px] uppercase tracking-wider block font-medium">
+                    <span className="text-slate-400 text-sm uppercase tracking-wider block font-medium">
                       Build Duration
                     </span>
                     <span className="text-slate-200 font-semibold font-mono">
@@ -155,12 +155,12 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
                 <div className="pt-3 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     {dep.status === 'live' && (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
                         <CheckCircle2 className="w-3 h-3" /> Live in Production
                       </span>
                     )}
                     {dep.status === 'failed' && (
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/20">
+                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/20">
                         <XCircle className="w-3 h-3" /> Build Failed
                       </span>
                     )}

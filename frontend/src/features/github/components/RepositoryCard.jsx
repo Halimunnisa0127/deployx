@@ -32,22 +32,25 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
   return (
     <div 
       onClick={() => onClick(repo)}
-      className="group relative bg-slate-900/60 border border-slate-800/80 rounded-2xl p-5 sm:p-6 hover:bg-slate-800/40 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-lg shadow-transparent hover:shadow-indigo-500/5"
+      className="group relative bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:border-indigo-400 dark:hover:border-indigo-500/30 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm hover:shadow-md dark:shadow-transparent dark:hover:shadow-indigo-500/5"
     >
       {/* Top Row: Icon, Title, Status */}
-      <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-800/70">
+      <div className="flex items-start justify-between gap-4 pb-3 border-b border-slate-200 dark:border-slate-800/70">
         <div className="flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700/50 group-hover:scale-105 group-hover:bg-indigo-500/10 group-hover:border-indigo-500/30 group-hover:text-indigo-400 transition-all duration-300 shadow-inner">
-            <Github className="w-5 h-5 text-slate-300 group-hover:text-indigo-400 transition-colors" />
+          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700/50 group-hover:scale-105 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-500/10 group-hover:border-indigo-300 dark:group-hover:border-indigo-500/30 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-all duration-300 shadow-inner">
+            <Github className="w-5 h-5 text-slate-500 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors" />
           </div>
           <div>
-            <div className="flex items-center gap-2 mb-0.5">
-              <h3 className="text-base font-bold text-slate-200 group-hover:text-white transition-colors truncate max-w-[200px] sm:max-w-xs">
+            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+              <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-white transition-colors truncate max-w-[200px] sm:max-w-[180px]">
                 {repo.name}
               </h3>
-              <Badge variant="neutral" className="capitalize px-1.5 py-0 text-[10px] bg-slate-800/50">
-                {repo.visibility}
-              </Badge>
+              <div className="flex items-center gap-1.5">
+                <Badge variant="neutral" className="capitalize px-1.5 py-0 text-xs bg-slate-100 dark:bg-slate-800/50">
+                  {repo.visibility}
+                </Badge>
+                {getStatusBadge()}
+              </div>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-slate-500">
               <Shield className="w-3.5 h-3.5" />
@@ -55,34 +58,30 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
             </div>
           </div>
         </div>
-        
-        <div className="flex items-center gap-2">
-          {getStatusBadge()}
-        </div>
       </div>
 
       {/* Middle Row: Branch, Sync */}
-      <div className="py-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <div className="flex flex-col gap-1">
-          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Default Branch</span>
-          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
-            <GitBranch className="w-4 h-4 text-indigo-400" />
-            <span className="font-mono bg-indigo-500/10 text-indigo-300 px-1.5 py-0.5 rounded-md text-xs">{repo.defaultBranch}</span>
+      <div className="py-3 grid grid-cols-2 gap-4">
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Default Branch</span>
+          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <GitBranch className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+            <span className="font-mono bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-700 dark:text-indigo-300 px-1.5 py-0.5 rounded-md text-xs">{repo.defaultBranch}</span>
           </div>
         </div>
         
-        <div className="flex flex-col gap-1">
-          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Last Sync</span>
-          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
-            <Clock className="w-4 h-4 text-slate-400" />
-            {formatDate(repo.lastSync)}
+        <div className="flex flex-col gap-1.5">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">Last Sync</span>
+          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
+            <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+            <span className="truncate">{formatDate(repo.lastSync)}</span>
           </div>
         </div>
       </div>
 
       {/* Bottom Row: Language & Actions */}
-      <div className="pt-4 flex items-center justify-between gap-3 border-t border-slate-800/50 mt-1">
-        <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
+      <div className="pt-3 flex items-center justify-between gap-3 border-t border-slate-200 dark:border-slate-800/50">
+        <div className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
           <Code className={`w-3.5 h-3.5 ${getLanguageColor(repo.language)}`} />
           <span>{repo.language}</span>
         </div>
@@ -92,10 +91,10 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
             Sync
           </Button>
           <Button variant="ghost" size="sm" onClick={() => onAction('open', repo)} iconOnly title="Open Repository">
-            <ExternalLink className="w-4 h-4 text-slate-400" />
+            <ExternalLink className="w-4 h-4 text-slate-500 dark:text-slate-400" />
           </Button>
           <Button variant="ghost" size="sm" onClick={() => onAction('options', repo)} iconOnly title="Options">
-            <MoreVertical className="w-4 h-4 text-slate-400" />
+            <MoreVertical className="w-4 h-4 text-slate-500 dark:text-slate-400" />
           </Button>
         </div>
       </div>

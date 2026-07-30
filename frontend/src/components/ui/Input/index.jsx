@@ -9,6 +9,7 @@ import { forwardRef, useState } from 'react';
  *  - id:          string  — links label htmlFor to input id
  *  - fullWidth:   boolean (default: true)
  *  - helperText:  string  — renders subtle helper text below input (if no error)
+ *  - iconLeft:    node    — renders icon on the left
  *  - ...rest      — any native <input> attribute
  */
 const Input = forwardRef(({
@@ -17,7 +18,8 @@ const Input = forwardRef(({
   helperText,
   id,
   fullWidth = true,
-  style: extraStyle,
+  iconLeft,
+  className = '',
   onFocus,
   onBlur,
   ...rest
@@ -35,31 +37,51 @@ const Input = forwardRef(({
   };
 
   return (
-    <div style={{ width: fullWidth ? '100%' : undefined, marginBottom: '20px' }}>
+    <div className={`${fullWidth ? 'w-full' : ''} mb-5`}>
       {label && (
-        <label htmlFor={id} style={labelStyle}>
+        <label
+          htmlFor={id}
+          className="block text-[13px] font-medium text-slate-700 dark:text-slate-300 mb-2 font-sans"
+        >
           {label}
         </label>
       )}
-      <input
-        id={id}
-        ref={ref}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        style={{
-          ...inputBase,
-          borderColor: error ? '#ef4444' : isFocused ? '#818cf8' : 'rgba(255,255,255,0.12)',
-          boxShadow: isFocused && !error ? '0 0 0 3px rgba(129, 140, 248, 0.15)' : error && isFocused ? '0 0 0 3px rgba(239, 68, 68, 0.15)' : 'none',
-          width: fullWidth ? '100%' : undefined,
-          boxSizing: 'border-box',
-          ...extraStyle,
-        }}
-        {...rest}
-      />
+      
+      <div className="relative">
+        {iconLeft && (
+          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400">
+            {iconLeft}
+          </div>
+        )}
+        
+        <input
+          id={id}
+          ref={ref}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`
+            w-full px-3.5 py-3 rounded-lg text-sm font-sans outline-none transition-all
+            ${iconLeft ? 'pl-10' : ''}
+            bg-white dark:bg-slate-900/50 
+            text-slate-900 dark:text-slate-50
+            border
+            ${
+              error 
+                ? 'border-red-500 focus:ring-[3px] focus:ring-red-500/15' 
+                : isFocused 
+                  ? 'border-indigo-500 focus:ring-[3px] focus:ring-indigo-500/20' 
+                  : 'border-slate-300 dark:border-white/10 hover:border-slate-400 dark:hover:border-white/20'
+            }
+            ${className}
+          `}
+          {...rest}
+        />
+      </div>
+
       {error ? (
-        <p style={errorStyle}>{error}</p>
+        <p className="mt-2 text-xs text-red-500 font-sans">{error}</p>
       ) : helperText ? (
-        <p style={helperStyle}>{helperText}</p>
+        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 font-sans">{helperText}</p>
       ) : null}
     </div>
   );
@@ -67,40 +89,3 @@ const Input = forwardRef(({
 
 Input.displayName = 'Input';
 export default Input;
-
-/* ── Styles ─────────────────────────────────────────────────────── */
-
-const labelStyle = {
-  display: 'block',
-  fontSize: '13px',
-  fontWeight: 500,
-  color: '#cbd5e1',
-  marginBottom: '8px',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const inputBase = {
-  padding: '12px 14px',
-  borderRadius: '8px',
-  border: '1px solid rgba(255,255,255,0.12)',
-  background: 'rgba(15, 23, 42, 0.5)',
-  color: '#f8fafc',
-  fontSize: '14px',
-  fontFamily: "'Inter', sans-serif",
-  outline: 'none',
-  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-};
-
-const errorStyle = {
-  margin: '8px 0 0',
-  fontSize: '12px',
-  color: '#f87171',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const helperStyle = {
-  margin: '8px 0 0',
-  fontSize: '12px',
-  color: '#64748b',
-  fontFamily: "'Inter', sans-serif",
-};

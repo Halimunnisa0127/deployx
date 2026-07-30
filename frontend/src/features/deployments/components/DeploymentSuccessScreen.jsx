@@ -155,12 +155,12 @@ export default function DeploymentSuccessScreen({
         <div className="p-5 rounded-2xl bg-slate-950/70 border border-slate-800 text-left space-y-4 shadow-inner relative z-10">
           {/* Production URL Row */}
           <div className="space-y-1.5">
-            <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+            <label className="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-blue-400">
                 <Globe className="w-3.5 h-3.5" />
                 Production URL
               </span>
-              <span className="text-[10px] text-emerald-400 font-mono font-bold">Active</span>
+              <span className="text-xs text-emerald-400 font-mono font-bold">Active</span>
             </label>
 
             <div className="flex items-center gap-2 bg-slate-900 p-2.5 rounded-xl border border-slate-800">
@@ -189,7 +189,7 @@ export default function DeploymentSuccessScreen({
 
           {/* Preview URL Row */}
           <div className="space-y-1">
-            <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <label className="text-sm font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
               <GitBranch className="w-3.5 h-3.5 text-indigo-400" />
               <span>Preview Branch Domain</span>
             </label>
@@ -202,7 +202,7 @@ export default function DeploymentSuccessScreen({
               >
                 {previewUrl}
               </a>
-              <span className="text-[10px] text-slate-500 font-mono">Immutable</span>
+              <span className="text-xs text-slate-500 font-mono">Immutable</span>
             </div>
           </div>
         </div>

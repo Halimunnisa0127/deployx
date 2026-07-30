@@ -62,12 +62,12 @@ export default function EmptyState({
         {/* Title & Description */}
         <div className="space-y-1.5">
           {title && (
-            <h3 className="text-base font-bold text-slate-100 tracking-tight">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               {title}
             </h3>
           )}
           {description && (
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm mx-auto">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
               {description}
             </p>
           )}
@@ -106,3 +106,8 @@ export default function EmptyState({
 
   return content;
 }
+
+export { default as EmptyIllustration } from './EmptyIllustration';
+export { default as NoUsageData } from './NoUsageData';
+export { default as NoAlerts } from './NoAlerts';
+export { default as NoHistory } from './NoHistory';

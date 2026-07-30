@@ -54,7 +54,7 @@ export default function ProjectCard({
       onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`flex flex-col gap-3.5 p-5 max-w-full cursor-pointer transition-all duration-200 ease-out border rounded-xl ${isHovered ? 'bg-indigo-50 dark:bg-slate-900/75 border-indigo-200 dark:border-indigo-500/40 shadow-md dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_0_rgba(99,102,241,0.12)] -translate-y-0.5' : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)] translate-y-0'}`}
+      className={`flex flex-col gap-2.5 p-4 max-w-full cursor-pointer transition-all duration-200 ease-out border rounded-xl ${isHovered ? 'bg-indigo-50 dark:bg-slate-900/75 border-indigo-200 dark:border-indigo-500/40 shadow-md dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.6),0_0_20px_0_rgba(99,102,241,0.12)] -translate-y-0.5' : 'bg-white dark:bg-slate-900/50 border-slate-200 dark:border-white/10 shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)] translate-y-0'}`}
     >
       {/* Top row: name + status badge */}
       <div className="flex items-center justify-between gap-3">
@@ -63,7 +63,7 @@ export default function ProjectCard({
           <div className="w-7 h-7 rounded-lg bg-indigo-100 dark:bg-indigo-500/15 border border-indigo-200 dark:border-indigo-500/30 flex items-center justify-center shrink-0 transition-colors">
             <span className="text-xs font-bold text-indigo-700 dark:text-indigo-400 font-inter transition-colors">{framework[0]}</span>
           </div>
-          <span className="font-inter font-semibold text-[15px] text-slate-900 dark:text-slate-50 truncate transition-colors" title={name}>
+          <span className="font-inter font-bold text-base text-slate-900 dark:text-white truncate transition-colors" title={name}>
             {name}
           </span>
         </div>
@@ -80,7 +80,7 @@ export default function ProjectCard({
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="inline-flex items-center gap-1 text-[13px] text-slate-500 dark:text-slate-400 no-underline font-inter truncate transition-colors hover:text-slate-800 dark:hover:text-slate-200"
+          className="inline-flex items-center gap-1.5 px-2 py-1 -ml-2 rounded-md text-sm text-slate-500 dark:text-slate-400 no-underline font-inter truncate transition-colors hover:bg-slate-100 dark:hover:bg-slate-800/50 hover:text-indigo-600 dark:hover:text-indigo-400"
           title={`https://${defaultUrl}`}
         >
           {defaultUrl}
@@ -101,10 +101,10 @@ export default function ProjectCard({
             <circle cx="6" cy="18" r="3" />
             <path d="M18 9a9 9 0 0 1-9 9" />
           </svg>
-          <span className="text-xs text-slate-600 dark:text-slate-400 font-mono transition-colors">{branch}</span>
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 font-mono transition-colors">{branch}</span>
         </div>
 
-        <span className="text-xs text-slate-500 dark:text-slate-400 font-inter transition-colors">
+        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 font-inter transition-colors">
           {formatDate(lastDeployed)}
         </span>
       </div>

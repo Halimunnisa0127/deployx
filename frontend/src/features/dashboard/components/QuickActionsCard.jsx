@@ -25,11 +25,16 @@ const ACCENT_BG = {
 
 export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
   return (
-    <Card style={{ maxWidth: '100%', padding: '24px' }}>
+    <Card
+      style={{ maxWidth: '100%', padding: '24px' }}
+      className="relative overflow-hidden border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl shadow-sm dark:shadow-xl bg-gradient-to-b from-white/90 via-white/80 to-amber-50/10 dark:from-slate-900/80 dark:via-slate-900/60 dark:to-amber-950/10 transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md dark:hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-amber-500 before:to-indigo-500"
+    >
       {/* Card Header */}
-      <div className="flex items-center gap-2 pb-4 border-b border-slate-800/80 mb-4">
-        <Zap className="w-5 h-5 text-amber-400" />
-        <h2 className="text-base font-bold text-slate-100 tracking-tight">
+      <div className="flex items-center gap-2.5 pb-4 border-b border-slate-200 dark:border-white/5 mb-4">
+        <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-500 dark:text-amber-400 shadow-sm shadow-amber-500/20">
+          <Zap className="w-5 h-5" />
+        </div>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
           Quick Actions
         </h2>
       </div>
@@ -40,20 +45,20 @@ export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
           <Link
             key={action.id}
             to={action.to}
-            className="group relative flex flex-col justify-between p-4 rounded-xl bg-slate-900/60 hover:bg-slate-800/60 border border-slate-800 hover:border-indigo-500/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="group relative flex flex-col justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 hover:bg-indigo-500/5 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-white/5 hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 group-hover:scale-[1.02]"
           >
             <div className="flex items-start justify-between gap-3 mb-2">
-              <div className={`p-2.5 rounded-lg border ${ACCENT_BG[action.icon] || 'bg-slate-800 border-slate-700'} transition-colors`}>
+              <div className={`p-2.5 rounded-lg border ${ACCENT_BG[action.icon] || 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700'} transition-colors`}>
                 {ACTION_ICON_MAP[action.icon] || <Zap className="w-5 h-5 text-slate-400" />}
               </div>
-              <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+              <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-slate-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-xs font-bold text-slate-200 group-hover:text-white transition-colors">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">
                 {action.title}
               </h3>
-              <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+              <p className="text-sm text-slate-700 dark:text-slate-400 line-clamp-2 leading-relaxed">
                 {action.description}
               </p>
             </div>

@@ -337,7 +337,7 @@ export default function DeploymentProgressScreen({
                 }`}
               >
                 <div
-                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0 ${
+                  className={`w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
                     isFinished
                       ? 'bg-emerald-500 text-white'
                       : isCurrent
@@ -357,7 +357,7 @@ export default function DeploymentProgressScreen({
                     step.id
                   )}
                 </div>
-                <span className="truncate text-[11px] font-medium">{step.name}</span>
+                <span className="truncate text-sm font-medium">{step.name}</span>
               </div>
             );
           })}
@@ -381,7 +381,7 @@ export default function DeploymentProgressScreen({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono text-slate-500">
+            <span className="text-sm font-mono text-slate-500">
               {logs.length} lines
             </span>
             <button
@@ -417,11 +417,11 @@ export default function DeploymentProgressScreen({
 
               return (
                 <div key={index} className="flex items-start gap-2.5 leading-relaxed hover:bg-slate-900/40 p-0.5 rounded">
-                  <span className="text-slate-600 text-[10px] select-none flex-shrink-0 pt-0.5">
+                  <span className="text-slate-600 text-xs select-none flex-shrink-0 pt-0.5">
                     [{log.timestamp}]
                   </span>
                   <span
-                    className={`px-1.5 py-0.2 rounded text-[10px] uppercase font-bold border flex-shrink-0 ${tagColor}`}
+                    className={`px-1.5 py-0.2 rounded text-xs uppercase font-bold border flex-shrink-0 ${tagColor}`}
                   >
                     {log.type}
                   </span>

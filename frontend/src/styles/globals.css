@@ -26,10 +26,13 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 100%; /* Increased base font size to 125% (20px) for significantly larger typography */
 }
 
 body {
   @apply bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 transition-colors duration-300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1rem;
+  line-height: 1.6;
 }
