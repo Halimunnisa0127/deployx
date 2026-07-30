@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, FolderGit2 } from 'lucide-react';
-import StatusBadge from '../../components/StatusBadge';
+import Badge from '../../../../components/ui/Badge';
 import RoleBadge from './RoleBadge';
 import UserAvatar from './UserAvatar';
 import ActionMenu from './ActionMenu';
@@ -33,7 +33,7 @@ export default function UserRow({ user, onRowClick, ...actionProps }) {
         <RoleBadge role={user.role} />
       </td>
       <td className="px-5 py-4">
-        <StatusBadge status={user.status} type="user" />
+        <Badge status={user.status} type="user" />
       </td>
       <td className="px-5 py-4">
         <div className="inline-flex items-center gap-1.5 text-slate-300 bg-slate-800/60 px-2.5 py-1 rounded border border-slate-700/40 font-mono text-[11px]">

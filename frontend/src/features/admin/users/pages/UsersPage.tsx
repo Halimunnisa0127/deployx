@@ -4,7 +4,7 @@ import UsersStatisticsCards from '../components/UsersStatisticsCards';
 import UsersFilters from '../components/UsersFilters';
 import UsersTable from '../components/UsersTable';
 import UserDetailsDrawer from '../components/UserDetailsDrawer';
-import ConfirmationModal from '../components/ConfirmationModal';
+import ConfirmationDialog from '../../../../components/ui/ConfirmationDialog';
 import { UsersTableSkeleton, UsersStatisticsSkeleton } from '../components/UsersSkeleton';
 import { 
   NoUsersEmptyState, 
@@ -192,7 +192,7 @@ export default function UsersPage() {
       />
 
       {/* Destructive Action Modal */}
-      <ConfirmationModal 
+      <ConfirmationDialog 
         isOpen={isDeleteModalOpen} 
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}

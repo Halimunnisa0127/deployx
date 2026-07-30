@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, Clock, Calendar, Search } from 'lucide-react';
-import StatusBadge from './StatusBadge';
+import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 
 export default function RecentDeploymentsTable({ deployments = [] }) {
@@ -42,7 +42,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                   </div>
                 </td>
                 <td className="px-5 py-4">
-                  <StatusBadge status={dep.status} type="deployment" />
+                  <Badge status={dep.status} type="deployment" />
                 </td>
                 <td className="px-5 py-4">
                   <span className="text-slate-300">{dep.region}</span>

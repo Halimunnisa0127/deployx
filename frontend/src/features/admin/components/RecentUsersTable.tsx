@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, Edit2, Calendar } from 'lucide-react';
-import StatusBadge from './StatusBadge';
+import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 
 export default function RecentUsersTable({ users = [] }) {
@@ -49,7 +49,7 @@ export default function RecentUsersTable({ users = [] }) {
                   </span>
                 </td>
                 <td className="px-5 py-4">
-                  <StatusBadge status={usr.status} type="user" />
+                  <Badge status={usr.status} type="user" />
                 </td>
                 <td className="px-5 py-4 text-slate-400 text-xs">
                   <span className="inline-flex items-center gap-1.5">

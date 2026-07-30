@@ -1,7 +1,7 @@
 import React from 'react';
 import { RefreshCw, Activity, Server, Database, HardDrive, Box, Layers } from 'lucide-react';
 import { Card } from '../../../components/common/Card';
-import StatusBadge from './StatusBadge';
+import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 
 const getIcon = (id) => {
@@ -49,7 +49,7 @@ export default function PlatformHealthCard({ health = [] }) {
                 </div>
               </div>
               <div className="flex flex-col items-end gap-1">
-                <StatusBadge status={item.status} type="health" />
+                <Badge status={item.status} type="health" />
                 <span className="text-[10px] text-slate-500">Checked {item.lastChecked}</span>
               </div>
             </div>

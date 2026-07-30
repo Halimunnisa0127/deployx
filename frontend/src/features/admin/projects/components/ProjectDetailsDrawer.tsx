@@ -1,7 +1,7 @@
 import React from 'react';
 import Drawer from '../../../../components/ui/Drawer';
 import { User, Calendar, Shield, FolderGit2, Rocket, Globe, GitBranch, Archive, Eye } from 'lucide-react';
-import StatusBadge from '../../components/StatusBadge';
+import Badge from '../../../../components/ui/Badge';
 import FrameworkBadge from './FrameworkBadge';
 import Button from '../../../../components/ui/Button';
 
@@ -39,7 +39,7 @@ export default function ProjectDetailsDrawer({ isOpen, onClose, project, onView,
             <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider flex items-center gap-1.5">
               <Shield className="w-3.5 h-3.5" /> Status
             </span>
-            <div><StatusBadge status={project.status} type="project" /></div>
+            <div><Badge status={project.status} type="project" /></div>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Calendar, FolderGit2, User, Globe } from 'lucide-react';
-import StatusBadge from '../../components/StatusBadge';
+import Badge from '../../../../components/ui/Badge';
 import FrameworkBadge from './FrameworkBadge';
 import ActionMenu from './ActionMenu';
 
@@ -47,7 +47,7 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
         </span>
       </td>
       <td className="px-5 py-4 whitespace-nowrap">
-        <StatusBadge status={project.status} type="project" />
+        <Badge status={project.status} type="project" />
       </td>
       <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-400">
         {project.region}

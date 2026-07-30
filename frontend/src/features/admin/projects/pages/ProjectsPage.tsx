@@ -4,7 +4,7 @@ import ProjectsStatisticsCards from '../components/ProjectsStatisticsCards';
 import ProjectsFilters from '../components/ProjectsFilters';
 import ProjectsTable from '../components/ProjectsTable';
 import ProjectDetailsDrawer from '../components/ProjectDetailsDrawer';
-import ConfirmationModal from '../components/ConfirmationModal';
+import ConfirmationDialog from '../../../../components/ui/ConfirmationDialog';
 import { ProjectsTableSkeleton, ProjectsStatisticsSkeleton } from '../components/ProjectsSkeleton';
 import { 
   NoProjectsEmptyState, 
@@ -182,7 +182,7 @@ export default function ProjectsPage() {
       />
 
       {/* Destructive Action Modal */}
-      <ConfirmationModal 
+      <ConfirmationDialog 
         isOpen={isDeleteModalOpen} 
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}

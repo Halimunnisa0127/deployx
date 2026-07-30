@@ -1,7 +1,7 @@
 import React from 'react';
 import Drawer from '../../../../components/ui/Drawer';
 import { Mail, Calendar, Shield, Activity, FolderGit2, Rocket, Edit2, Key, Trash2 } from 'lucide-react';
-import StatusBadge from '../../components/StatusBadge';
+import Badge from '../../../../components/ui/Badge';
 import RoleBadge from './RoleBadge';
 import UserAvatar from './UserAvatar';
 import Button from '../../../../components/ui/Button';
@@ -38,7 +38,7 @@ export default function UserDetailsDrawer({ isOpen, onClose, user, onEdit, onCha
             <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider flex items-center gap-1.5">
               <Activity className="w-3.5 h-3.5" /> Status
             </span>
-            <div><StatusBadge status={user.status} type="user" /></div>
+            <div><Badge status={user.status} type="user" /></div>
           </div>
         </div>
 
