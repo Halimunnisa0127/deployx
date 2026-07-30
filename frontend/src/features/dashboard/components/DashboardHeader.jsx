@@ -10,6 +10,8 @@ import {
   Globe,
   Search,
   ArrowRight,
+  Users,
+  Terminal,
 } from 'lucide-react';
 
 import SearchBar from '../../../components/common/SearchBar';
@@ -28,7 +30,9 @@ const CATEGORY_ICON_MAP = {
   Projects: <FolderPlus className="w-3.5 h-3.5 text-indigo-400" />,
   Deployments: <Rocket className="w-3.5 h-3.5 text-purple-400" />,
   Domains: <Globe className="w-3.5 h-3.5 text-sky-400" />,
-  'GitHub Repositories': <GithubIcon className="w-3.5 h-3.5 text-emerald-400" />,
+  Repositories: <GithubIcon className="w-3.5 h-3.5 text-emerald-400" />,
+  Teams: <Users className="w-3.5 h-3.5 text-rose-400" />,
+  Logs: <Terminal className="w-3.5 h-3.5 text-amber-400" />,
 };
 
 export default function DashboardHeader({ onToggleMobile }) {
@@ -158,7 +162,7 @@ export default function DashboardHeader({ onToggleMobile }) {
         {/* Global Search Container */}
         <div ref={searchContainerRef} className="relative hidden md:block">
           <SearchBar
-            placeholder="Search projects, deployments, domains..."
+            placeholder="Search anything..."
             shortcut="⌘K"
             value={searchQuery}
             onChange={(e) => {

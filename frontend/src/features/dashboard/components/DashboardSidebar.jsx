@@ -20,6 +20,7 @@ import {
   Zap,
   Menu,
   X,
+  Gauge,
 } from 'lucide-react';
 
 import useAuth from '../../../hooks/useAuth';
@@ -38,8 +39,8 @@ import UserProfileDropdown from './UserProfileDropdown';
 const GithubIcon = (props) => (
   <svg
     viewBox="0 0 24 24"
-    width="16"
-    height="16"
+    width="20"
+    height="20"
     stroke="currentColor"
     strokeWidth="2"
     fill="none"
@@ -64,6 +65,7 @@ const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { id: 'projects', label: 'Projects', href: '/dashboard/projects', icon: FolderGit2, badge: '12' },
   { id: 'deployments', label: 'Deployments', href: '/dashboard/deployments', icon: Rocket, badge: 'Live' },
+  { id: 'usage', label: 'Usage', href: '/dashboard/usage', icon: Gauge, badge: 'Pro' },
   { id: 'domains', label: 'Domains', href: '/dashboard/domains', icon: Globe },
   { id: 'logs', label: 'Logs', href: '/dashboard/logs', icon: Terminal },
   { id: 'github', label: 'GitHub', href: '/dashboard/github', icon: GithubIcon },
@@ -278,9 +280,12 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
       </div>
 
       {/* ── 3. Bottom Section: Collapse Toggle & User Profile ────────────── */}
-      <div className="p-3 border-t border-slate-200 dark:border-slate-800/80 bg-slate-100/50 dark:bg-slate-950/40 space-y-2 transition-colors duration-300">
+      <div className="p-3.5 border-t border-slate-200 dark:border-white/5 bg-slate-100/60 dark:bg-slate-950/60 space-y-3 transition-colors duration-300">
         {/* Desktop Collapse Toggle */}
-        <div className={`hidden md:flex ${isCollapsed ? 'justify-center' : 'justify-end'}`}>
+        <div className={`hidden md:flex ${isCollapsed ? 'justify-center' : 'justify-between items-center px-1'}`}>
+          {!isCollapsed && (
+            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Controls</span>
+          )}
           <Tooltip content={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} position="right">
             <Button
               variant="ghost"
@@ -288,6 +293,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
               iconOnly
               onClick={toggleCollapse}
               aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              className="hover:bg-slate-200/60 dark:hover:bg-slate-800/60 transition-colors"
             >
               {isCollapsed ? (
                 <PanelLeftOpen className="w-4 h-4 text-slate-400 hover:text-slate-200" />
@@ -299,30 +305,30 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
         </div>
 
         {/* User Profile & Account Dropdown */}
-        <div>
+        <div className="pt-0.5">
           {!isCollapsed ? (
             <Dropdown
               width="w-[280px]"
               align="left"
               position="top"
               trigger={
-                <div className="w-full flex items-center justify-between p-2 rounded-xl bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700/80 transition-all group shadow-sm">
-                  <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white/90 dark:bg-slate-900/90 hover:bg-slate-100 dark:hover:bg-slate-800/90 border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all duration-200 group shadow-sm cursor-pointer">
+                  <div className="flex items-center gap-3 min-w-0">
                     <Avatar
                       name={user?.name || user?.email || 'User'}
                       size="sm"
                       status="online"
                     />
-                    <div className="flex flex-col text-left min-w-0">
+                    <div className="flex flex-col text-left min-w-0 space-y-0.5">
                       <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                         {user?.name || 'Developer'}
                       </span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate transition-colors">
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate transition-colors">
                         {user?.email || 'user@deployx.dev'}
                       </span>
                     </div>
                   </div>
-                  <ChevronsUpDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 flex-shrink-0 transition-colors" />
+                  <ChevronsUpDown className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 flex-shrink-0 transition-colors" />
                 </div>
               }
             >
@@ -336,7 +342,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
               align="left"
               position="top"
               trigger={
-                <div className="flex justify-center py-1">
+                <div className="flex justify-center py-1 cursor-pointer">
                   <Avatar
                     name={user?.name || user?.email || 'User'}
                     size="sm"

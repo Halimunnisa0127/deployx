@@ -35,8 +35,8 @@ export default function SidebarItem({
           isCollapsed ? 'justify-center px-0 w-10 h-10 mx-auto' : 'w-full'
         } ${
           active
-            ? 'bg-gradient-to-r from-indigo-50 dark:from-indigo-600/20 to-violet-50 dark:to-violet-600/10 text-indigo-700 dark:text-white font-semibold border border-indigo-200 dark:border-indigo-500/30 shadow-sm dark:shadow-[0_0_15px_rgba(99,102,241,0.15)]'
-            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-transparent'
+            ? 'bg-indigo-50/90 dark:bg-slate-900/90 text-indigo-900 dark:text-white font-semibold shadow-sm dark:shadow-[0_0_15px_rgba(99,102,241,0.12)] border border-transparent'
+            : 'text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 border border-transparent'
         }`;
       }}
     >
@@ -45,24 +45,24 @@ export default function SidebarItem({
 
         return (
           <>
-            {/* Active left indicator bar when expanded */}
-            {active && !isCollapsed && (
+            {/* Active left accent line indicator */}
+            {active && (
               <motion.div
                 layoutId="activePill"
-                className="absolute left-0 top-2 bottom-2 w-1 bg-gradient-to-b from-indigo-500 to-violet-500 rounded-r-full shadow-[0_0_8px_#6366f1]"
+                className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-indigo-500 rounded-r-full shadow-[0_0_8px_rgba(99,102,241,0.6)]"
                 transition={{ type: 'spring', stiffness: 350, damping: 30 }}
               />
             )}
 
-            {/* Icon */}
+            {/* Icon with 2px hover move */}
             {Icon && (
               <span
-                className={`flex-shrink-0 transition-all duration-200 ${
-                  active ? 'text-indigo-600 dark:text-indigo-400 scale-110' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300'
+                className={`flex-shrink-0 transition-transform duration-200 group-hover:translate-x-[2px] ${
+                  active ? 'text-indigo-600 dark:text-indigo-400 scale-105' : 'text-slate-500 group-hover:text-indigo-600 dark:group-hover:text-indigo-300'
                 }`}
               >
-                {typeof Icon === 'function' || typeof Icon === 'object' && Icon.$$typeof ? (
-                  <Icon className="w-4 h-4" />
+                {typeof Icon === 'function' || (typeof Icon === 'object' && Icon.$$typeof) ? (
+                  <Icon className="w-5 h-5" />
                 ) : (
                   Icon
                 )}
@@ -79,7 +79,7 @@ export default function SidebarItem({
                     className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-md border ${
                       active
                         ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/40'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700/60 group-hover:border-slate-300 dark:group-hover:border-slate-600'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/60 group-hover:border-slate-300 dark:group-hover:border-slate-600'
                     }`}
                   >
                     {badge}

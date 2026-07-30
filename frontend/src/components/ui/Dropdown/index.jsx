@@ -88,7 +88,7 @@ export default function Dropdown({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: position === 'top' ? 6 : -6, scale: 0.96 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            className={`absolute z-50 ${alignClass} ${positionClass} ${width} p-1.5 bg-[#0f172a]/95 border border-slate-800 rounded-xl shadow-2xl backdrop-blur-xl outline-none`}
+            className={`absolute z-50 ${alignClass} ${positionClass} ${width} p-1.5 bg-white/95 dark:bg-[#0f172a]/95 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-xl shadow-2xl backdrop-blur-xl outline-none`}
             role="menu"
           >
             {children ? (
@@ -97,14 +97,14 @@ export default function Dropdown({
               <div className="py-1 space-y-0.5">
                 {items.map((item, idx) => {
                   if (item.divider) {
-                    return <div key={`div-${idx}`} className="my-1.5 h-px bg-slate-800" />;
+                    return <div key={`div-${idx}`} className="my-1.5 h-px bg-slate-200 dark:bg-slate-800" />;
                   }
 
                   if (item.header) {
                     return (
                       <div
                         key={`hdr-${idx}`}
-                        className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-slate-400 uppercase"
+                        className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase"
                       >
                         {item.label}
                       </div>
@@ -125,15 +125,15 @@ export default function Dropdown({
                       }}
                       className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors text-left select-none ${
                         isDisabled
-                          ? 'opacity-40 cursor-not-allowed text-slate-500'
+                          ? 'opacity-40 cursor-not-allowed text-slate-400 dark:text-slate-500'
                           : isDanger
-                          ? 'text-rose-400 hover:bg-rose-500/10 hover:text-rose-300'
-                          : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                          ? 'text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 hover:text-rose-700 dark:hover:text-rose-300'
+                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white'
                       }`}
                       role="menuitem"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        {item.icon && <span className="text-slate-400 flex-shrink-0">{item.icon}</span>}
+                        {item.icon && <span className="text-slate-500 dark:text-slate-400 flex-shrink-0">{item.icon}</span>}
                         <span className="truncate">{item.label}</span>
                       </div>
                       {item.badge && <span className="flex-shrink-0 ml-2">{item.badge}</span>}

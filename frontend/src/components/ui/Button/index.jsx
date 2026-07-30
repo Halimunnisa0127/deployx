@@ -1,79 +1,28 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 /**
- * Reusable Button component
- *
- * Props:
- *  - variant:  'primary' | 'secondary' | 'ghost' | 'danger' | 'oauth' (default: 'primary')
- *  - size:     'sm' | 'md' | 'lg'                                     (default: 'md')
- *  - fullWidth: boolean                                              (default: false)
- *  - iconOnly:  boolean                                              (default: false)
- *  - disabled:  boolean
- *  - isLoading: boolean
- *  - iconLeft:  ReactNode
- *  - to:        string (React Router navigation link)
- *  - href:      string (External link)
- *  - as:        ElementType (Custom component, e.g. Link / NavLink)
- *  - onClick, type, children, id, ...rest (any native button attr)
+ * Reusable Button component with light and dark mode theme support
  */
 
-const BASE = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '10px',
-  fontFamily: "'Inter', sans-serif",
-  fontWeight: 600,
-  borderRadius: '8px',
-  border: 'none',
-  cursor: 'pointer',
-  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-  whiteSpace: 'nowrap',
-  textDecoration: 'none',
-  position: 'relative',
-  overflow: 'hidden',
-};
-
 const VARIANTS = {
-  primary: {
-    background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-    color: '#fff',
-    boxShadow: '0 4px 14px 0 rgba(37, 99, 235, 0.39)',
-  },
-  secondary: {
-    background: 'rgba(255, 255, 255, 0.05)',
-    color: '#e2e8f0',
-    border: '1px solid rgba(255,255,255,0.1)',
-  },
-  ghost: {
-    background: 'transparent',
-    color: '#94a3b8',
-    border: 'none',
-  },
-  danger: {
-    background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-    color: '#fff',
-    boxShadow: '0 4px 14px 0 rgba(239, 68, 68, 0.39)',
-  },
-  oauth: {
-    background: '#1e293b',
-    color: '#f8fafc',
-    border: '1px solid rgba(255,255,255,0.12)',
-    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  }
+  primary: 'bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-500 hover:via-indigo-500 hover:to-sky-500 text-white shadow-md shadow-blue-500/25 border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/35',
+  secondary: 'bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 hover:bg-slate-100/90 dark:hover:bg-slate-800/90 shadow-sm hover:shadow-md hover:border-slate-300 dark:hover:border-white/20',
+  ghost: 'bg-transparent hover:bg-slate-100/80 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white',
+  danger: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-md shadow-rose-500/25 border border-rose-500/30 hover:shadow-lg hover:shadow-rose-500/35',
+  oauth: 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/90',
 };
 
 const SIZES = {
-  sm: { padding: '6px 14px', fontSize: '13px', height: '32px', gap: '6px' },
-  md: { padding: '10px 20px', fontSize: '14px', height: '40px', gap: '8px' },
-  lg: { padding: '14px 28px', fontSize: '16px', height: '48px', gap: '10px' },
+  sm: 'px-3.5 py-1.5 text-xs h-8 gap-1.5 rounded-lg',
+  md: 'px-4 py-2 text-sm h-10 gap-2 rounded-xl',
+  lg: 'px-6 py-3 text-base h-12 gap-2.5 rounded-xl',
 };
 
 const ICON_SIZES = {
-  sm: { width: '32px', height: '32px', padding: 0 },
-  md: { width: '40px', height: '40px', padding: 0 },
-  lg: { width: '48px', height: '48px', padding: 0 },
+  sm: 'w-8 h-8 p-0 flex items-center justify-center rounded-lg',
+  md: 'w-10 h-10 p-0 flex items-center justify-center rounded-xl',
+  lg: 'w-12 h-12 p-0 flex items-center justify-center rounded-xl',
 };
 
 const Button = forwardRef(({
@@ -83,54 +32,27 @@ const Button = forwardRef(({
   iconOnly = false,
   disabled = false,
   isLoading = false,
+  loading = false,
   iconLeft,
   to,
   href,
   as: ComponentProp,
   children,
+  className = '',
   style: extraStyle,
-  onMouseEnter,
-  onMouseLeave,
-  onMouseDown,
-  onMouseUp,
   ...rest
 }, ref) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const isBtnLoading = isLoading || loading;
+  const variantClass = VARIANTS[variant] ?? VARIANTS.primary;
+  const sizeClass = iconOnly ? (ICON_SIZES[size] ?? ICON_SIZES.md) : (SIZES[size] ?? SIZES.md);
 
-  const baseVariantStyle = VARIANTS[variant] ?? VARIANTS.primary;
-
-  // Add hover state modifiers
-  let dynamicStyle = {};
-  if (isHovered && !disabled && !isLoading) {
-    if (variant === 'primary' || variant === 'danger') {
-      dynamicStyle = { filter: 'brightness(1.1)', transform: 'translateY(-1px)' };
-    } else if (variant === 'oauth') {
-      dynamicStyle = { background: '#334155', transform: 'translateY(-1px)' };
-    } else if (variant === 'ghost') {
-      dynamicStyle = { background: 'rgba(255,255,255,0.05)', color: '#f1f5f9' };
-    } else if (variant === 'secondary') {
-      dynamicStyle = { background: 'rgba(255,255,255,0.1)', color: '#ffffff' };
-    }
-  }
-
-  if (isActive && !disabled && !isLoading) {
-    dynamicStyle = { ...dynamicStyle, transform: 'scale(0.97)' };
-  }
-
-  const sizeStyle = iconOnly ? (ICON_SIZES[size] ?? ICON_SIZES.md) : (SIZES[size] ?? SIZES.md);
-
-  const computedStyle = {
-    ...BASE,
-    ...baseVariantStyle,
-    ...sizeStyle,
-    gap: sizeStyle.gap || BASE.gap,
-    width: fullWidth ? '100%' : iconOnly ? sizeStyle.width : undefined,
-    opacity: disabled || isLoading ? 0.6 : 1,
-    pointerEvents: disabled || isLoading ? 'none' : 'auto',
-    ...dynamicStyle,
-    ...extraStyle,
-  };
+  const baseClass = `inline-flex items-center justify-center font-sans font-semibold transition-all duration-[250ms] ease-out select-none whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 relative overflow-hidden ${
+    fullWidth ? 'w-full' : ''
+  } ${
+    disabled || isBtnLoading
+      ? 'opacity-50 cursor-not-allowed pointer-events-none shadow-none'
+      : 'cursor-pointer hover:-translate-y-[1px] hover:shadow-md active:scale-[0.98]'
+  } ${variantClass} ${sizeClass} ${className}`;
 
   let Tag = ComponentProp || 'button';
   if (!ComponentProp) {
@@ -144,27 +66,24 @@ const Button = forwardRef(({
   } else if (Tag === 'a') {
     tagProps.href = href;
   } else if (Tag === 'button') {
-    tagProps.disabled = disabled || isLoading;
+    tagProps.disabled = disabled || isBtnLoading;
   }
 
   return (
     <Tag
       ref={ref}
-      style={computedStyle}
-      onMouseEnter={(e) => { setIsHovered(true); if (onMouseEnter) onMouseEnter(e); }}
-      onMouseLeave={(e) => { setIsHovered(false); setIsActive(false); if (onMouseLeave) onMouseLeave(e); }}
-      onMouseDown={(e) => { setIsActive(true); if (onMouseDown) onMouseDown(e); }}
-      onMouseUp={(e) => { setIsActive(false); if (onMouseUp) onMouseUp(e); }}
+      className={baseClass}
+      style={extraStyle}
       {...tagProps}
       {...rest}
     >
-      {isLoading ? (
-        <svg className="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {isBtnLoading ? (
+        <svg className="animate-spin shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeDasharray="32" strokeLinecap="round" opacity="0.3" />
           <path d="M12 2A10 10 0 002 12" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
         </svg>
       ) : iconLeft ? (
-        iconLeft
+        <span className="shrink-0">{iconLeft}</span>
       ) : null}
       {children}
     </Tag>
