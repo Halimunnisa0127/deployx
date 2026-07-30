@@ -89,7 +89,7 @@ export default function EnvironmentVariablesStep({
           <div className="overflow-x-auto max-h-[300px] scrollbar-thin scrollbar-thumb-slate-800">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-800/80 bg-slate-900/80 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-slate-800/80 bg-slate-900/80 text-sm font-semibold text-slate-400 uppercase tracking-wider">
                   <th className="py-3 px-4 w-5/12">Key</th>
                   <th className="py-3 px-4 w-4/12">Value</th>
                   <th className="py-3 px-4 w-3/12">Environment Target</th>
@@ -142,7 +142,7 @@ export default function EnvironmentVariablesStep({
                               key={envName}
                               type="button"
                               onClick={() => handleToggleEnvironmentTarget(env.id, envName)}
-                              className={`px-2 py-0.5 rounded text-[10px] font-semibold border transition-all ${
+                              className={`px-2 py-0.5 rounded text-xs font-semibold border transition-all ${
                                 isChecked
                                   ? 'bg-blue-500/20 border-blue-500/40 text-blue-300'
                                   : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300'

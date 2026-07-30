@@ -14,6 +14,7 @@ import { DeploymentsPage, DeploymentDetailsPage } from "../features/deployments"
 import { Domains, DomainDetails } from "../features/domains";
 import { Logs } from "../features/logs";
 import { Github, RepositoryDetails } from "../features/github";
+import { UsagePage } from "../features/usage";
 import PrivateRoute from "../routes/PrivateRoute";
 import PageLoader from "../components/ui/PageLoader";
 import AdminLayout from "../layouts/AdminLayout";
@@ -266,6 +267,16 @@ const router = createBrowserRouter([
       <PrivateRoute>
         <DashboardLayout>
           <Logs />
+        </DashboardLayout>
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: "/dashboard/usage",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout>
+          <UsagePage />
         </DashboardLayout>
       </PrivateRoute>
     ),

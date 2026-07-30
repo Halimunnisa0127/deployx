@@ -63,7 +63,7 @@ export default function BuildLogLine({ log, isWordWrap = true }) {
   return (
     <div className={`flex items-start gap-3 hover:bg-slate-900/60 py-1 px-2 rounded font-mono text-xs leading-relaxed transition-colors ${isWordWrap ? 'whitespace-pre-wrap break-all' : 'whitespace-pre overflow-x-auto'}`}>
       {time && (
-        <span className="text-slate-500 shrink-0 select-none text-[11px] font-mono">
+        <span className="text-slate-500 shrink-0 select-none text-sm font-mono">
           [{time}]
         </span>
       )}

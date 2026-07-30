@@ -49,14 +49,14 @@ export function RecentDeploymentsSkeleton() {
 export function SystemStatusSkeleton() {
   return (
     <Card style={{ maxWidth: '100%', padding: '24px' }}>
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800/80 mb-4">
         <Skeleton width="140px" height="20px" />
         <Skeleton width="100px" height="18px" borderRadius="999px" />
       </div>
 
       <div className="space-y-3">
         {[1, 2, 3, 4, 5].map((idx) => (
-          <div key={idx} className="flex items-center justify-between gap-3 p-3 rounded-xl bg-slate-900/40">
+          <div key={idx} className="flex items-center justify-between gap-3 p-3 rounded-xl bg-slate-100/60 dark:bg-slate-900/40">
             <div className="flex items-center gap-2.5 flex-1">
               <Skeleton variant="circular" width="32px" height="32px" />
               <div className="space-y-1 flex-1">
@@ -75,7 +75,7 @@ export function SystemStatusSkeleton() {
 export function ActivityTimelineSkeleton() {
   return (
     <Card style={{ maxWidth: '100%', padding: '24px' }}>
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800/80 mb-4">
         <Skeleton width="150px" height="20px" />
         <Skeleton width="50px" height="14px" />
       </div>
@@ -98,14 +98,14 @@ export function ActivityTimelineSkeleton() {
 export function UsageSummarySkeleton() {
   return (
     <Card style={{ maxWidth: '100%', padding: '24px' }}>
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800/80 mb-4">
         <Skeleton width="160px" height="20px" />
         <Skeleton width="80px" height="14px" />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {[1, 2, 3, 4].map((idx) => (
-          <div key={idx} className="p-3.5 rounded-xl bg-slate-900/40 space-y-2.5">
+          <div key={idx} className="p-3.5 rounded-xl bg-slate-100/60 dark:bg-slate-900/40 space-y-2.5">
             <div className="flex justify-between">
               <Skeleton width="40%" height="14px" />
               <Skeleton width="30%" height="14px" />

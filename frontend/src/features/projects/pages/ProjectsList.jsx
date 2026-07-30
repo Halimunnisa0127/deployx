@@ -142,7 +142,7 @@ export default function ProjectsList() {
             onChange={(e) => setSearchQuery(e.target.value)}
             onClear={() => setSearchQuery('')}
             fullWidth
-            size="md"
+            size="sm"
           />
         </div>
 
@@ -160,11 +160,11 @@ export default function ProjectsList() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveFilter(tab.id)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-[13px] font-medium transition-all outline-none ${isActive ? 'bg-indigo-100 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-300 dark:border-indigo-500/40 shadow-sm' : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:text-slate-900 dark:hover:text-slate-300'}`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-sm font-medium transition-all outline-none ${isActive ? 'bg-indigo-100 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-300 dark:border-indigo-500/40 shadow-sm' : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:text-slate-900 dark:hover:text-slate-300'}`}
                 >
                   {tab.label}
                   <span
-                    className={`text-[11px] font-semibold px-1.5 py-[1px] rounded-full transition-colors ${isActive ? 'bg-indigo-200 dark:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300' : 'bg-slate-300/50 dark:bg-white/5 text-slate-700 dark:text-slate-500'}`}
+                    className={`text-xs font-semibold px-1.5 py-[1px] rounded-full transition-colors ${isActive ? 'bg-indigo-200 dark:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300' : 'bg-slate-300/50 dark:bg-white/5 text-slate-700 dark:text-slate-500'}`}
                   >
                     {count}
                   </span>
@@ -176,7 +176,7 @@ export default function ProjectsList() {
           {/* Sort Dropdown */}
           <Dropdown
             trigger={
-              <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-900/60 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 text-[13px] font-medium cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900/60 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 text-sm font-medium cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-sm">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M11 5h10" />
                   <path d="M11 9h7" />

@@ -123,7 +123,7 @@ export default function HowItWorksSection() {
                 <div className="flex items-center gap-4 shrink-0">
                   <div className="w-16 h-16 rounded-2xl bg-[#0e1017] border border-white/10 group-hover:border-blue-500/50 flex items-center justify-center relative shadow-lg z-10 transition-colors">
                     {step.icon}
-                    <span className="absolute -top-2 -right-2 text-[10px] font-bold font-mono text-blue-300 bg-blue-950 border border-blue-500/40 px-1.5 py-0.5 rounded-full">
+                    <span className="absolute -top-2 -right-2 text-xs font-bold font-mono text-blue-300 bg-blue-950 border border-blue-500/40 px-1.5 py-0.5 rounded-full">
                       {step.num}
                     </span>
                   </div>

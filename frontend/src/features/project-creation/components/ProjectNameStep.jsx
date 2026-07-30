@@ -37,7 +37,7 @@ export default function ProjectNameStep({ projectName, setProjectName, previewUr
             <span className="text-slate-500">Deployment URL:</span>
             <span className="font-mono text-slate-200 truncate">{previewUrl}</span>
           </div>
-          <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold flex-shrink-0">
+          <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-xs font-semibold flex-shrink-0">
             Auto-generated
           </span>
         </div>

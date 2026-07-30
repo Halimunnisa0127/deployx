@@ -49,7 +49,7 @@ export default function BuildSettingsStep({
         <div className="w-full space-y-2">
           <label className="block text-xs font-semibold text-slate-300 flex items-center justify-between">
             <span>Package Manager</span>
-            <span className="text-[10px] text-slate-500 font-normal">
+            <span className="text-xs text-slate-500 font-normal">
               Used to resolve & install dependencies
             </span>
           </label>
@@ -78,7 +78,7 @@ export default function BuildSettingsStep({
         <div className="w-full space-y-1.5">
           <label className="block text-xs font-semibold text-slate-300 flex items-center justify-between">
             <span>Install Command</span>
-            <span className="text-[10px] text-slate-500 font-mono">
+            <span className="text-xs text-slate-500 font-mono">
               Example: {packageManager} install
             </span>
           </label>
@@ -94,7 +94,7 @@ export default function BuildSettingsStep({
         <div className="w-full space-y-1.5">
           <label className="block text-xs font-semibold text-slate-300 flex items-center justify-between">
             <span>Build Command</span>
-            <span className="text-[10px] text-slate-500 font-mono">
+            <span className="text-xs text-slate-500 font-mono">
               Example: npm run build
             </span>
           </label>
@@ -111,7 +111,7 @@ export default function BuildSettingsStep({
           <div className="w-full space-y-1.5">
             <label className="block text-xs font-semibold text-slate-300 flex items-center justify-between">
               <span>Output Directory</span>
-              <span className="text-[10px] text-slate-500 font-mono">
+              <span className="text-xs text-slate-500 font-mono">
                 {selectedFramework === 'nextjs' ? '.next' : 'dist'}
               </span>
             </label>

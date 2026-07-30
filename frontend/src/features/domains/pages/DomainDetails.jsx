@@ -136,8 +136,8 @@ export default function DomainDetails() {
       {/* 2. Overview Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Verification Status */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center gap-2 text-slate-400 font-medium text-sm mb-4">
+        <div className="p-5 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl flex flex-col justify-between shadow-sm">
+          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium text-sm mb-4">
             <ShieldCheck className="w-4 h-4" /> Domain Verification
           </div>
           <div>
@@ -149,8 +149,8 @@ export default function DomainDetails() {
         </div>
 
         {/* SSL Status */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center gap-2 text-slate-400 font-medium text-sm mb-4">
+        <div className="p-5 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl flex flex-col justify-between shadow-sm">
+          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium text-sm mb-4">
             <Lock className="w-4 h-4" /> SSL Certificate
           </div>
           <div>
@@ -162,8 +162,8 @@ export default function DomainDetails() {
         </div>
 
         {/* DNS Status */}
-        <div className="p-5 bg-slate-900/60 border border-slate-800/80 rounded-2xl flex flex-col justify-between">
-          <div className="flex items-center gap-2 text-slate-400 font-medium text-sm mb-4">
+        <div className="p-5 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl flex flex-col justify-between shadow-sm">
+          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 font-medium text-sm mb-4">
             <Server className="w-4 h-4" /> DNS Configuration
           </div>
           <div>
@@ -176,9 +176,9 @@ export default function DomainDetails() {
       </div>
 
       {/* 3. DNS Records Card */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-800/70 bg-slate-800/30">
-          <h3 className="text-base font-bold text-white flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800/70 bg-slate-50 dark:bg-slate-800/30">
+          <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
             <Server className="w-4 h-4 text-indigo-400" /> DNS Records
           </h3>
           <p className="text-xs text-slate-400 mt-1">Configure these records in your domain registrar's DNS settings.</p>
@@ -187,7 +187,7 @@ export default function DomainDetails() {
         <div className="p-6">
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-slate-400 uppercase bg-slate-800/50">
+              <thead className="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-100 dark:bg-slate-800/50">
                 <tr>
                   <th className="px-4 py-3 rounded-tl-lg">Type</th>
                   <th className="px-4 py-3">Host</th>
@@ -196,21 +196,21 @@ export default function DomainDetails() {
                   <th className="px-4 py-3 text-right rounded-tr-lg">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60">
-                <tr className="hover:bg-slate-800/30 transition-colors">
-                  <td className="px-4 py-4 font-mono text-indigo-400 font-medium">A</td>
-                  <td className="px-4 py-4 font-mono text-slate-300">@</td>
-                  <td className="px-4 py-4 font-mono text-slate-300">76.76.21.21</td>
-                  <td className="px-4 py-4 text-slate-500">3600</td>
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60">
+                <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="px-4 py-4 font-mono text-indigo-600 dark:text-indigo-400 font-medium">A</td>
+                  <td className="px-4 py-4 font-mono text-slate-700 dark:text-slate-300">@</td>
+                  <td className="px-4 py-4 font-mono text-slate-700 dark:text-slate-300">76.76.21.21</td>
+                  <td className="px-4 py-4 text-slate-600 dark:text-slate-500">3600</td>
                   <td className="px-4 py-4 text-right">
                     <Button variant="ghost" size="sm" onClick={() => handleCopy('76.76.21.21')}>Copy</Button>
                   </td>
                 </tr>
-                <tr className="hover:bg-slate-800/30 transition-colors">
-                  <td className="px-4 py-4 font-mono text-indigo-400 font-medium">CNAME</td>
-                  <td className="px-4 py-4 font-mono text-slate-300">www</td>
-                  <td className="px-4 py-4 font-mono text-slate-300">cname.deployx.app</td>
-                  <td className="px-4 py-4 text-slate-500">3600</td>
+                <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="px-4 py-4 font-mono text-indigo-600 dark:text-indigo-400 font-medium">CNAME</td>
+                  <td className="px-4 py-4 font-mono text-slate-700 dark:text-slate-300">www</td>
+                  <td className="px-4 py-4 font-mono text-slate-700 dark:text-slate-300">cname.deployx.app</td>
+                  <td className="px-4 py-4 text-slate-600 dark:text-slate-500">3600</td>
                   <td className="px-4 py-4 text-right">
                     <Button variant="ghost" size="sm" onClick={() => handleCopy('cname.deployx.app')}>Copy</Button>
                   </td>

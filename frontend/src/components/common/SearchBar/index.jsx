@@ -88,7 +88,7 @@ const SearchBar = forwardRef(({
         readOnly={readOnly}
         placeholder={placeholder}
         aria-label={placeholder}
-        className={`w-full ${sizeConfig.container} ${sizeConfig.padding} rounded-xl bg-slate-900/80 border border-slate-800 text-slate-200 placeholder-slate-400 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition-all ${
+        className={`w-full ${sizeConfig.container} ${sizeConfig.padding} rounded-xl bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-200 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition-all ${
           readOnly ? 'cursor-pointer' : 'cursor-text'
         }`}
         {...rest}
@@ -100,12 +100,12 @@ const SearchBar = forwardRef(({
           type="button"
           onClick={handleClear}
           aria-label="Clear search"
-          className={`absolute ${sizeConfig.iconRightPos} p-0.5 rounded-full hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors z-10 focus:outline-none`}
+          className={`absolute ${sizeConfig.iconRightPos} p-0.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors z-10 focus:outline-none`}
         >
           <X className="w-3.5 h-3.5" />
         </button>
       ) : shortcut ? (
-        <kbd className={`absolute ${sizeConfig.iconRightPos} px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-800/80 border border-slate-700/60 rounded pointer-events-none`}>
+        <kbd className={`absolute ${sizeConfig.iconRightPos} px-1.5 py-0.5 text-xs font-mono text-slate-500 dark:text-slate-400 bg-slate-200/80 dark:bg-slate-800/80 border border-slate-300/80 dark:border-slate-700/60 rounded pointer-events-none`}>
           {shortcut}
         </kbd>
       ) : null}

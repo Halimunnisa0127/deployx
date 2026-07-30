@@ -217,7 +217,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                         {domain.type}
                       </span>
                       {domain.isPrimary && (
-                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                        <span className="text-xs font-bold uppercase px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
                           Primary
                         </span>
                       )}
@@ -238,7 +238,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   <div className="flex items-center gap-2.5 flex-wrap flex-shrink-0">
                     {/* SSL Status Badge */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-slate-400 font-medium">SSL:</span>
+                      <span className="text-sm text-slate-400 font-medium">SSL:</span>
                       <Badge variant={sslVariant} dot={true}>
                         SSL {domain.sslStatus}
                       </Badge>
@@ -246,7 +246,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
 
                     {/* DNS Verification Badge */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] text-slate-400 font-medium">DNS:</span>
+                      <span className="text-sm text-slate-400 font-medium">DNS:</span>
                       <Badge variant={dnsVariant} dot={true}>
                         DNS {domain.dnsStatus}
                       </Badge>
@@ -257,7 +257,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                 {/* Row 2: Metadata Details Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
                       <Calendar className="w-3 h-3 text-slate-500" /> Created Date
                     </span>
                     <span className="text-slate-200 font-medium block">
@@ -266,7 +266,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
                       <Clock className="w-3 h-3 text-slate-500" /> Last Checked
                     </span>
                     <span className="text-slate-200 font-medium block">
@@ -275,7 +275,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
                       <ArrowRightLeft className="w-3 h-3 text-slate-500" /> Redirect Status
                     </span>
                     <span className="text-slate-200 font-medium block truncate">
@@ -284,10 +284,10 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
+                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
                       CNAME Record Target
                     </span>
-                    <span className="font-mono text-indigo-400 text-[11px] bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block truncate">
+                    <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block truncate">
                       {domain.cnameTarget}
                     </span>
                   </div>
@@ -295,7 +295,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
 
                 {/* Row 3: Action Buttons Footer */}
                 <div className="pt-3 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-3">
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-sm text-slate-400">
                     Point CNAME to <code className="text-slate-200 font-mono">{domain.cnameTarget}</code> to complete routing.
                   </span>
 
@@ -401,7 +401,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-[11px] text-slate-400 space-y-1">
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-400 space-y-1">
             <span className="font-semibold text-slate-300 block">DNS Setup Instructions:</span>
             <p>Create a CNAME record with your DNS provider pointing your domain to:</p>
             <code className="text-indigo-400 font-mono block bg-slate-950 p-1.5 rounded border border-slate-800">

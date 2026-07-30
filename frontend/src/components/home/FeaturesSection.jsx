@@ -108,7 +108,7 @@ export default function FeaturesSection() {
                     <GitPullRequest className="w-4 h-4 text-blue-400" />
                     <span>GitHub Continuous Deployment</span>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-sans font-medium">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-sm font-sans font-medium">
                     Auto Trigger Enabled
                   </span>
                 </div>
@@ -133,7 +133,7 @@ export default function FeaturesSection() {
                     <Zap className="w-4 h-4 text-blue-400" />
                     <span className="text-xs text-white">Push to main detected &bull; Deploying commit <code>#a4b9c1</code></span>
                   </div>
-                  <span className="text-[11px] font-medium text-blue-300">In Progress (14s)</span>
+                  <span className="text-sm font-medium text-blue-300">In Progress (14s)</span>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function FeaturesSection() {
                 </div>
 
                 {/* Simulated Log Output */}
-                <div className="p-4 rounded-xl bg-black/80 border border-white/10 space-y-1.5 text-gray-400 text-[11px]">
+                <div className="p-4 rounded-xl bg-black/80 border border-white/10 space-y-1.5 text-gray-400 text-sm">
                   <p><span className="text-blue-400">[BUILD]</span> Loading environment variables (DATABASE_URL, API_KEY)</p>
                   <p><span className="text-blue-400">[BUILD]</span> Compiling TypeScript files (32 modules)</p>
                   <p><span className="text-emerald-400">[SUCCESS]</span> Bundle optimized: index.js (142 kB)</p>
@@ -172,11 +172,11 @@ export default function FeaturesSection() {
                 {/* Env Var Preview Cards */}
                 <div className="grid grid-cols-2 gap-3 font-sans">
                   <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                    <div className="text-[11px] text-gray-400">DATABASE_URL</div>
+                    <div className="text-sm text-gray-400">DATABASE_URL</div>
                     <div className="text-xs text-white font-mono mt-0.5">postgresql://user:••••••••@db.deployx.app</div>
                   </div>
                   <div className="p-3 rounded-lg bg-white/[0.02] border border-white/5">
-                    <div className="text-[11px] text-gray-400">JWT_SECRET</div>
+                    <div className="text-sm text-gray-400">JWT_SECRET</div>
                     <div className="text-xs text-white font-mono mt-0.5">
                       YOUR_STRIPE_KEY
                     </div>
@@ -287,7 +287,7 @@ export default function FeaturesSection() {
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.03]">
                     <div className="text-xs">
                       <span className="text-white font-medium">v1.4.2 (Current Active)</span>
-                      <span className="text-gray-500 block text-[11px]">Deployed 30m ago</span>
+                      <span className="text-gray-500 block text-sm">Deployed 30m ago</span>
                     </div>
                     <span className="text-xs text-emerald-400">Live</span>
                   </div>
@@ -295,7 +295,7 @@ export default function FeaturesSection() {
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/[0.01] hover:bg-white/[0.03] border border-white/5">
                     <div className="text-xs">
                       <span className="text-gray-300 font-medium">v1.4.1 (Stable Build)</span>
-                      <span className="text-gray-500 block text-[11px]">Deployed 2 days ago</span>
+                      <span className="text-gray-500 block text-sm">Deployed 2 days ago</span>
                     </div>
                     <button className="text-xs text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 px-3 py-1 rounded transition-colors">
                       Rollback to this

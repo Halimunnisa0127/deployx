@@ -104,26 +104,26 @@ export default function Domains() {
       )}
 
       {/* 1. Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/60 pb-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/60 pb-6">
         <div>
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
               <Globe className="w-5 h-5 text-indigo-400" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Domains
             </h1>
           </div>
-          <p className="text-sm text-slate-400 mt-1.5 leading-relaxed">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">
             Manage every custom domain across your projects in real time.
           </p>
         </div>
 
         {/* Top Active Summary Badge & Add Button */}
         <div className="flex flex-col sm:flex-row items-center gap-3">
-          <div className="px-3.5 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-300 flex items-center gap-2">
-            <LinkIcon className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Total Domains: <strong className="text-white font-semibold">{mockDomains.length}</strong></span>
+          <div className="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <LinkIcon className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
+            <span>Total Domains: <strong className="text-slate-900 dark:text-white font-semibold">{mockDomains.length}</strong></span>
           </div>
           
           <Button

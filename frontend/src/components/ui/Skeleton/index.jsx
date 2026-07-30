@@ -62,3 +62,7 @@ export default function Skeleton({
     </>
   );
 }
+
+export { default as SkeletonCard } from './SkeletonCard';
+export { default as SkeletonChart } from './SkeletonChart';
+export { default as SkeletonTable } from './SkeletonTable';

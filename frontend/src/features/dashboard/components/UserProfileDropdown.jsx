@@ -38,23 +38,23 @@ export default function UserProfileDropdown({ user, close }) {
   };
 
   const navItemClass =
-    'w-full flex items-center justify-between px-3 py-2.5 text-xs font-medium rounded-lg transition-colors text-left select-none text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white group cursor-pointer';
+    'w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-left select-none text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white group cursor-pointer';
 
-  const iconClass = 'text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 flex-shrink-0 w-4 h-4 transition-colors';
+  const iconClass = 'text-slate-500 group-hover:text-slate-800 dark:group-hover:text-slate-200 flex-shrink-0 w-4 h-4 transition-colors';
 
   return (
-    <div className="flex flex-col w-full py-1">
+    <div className="flex flex-col w-full py-1.5">
       {/* Header */}
-      <div className="flex flex-col px-3 pt-2 pb-3 min-w-0">
-        <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wide truncate transition-colors">
+      <div className="flex flex-col px-3.5 pt-2 pb-2.5 min-w-0">
+        <span className="text-xs font-bold text-slate-900 dark:text-white tracking-wide truncate transition-colors">
           {user?.name || 'GANAPATHI RAJESH GUMMALLLA'}
         </span>
-        <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate transition-colors">
+        <span className="text-sm text-slate-600 dark:text-slate-400 truncate transition-colors mt-0.5 font-mono">
           {user?.email || 'nanigummalla418@gmail.com'}
         </span>
       </div>
 
-      <div className="h-px bg-slate-200 dark:bg-slate-800 my-1 mx-1 transition-colors" />
+      <div className="h-px bg-slate-200 dark:bg-white/5 my-1 mx-2 transition-colors" />
 
       {/* List Items */}
       <div className="px-1 space-y-0.5">

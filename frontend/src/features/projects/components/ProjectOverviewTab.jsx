@@ -127,7 +127,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-8 text-xs">
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Project Name
             </span>
             <span className="text-slate-100 font-semibold text-sm block">
@@ -136,7 +136,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Framework
             </span>
             <span className="text-slate-100 font-semibold text-sm flex items-center gap-2">
@@ -146,7 +146,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Environment
             </span>
             <div>
@@ -157,7 +157,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Region
             </span>
             <span className="text-slate-200 font-medium block">
@@ -166,7 +166,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Repository
             </span>
             <a
@@ -182,7 +182,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Production URL
             </span>
             <a
@@ -198,11 +198,11 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1 md:col-span-2 pt-2 border-t border-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <span className="text-slate-400 text-[11px] font-medium uppercase tracking-wider inline-flex items-center gap-1.5">
+            <span className="text-slate-400 text-sm font-medium uppercase tracking-wider inline-flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-slate-400" />
               Created Date:
             </span>
-            <span className="text-slate-300 font-medium text-[11px]">
+            <span className="text-slate-300 font-medium text-sm">
               {project?.createdAt || 'Jul 12, 2026'}
             </span>
           </div>
@@ -225,7 +225,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
                 <div className="text-2xl font-extrabold text-slate-100 tracking-tight">
                   {item.value}
                 </div>
-                <span className="text-[11px] font-medium text-slate-400 block">
+                <span className="text-sm font-medium text-slate-400 block">
                   {item.subtitle}
                 </span>
               </div>
@@ -270,19 +270,19 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-5">
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Commit Hash & Message
             </span>
             <span className="text-slate-200 font-semibold block truncate">
               {latestDeployment.commit}
             </span>
-            <span className="font-mono text-indigo-400 text-[11px] bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block">
+            <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block">
               {latestDeployment.hash}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Branch
             </span>
             <span className="font-mono text-slate-200 font-semibold flex items-center gap-1.5">
@@ -292,7 +292,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Triggered By
             </span>
             <span className="text-slate-200 font-medium flex items-center gap-1.5">
@@ -302,7 +302,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-slate-400 block text-[11px] uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Duration & Timestamp
             </span>
             <span className="text-slate-200 font-medium flex items-center gap-1.5">
@@ -313,7 +313,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
         </div>
 
         <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between">
-          <span className="text-[11px] text-slate-400 font-mono">
+          <span className="text-sm text-slate-400 font-mono">
             Deployment ID: {latestDeployment.id || 'dep-101'}
           </span>
           <Button
@@ -356,11 +356,11 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
                   <span className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
                     {act.title}
                   </span>
-                  <span className="text-[11px] text-slate-400 font-mono flex-shrink-0">
+                  <span className="text-sm text-slate-400 font-mono flex-shrink-0">
                     {act.timeAgo}
                   </span>
                 </div>
-                <p className="text-[12px] text-slate-400 mt-0.5 truncate">
+                <p className="text-sm text-slate-400 mt-0.5 truncate">
                   {act.description}
                 </p>
               </div>

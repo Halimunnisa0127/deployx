@@ -128,19 +128,19 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
       aria-label={`Deployment ${projectName} #${deploymentNumber} ${status}`}
       onClick={handleCardClick}
       onKeyDown={handleKeyDown}
-      className="group relative p-5 sm:p-6 rounded-2xl bg-slate-900/60 hover:bg-slate-900/90 border border-slate-800/80 hover:border-indigo-500/50 transition-all duration-200 cursor-pointer shadow-lg hover:shadow-[0_12px_36px_rgba(79,70,229,0.18)] hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 space-y-4 overflow-hidden text-left"
+      className="group relative p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-900/90 border border-slate-200 dark:border-slate-800/80 hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_12px_36px_rgba(79,70,229,0.18)] hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 space-y-4 overflow-hidden text-left"
     >
       {/* Top Row: Framework Icon Avatar, Project Name, Deployment ID, Environment Badge & Status */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-800/70">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-200 dark:border-slate-800/70">
         <div className="flex items-center gap-3 min-w-0 flex-wrap">
           {/* Framework Icon Avatar */}
-          <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 transition-colors">
+          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-300 dark:group-hover:border-indigo-500/40 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-500/10 transition-colors">
             <FrameworkIcon framework={framework} className="w-5 h-5" />
           </div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-base font-bold text-white group-hover:text-indigo-300 transition-colors truncate">
+              <h3 className="text-base font-bold text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
                 {projectName}
               </h3>
 
@@ -150,7 +150,7 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
               </span>
 
               {/* Deployment Number */}
-              <span className="text-xs font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/50">
+              <span className="text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700/50">
                 #{deploymentNumber}
               </span>
 
@@ -161,14 +161,14 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
             </div>
             
             {/* Subtitle: Framework Name & Created Time */}
-            <div className="text-xs text-slate-400 flex items-center gap-2 mt-1 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 font-medium text-slate-300">
+            <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-1 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
                 <FrameworkIcon framework={framework} className="w-3.5 h-3.5" />
                 {framework}
               </span>
-              <span className="text-slate-600">&bull;</span>
-              <span className="inline-flex items-center gap-1.5 text-slate-400">
-                <Calendar className="w-3.5 h-3.5 text-slate-500" />
+              <span className="text-slate-400 dark:text-slate-600">&bull;</span>
+              <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
+                <Calendar className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
                 Created {deployedAt}
               </span>
             </div>
@@ -178,7 +178,7 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
         {/* Right Status Badge & Live Pulse */}
         <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
           {isLive && (
-            <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
+            <span className="text-sm font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Live
             </span>
@@ -191,43 +191,43 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
 
       {/* Middle Row: Branch, Commit Hash, Build Duration & Commit Message */}
       <div className="space-y-2.5">
-        <div className="flex items-center gap-2.5 text-xs text-slate-300 flex-wrap">
+        <div className="flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-300 flex-wrap">
           {/* Branch */}
-          <span className="inline-flex items-center gap-1.5 font-mono text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded border border-indigo-500/20 font-medium">
-            <GitBranch className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+          <span className="inline-flex items-center gap-1.5 font-mono text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-2.5 py-1 rounded border border-indigo-200 dark:border-indigo-500/20 font-medium">
+            <GitBranch className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0" />
             {branch}
           </span>
 
           {/* Commit Hash */}
-          <span className="inline-flex items-center gap-1.5 font-mono text-slate-300 bg-slate-800/90 px-2.5 py-1 rounded border border-slate-700/70 font-medium">
-            <GitCommit className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <span className="inline-flex items-center gap-1.5 font-mono text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/90 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700/70 font-medium">
+            <GitCommit className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 shrink-0" />
             {commitHash}
           </span>
 
           {/* Build Duration */}
-          <span className="inline-flex items-center gap-1.5 text-slate-300 bg-slate-800/60 px-2.5 py-1 rounded border border-slate-700/40 font-mono text-[11px]">
-            <Timer className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            Duration: <strong className="text-slate-200 font-semibold">{duration}</strong>
+          <span className="inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700/40 font-mono text-sm">
+            <Timer className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
+            Duration: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{duration}</strong>
           </span>
         </div>
 
         {/* Commit Message */}
-        <p className="text-sm text-slate-300 font-medium leading-relaxed line-clamp-1 group-hover:text-slate-100 transition-colors">
+        <p className="text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed line-clamp-1 group-hover:text-slate-900 dark:group-hover:text-slate-100 transition-colors">
           {commitMessage}
         </p>
       </div>
 
       {/* Bottom Row: Triggered By, Created Time & Hover Action Buttons with Tooltips */}
-      <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-400 border-t border-slate-800/50">
+      <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800/50">
         <div className="flex items-center gap-4 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 text-slate-400">
-            <User className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-            Triggered by: <strong className="text-slate-300 font-medium">{triggeredBy}</strong>
+          <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
+            <User className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+            Triggered by: <strong className="text-slate-800 dark:text-slate-300 font-medium">{triggeredBy}</strong>
           </span>
 
-          <span className="inline-flex items-center gap-1.5 text-slate-400">
-            <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-            Created: <strong className="text-slate-300 font-medium">{deployedAt}</strong>
+          <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
+            <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
+            Created: <strong className="text-slate-800 dark:text-slate-300 font-medium">{deployedAt}</strong>
           </span>
         </div>
 

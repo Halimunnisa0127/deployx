@@ -88,7 +88,7 @@ export default function ProductPreviewSection() {
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div className="text-lg font-semibold text-white">Healthy</div>
-                <div className="text-[11px] text-emerald-400 mt-1">100% Uptime (24h)</div>
+                <div className="text-sm text-emerald-400 mt-1">100% Uptime (24h)</div>
               </div>
 
               <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
@@ -97,7 +97,7 @@ export default function ProductPreviewSection() {
                   <Clock className="w-4 h-4 text-blue-400" />
                 </div>
                 <div className="text-lg font-semibold text-white">34s</div>
-                <div className="text-[11px] text-gray-400 mt-1">Optimized cache hit</div>
+                <div className="text-sm text-gray-400 mt-1">Optimized cache hit</div>
               </div>
 
               <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
@@ -106,7 +106,7 @@ export default function ProductPreviewSection() {
                   <Activity className="w-4 h-4 text-cyan-400" />
                 </div>
                 <div className="text-lg font-semibold text-white">18ms</div>
-                <div className="text-[11px] text-cyan-400 mt-1">Global Edge Routing</div>
+                <div className="text-sm text-cyan-400 mt-1">Global Edge Routing</div>
               </div>
 
               <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
@@ -115,7 +115,7 @@ export default function ProductPreviewSection() {
                   <ShieldCheck className="w-4 h-4 text-blue-400" />
                 </div>
                 <div className="text-lg font-semibold text-white">SSL Active</div>
-                <div className="text-[11px] text-gray-400 mt-1">Auto Let's Encrypt</div>
+                <div className="text-sm text-gray-400 mt-1">Auto Let's Encrypt</div>
               </div>
             </div>
 
@@ -139,9 +139,9 @@ export default function ProductPreviewSection() {
                       <div>
                         <div className="text-xs font-semibold text-white flex items-center gap-2">
                           <span>feat: add real-time log streaming</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">d7a9b2c</span>
+                          <span className="text-xs px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">d7a9b2c</span>
                         </div>
-                        <div className="text-[11px] text-gray-400">Deployed 12 minutes ago by @developer</div>
+                        <div className="text-sm text-gray-400">Deployed 12 minutes ago by @developer</div>
                       </div>
                     </div>
                     <span className="text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">Ready</span>
@@ -153,9 +153,9 @@ export default function ProductPreviewSection() {
                       <div>
                         <div className="text-xs font-medium text-gray-300 flex items-center gap-2">
                           <span>fix: environment variable resolution</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/5 text-gray-400">f3e4a19</span>
+                          <span className="text-xs px-1.5 py-0.2 rounded bg-white/5 text-gray-400">f3e4a19</span>
                         </div>
-                        <div className="text-[11px] text-gray-500">Deployed 2 hours ago by @developer</div>
+                        <div className="text-sm text-gray-500">Deployed 2 hours ago by @developer</div>
                       </div>
                     </div>
                     <span className="text-xs text-gray-400">Ready</span>
@@ -167,9 +167,9 @@ export default function ProductPreviewSection() {
                       <div>
                         <div className="text-xs font-medium text-gray-300 flex items-center gap-2">
                           <span>chore: update build script configuration</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-white/5 text-gray-400">8c2b1d0</span>
+                          <span className="text-xs px-1.5 py-0.2 rounded bg-white/5 text-gray-400">8c2b1d0</span>
                         </div>
-                        <div className="text-[11px] text-gray-500">Deployed yesterday by @developer</div>
+                        <div className="text-sm text-gray-500">Deployed yesterday by @developer</div>
                       </div>
                     </div>
                     <span className="text-xs text-gray-400">Ready</span>
@@ -184,12 +184,12 @@ export default function ProductPreviewSection() {
                     <span className="flex items-center gap-2 text-blue-400 font-semibold">
                       <Terminal className="w-3.5 h-3.5" /> Live Build Logs
                     </span>
-                    <span className="text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
+                    <span className="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
                       STREAMING
                     </span>
                   </div>
 
-                  <div className="space-y-1.5 text-[11px] leading-relaxed text-gray-400">
+                  <div className="space-y-1.5 text-sm leading-relaxed text-gray-400">
                     <p><span className="text-blue-400">[00:01]</span> Cloning github.com/user/deployx-api...</p>
                     <p><span className="text-blue-400">[00:05]</span> Detecting Node.js environment (v20.x)</p>
                     <p><span className="text-blue-400">[00:12]</span> Running `npm run build`...</p>
@@ -199,7 +199,7 @@ export default function ProductPreviewSection() {
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[10px] text-gray-500">
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-500">
                   <span>Region: us-east (N. Virginia)</span>
                   <span>SSL: Managed TLS 1.3</span>
                 </div>

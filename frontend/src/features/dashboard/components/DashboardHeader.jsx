@@ -10,6 +10,8 @@ import {
   Globe,
   Search,
   ArrowRight,
+  Users,
+  Terminal,
 } from 'lucide-react';
 
 import SearchBar from '../../../components/common/SearchBar';
@@ -28,7 +30,9 @@ const CATEGORY_ICON_MAP = {
   Projects: <FolderPlus className="w-3.5 h-3.5 text-indigo-400" />,
   Deployments: <Rocket className="w-3.5 h-3.5 text-purple-400" />,
   Domains: <Globe className="w-3.5 h-3.5 text-sky-400" />,
-  'GitHub Repositories': <GithubIcon className="w-3.5 h-3.5 text-emerald-400" />,
+  Repositories: <GithubIcon className="w-3.5 h-3.5 text-emerald-400" />,
+  Teams: <Users className="w-3.5 h-3.5 text-rose-400" />,
+  Logs: <Terminal className="w-3.5 h-3.5 text-amber-400" />,
 };
 
 export default function DashboardHeader({ onToggleMobile }) {
@@ -146,10 +150,7 @@ export default function DashboardHeader({ onToggleMobile }) {
             })}
           </nav>
 
-          {/* Page Title */}
-          <h1 className="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight hidden sm:block truncate mt-0.5 transition-colors">
-            {currentPageTitle}
-          </h1>
+
         </div>
       </div>
 
@@ -158,7 +159,7 @@ export default function DashboardHeader({ onToggleMobile }) {
         {/* Global Search Container */}
         <div ref={searchContainerRef} className="relative hidden md:block">
           <SearchBar
-            placeholder="Search projects, deployments, domains..."
+            placeholder="Search anything..."
             shortcut="⌘K"
             value={searchQuery}
             onChange={(e) => {
@@ -181,7 +182,7 @@ export default function DashboardHeader({ onToggleMobile }) {
               ) : (
                 Object.entries(groupedResults).map(([category, items]) => (
                   <div key={category} className="space-y-1">
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold uppercase tracking-wider text-slate-400">
                       {CATEGORY_ICON_MAP[category] || <Search className="w-3.5 h-3.5 text-slate-400" />}
                       <span>{category}</span>
                     </div>
@@ -213,7 +214,7 @@ export default function DashboardHeader({ onToggleMobile }) {
           aria-label="View notifications (2 unread)"
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-indigo-500 text-white text-[10px] font-bold font-mono ring-2 ring-white dark:ring-[#0a0a0a] shadow-sm">
+          <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold font-mono ring-2 ring-white dark:ring-[#0a0a0a] shadow-sm">
             2
           </span>
         </Link>

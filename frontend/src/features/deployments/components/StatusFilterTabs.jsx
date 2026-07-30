@@ -27,7 +27,7 @@ export default function StatusFilterTabs({ activeTab, onTabChange, counts = {} }
           >
             <span>{tab.label}</span>
             <span
-              className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${
+              className={`px-1.5 py-0.5 rounded-full text-xs font-mono ${
                 isActive
                   ? 'bg-white/20 text-white font-bold'
                   : 'bg-slate-800 text-slate-400'
