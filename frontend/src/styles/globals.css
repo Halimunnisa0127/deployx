@@ -26,7 +26,7 @@
 
 html {
   scroll-behavior: smooth;
-  font-size: 115%; /* Increased base font size to 125% (20px) for significantly larger typography */
+  font-size: 100%; /* Increased base font size to 125% (20px) for significantly larger typography */
 }
 
 body {

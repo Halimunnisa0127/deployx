@@ -33,7 +33,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
                 Recent Deployments
               </h2>
             </div>
@@ -109,7 +109,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
 
                 {/* Right: Build Duration, Time & View Deployment Button */}
                 <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 flex-shrink-0 justify-between md:justify-end">
-                  <div className="flex items-center gap-3 text-[11px] text-slate-600 dark:text-slate-400">
+                  <div className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
                     {item.duration && (
                       <span className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/80 px-2 py-0.5 rounded text-slate-700 dark:text-slate-300">
                         <Timer className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />

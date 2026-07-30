@@ -15,7 +15,7 @@ import EmptyUsageState      from '../components/EmptyUsageState';
 /* ─── Tiny section divider label ─────────────────────────────── */
 function SectionLabel({ children, muted = false }) {
   return (
-    <p className={`text-[10px] font-bold uppercase tracking-widest mb-1 select-none ${
+    <p className={`text-xs font-bold uppercase tracking-widest mb-1 select-none ${
       muted
         ? 'text-slate-300 dark:text-slate-600'
         : 'text-slate-400 dark:text-slate-500'

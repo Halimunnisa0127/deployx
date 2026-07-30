@@ -96,7 +96,7 @@ export default function ResourceUsageCard({ item }) {
           </div>
 
           {/* Trend Badge */}
-          <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+          <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-sm font-bold border ${
               item.isUp
                 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
                 : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
@@ -115,7 +115,7 @@ export default function ResourceUsageCard({ item }) {
                 {item.unit}
               </span>
             </div>
-            <div className="text-[11px] font-medium text-slate-400 dark:text-slate-500 mt-1.5">
+            <div className="text-sm font-medium text-slate-400 dark:text-slate-500 mt-1.5">
               of {item.limit} {item.unit} limit ({item.percent}%)
             </div>
           </div>
@@ -142,15 +142,15 @@ export default function ResourceUsageCard({ item }) {
         {/* Detailed Metrics Block */}
         <div className="grid grid-cols-3 gap-2 pt-3 border-t border-slate-100 dark:border-white/5">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Remaining</span>
+            <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Remaining</span>
             <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.remaining} {item.unit}</span>
           </div>
           <div className="flex flex-col gap-0.5">
-            <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Forecast (EOM)</span>
+            <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Forecast (EOM)</span>
             <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.forecastUsed} {item.unit}</span>
           </div>
           <div className="flex flex-col gap-0.5 items-end">
-            <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Status</span>
+            <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">Status</span>
             <span className={`text-xs font-bold flex items-center gap-1 ${statusCss}`}>
               <StatusIcon className="w-3 h-3" />
               {statusKey}

@@ -153,7 +153,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                 <h2 className="text-base font-bold text-slate-100 tracking-tight">
                   Environment Variables
                 </h2>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   <ShieldCheck className="w-3 h-3" /> Encrypted & Masked
                 </span>
               </div>
@@ -207,7 +207,7 @@ export default function ProjectEnvTab({ project, onAction }) {
         <div className="overflow-x-auto w-full scrollbar-thin">
           <table className="w-full min-w-[640px] text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-900/80 border-b border-slate-800 text-slate-400 uppercase text-[11px] tracking-wider font-semibold">
+              <tr className="bg-slate-900/80 border-b border-slate-800 text-slate-400 uppercase text-sm tracking-wider font-semibold">
                 <th className="py-3.5 px-6">Key</th>
                 <th className="py-3.5 px-6">Value (Masked)</th>
                 <th className="py-3.5 px-6">Environment</th>
@@ -255,7 +255,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                       {/* VALUE (Masked) */}
                       <td className="py-4 px-6 font-mono">
                         <div className="flex items-center gap-2 max-w-xs">
-                          <span className="truncate bg-slate-900 px-2.5 py-1 rounded border border-slate-800 text-slate-300 font-mono text-[11px]">
+                          <span className="truncate bg-slate-900 px-2.5 py-1 rounded border border-slate-800 text-slate-300 font-mono text-sm">
                             {isRevealed ? item.value : '••••••••••••••••'}
                           </span>
 
@@ -298,7 +298,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                       </td>
 
                       {/* UPDATED */}
-                      <td className="py-4 px-6 text-slate-400 text-[11px]">
+                      <td className="py-4 px-6 text-slate-400 text-sm">
                         {item.updatedAt}
                       </td>
 

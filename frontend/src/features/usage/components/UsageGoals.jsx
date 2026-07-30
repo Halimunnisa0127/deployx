@@ -67,12 +67,12 @@ function GoalCard({ resource }) {
           <div className={`p-1.5 rounded-lg border shrink-0 ${cfg.iconBg} transition-transform duration-300 group-hover:scale-110`}>
             <Icon className="w-4 h-4" />
           </div>
-          <span className="text-[13px] font-extrabold tracking-wide text-slate-700 dark:text-slate-300 uppercase">
+          <span className="text-base font-extrabold tracking-wide text-slate-700 dark:text-slate-300 uppercase">
             {cfg.label}
           </span>
         </div>
 
-        <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${statusCss}`}>
+        <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border shrink-0 ${statusCss}`}>
           <StatusIcon className="w-3 h-3" />
           {statusKey}
         </div>
@@ -80,7 +80,7 @@ function GoalCard({ resource }) {
 
       {/* ── Goal Tracker ───────────────────────────────────────── */}
       <div className="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/60 mt-1">
-        <div className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5 flex items-center gap-1">
+        <div className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5 flex items-center gap-1">
           <Target className="w-3 h-3" />
           Goal
         </div>
@@ -92,22 +92,22 @@ function GoalCard({ resource }) {
       {/* ── Current & Forecast grid ────────────────────────────── */}
       <div className="grid grid-cols-2 gap-3 pt-1 border-t border-slate-100 dark:border-white/5">
         <div>
-          <div className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5">
+          <div className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5">
             Current
           </div>
           <div className="text-xl font-black text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
-            {currentVal} <span className="text-[11px] font-semibold text-slate-500">{resource.unit}</span>
+            {currentVal} <span className="text-sm font-semibold text-slate-500">{resource.unit}</span>
           </div>
         </div>
         <div className="relative">
           <div className="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 hidden sm:block">
             <ArrowRight className="w-3 h-3" />
           </div>
-          <div className="text-[10px] text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5 sm:pl-2">
+          <div className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5 sm:pl-2">
             Forecast
           </div>
           <div className="text-xl font-black text-indigo-600 dark:text-indigo-400 tracking-tight flex items-baseline gap-1 sm:pl-2">
-            {forecastVal} <span className="text-[11px] font-semibold text-indigo-400/70 dark:text-indigo-500/70">{resource.unit}</span>
+            {forecastVal} <span className="text-sm font-semibold text-indigo-400/70 dark:text-indigo-500/70">{resource.unit}</span>
           </div>
         </div>
       </div>

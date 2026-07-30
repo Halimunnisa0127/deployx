@@ -50,7 +50,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
             <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
               Infrastructure Efficiency
             </h3>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">
+            <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
               Overall resource utilization and health score
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
 
         <div className="flex gap-8 mt-1">
           <div>
-            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+            <div className="text-xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
               Grade
             </div>
             <div className={`text-2xl leading-none font-black ${colorClass}`}>
@@ -66,7 +66,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
             </div>
           </div>
           <div>
-            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+            <div className="text-xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
               Resource Health
             </div>
             <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
@@ -74,7 +74,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
             </div>
           </div>
           <div>
-            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+            <div className="text-xs uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500 mb-1">
               Opportunities
             </div>
             <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
@@ -111,7 +111,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
           <span className="text-2xl font-black text-slate-900 dark:text-white leading-none tracking-tighter">
             {score}
           </span>
-          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-0.5">
             Score
           </span>
         </div>

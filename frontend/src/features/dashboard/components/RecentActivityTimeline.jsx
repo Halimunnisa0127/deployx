@@ -56,7 +56,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
           <div className="p-2.5 rounded-xl bg-sky-500/10 dark:bg-sky-500/20 border border-sky-500/30 text-sky-500 dark:text-sky-400 shadow-sm shadow-sky-500/20">
             <Activity className="w-6 h-6" />
           </div>
-          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
             Recent Activity
           </h2>
         </div>
@@ -120,16 +120,16 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
                   {act.title}
                 </div>
                 {act.description && (
-                  <div className="text-[11px] text-slate-500 truncate mt-0.5">
+                  <div className="text-sm text-slate-500 truncate mt-0.5">
                     {act.description}
                   </div>
                 )}
-                <div className="flex items-center justify-between gap-2 mt-1 text-[11px] text-slate-600 dark:text-slate-400">
+                <div className="flex items-center justify-between gap-2 mt-1 text-sm text-slate-600 dark:text-slate-400">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="font-mono text-slate-700 dark:text-slate-300 truncate font-medium">
                       {act.projectName}
                     </span>
-                    <span className="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400">
+                    <span className="px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400">
                       {act.type}
                     </span>
                   </div>

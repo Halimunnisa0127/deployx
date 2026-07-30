@@ -76,7 +76,7 @@ export default function SidebarItem({
 
                 {badge !== undefined && badge !== null && (
                   <span
-                    className={`px-1.5 py-0.5 text-[10px] font-semibold rounded-md border ${
+                    className={`px-1.5 py-0.5 text-xs font-semibold rounded-md border ${
                       active
                         ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-500/40'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/60 group-hover:border-slate-300 dark:group-hover:border-slate-600'

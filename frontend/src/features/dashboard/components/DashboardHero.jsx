@@ -80,20 +80,20 @@ export default function DashboardHero() {
               <span className="px-3 py-1 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-wider bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-sm">
                 {greeting}
               </span>
-              <div className="flex items-center gap-2.5 text-xs sm:text-sm font-mono">
-                <span className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/90 px-3.5 py-1.5 rounded-lg border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 font-semibold shadow-sm">
-                  <Calendar className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+              <div className="flex items-center gap-2.5 text-[11px] sm:text-xs font-mono">
+                <span className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 px-3 py-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 font-semibold shadow-sm">
+                  <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                   {formattedDate}
                 </span>
-                <span className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/90 px-3.5 py-1.5 rounded-lg border border-slate-200/80 dark:border-slate-700/80 text-slate-900 dark:text-white font-extrabold shadow-sm">
-                  <Clock className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                <span className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 px-3 py-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 text-slate-900 dark:text-white font-extrabold shadow-sm">
+                  <Clock className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
                   {formattedTime}
                 </span>
               </div>
             </div>
 
             {/* Welcome Heading with Display Name */}
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight leading-tight">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight leading-tight">
               Welcome back,<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 dark:from-blue-400 dark:via-indigo-400 dark:to-sky-400">
                 {displayName}

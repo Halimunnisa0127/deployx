@@ -210,7 +210,7 @@ export default function UsageHeader({
                     transition={{ duration: 0.15 }}
                     className="absolute right-0 mt-2 w-60 z-30 p-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-md space-y-1"
                   >
-                    <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+                    <div className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                       Choose Export Format
                     </div>
                     {EXPORT_OPTIONS.map((exp) => {
@@ -229,7 +229,7 @@ export default function UsageHeader({
                             <div className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                               {exp.label}
                             </div>
-                            <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                            <div className="text-xs text-slate-500 dark:text-slate-400">
                               {exp.desc}
                             </div>
                           </div>

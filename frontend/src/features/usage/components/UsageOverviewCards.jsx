@@ -110,7 +110,7 @@ export default function UsageOverviewCards({ summary = {} }) {
                     <span className="text-slate-800 dark:text-slate-200">{item.percent}% used</span>
                     <span className="text-slate-600 dark:text-slate-400">{item.remaining} {item.unit} remaining</span>
                   </div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-500 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-center">
+                  <div className="text-sm text-slate-500 dark:text-slate-500 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-center">
                     vs last period
                   </div>
                 </div>

@@ -178,7 +178,7 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
         {/* Right Status Badge & Live Pulse */}
         <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
           {isLive && (
-            <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
+            <span className="text-sm font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Live
             </span>
@@ -205,7 +205,7 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
           </span>
 
           {/* Build Duration */}
-          <span className="inline-flex items-center gap-1.5 text-slate-300 bg-slate-800/60 px-2.5 py-1 rounded border border-slate-700/40 font-mono text-[11px]">
+          <span className="inline-flex items-center gap-1.5 text-slate-300 bg-slate-800/60 px-2.5 py-1 rounded border border-slate-700/40 font-mono text-sm">
             <Timer className="w-3.5 h-3.5 text-amber-400 shrink-0" />
             Duration: <strong className="text-slate-200 font-semibold">{duration}</strong>
           </span>

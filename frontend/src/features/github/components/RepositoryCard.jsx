@@ -45,7 +45,7 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
               <h3 className="text-base font-bold text-slate-200 group-hover:text-white transition-colors truncate max-w-[200px] sm:max-w-xs">
                 {repo.name}
               </h3>
-              <Badge variant="neutral" className="capitalize px-1.5 py-0 text-[10px] bg-slate-800/50">
+              <Badge variant="neutral" className="capitalize px-1.5 py-0 text-xs bg-slate-800/50">
                 {repo.visibility}
               </Badge>
             </div>
@@ -64,7 +64,7 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
       {/* Middle Row: Branch, Sync */}
       <div className="py-4 flex flex-wrap items-center gap-x-6 gap-y-3">
         <div className="flex flex-col gap-1">
-          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Default Branch</span>
+          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Default Branch</span>
           <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
             <GitBranch className="w-4 h-4 text-indigo-400" />
             <span className="font-mono bg-indigo-500/10 text-indigo-300 px-1.5 py-0.5 rounded-md text-xs">{repo.defaultBranch}</span>
@@ -72,7 +72,7 @@ export default function RepositoryCard({ repo, onClick, onAction }) {
         </div>
         
         <div className="flex flex-col gap-1">
-          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Last Sync</span>
+          <span className="text-sm font-semibold text-slate-500 uppercase tracking-wider">Last Sync</span>
           <div className="flex items-center gap-1.5 text-sm font-medium text-slate-300">
             <Clock className="w-4 h-4 text-slate-400" />
             {formatDate(repo.lastSync)}

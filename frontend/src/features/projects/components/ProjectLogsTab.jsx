@@ -89,11 +89,11 @@ export default function ProjectLogsTab({ project, onAction }) {
           <div className="flex items-center gap-2">
             <Terminal className="w-4 h-4 text-blue-400" />
             <span className="text-slate-200 font-semibold text-xs">Runtime & Build Logs</span>
-            <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+            <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20">
               Live Stream
             </span>
           </div>
-          <span className="text-[11px] text-slate-500">{filteredLogs.length} events logged</span>
+          <span className="text-sm text-slate-500">{filteredLogs.length} events logged</span>
         </div>
 
         {/* Log Lines Content */}
@@ -109,11 +109,11 @@ export default function ProjectLogsTab({ project, onAction }) {
 
               return (
                 <div key={log.id} className="flex items-start gap-3 p-1.5 rounded hover:bg-slate-900/50 transition-colors">
-                  <span className="text-slate-600 text-[11px] flex-shrink-0 pt-0.5">[{log.timestamp}]</span>
-                  <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold border flex-shrink-0 ${badgeStyle}`}>
+                  <span className="text-slate-600 text-sm flex-shrink-0 pt-0.5">[{log.timestamp}]</span>
+                  <span className={`px-2 py-0.5 rounded text-xs uppercase font-bold border flex-shrink-0 ${badgeStyle}`}>
                     {log.level}
                   </span>
-                  <span className="text-slate-500 text-[10px] font-semibold flex-shrink-0">[{log.type}]</span>
+                  <span className="text-slate-500 text-xs font-semibold flex-shrink-0">[{log.type}]</span>
                   <span className="text-slate-200 break-all">{log.message}</span>
                 </div>
               );

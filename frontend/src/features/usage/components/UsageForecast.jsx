@@ -73,7 +73,7 @@ function ForecastCard({ resource }) {
           </span>
         </div>
 
-        <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border shrink-0 ${status.css}`}>
+        <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border shrink-0 ${status.css}`}>
           <StatusIcon className="w-3 h-3" />
           {statusKey}
         </div>
@@ -96,7 +96,7 @@ function ForecastCard({ resource }) {
       <div className="pt-2 mt-1 border-t border-slate-100 dark:border-white/5">
         {/* Delta */}
         <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] uppercase font-semibold tracking-wide text-slate-400 dark:text-slate-500">
+          <span className="text-xs uppercase font-semibold tracking-wide text-slate-400 dark:text-slate-500">
             Predicted Growth
           </span>
           <span className="text-sm font-bold text-slate-700 dark:text-slate-300 flex items-center gap-0.5">

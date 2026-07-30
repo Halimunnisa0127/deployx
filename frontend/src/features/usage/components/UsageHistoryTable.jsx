@@ -37,7 +37,7 @@ function StatusBadge({ status }) {
     dot = 'bg-slate-400';
   }
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-bold border ${cls}`}>
+    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-sm font-bold border ${cls}`}>
       <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${dot}`} />
       {status}
     </span>
@@ -50,7 +50,7 @@ function SortTh({ field, label, alignRight = false, sortField, sortOrder, onSort
   return (
     <th
       onClick={() => onSort(field)}
-      className={`py-2 px-3 text-[11px] font-extrabold uppercase tracking-wider
+      className={`py-2 px-3 text-sm font-extrabold uppercase tracking-wider
                   cursor-pointer select-none whitespace-nowrap transition-colors
                   ${alignRight ? 'text-right' : 'text-left'}
                   ${active
@@ -333,7 +333,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                       <p className="text-sm font-bold text-slate-700 dark:text-slate-200">
                         No matching records
                       </p>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                         Adjust your filters or clear the search.
                       </p>
                     </div>
@@ -431,7 +431,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
       {/* ── Pagination footer ────────────────────────────────── */}
       {!isLoading && totalItems > 0 && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2
-                        pt-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400
+                        pt-1 text-sm font-semibold text-slate-500 dark:text-slate-400
                         border-t border-slate-100 dark:border-slate-800/60">
 
           <span>

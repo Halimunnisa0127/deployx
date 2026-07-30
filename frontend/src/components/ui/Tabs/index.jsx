@@ -58,7 +58,7 @@ const Tabs = forwardRef(({
               {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
               <span>{tab.label}</span>
               {tab.badge !== undefined && (
-                <span className="px-1.5 py-0.5 text-[10px] rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+                <span className="px-1.5 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
                   {tab.badge}
                 </span>
               )}
@@ -88,7 +88,7 @@ const Tabs = forwardRef(({
             {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
             <span>{tab.label}</span>
             {tab.badge !== undefined && (
-              <span className="px-1.5 py-0.5 text-[10px] rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium">
+              <span className="px-1.5 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium">
                 {tab.badge}
               </span>
             )}

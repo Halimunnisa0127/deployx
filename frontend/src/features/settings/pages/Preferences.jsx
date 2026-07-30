@@ -106,7 +106,7 @@ export default function Preferences() {
                 <Mail className="w-5 h-5 text-indigo-400 shrink-0" />
                 <div>
                   <div className="text-xs font-bold text-slate-200">Email Notifications</div>
-                  <div className="text-[11px] text-slate-400">Receive build logs and deployment failure reports via email.</div>
+                  <div className="text-sm text-slate-400">Receive build logs and deployment failure reports via email.</div>
                 </div>
               </div>
 
@@ -124,7 +124,7 @@ export default function Preferences() {
                 <BellRing className="w-5 h-5 text-sky-400 shrink-0" />
                 <div>
                   <div className="text-xs font-bold text-slate-200">Browser Push Notifications</div>
-                  <div className="text-[11px] text-slate-400">Receive real-time desktop popups when builds succeed or fail.</div>
+                  <div className="text-sm text-slate-400">Receive real-time desktop popups when builds succeed or fail.</div>
                 </div>
               </div>
 

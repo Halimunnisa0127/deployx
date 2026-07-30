@@ -34,7 +34,7 @@ export default function FrameworkSelectionStep({
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               <span>Auto Detect Framework</span>
             </div>
-            <p className="text-[11px] text-slate-400 leading-normal">
+            <p className="text-sm text-slate-400 leading-normal">
               Scan project files in the repository root to automatically assign framework presets.
             </p>
           </div>
@@ -63,12 +63,12 @@ export default function FrameworkSelectionStep({
               <div>
                 <span className="text-slate-400">Detected Framework: </span>
                 <span className="font-bold text-blue-300">{detectedFrameworkName}</span>
-                <span className="text-[10px] text-slate-400 block sm:inline sm:ml-2">
+                <span className="text-xs text-slate-400 block sm:inline sm:ml-2">
                   (via root package.json)
                 </span>
               </div>
             </div>
-            <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-semibold border border-blue-500/30 flex-shrink-0">
+            <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30 flex-shrink-0">
               Auto-preset
             </span>
           </div>
@@ -99,7 +99,7 @@ export default function FrameworkSelectionStep({
         <div className="w-full space-y-1.5">
           <label className="block text-xs font-semibold text-slate-300 flex items-center justify-between">
             <span>Root Directory</span>
-            <span className="text-[10px] text-slate-500 font-normal">
+            <span className="text-xs text-slate-500 font-normal">
               Directory containing your application code
             </span>
           </label>
@@ -112,13 +112,13 @@ export default function FrameworkSelectionStep({
           />
 
           <div className="flex items-center gap-2 pt-1 flex-wrap">
-            <span className="text-[11px] text-slate-500">Quick Examples:</span>
+            <span className="text-sm text-slate-500">Quick Examples:</span>
             {ROOT_DIR_EXAMPLES.map((ex) => (
               <button
                 key={ex}
                 type="button"
                 onClick={() => setRootDirectory(ex)}
-                className={`px-2.5 py-1 rounded-md text-[11px] font-mono border transition-all ${
+                className={`px-2.5 py-1 rounded-md text-sm font-mono border transition-all ${
                   rootDirectory === ex
                     ? 'bg-blue-500/20 border-blue-500/40 text-blue-300 font-semibold'
                     : 'bg-slate-950/40 border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700'

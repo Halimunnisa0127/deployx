@@ -126,7 +126,7 @@ function DomainCard({ domain, onClick, onOpenDomain }) {
         {/* Right Status Badge & Live Pulse */}
         <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
            {isLive && (
-            <span className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
+            <span className="text-sm font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Active
             </span>

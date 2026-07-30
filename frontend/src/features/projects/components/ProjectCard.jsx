@@ -80,7 +80,7 @@ export default function ProjectCard({
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="inline-flex items-center gap-1 text-[13px] text-slate-500 dark:text-slate-400 no-underline font-inter truncate transition-colors hover:text-slate-800 dark:hover:text-slate-200"
+          className="inline-flex items-center gap-1 text-base text-slate-500 dark:text-slate-400 no-underline font-inter truncate transition-colors hover:text-slate-800 dark:hover:text-slate-200"
           title={`https://${defaultUrl}`}
         >
           {defaultUrl}

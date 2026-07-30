@@ -86,7 +86,7 @@ export default function UsageSpikes({ spikes = [] }) {
                 <span className="text-sm font-black text-indigo-600 dark:text-indigo-400 tracking-tight">
                   {spike.peakUsage}
                 </span>
-                <span className={`inline-flex justify-center min-w-[50px] px-2 py-0.5 rounded text-[10px] sm:text-xs font-bold border ${severityCfg.css}`}>
+                <span className={`inline-flex justify-center min-w-[50px] px-2 py-0.5 rounded text-xs sm:text-xs font-bold border ${severityCfg.css}`}>
                   {spike.severity}
                 </span>
               </div>

@@ -48,7 +48,7 @@ function BuildMetadataCard({ deployment }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-xs">
         {/* Framework */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Framework
           </span>
           <div className="flex items-center gap-2 text-sm font-semibold text-white">
@@ -59,7 +59,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Node Version */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Node Version
           </span>
           <div className="font-mono font-semibold text-slate-200 bg-slate-800/60 px-2.5 py-1 rounded-md border border-slate-700/50 inline-block">
@@ -69,7 +69,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Operating System */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Operating System
           </span>
           <div className="flex items-center gap-2 text-slate-200 font-medium">
@@ -80,7 +80,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Architecture */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Architecture
           </span>
           <div className="font-mono text-slate-200 font-medium bg-slate-800/60 px-2.5 py-1 rounded-md border border-slate-700/50 inline-block">
@@ -90,7 +90,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Runtime */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Runtime
           </span>
           <div className="font-mono font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-md border border-emerald-500/20 inline-block">
@@ -100,7 +100,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Build Cache Status */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Build Cache Status
           </span>
           <div className="flex items-center gap-1.5 text-amber-300 font-medium">
@@ -111,7 +111,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Image Version */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Image Version
           </span>
           <div className="flex items-center gap-2 text-slate-200 font-medium">
@@ -122,7 +122,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Region */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Region
           </span>
           <div className="flex items-center gap-2 text-slate-200 font-medium">
@@ -133,7 +133,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Git Commit Author */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Git Commit Author
           </span>
           <div className="flex items-center gap-2 text-slate-200 font-medium">
@@ -144,7 +144,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Builder Version */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Builder Version
           </span>
           <div className="flex items-center gap-2 text-slate-200 font-medium">
@@ -155,7 +155,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Build Command */}
         <div className="space-y-1.5 sm:col-span-2">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Build Command
           </span>
           <div className="font-mono text-emerald-400 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800/80 font-medium">
@@ -165,7 +165,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Image Digest */}
         <div className="space-y-1.5 sm:col-span-2">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Image Digest
           </span>
           <div className="font-mono text-indigo-300 bg-slate-950 px-3 py-2 rounded-lg border border-slate-800/80 font-medium truncate" title={metadata.imageDigest}>
@@ -175,7 +175,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Root Directory */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Root Directory
           </span>
           <div className="flex items-center gap-2 font-mono text-slate-300">
@@ -186,7 +186,7 @@ function BuildMetadataCard({ deployment }) {
 
         {/* Output Directory */}
         <div className="space-y-1.5">
-          <span className="font-medium text-slate-400 block uppercase tracking-wider text-[11px]">
+          <span className="font-medium text-slate-400 block uppercase tracking-wider text-sm">
             Output Directory
           </span>
           <div className="flex items-center gap-2 font-mono text-slate-300">

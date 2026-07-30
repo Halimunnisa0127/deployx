@@ -85,7 +85,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
                 Deployment Trends
               </h2>
               <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-extrabold">
@@ -167,7 +167,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
                   x={paddingX - 8}
                   y={y + 4}
                   textAnchor="end"
-                  className="fill-slate-400 dark:fill-slate-500 font-mono text-[9px]"
+                  className="fill-slate-400 dark:fill-slate-500 font-mono text-xs"
                 >
                   {valLabel}
                 </text>
@@ -334,12 +334,12 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
                 <span className="font-bold text-slate-900 dark:text-white">
                   {data[hoveredIndex].day}
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-xs text-slate-400">
                   Total: {data[hoveredIndex].success + data[hoveredIndex].failed}
                 </span>
               </div>
 
-              <div className="space-y-1 font-mono text-[11px]">
+              <div className="space-y-1 font-mono text-sm">
                 {visibleSeries.success && (
                   <div className="flex items-center justify-between gap-4 text-emerald-600 dark:text-emerald-400 font-medium">
                     <span className="flex items-center gap-1.5">

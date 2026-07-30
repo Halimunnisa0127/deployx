@@ -108,7 +108,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
     if (onToggleMobileExternal) onToggleMobileExternal();
   };
 
-  const sidebarWidth = isCollapsed ? 'w-20' : 'w-64';
+  const sidebarWidth = isCollapsed ? 'w-20' : 'w-[280px]';
 
   const sidebarContent = (
     <div className="flex flex-col h-full bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-200 border-r border-slate-200 dark:border-slate-800/80 shadow-2xl relative select-none transition-colors duration-300">
@@ -126,7 +126,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                 <span className="font-extrabold text-base tracking-tight bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent truncate">
                   DeployX
                 </span>
-                <span className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+                <span className="px-1.5 py-0.5 text-xs font-bold tracking-wider uppercase rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
                   PRO
                 </span>
               </div>
@@ -150,7 +150,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
         {/* Workspace Switcher */}
         {!isCollapsed ? (
           <Dropdown
-            width="w-64"
+            width="w-[248px]"
             align="left"
             trigger={
               <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white dark:bg-slate-900/80 hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700/80 transition-all group cursor-pointer shadow-sm">
@@ -160,7 +160,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                     <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                       {activeWorkspace.name}
                     </span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium transition-colors">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-medium transition-colors">
                       {activeWorkspace.plan} Plan
                     </span>
                   </div>
@@ -180,7 +180,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                   />
                 </div>
 
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 pt-1">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-2 pt-1">
                   Workspaces
                 </div>
 
@@ -253,7 +253,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
       <div className="flex-1 p-3 min-h-0 overflow-hidden">
         <ScrollArea className="h-full space-y-1">
           {!isCollapsed && (
-            <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors">
+            <div className="px-3 py-1.5 text-xs font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors">
               Overview
             </div>
           )}
@@ -284,7 +284,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
         {/* Desktop Collapse Toggle */}
         <div className={`hidden md:flex ${isCollapsed ? 'justify-center' : 'justify-between items-center px-1'}`}>
           {!isCollapsed && (
-            <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Controls</span>
+            <span className="text-sm font-medium text-slate-500 dark:text-slate-400">Controls</span>
           )}
           <Tooltip content={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} position="right">
             <Button
@@ -323,7 +323,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                       <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                         {user?.name || 'Developer'}
                       </span>
-                      <span className="text-[11px] text-slate-500 dark:text-slate-400 truncate transition-colors">
+                      <span className="text-sm text-slate-500 dark:text-slate-400 truncate transition-colors">
                         {user?.email || 'user@deployx.dev'}
                       </span>
                     </div>

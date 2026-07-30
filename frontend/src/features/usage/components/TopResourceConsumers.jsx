@@ -52,7 +52,7 @@ export default function TopResourceConsumers({ consumers = [] }) {
                     <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                       {item.name}
                     </div>
-                    <div className="flex items-center gap-2 text-[11px] text-slate-600 dark:text-slate-400 font-mono mt-0.5">
+                    <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-mono mt-0.5">
                       <span>BW: {item.bandwidth}</span>
                       <span>•</span>
                       <span>ST: {item.storage}</span>
@@ -66,7 +66,7 @@ export default function TopResourceConsumers({ consumers = [] }) {
                   <div className="text-xs sm:text-sm font-extrabold font-mono text-slate-900 dark:text-slate-100">
                     {item.sharePercent}%
                   </div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                  <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                     Total Share
                   </div>
                 </div>

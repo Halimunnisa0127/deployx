@@ -96,7 +96,7 @@ export default function OptimizationTips({ tips = [] }) {
                   <Icon className="w-3.5 h-3.5" />
                 </div>
                 <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full
-                                  text-[10px] font-extrabold border shrink-0 ${priorityStyle}`}>
+                                  text-xs font-extrabold border shrink-0 ${priorityStyle}`}>
                   <Sliders className="w-3 h-3" />
                   {priority}
                 </span>
@@ -119,7 +119,7 @@ export default function OptimizationTips({ tips = [] }) {
                               border border-slate-200/80 dark:border-slate-700/60
                               px-3 py-2.5 flex items-center justify-between gap-2 mt-auto">
                 <div>
-                  <span className="block text-[10px] font-bold uppercase tracking-wider
+                  <span className="block text-xs font-bold uppercase tracking-wider
                                    text-slate-400 dark:text-slate-500 mb-0.5">
                     Est. Savings
                   </span>
@@ -141,10 +141,10 @@ export default function OptimizationTips({ tips = [] }) {
               <div className="grid grid-cols-3 gap-1 pt-1.5 border-t border-slate-100 dark:border-white/5">
                 {/* Difficulty */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
                     Difficulty
                   </span>
-                  <span className={`inline-flex items-center gap-1.5 self-start px-2 py-0.5 rounded text-[11px] font-bold border ${diffStyle.pill}`}>
+                  <span className={`inline-flex items-center gap-1.5 self-start px-2 py-0.5 rounded text-sm font-bold border ${diffStyle.pill}`}>
                     <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${diffStyle.dot}`} />
                     {difficulty}
                   </span>
@@ -152,7 +152,7 @@ export default function OptimizationTips({ tips = [] }) {
 
                 {/* Time */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
                     Time
                   </span>
                   <span className="text-xs font-bold font-mono text-slate-700 dark:text-slate-300 pt-0.5">
@@ -162,7 +162,7 @@ export default function OptimizationTips({ tips = [] }) {
 
                 {/* Impact */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
                     Impact
                   </span>
                   <span className={`text-xs font-extrabold leading-tight pt-0.5 ${impactStyle}`}>

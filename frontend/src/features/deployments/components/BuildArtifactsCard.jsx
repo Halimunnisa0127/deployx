@@ -95,10 +95,10 @@ function BuildArtifactsCard({ deployment }) {
                     <span className="text-sm font-bold text-slate-100 truncate font-mono">
                       {artifact.name}
                     </span>
-                    <span className="text-[10px] font-bold text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 uppercase tracking-wider font-mono">
+                    <span className="text-xs font-bold text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 uppercase tracking-wider font-mono">
                       {artifact.type}
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                    <span className="text-sm font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
                       {artifact.size}
                     </span>
                   </div>

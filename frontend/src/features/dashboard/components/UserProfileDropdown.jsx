@@ -49,7 +49,7 @@ export default function UserProfileDropdown({ user, close }) {
         <span className="text-xs font-bold text-slate-900 dark:text-white tracking-wide truncate transition-colors">
           {user?.name || 'GANAPATHI RAJESH GUMMALLLA'}
         </span>
-        <span className="text-[11px] text-slate-600 dark:text-slate-400 truncate transition-colors mt-0.5 font-mono">
+        <span className="text-sm text-slate-600 dark:text-slate-400 truncate transition-colors mt-0.5 font-mono">
           {user?.email || 'nanigummalla418@gmail.com'}
         </span>
       </div>

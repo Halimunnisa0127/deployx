@@ -153,7 +153,7 @@ export default function UsageTrendChart({
                 <RotateCcw className="w-4 h-4" />
               </button>
             )}
-            <span className="text-[10px] font-mono font-bold px-1 text-slate-400 dark:text-slate-500">
+            <span className="text-xs font-mono font-bold px-1 text-slate-400 dark:text-slate-500">
               {zoomLevel}x
             </span>
           </div>
@@ -363,7 +363,7 @@ export default function UsageTrendChart({
                 transition={{ duration: 0.12 }}
                 className="absolute -top-12 z-30 px-2.5 py-1.5 rounded-lg
                            bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800
-                           shadow-xl backdrop-blur-md pointer-events-none text-[11px]
+                           shadow-xl backdrop-blur-md pointer-events-none text-sm
                            space-y-0.5 max-w-[160px]"
                 style={{
                   left: `${(points[hoveredIndex].x / svgWidth) * 100}%`,
@@ -384,7 +384,7 @@ export default function UsageTrendChart({
                   <span>{points[hoveredIndex].val}&nbsp;{currentTab.unit}</span>
                 </div>
                 {avgVal > 0 && (
-                  <div className="text-[9px] text-slate-400 dark:text-slate-500 font-mono">
+                  <div className="text-xs text-slate-400 dark:text-slate-500 font-mono">
                     {points[hoveredIndex].val >= avgVal
                       ? `+${(((points[hoveredIndex].val - avgVal) / avgVal) * 100).toFixed(0)}% vs avg`
                       : `-${(((avgVal - points[hoveredIndex].val) / avgVal) * 100).toFixed(0)}% vs avg`
@@ -399,7 +399,7 @@ export default function UsageTrendChart({
 
       {/* Mobile swipe hint — minimal, below chart */}
       <div className="sm:hidden flex justify-end mt-1">
-        <span className="text-[9px] font-mono text-indigo-500/70 dark:text-indigo-400/60">
+        <span className="text-xs font-mono text-indigo-500/70 dark:text-indigo-400/60">
           ← swipe →
         </span>
       </div>

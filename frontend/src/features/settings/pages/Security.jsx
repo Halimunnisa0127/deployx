@@ -254,7 +254,7 @@ export default function Security() {
                           <Badge variant="success">Current Session</Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
+                      <div className="flex items-center gap-3 text-sm text-slate-400 font-mono">
                         <span className="flex items-center gap-1">
                           <Globe className="w-3 h-3 text-slate-400" />
                           {sess.location}

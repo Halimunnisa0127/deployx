@@ -131,7 +131,7 @@ export default function UsageAlerts({ alerts = [] }) {
                     <div className="min-w-0 flex flex-col gap-1.5 flex-1">
                       {/* Title & Badge */}
                       <div className="flex items-center gap-2.5 flex-wrap">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold border ${style.badgeClass} shrink-0 uppercase tracking-wider`}>
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-extrabold border ${style.badgeClass} shrink-0 uppercase tracking-wider`}>
                           {style.label}
                         </span>
                         <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 truncate">
@@ -146,12 +146,12 @@ export default function UsageAlerts({ alerts = [] }) {
 
                       {/* Bottom-left: Timestamp & Resource */}
                       <div className="flex flex-wrap items-center gap-3 mt-0.5">
-                        <span className="flex items-center gap-1.5 text-[11px] font-mono text-slate-400 dark:text-slate-500 shrink-0">
+                        <span className="flex items-center gap-1.5 text-sm font-mono text-slate-400 dark:text-slate-500 shrink-0">
                           <Clock className="w-3 h-3" />
                           {compactTimestamp(item.timestamp)}
                         </span>
                         {item.affectedResource && (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shrink-0">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shrink-0">
                             <Layers className="w-3 h-3" />
                             {item.affectedResource}
                           </span>

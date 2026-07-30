@@ -34,7 +34,7 @@ export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
         <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-500 dark:text-amber-400 shadow-sm shadow-amber-500/20">
           <Zap className="w-5 h-5" />
         </div>
-        <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
           Quick Actions
         </h2>
       </div>
@@ -55,10 +55,10 @@ export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
             </div>
 
             <div className="space-y-1">
-              <h3 className="text-xs font-bold text-slate-900 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">
                 {action.title}
               </h3>
-              <p className="text-[11px] text-slate-700 dark:text-slate-400 line-clamp-2 leading-relaxed">
+              <p className="text-sm text-slate-700 dark:text-slate-400 line-clamp-2 leading-relaxed">
                 {action.description}
               </p>
             </div>

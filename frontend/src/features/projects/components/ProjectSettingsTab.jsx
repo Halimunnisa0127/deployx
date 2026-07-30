@@ -183,7 +183,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
               <span className="text-xs font-semibold text-slate-200 block">
                 Auto Deploy
               </span>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-sm text-slate-400">
                 Automatically trigger deployments when code is pushed to the target branch.
               </span>
             </div>
@@ -305,7 +305,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
               <span className="text-xs font-bold text-slate-200 block">
                 Project Environment Variables
               </span>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-sm text-slate-400">
                 Configure API keys, database URLs, and secret tokens.
               </span>
             </div>
@@ -358,7 +358,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
                 <span className="text-xs font-bold text-slate-200">
                   Transfer Project Ownership
                 </span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-500 border border-slate-700">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-500 border border-slate-700">
                   UI Only
                 </span>
               </div>

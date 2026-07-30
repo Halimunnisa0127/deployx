@@ -111,7 +111,7 @@ export default function Billing() {
                   <div className="text-xs font-bold text-slate-200">
                     Visa ending in 4242
                   </div>
-                  <div className="text-[11px] text-slate-400 font-mono">
+                  <div className="text-sm text-slate-400 font-mono">
                     Expires 12 / 2028
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export default function Billing() {
           <div className="border border-slate-800/80 rounded-xl overflow-hidden bg-slate-950/40">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-slate-900/80 text-slate-400 uppercase font-mono text-[10px]">
+                <thead className="bg-slate-900/80 text-slate-400 uppercase font-mono text-xs">
                   <tr>
                     <th className="p-3.5">Invoice ID</th>
                     <th className="p-3.5">Date</th>

@@ -89,13 +89,13 @@ function QuotaRow({ item }) {
           <div className={`p-1.5 rounded-lg border shrink-0 ${theme.badgeBg}`}>
             <ResourceIcon className={`w-3.5 h-3.5 ${theme.iconColor}`} />
           </div>
-          <span className="text-[13px] font-bold text-slate-800 dark:text-slate-100 truncate">
+          <span className="text-base font-bold text-slate-800 dark:text-slate-100 truncate">
             {item.name}
           </span>
         </div>
 
         <div className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full
-                         text-[10px] font-bold border shrink-0 ${statusInfo.css}`}>
+                         text-xs font-bold border shrink-0 ${statusInfo.css}`}>
           <StatusIcon className="w-3 h-3" />
           <span>{statusInfo.label}</span>
         </div>
@@ -106,7 +106,7 @@ function QuotaRow({ item }) {
         <span className="text-xl font-black text-slate-900 dark:text-white leading-none">
           {item.remaining}
         </span>
-        <span className="text-[11px] font-mono font-bold text-slate-500 dark:text-slate-400 shrink-0">
+        <span className="text-sm font-mono font-bold text-slate-500 dark:text-slate-400 shrink-0">
           {item.percent}%
         </span>
       </div>
@@ -134,7 +134,7 @@ function QuotaRow({ item }) {
                         backdrop-blur-md shadow-xl px-4 py-3">
           <div className="grid grid-cols-3 gap-3 text-xs">
             <div className="flex flex-col gap-0.5">
-              <span className="text-[9px] uppercase font-semibold tracking-wider
+              <span className="text-xs uppercase font-semibold tracking-wider
                                text-slate-400 dark:text-slate-500">
                 Used
               </span>
@@ -143,7 +143,7 @@ function QuotaRow({ item }) {
               </span>
             </div>
             <div className="flex flex-col gap-0.5">
-              <span className="text-[9px] uppercase font-semibold tracking-wider
+              <span className="text-xs uppercase font-semibold tracking-wider
                                text-slate-400 dark:text-slate-500">
                 Limit
               </span>
@@ -152,7 +152,7 @@ function QuotaRow({ item }) {
               </span>
             </div>
             <div className="flex flex-col gap-0.5 items-end">
-              <span className="text-[9px] uppercase font-semibold tracking-wider
+              <span className="text-xs uppercase font-semibold tracking-wider
                                text-slate-400 dark:text-slate-500">
                 Consumed
               </span>
@@ -188,13 +188,13 @@ export default function MonthlyQuotaCard({ quotas = [] }) {
             <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
               Monthly Quotas
             </h2>
-            <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Plan limits &amp; remaining capacity
             </p>
           </div>
         </div>
 
-        <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full
+        <span className="text-xs font-mono font-bold px-2.5 py-1 rounded-full
                          bg-emerald-500/10 text-emerald-600 dark:text-emerald-400
                          border border-emerald-500/20">
           Pro Plan

@@ -65,7 +65,7 @@ export default function StatCards({ metrics = MOCK_STAT_METRICS }) {
                     <span>{item.change}</span>
                   </div>
 
-                  <span className="text-[11px] text-slate-500 truncate">
+                  <span className="text-sm text-slate-500 truncate">
                     {item.period || 'Compared to last 7 days'}
                   </span>
                 </div>

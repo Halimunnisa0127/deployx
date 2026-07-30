@@ -39,7 +39,7 @@ export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
           <div className="p-2.5 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 border border-emerald-500/30 text-emerald-500 dark:text-emerald-400 shadow-sm shadow-emerald-500/20">
             <Activity className="w-6 h-6" />
           </div>
-          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
             System Status
           </h2>
         </div>
@@ -64,7 +64,7 @@ export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
                 <div className="text-xs font-semibold text-slate-900 dark:text-slate-200 truncate">
                   {service.name}
                 </div>
-                <div className="flex items-center gap-1 text-[11px] text-slate-600 dark:text-slate-400 font-mono">
+                <div className="flex items-center gap-1 text-sm text-slate-600 dark:text-slate-400 font-mono">
                   <Clock className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                   <span>{service.responseTime || service.detail}</span>
                 </div>

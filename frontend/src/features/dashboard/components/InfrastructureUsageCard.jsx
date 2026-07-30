@@ -46,10 +46,11 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
   const usageMap = Object.fromEntries(usage.map((u) => [u.id, u]));
 
   return (
-    <Card
-      style={{ maxWidth: '100%', padding: '20px 24px' }}
-      className="border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl bg-white/70 dark:bg-slate-900/40 opacity-95 hover:opacity-100 shadow-sm dark:shadow-xl transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md hover:border-slate-300 dark:hover:border-white/10"
-    >
+    <Link to="/dashboard/usage" className="block group focus:outline-none focus:ring-2 focus:ring-indigo-500/80 rounded-[18px] transition-all">
+      <Card
+        style={{ maxWidth: '100%', padding: '20px 24px' }}
+        className="border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl bg-white/70 dark:bg-slate-900/40 opacity-95 group-hover:opacity-100 shadow-sm dark:shadow-xl transition-all duration-300 group-hover:-translate-y-[3px] group-hover:shadow-md group-hover:border-indigo-500/40 dark:group-hover:border-indigo-500/30"
+      >
       {/* Header */}
       <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-white/5 mb-4">
         <div className="flex items-center gap-3">
@@ -57,10 +58,10 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
             <Gauge className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
               Infrastructure Usage
             </h2>
-            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Monthly resource consumption
             </p>
           </div>
@@ -117,14 +118,14 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
 
       {/* Footer Link */}
       <div className="mt-4 pt-3 border-t border-slate-200/60 dark:border-white/5">
-        <Link
-          to="/dashboard/usage"
-          className="group/link flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200"
+        <div
+          className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200"
         >
           <span>View Full Usage</span>
-          <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5" />
-        </Link>
+          <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </div>
       </div>
     </Card>
+    </Link>
   );
 }

@@ -104,7 +104,7 @@ export default function Dropdown({
                     return (
                       <div
                         key={`hdr-${idx}`}
-                        className="px-3 py-1.5 text-[11px] font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase"
+                        className="px-3 py-1.5 text-sm font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase"
                       >
                         {item.label}
                       </div>

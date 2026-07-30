@@ -148,7 +148,7 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
       {/* Commit Message Box */}
       <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/60 text-left space-y-1">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Commit Message</span>
+        <span className="text-sm font-semibold uppercase tracking-wider text-slate-400">Commit Message</span>
         <p className="text-sm font-mono text-slate-200 leading-relaxed">
           {commitMessage}
         </p>
