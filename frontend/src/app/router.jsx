@@ -1,3 +1,4 @@
+import React, { Suspense, lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -15,6 +16,28 @@ import { Logs } from "../features/logs";
 import { Github, RepositoryDetails } from "../features/github";
 import { UsagePage } from "../features/usage";
 import PrivateRoute from "../routes/PrivateRoute";
+import PageLoader from "../components/ui/PageLoader";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminRoute from "../routes/AdminRoute";
+import AdminLogin from "../features/admin/auth/AdminLogin";
+
+// Lazy-loaded Admin Modules
+const AdminDashboardPage = lazy(() => import("../features/admin/pages/AdminDashboardPage"));
+const UsersPage = lazy(() => import("../features/admin/users/pages/UsersPage"));
+const ProjectsPage = lazy(() => import("../features/admin/projects/pages/ProjectsPage"));
+const AdminDeploymentsPage = lazy(() => import("../features/admin/deployments/pages/DeploymentsPage"));
+const AdminDomainsPage = lazy(() => import("../features/admin/domains/pages/DomainsPage"));
+const AdminPlatformLogsPage = lazy(() => import("../features/admin/logs/pages/PlatformLogsPage"));
+const AnalyticsDashboardPage = lazy(() => import("../features/admin/analytics/pages/AnalyticsDashboardPage"));
+const SystemHealthPage = lazy(() => import("../features/admin/system-health/pages/SystemHealthPage"));
+const PlatformSettingsPage = lazy(() => import("../features/admin/platform-settings/pages/PlatformSettingsPage"));
+
+// Suspense Wrapper Helper
+const LazyElement = ({ children }) => (
+  <Suspense fallback={<PageLoader />}>
+    {children}
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
@@ -38,6 +61,62 @@ const router = createBrowserRouter([
       },
     ],
   },
+  
+  /* --- Dedicated Admin Auth Portal --- */
+  {
+    path: "/admin/login",
+    element: <AdminLogin />
+  },
+
+  /* --- Separate Admin Space --- */
+  {
+    path: "/admin",
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <LazyElement><AdminDashboardPage /></LazyElement>
+      },
+      {
+        path: "users",
+        element: <LazyElement><UsersPage /></LazyElement>
+      },
+      {
+        path: "projects",
+        element: <LazyElement><ProjectsPage /></LazyElement>
+      },
+      {
+        path: "deployments",
+        element: <LazyElement><AdminDeploymentsPage /></LazyElement>
+      },
+      {
+        path: "domains",
+        element: <LazyElement><AdminDomainsPage /></LazyElement>
+      },
+      {
+        path: "logs",
+        element: <LazyElement><AdminPlatformLogsPage /></LazyElement>
+      },
+      {
+        path: "analytics",
+        element: <LazyElement><AnalyticsDashboardPage /></LazyElement>
+      },
+      {
+        path: "system-health",
+        element: <LazyElement><SystemHealthPage /></LazyElement>
+      },
+      {
+        path: "settings",
+        element: <LazyElement><PlatformSettingsPage /></LazyElement>
+      }
+    ]
+  },
+
+  /* --- Normal User Dashboard --- */
   {
     path: "/dashboard",
     element: (
@@ -86,6 +165,10 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  
+  /* Remove the old /dashboard/admin routing from here entirely! */
+
+  /* --- Normal Routes --- */
   {
     path: "/dashboard/account",
     element: <Navigate to="/dashboard/account/profile" replace />,

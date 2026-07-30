@@ -1,0 +1,69 @@
+import React from 'react';
+import { UserPlus, FolderPlus, Rocket, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { Card } from '../../../components/common/Card';
+
+const getIcon = (type) => {
+  switch(type) {
+    case 'user_created': return { icon: UserPlus, color: 'text-sky-400', bg: 'bg-sky-500/10' };
+    case 'project_created': return { icon: FolderPlus, color: 'text-indigo-400', bg: 'bg-indigo-500/10' };
+    case 'deployment_started': return { icon: Rocket, color: 'text-amber-400', bg: 'bg-amber-500/10' };
+    case 'deployment_failed': return { icon: AlertTriangle, color: 'text-rose-400', bg: 'bg-rose-500/10' };
+    case 'domain_verified': return { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10' };
+    default: return { icon: CheckCircle, color: 'text-slate-400', bg: 'bg-slate-500/10' };
+  }
+};
+
+const formatTimeAgo = (timestamp) => {
+  const diff = Date.now() - new Date(timestamp).getTime();
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days}d ago`;
+  if (hours > 0) return `${hours}h ago`;
+  return `${minutes}m ago`;
+};
+
+export default function ActivityTimeline({ activity = [] }) {
+  if (!activity.length) return null;
+
+  return (
+    <Card className="h-full p-5 sm:p-6 bg-slate-900/60 border-slate-800/80 shadow-lg overflow-hidden">
+      <h3 className="text-lg font-bold text-white mb-6 tracking-tight flex items-center gap-2">
+        <Clock className="w-5 h-5 text-indigo-400" />
+        Recent Activity
+      </h3>
+
+      <div className="relative border-l border-slate-700/50 ml-3 space-y-6">
+        {activity.map((item, idx) => {
+          const { icon: Icon, color, bg } = getIcon(item.type);
+          
+          return (
+            <div key={item.id} className="relative pl-6 group">
+              {/* Timeline Dot */}
+              <div className="absolute -left-3 top-1 flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 border border-slate-700 group-hover:border-indigo-500/50 transition-colors">
+                <div className={`w-2 h-2 rounded-full ${color.replace('text-', 'bg-')}`} />
+              </div>
+
+              <div className="bg-slate-800/20 hover:bg-slate-800/40 p-3.5 rounded-xl border border-transparent hover:border-slate-700/50 transition-all cursor-default">
+                <div className="flex justify-between items-start mb-1">
+                  <div className="flex items-center gap-2">
+                    <div className={`p-1 rounded ${bg} flex items-center justify-center`}>
+                      <Icon className={`w-3.5 h-3.5 ${color}`} />
+                    </div>
+                    <span className="text-sm font-semibold text-slate-200">{item.title}</span>
+                  </div>
+                  <span className="text-xs text-slate-500 whitespace-nowrap">{formatTimeAgo(item.timestamp)}</span>
+                </div>
+                <p className="text-xs text-slate-400 mt-1 mb-2">{item.description}</p>
+                <div className="text-[10px] text-slate-500 font-medium bg-slate-900 inline-block px-2 py-0.5 rounded border border-slate-800">
+                  By {item.user}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
