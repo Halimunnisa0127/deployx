@@ -19,7 +19,7 @@ export default function ProductPreviewSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Glow backdrop */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] h-[85%] bg-indigo-600/15 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] h-[85%] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none" />
 
         {/* Browser Window Showcase Frame */}
         <motion.div 
@@ -27,7 +27,7 @@ export default function ProductPreviewSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative rounded-2xl border border-white/15 bg-[#0d0e12]/90 backdrop-blur-xl shadow-[0_0_100px_rgba(79,70,229,0.22)] overflow-hidden"
+          className="relative rounded-2xl border border-white/15 bg-[#0d0e12]/90 backdrop-blur-xl shadow-[0_0_100px_rgba(37,99,235,0.25)] overflow-hidden"
         >
           {/* Top Window Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/10 bg-[#08090c]">
@@ -36,7 +36,7 @@ export default function ProductPreviewSection() {
               <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block" />
               <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
               <div className="ml-4 flex items-center gap-2 text-xs text-gray-400 bg-white/[0.04] px-3.5 py-1 rounded-md border border-white/5">
-                <Rocket className="w-3.5 h-3.5 text-indigo-400" />
+                <Rocket className="w-3.5 h-3.5 text-blue-400" />
                 <span>deployx.app/dashboard/projects/deployx-api</span>
               </div>
             </div>
@@ -54,7 +54,7 @@ export default function ProductPreviewSection() {
             {/* Dashboard Header Bar */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
               <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-lg">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-sky-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-lg">
                   DX
                 </div>
                 <div>
@@ -63,7 +63,7 @@ export default function ProductPreviewSection() {
                     <span className="text-xs px-2 py-0.5 rounded bg-white/10 text-gray-300">Public</span>
                   </div>
                   <p className="text-xs text-gray-400 flex items-center gap-1.5 mt-0.5">
-                    <GitBranch className="w-3.5 h-3.5 text-indigo-400" />
+                    <GitBranch className="w-3.5 h-3.5 text-blue-400" />
                     main branch &bull; Connected to github.com/user/deployx-api
                   </p>
                 </div>
@@ -71,10 +71,10 @@ export default function ProductPreviewSection() {
 
               <div className="flex items-center gap-3">
                 <span className="text-xs text-gray-400 bg-white/5 px-3.5 py-1.5 rounded-lg border border-white/10 flex items-center gap-1.5">
-                  <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                  <Globe className="w-3.5 h-3.5 text-blue-400" />
                   deployx-api.deployx.app
                 </span>
-                <span className="text-xs text-white bg-indigo-600 px-3.5 py-1.5 rounded-lg font-medium shadow-[0_0_15px_rgba(79,70,229,0.3)] flex items-center gap-1">
+                <span className="text-xs text-white bg-blue-600 px-3.5 py-1.5 rounded-lg font-medium shadow-[0_0_15px_rgba(37,99,235,0.35)] flex items-center gap-1">
                   Visit Site <ArrowUpRight className="w-3.5 h-3.5" />
                 </span>
               </div>
@@ -94,7 +94,7 @@ export default function ProductPreviewSection() {
               <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                 <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
                   <span>Build Time</span>
-                  <Clock className="w-4 h-4 text-indigo-400" />
+                  <Clock className="w-4 h-4 text-blue-400" />
                 </div>
                 <div className="text-lg font-semibold text-white">34s</div>
                 <div className="text-[11px] text-gray-400 mt-1">Optimized cache hit</div>
@@ -112,7 +112,7 @@ export default function ProductPreviewSection() {
               <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
                 <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
                   <span>Active Domain</span>
-                  <ShieldCheck className="w-4 h-4 text-purple-400" />
+                  <ShieldCheck className="w-4 h-4 text-blue-400" />
                 </div>
                 <div className="text-lg font-semibold text-white">SSL Active</div>
                 <div className="text-[11px] text-gray-400 mt-1">Auto Let's Encrypt</div>
@@ -126,20 +126,20 @@ export default function ProductPreviewSection() {
               <div className="lg:col-span-3 p-5 rounded-xl bg-white/[0.02] border border-white/5 space-y-4">
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-indigo-400" />
+                    <Layers className="w-4 h-4 text-blue-400" />
                     Recent Deployments
                   </h4>
-                  <span className="text-xs text-indigo-400 hover:underline">View All</span>
+                  <span className="text-xs text-blue-400 hover:underline">View All</span>
                 </div>
 
                 <div className="space-y-2.5">
-                  <div className="p-3 rounded-lg bg-white/[0.03] border border-indigo-500/30 flex items-center justify-between">
+                  <div className="p-3 rounded-lg bg-white/[0.03] border border-blue-500/30 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
                       <div>
                         <div className="text-xs font-semibold text-white flex items-center gap-2">
                           <span>feat: add real-time log streaming</span>
-                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300">d7a9b2c</span>
+                          <span className="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">d7a9b2c</span>
                         </div>
                         <div className="text-[11px] text-gray-400">Deployed 12 minutes ago by @developer</div>
                       </div>
@@ -181,7 +181,7 @@ export default function ProductPreviewSection() {
               <div className="lg:col-span-2 p-5 rounded-xl bg-black/60 border border-white/10 font-mono text-xs text-gray-300 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between border-b border-white/10 pb-2.5 mb-3">
-                    <span className="flex items-center gap-2 text-indigo-400 font-semibold">
+                    <span className="flex items-center gap-2 text-blue-400 font-semibold">
                       <Terminal className="w-3.5 h-3.5" /> Live Build Logs
                     </span>
                     <span className="text-[10px] text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
@@ -190,11 +190,11 @@ export default function ProductPreviewSection() {
                   </div>
 
                   <div className="space-y-1.5 text-[11px] leading-relaxed text-gray-400">
-                    <p><span className="text-indigo-400">[00:01]</span> Cloning github.com/user/deployx-api...</p>
-                    <p><span className="text-indigo-400">[00:05]</span> Detecting Node.js environment (v20.x)</p>
-                    <p><span className="text-indigo-400">[00:12]</span> Running `npm run build`...</p>
+                    <p><span className="text-blue-400">[00:01]</span> Cloning github.com/user/deployx-api...</p>
+                    <p><span className="text-blue-400">[00:05]</span> Detecting Node.js environment (v20.x)</p>
+                    <p><span className="text-blue-400">[00:12]</span> Running `npm run build`...</p>
                     <p><span className="text-emerald-400">[00:28]</span> Build optimized: 4 static pages, 2 edge routes</p>
-                    <p><span className="text-indigo-400">[00:32]</span> Uploading artifacts to DeployX edge network</p>
+                    <p><span className="text-blue-400">[00:32]</span> Uploading artifacts to DeployX edge network</p>
                     <p className="text-emerald-300 font-semibold"><span className="text-emerald-400">[00:34]</span> Deployment successful: https://deployx-api.deployx.app</p>
                   </div>
                 </div>

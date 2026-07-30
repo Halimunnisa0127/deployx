@@ -41,20 +41,30 @@ const projectsSlice = createSlice({
   initialState,
   reducers: {
     createProject: (state, action) => {
-      const { name, framework = 'React', branch = 'main' } = action.payload;
+      const { id = `proj-${Date.now()}`, name, framework = 'React', branch = 'main' } = action.payload;
       state.items.push({
-        id: crypto.randomUUID(),
+        id,
         name,
         status: 'not deployed',
         lastDeployed: null,
         framework,
         branch,
         url: `${name.toLowerCase().replace(/[^a-z0-9-]/g, '')}.deployx.app`,
-        commitHash: 'a1b2c3d',
+        commitHash: '8f7a9c2',
       });
+    },
+    completeDeployment: (state, action) => {
+      const target = state.items.find((p) => p.id === action.payload || p.name === action.payload);
+      if (target) {
+        target.status = 'live';
+        target.lastDeployed = new Date().toISOString();
+      } else if (state.items.length > 0) {
+        state.items[state.items.length - 1].status = 'live';
+        state.items[state.items.length - 1].lastDeployed = new Date().toISOString();
+      }
     },
   },
 });
 
-export const { createProject } = projectsSlice.actions;
+export const { createProject, completeDeployment } = projectsSlice.actions;
 export default projectsSlice.reducer;
