@@ -14,10 +14,10 @@ export default function UsersTable({ users = [], onRowClick, actionHandlers }) {
   if (!users.length) return null;
 
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 overflow-hidden shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="bg-white dark:bg-slate-900/60 rounded-[18px] border border-slate-200 dark:border-white/5 overflow-hidden shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="overflow-x-auto min-h-[400px]">
         <table className="w-full text-left text-sm whitespace-nowrap">
-          <thead className="bg-slate-900/90 text-slate-400 border-b border-slate-800/80 sticky top-0 z-10 backdrop-blur-xl">
+          <thead className="bg-slate-50/90 dark:bg-slate-900/90 text-theme-muted border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-10 backdrop-blur-xl">
             <tr>
               <th className="px-5 py-3 font-medium">User</th>
               <th className="px-5 py-3 font-medium">Role</th>
@@ -27,7 +27,7 @@ export default function UsersTable({ users = [], onRowClick, actionHandlers }) {
               <th className="px-5 py-3 font-medium text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/50">
+          <tbody className="divide-y divide-slate-200 dark:divide-slate-800/50">
             {paginatedData.map((user) => (
               <UserRow
                 key={user.id}
@@ -41,8 +41,8 @@ export default function UsersTable({ users = [], onRowClick, actionHandlers }) {
       </div>
 
       {totalPages > 1 && (
-        <div className="px-5 py-4 border-t border-slate-800/80 flex items-center justify-between text-sm bg-slate-900/40">
-          <span className="text-slate-400">
+        <div className="px-5 py-4 border-t border-slate-200 dark:border-white/5 flex items-center justify-between text-sm bg-slate-50 dark:bg-slate-900/40">
+          <span className="text-theme-muted">
             Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
             {Math.min(currentPage * itemsPerPage, users.length)} of{" "}
             {users.length}
