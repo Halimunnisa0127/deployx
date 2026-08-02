@@ -6,7 +6,7 @@ export default function SettingsSummaryCard({ data }) {
 
   return (
     <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 mb-8 lg:mb-12 shadow-sm dark:shadow-lg">
-      <h2 className="text-lg font-bold text-white mb-6">
+      <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">
         Configuration Summary
       </h2>
 
@@ -19,7 +19,7 @@ export default function SettingsSummaryCard({ data }) {
             <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">
               Platform Region
             </div>
-            <div className="text-sm font-medium text-slate-200">
+            <div className="text-sm font-medium text-slate-900 dark:text-slate-200">
               {data.general?.defaultRegion}
             </div>
           </div>
@@ -39,7 +39,7 @@ export default function SettingsSummaryCard({ data }) {
             <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">
               Status
             </div>
-            <div className="text-sm font-medium text-slate-200">
+            <div className="text-sm font-medium text-slate-900 dark:text-slate-200">
               {data.maintenance?.enabled ? "Maintenance Mode" : "Operational"}
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function SettingsSummaryCard({ data }) {
             <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">
               Security
             </div>
-            <div className="text-sm font-medium text-slate-200">
+            <div className="text-sm font-medium text-slate-900 dark:text-slate-200">
               {data.security?.require2fa ? "Strict (2FA Enforced)" : "Standard"}
             </div>
           </div>
@@ -67,7 +67,7 @@ export default function SettingsSummaryCard({ data }) {
             <div className="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">
               Last Updated
             </div>
-            <div className="text-sm font-medium text-slate-200">Just now</div>
+            <div className="text-sm font-medium text-slate-900 dark:text-slate-200">Just now</div>
           </div>
         </div>
       </div>

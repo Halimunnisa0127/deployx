@@ -11,10 +11,10 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
     >
       <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4 flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-white">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
             Email Configuration (SMTP)
           </h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Configure outbound email server settings.
           </p>
         </div>
@@ -29,13 +29,13 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             SMTP Host <span className="text-rose-500">*</span>
           </label>
           <Input
             {...register("email.smtpHost")}
             placeholder="smtp.example.com"
-            className="w-full bg-slate-900 border-slate-700 focus:border-indigo-500 focus:ring-indigo-500/20"
+            className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:ring-indigo-500/20"
           />
 
           {errors?.email?.smtpHost && (
@@ -46,13 +46,13 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Port <span className="text-rose-500">*</span>
           </label>
           <Input
             {...register("email.port")}
             placeholder="587"
-            className="w-full bg-slate-900 border-slate-700"
+            className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
           />
 
           {errors?.email?.port && (
@@ -63,12 +63,12 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Encryption
           </label>
           <select
             {...register("email.encryption")}
-            className="w-full h-10 px-3 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+            className="w-full h-10 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
           >
             <option value="none">None</option>
             <option value="ssl">SSL</option>
@@ -77,24 +77,24 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Sender Name
           </label>
           <Input
             {...register("email.senderName")}
             placeholder="DeployX Admin"
-            className="w-full bg-slate-900 border-slate-700"
+            className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Sender Email <span className="text-rose-500">*</span>
           </label>
           <Input
             {...register("email.senderEmail")}
             placeholder="admin@deployx.example.com"
-            className="w-full bg-slate-900 border-slate-700"
+            className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
           />
 
           {errors?.email?.senderEmail && (
@@ -105,25 +105,25 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Username
           </label>
           <Input
             {...register("email.username")}
             placeholder="SMTP Username"
-            className="w-full bg-slate-900 border-slate-700"
+            className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Password
           </label>
           <Input
             type="password"
             {...register("email.password")}
             placeholder="••••••••••••"
-            className="w-full bg-slate-900 border-slate-700"
+            className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
           />
         </div>
       </div>

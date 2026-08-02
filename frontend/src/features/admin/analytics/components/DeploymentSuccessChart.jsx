@@ -79,6 +79,6 @@ export default function DeploymentSuccessChart({ data }) {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -7,7 +7,7 @@ import DeploymentDetailsDrawer from "../components/DeploymentDetailsDrawer";
 import ConfirmationDialog from "../../../../components/ui/ConfirmationDialog";
 import {
   DeploymentsTableSkeleton,
-  AnalyticsSkeleton,
+  DeploymentsStatisticsSkeleton as AnalyticsSkeleton,
 } from "../components/DeploymentsSkeleton";
 import {
   NoDeploymentsEmptyState,

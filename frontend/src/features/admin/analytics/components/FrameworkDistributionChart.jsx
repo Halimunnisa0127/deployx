@@ -60,6 +60,6 @@ export default function FrameworkDistributionChart({ data }) {
           </PieChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -10,8 +10,8 @@ export default function SecuritySettingsCard({ register, watch, setValue }) {
       className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg mb-10"
     >
       <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
-        <h2 className="text-lg font-bold text-white">Security Settings</h2>
-        <p className="text-sm text-slate-400">
+        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Security Settings</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Manage authentication and access policies.
         </p>
       </div>
@@ -19,35 +19,35 @@ export default function SecuritySettingsCard({ register, watch, setValue }) {
       <div className="space-y-6 max-w-3xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               Session Timeout (minutes)
             </label>
             <Input
               {...register("security.sessionTimeout")}
               type="number"
-              className="w-full bg-slate-900 border-slate-700"
+              className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
               API Rate Limit (req/min)
             </label>
             <Input
               {...register("security.apiRateLimit")}
               type="number"
-              className="w-full bg-slate-900 border-slate-700"
+              className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
             Password Policy
           </label>
           <select
             {...register("security.passwordPolicy")}
-            className="w-full h-10 px-3 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
+            className="w-full h-10 px-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
           >
             <option value="basic">Basic (8+ chars)</option>
             <option value="medium">
@@ -61,10 +61,10 @@ export default function SecuritySettingsCard({ register, watch, setValue }) {
 
         <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80 rounded-xl">
           <div>
-            <div className="font-semibold text-slate-200">
+            <div className="font-semibold text-slate-900 dark:text-slate-200">
               Enforce Two-Factor Authentication (2FA)
             </div>
-            <div className="text-sm text-slate-400">
+            <div className="text-sm text-slate-500 dark:text-slate-400">
               Require all administrative users to enable 2FA.
             </div>
           </div>
@@ -75,8 +75,8 @@ export default function SecuritySettingsCard({ register, watch, setValue }) {
                 shouldDirty: true,
               })
             }
-            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${
-              require2fa ? "bg-indigo-500" : "bg-slate-700"
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-900 ${
+              require2fa ? "bg-indigo-500" : "bg-slate-200 dark:bg-slate-700"
             }`}
           >
             <span
