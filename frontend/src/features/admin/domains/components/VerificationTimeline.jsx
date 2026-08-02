@@ -6,11 +6,11 @@ export default function VerificationTimeline({ history = [] }) {
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-        <History className="w-4 h-4 text-indigo-400" /> Verification History
+      <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+        <History className="w-4 h-4 text-indigo-500 dark:text-indigo-400" /> Verification History
       </h3>
-      <div className="bg-slate-900/40 rounded-xl border border-slate-800/80 p-5">
-        <div className="relative pl-6 border-l-2 border-slate-800/60 ml-2 space-y-6">
+      <div className="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-none">
+        <div className="relative pl-6 border-l-2 border-slate-200 dark:border-slate-800/60 ml-2 space-y-6">
           {history.map((event, idx) => {
             const isSuccess = event.status === "success";
             const isFailed = event.status === "failed";
@@ -19,10 +19,10 @@ export default function VerificationTimeline({ history = [] }) {
             return (
               <div key={idx} className="relative">
                 <div
-                  className={`absolute -left-[35px] top-0.5 w-6 h-6 rounded-full flex items-center justify-center border-2 bg-slate-900
-                    ${isSuccess ? "border-emerald-500 text-emerald-400" : ""}
-                    ${isFailed ? "border-rose-500 text-rose-400" : ""}
-                    ${isPending ? "border-amber-500 text-amber-400" : ""}
+                  className={`absolute -left-[35px] top-0.5 w-6 h-6 rounded-full flex items-center justify-center border-2 bg-white dark:bg-slate-900
+                    ${isSuccess ? "border-emerald-500 text-emerald-500 dark:text-emerald-400" : ""}
+                    ${isFailed ? "border-rose-500 text-rose-500 dark:text-rose-400" : ""}
+                    ${isPending ? "border-amber-500 text-amber-500 dark:text-amber-400" : ""}
                   `}
                 >
                   {isSuccess && <Check className="w-3.5 h-3.5" />}
@@ -32,7 +32,7 @@ export default function VerificationTimeline({ history = [] }) {
 
                 <div className="flex flex-col">
                   <p
-                    className={`text-sm font-medium ${isSuccess ? "text-emerald-400" : isFailed ? "text-rose-400" : "text-amber-400"}`}
+                    className={`text-sm font-medium ${isSuccess ? "text-emerald-600 dark:text-emerald-400" : isFailed ? "text-rose-600 dark:text-rose-400" : "text-amber-600 dark:text-amber-400"}`}
                   >
                     {event.message}
                   </p>

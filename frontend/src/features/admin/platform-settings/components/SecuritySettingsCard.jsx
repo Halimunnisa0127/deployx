@@ -7,9 +7,9 @@ export default function SecuritySettingsCard({ register, watch, setValue }) {
   return (
     <div
       id="security"
-      className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-6 shadow-lg mb-10"
+      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg mb-10"
     >
-      <div className="mb-6 border-b border-slate-800/80 pb-4">
+      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
         <h2 className="text-lg font-bold text-white">Security Settings</h2>
         <p className="text-sm text-slate-400">
           Manage authentication and access policies.
@@ -59,7 +59,7 @@ export default function SecuritySettingsCard({ register, watch, setValue }) {
           </select>
         </div>
 
-        <div className="flex items-center justify-between p-4 bg-slate-900/40 border border-slate-800/80 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80 rounded-xl">
           <div>
             <div className="font-semibold text-slate-200">
               Enforce Two-Factor Authentication (2FA)

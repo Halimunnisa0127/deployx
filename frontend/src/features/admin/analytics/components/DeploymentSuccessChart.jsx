@@ -14,10 +14,10 @@ export default function DeploymentSuccessChart({ data }) {
   if (!data || !data.length) return null;
 
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 shadow-lg h-[350px] flex flex-col">
+    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col">
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-white">Success vs Failed</h3>
-        <p className="text-sm text-slate-400">Deployments health</p>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Success vs Failed</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Deployments health</p>
       </div>
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">

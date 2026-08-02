@@ -7,9 +7,9 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
   return (
     <div
       id="email"
-      className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-6 shadow-lg"
+      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-slate-800/80 pb-4 flex items-center justify-between">
+      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4 flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-white">
             Email Configuration (SMTP)

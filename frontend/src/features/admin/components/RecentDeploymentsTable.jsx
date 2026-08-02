@@ -18,7 +18,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
 
   return (
     <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden shadow-lg">
-      <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
         <h3 className="text-lg font-bold text-theme-heading tracking-tight">
           Recent Deployments
         </h3>

@@ -9,9 +9,9 @@ export default function BrandingSettingsCard({ register, watch }) {
   return (
     <div
       id="branding"
-      className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-6 shadow-lg"
+      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-slate-800/80 pb-4">
+      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
         <h2 className="text-lg font-bold text-white">Branding</h2>
         <p className="text-sm text-slate-400">
           Customize the visual identity of the platform.
@@ -70,13 +70,13 @@ export default function BrandingSettingsCard({ register, watch }) {
             Live Preview
           </label>
           <div className="border border-slate-700 rounded-xl bg-slate-950 p-4 h-48 flex flex-col items-center justify-center relative overflow-hidden">
-            <div className="w-full max-w-[180px] bg-slate-900 border border-slate-800 rounded-lg shadow-2xl p-4 flex flex-col gap-3 relative z-10">
+            <div className="w-full max-w-[180px] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl dark:shadow-2xl p-4 flex flex-col gap-3 relative z-10">
               <div className="text-center font-bold text-white text-sm truncate">
                 {platformName}
               </div>
               <div className="space-y-2">
-                <div className="h-2 w-full bg-slate-800 rounded"></div>
-                <div className="h-2 w-3/4 bg-slate-800 rounded"></div>
+                <div className="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded"></div>
+                <div className="h-2 w-3/4 bg-slate-200 dark:bg-slate-800 rounded"></div>
               </div>
               <div
                 className="h-6 w-full rounded mt-2 flex items-center justify-center text-[10px] text-white font-medium"

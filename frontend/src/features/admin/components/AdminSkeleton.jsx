@@ -36,8 +36,8 @@ export function ChartSkeleton() {
 
 export function TableSkeleton({ rows = 5 }) {
   return (
-    <Card className="bg-slate-900/60 border-slate-800/80 overflow-hidden">
-      <div className="p-5 border-b border-slate-800/80">
+    <Card className="overflow-hidden p-0">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">
@@ -64,7 +64,7 @@ export function PlatformHealthSkeleton() {
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className="flex items-center gap-3 p-4 rounded-xl border border-slate-800/50"
+            className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 dark:border-slate-800/50"
           >
             <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
             <div className="flex-1">
@@ -86,7 +86,7 @@ export function ActivitySkeleton() {
       <div className="space-y-6 ml-3">
         {[1, 2, 3, 4, 5].map((i) => (
           <div key={i} className="pl-6">
-            <div className="p-3.5 rounded-xl bg-slate-800/20">
+            <div className="p-3.5 rounded-xl bg-slate-100 dark:bg-slate-800/20">
               <Skeleton className="h-4 w-48 mb-2" />
               <Skeleton className="h-3 w-full max-w-[200px]" />
             </div>

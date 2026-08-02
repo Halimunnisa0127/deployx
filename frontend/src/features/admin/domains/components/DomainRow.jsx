@@ -18,11 +18,11 @@ export default function DomainRow({ domain, onRowClick, ...actionProps }) {
       tabIndex={0}
       onClick={() => onRowClick(domain)}
       onKeyDown={handleKeyDown}
-      className="group hover:bg-slate-800/30 transition-colors cursor-pointer outline-none focus-visible:bg-slate-800/50"
+      className="group hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer outline-none focus-visible:bg-slate-100 dark:focus-visible:bg-slate-800/50"
     >
       <td className="px-5 py-4 min-w-[200px]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
             <Globe className="w-5 h-5 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
           </div>
           <div>

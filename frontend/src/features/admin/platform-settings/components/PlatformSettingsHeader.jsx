@@ -4,7 +4,7 @@ import Button from "../../../../components/ui/Button";
 
 export default function PlatformSettingsHeader({ onExport, onImport }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-800/60 pb-6">
+    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-800/60 pb-6">
       <div>
         <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
           <span className="hover:text-slate-300 cursor-pointer transition-colors">

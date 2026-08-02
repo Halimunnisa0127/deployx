@@ -2,7 +2,7 @@ import React from "react";
 
 function ToggleRow({ title, description, isEnabled, onClick }) {
   return (
-    <div className="flex items-center justify-between p-4 bg-slate-900/40 border border-slate-800/80 rounded-xl hover:bg-slate-800/40 transition-colors">
+    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors">
       <div>
         <div className="font-semibold text-slate-200">{title}</div>
         <div className="text-sm text-slate-400 mt-0.5">{description}</div>
@@ -34,9 +34,9 @@ export default function FeatureFlagsCard({ watch, setValue }) {
   return (
     <div
       id="features"
-      className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-6 shadow-lg"
+      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-slate-800/80 pb-4">
+      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
         <h2 className="text-lg font-bold text-white">Feature Flags</h2>
         <p className="text-sm text-slate-400">
           Enable or disable specific functionality across the platform.
