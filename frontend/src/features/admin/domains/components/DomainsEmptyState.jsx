@@ -65,3 +65,19 @@ export function NoPendingDomainsEmptyState({ onClear }) {
     />
   );
 }
+
+export function NoFailedDomainsEmptyState({ onClear }) {
+  return (
+    <EmptyState
+      icon={AlertCircle}
+      title="No Failed Domains"
+      description="Great! There are no domains that have failed verification."
+      secondaryAction={{
+        label: "Clear Filters",
+        onClick: onClear,
+      }}
+      minHeight=""
+      className="p-10"
+    />
+  );
+}

@@ -53,3 +53,49 @@ export function DomainsStatisticsSkeleton() {
     </div>
   );
 }
+
+export function DrawerSkeleton() {
+  return (
+    <div className="p-6 space-y-8 animate-pulse">
+      {/* Overview Skeleton */}
+      <div className="flex items-start gap-4">
+        <Skeleton className="w-16 h-16 rounded-xl shrink-0" />
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-2">
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-6 w-24 rounded-full" />
+          </div>
+          <Skeleton className="h-4 w-32 mt-2" />
+        </div>
+      </div>
+
+      {/* Grid Cards Skeleton */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-5 w-24" />
+          </div>
+        ))}
+      </div>
+
+      {/* Sections Skeleton */}
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-40" />
+        <Skeleton className="h-32 w-full rounded-xl" />
+      </div>
+
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-40" />
+        <Skeleton className="h-24 w-full rounded-xl" />
+      </div>
+
+      {/* Actions Skeleton */}
+      <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 sm:grid-cols-4 gap-3">
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-10 w-full rounded-lg" />
+        ))}
+      </div>
+    </div>
+  );
+}

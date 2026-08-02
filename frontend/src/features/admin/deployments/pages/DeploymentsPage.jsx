@@ -12,7 +12,7 @@ import {
 import {
   NoDeploymentsEmptyState,
   NoSearchResultsEmptyState,
-  NoRunningDeploymentsEmptyState,
+  NoActiveDeploymentsEmptyState,
   NoFailedDeploymentsEmptyState,
 } from "../components/DeploymentsEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
@@ -175,7 +175,7 @@ export default function DeploymentsPage() {
         <NoDeploymentsEmptyState />
       ) : filteredDeployments.length === 0 ? (
         activeFilter === "running" ? (
-          <NoRunningDeploymentsEmptyState
+          <NoActiveDeploymentsEmptyState
             onClear={() => setActiveFilter("all")}
           />
         ) : activeFilter === "failed" ? (

@@ -72,7 +72,7 @@ export default function DeploymentDetailsDrawer({
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Database className="w-4 h-4" />
-                    {deployment.commit.substring(0, 7)}
+                    {deployment.commit ? deployment.commit.substring(0, 7) : 'N/A'}
                   </span>
                 </div>
               </div>
