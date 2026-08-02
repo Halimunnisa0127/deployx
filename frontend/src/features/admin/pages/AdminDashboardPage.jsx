@@ -113,45 +113,44 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
+      {/* Health and Activity Row */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {/* Platform Health */}
+        {loading ? (
+          <PlatformHealthSkeleton />
+        ) : (
+          <PlatformHealthCard health={data.health} />
+        )}
+
+        {/* Recent Activity */}
+        {loading ? (
+          <ActivitySkeleton />
+        ) : data.activity.length > 0 ? (
+          <ActivityTimeline activity={data.activity} />
+        ) : (
+          <NoActivityEmptyState />
+        )}
+      </div>
+
       {/* Data Tables Row */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-6">
-          {/* Recent Deployments */}
-          {loading ? (
-            <TableSkeleton rows={5} />
-          ) : data.deployments.length > 0 ? (
-            <RecentDeploymentsTable deployments={data.deployments} />
-          ) : (
-            <NoDeploymentsEmptyState />
-          )}
+        {/* Recent Deployments */}
+        {loading ? (
+          <TableSkeleton rows={5} />
+        ) : data.deployments.length > 0 ? (
+          <RecentDeploymentsTable deployments={data.deployments} />
+        ) : (
+          <NoDeploymentsEmptyState />
+        )}
 
-          {/* Recent Users */}
-          {loading ? (
-            <TableSkeleton rows={5} />
-          ) : data.users.length > 0 ? (
-            <RecentUsersTable users={data.users} />
-          ) : (
-            <NoUsersEmptyState />
-          )}
-        </div>
-
-        <div className="flex flex-col gap-6 xl:grid xl:grid-cols-2">
-          {/* Platform Health */}
-          {loading ? (
-            <PlatformHealthSkeleton />
-          ) : (
-            <PlatformHealthCard health={data.health} />
-          )}
-
-          {/* Recent Activity */}
-          {loading ? (
-            <ActivitySkeleton />
-          ) : data.activity.length > 0 ? (
-            <ActivityTimeline activity={data.activity} />
-          ) : (
-            <NoActivityEmptyState />
-          )}
-        </div>
+        {/* Recent Users */}
+        {loading ? (
+          <TableSkeleton rows={5} />
+        ) : data.users.length > 0 ? (
+          <RecentUsersTable users={data.users} />
+        ) : (
+          <NoUsersEmptyState />
+        )}
       </div>
     </div>
   );
