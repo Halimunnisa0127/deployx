@@ -57,25 +57,25 @@ export default function ActivityTimeline({ activity = [] }) {
   if (!activity.length) return null;
 
   return (
-    <Card className="h-full p-5 sm:p-6  shadow-lg overflow-hidden">
-      <h3 className="text-lg font-bold text-white mb-6 tracking-tight flex items-center gap-2">
+    <Card className="h-full p-5 sm:p-6 shadow-lg overflow-hidden">
+      <h3 className="text-lg font-bold text-theme-heading mb-6 tracking-tight flex items-center gap-2">
         <Clock className="w-5 h-5 text-indigo-400" />
         Recent Activity
       </h3>
 
-      <div className="relative border-l border-slate-700/50 ml-3 space-y-6">
+      <div className="relative border-l border-theme-border ml-3 space-y-6">
         {activity.map((item, idx) => {
           const { icon: Icon, color, bg } = getIcon(item.type);
           return (
             <div key={item.id} className="relative pl-6 group">
               {/* Timeline Dot */}
-              <div className="absolute -left-3 top-1 flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 border border-slate-700 group-hover:border-indigo-500/50 transition-colors">
+              <div className="absolute -left-3 top-1 flex items-center justify-center w-6 h-6 rounded-full bg-theme-card border border-theme-border group-hover:border-indigo-500/50 transition-colors">
                 <div
                   className={`w-2 h-2 rounded-full ${color.replace("text-", "bg-")}`}
                 />
               </div>
 
-              <div className="bg-slate-800/20 hover:bg-slate-800/40 p-3.5 rounded-xl border border-transparent hover:border-slate-700/50 transition-all cursor-default">
+              <div className="bg-theme-bg/50 hover:bg-theme-card/80 p-3.5 rounded-xl border border-transparent hover:border-theme-border transition-all cursor-default">
                 <div className="flex justify-between items-start mb-1">
                   <div className="flex items-center gap-2">
                     <div
@@ -83,18 +83,18 @@ export default function ActivityTimeline({ activity = [] }) {
                     >
                       <Icon className={`w-3.5 h-3.5 ${color}`} />
                     </div>
-                    <span className="text-sm font-semibold text-slate-200">
+                    <span className="text-sm font-medium text-theme-heading group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                       {item.title}
                     </span>
                   </div>
-                  <span className="text-xs text-slate-500 whitespace-nowrap">
+                  <span className="text-xs text-theme-muted whitespace-nowrap">
                     {formatTimeAgo(item.timestamp)}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 mt-1 mb-2">
+                <p className="text-xs text-theme-muted mt-0.5">
                   {item.description}
                 </p>
-                <div className="text-[10px] text-slate-500 font-medium bg-slate-900 inline-block px-2 py-0.5 rounded border border-slate-800">
+                <div className="text-[10px] text-theme-secondary font-medium mt-1">
                   By {item.user}
                 </div>
               </div>
