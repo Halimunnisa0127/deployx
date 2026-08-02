@@ -30,9 +30,32 @@ html {
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 transition-colors duration-300;
+  @apply bg-slate-50 text-theme-body dark:bg-[#0a0a0a] transition-colors duration-300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 1rem;
   line-height: 1.6;
+}
+
+@layer base {
+  :root {
+    --text-heading: #111827;
+    --text-body: #374151;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+  }
+  
+  .dark {
+    --text-heading: #ffffff;
+    --text-body: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+  }
+}
+
+@theme {
+  --color-theme-heading: var(--text-heading);
+  --color-theme-body: var(--text-body);
+  --color-theme-secondary: var(--text-secondary);
+  --color-theme-muted: var(--text-muted);
 }

@@ -5,6 +5,7 @@ import {
   Box,
   Layers,
   HardDrive,
+  GitBranch,
   MoreVertical,
   Play,
   Pause,
@@ -26,7 +27,7 @@ const getIconForType = (type) => {
     case "storage":
       return HardDrive;
     case "github":
-      return Github;
+      return GitBranch;
     default:
       return Server;
   }
