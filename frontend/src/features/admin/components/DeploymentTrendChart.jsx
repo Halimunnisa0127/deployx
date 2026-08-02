@@ -8,15 +8,15 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import { Card } from "../../../components/common/Card";
+import Card from "../../../components/ui/Card";
 
 export default function DeploymentTrendChart({ data = [] }) {
   if (!data.length) return null;
 
   return (
-    <Card className="p-5 sm:p-6 bg-slate-900/60 border-slate-800/80 shadow-lg">
+    <Card className="p-5 sm:p-6 shadow-lg">
       <div className="mb-6">
-        <h3 className="text-lg font-bold text-white tracking-tight">
+        <h3 className="text-lg font-bold text-theme-heading tracking-tight">
           Deployment Trend
         </h3>
         <p className="text-sm text-slate-400">Past 7 days</p>

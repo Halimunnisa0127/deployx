@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "../../../components/common/Card";
+import Card from "../../../components/ui/Card";
 import Skeleton from "../../../components/ui/Skeleton";
 
 export function StatisticsSkeleton() {
@@ -8,7 +8,7 @@ export function StatisticsSkeleton() {
       {[1, 2, 3, 4, 5, 6].map((i) => (
         <Card
           key={i}
-          className="p-5 sm:p-6 bg-slate-900/60 border-slate-800/80"
+          className="p-5 sm:p-6"
         >
           <div className="flex justify-between items-start mb-4">
             <Skeleton className="w-10 h-10 rounded-xl" />
@@ -26,7 +26,7 @@ export function StatisticsSkeleton() {
 
 export function ChartSkeleton() {
   return (
-    <Card className="p-5 sm:p-6 bg-slate-900/60 border-slate-800/80">
+    <Card className="p-5 sm:p-6">
       <Skeleton className="h-6 w-40 mb-2" />
       <Skeleton className="h-4 w-24 mb-6" />
       <Skeleton className="h-[250px] w-full rounded-lg" />
@@ -55,7 +55,7 @@ export function TableSkeleton({ rows = 5 }) {
 
 export function PlatformHealthSkeleton() {
   return (
-    <Card className="h-full p-5 sm:p-6 bg-slate-900/60 border-slate-800/80">
+    <Card className="h-full p-5 sm:p-6">
       <div className="flex justify-between mb-6">
         <Skeleton className="h-6 w-40" />
         <Skeleton className="h-8 w-20 rounded-lg" />
@@ -81,7 +81,7 @@ export function PlatformHealthSkeleton() {
 
 export function ActivitySkeleton() {
   return (
-    <Card className="h-full p-5 sm:p-6 bg-slate-900/60 border-slate-800/80">
+    <Card className="h-full p-5 sm:p-6">
       <Skeleton className="h-6 w-40 mb-6" />
       <div className="space-y-6 ml-3">
         {[1, 2, 3, 4, 5].map((i) => (
@@ -103,7 +103,7 @@ export function QuickActionSkeleton() {
       {[1, 2, 3, 4].map((i) => (
         <div
           key={i}
-          className="p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80"
+          className="p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/5"
         >
           <Skeleton className="w-10 h-10 rounded-xl mb-3" />
           <Skeleton className="h-5 w-24 mb-2" />

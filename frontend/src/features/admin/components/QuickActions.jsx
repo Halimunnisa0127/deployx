@@ -48,7 +48,7 @@ export default function QuickActions() {
       {actions.map((action, idx) => (
         <div
           key={idx}
-          className={`group cursor-pointer p-5 rounded-2xl bg-slate-900/60 border border-slate-800/80 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-900/90 ${action.border}`}
+          className={`group cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-50 dark:hover:bg-slate-900/90 ${action.border}`}
         >
           <div className="flex justify-between items-start mb-3">
             <div
@@ -58,7 +58,7 @@ export default function QuickActions() {
             </div>
             <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" />
           </div>
-          <h4 className="text-sm font-bold text-white mb-1 group-hover:text-indigo-300 transition-colors">
+          <h4 className="text-sm font-bold text-theme-heading mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">
             {action.title}
           </h4>
           <p className="text-xs text-slate-400">

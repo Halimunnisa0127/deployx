@@ -18,16 +18,16 @@ export default function UserRow({ user, onRowClick, ...actionProps }) {
       tabIndex={0}
       onClick={() => onRowClick(user)}
       onKeyDown={handleKeyDown}
-      className="group hover:bg-slate-800/30 transition-colors cursor-pointer outline-none focus-visible:bg-slate-800/50"
+      className="group hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer outline-none focus-visible:bg-slate-100 dark:focus-visible:bg-slate-800/50"
     >
       <td className="px-5 py-4 min-w-[250px]">
         <div className="flex items-center gap-3">
           <UserAvatar name={user.name} />
           <div>
-            <div className="font-bold text-white group-hover:text-indigo-300 transition-colors truncate">
+            <div className="font-bold text-theme-heading group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
               {user.name}
             </div>
-            <div className="text-xs text-slate-400 truncate">{user.email}</div>
+            <div className="text-xs text-theme-muted truncate">{user.email}</div>
           </div>
         </div>
       </td>
@@ -38,15 +38,15 @@ export default function UserRow({ user, onRowClick, ...actionProps }) {
         <Badge status={user.status} type="user" />
       </td>
       <td className="px-5 py-4">
-        <div className="inline-flex items-center gap-1.5 text-slate-300 bg-slate-800/60 px-2.5 py-1 rounded border border-slate-700/40 font-mono text-[11px]">
-          <FolderGit2 className="w-3.5 h-3.5 text-indigo-400" />
+        <div className="inline-flex items-center gap-1.5 text-theme-secondary bg-slate-100 dark:bg-slate-800/60 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700/40 font-mono text-[11px]">
+          <FolderGit2 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
           {user.projectsCount}{" "}
           {user.projectsCount === 1 ? "Project" : "Projects"}
         </div>
       </td>
-      <td className="px-5 py-4 text-slate-400 text-xs whitespace-nowrap">
+      <td className="px-5 py-4 text-theme-muted text-xs whitespace-nowrap">
         <span className="inline-flex items-center gap-1.5">
-          <Calendar className="w-3.5 h-3.5 text-slate-500" />
+          <Calendar className="w-3.5 h-3.5 text-theme-muted" />
           {new Date(user.joinedAt).toLocaleDateString()}
         </span>
       </td>

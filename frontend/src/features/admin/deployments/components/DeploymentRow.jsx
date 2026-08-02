@@ -22,26 +22,26 @@ export default function DeploymentRow({
       tabIndex={0}
       onClick={() => onRowClick(deployment)}
       onKeyDown={handleKeyDown}
-      className="group hover:bg-slate-800/30 transition-colors cursor-pointer outline-none focus-visible:bg-slate-800/50"
+      className="group hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer outline-none focus-visible:bg-slate-100 dark:focus-visible:bg-slate-800/50"
     >
       <td className="px-5 py-4 min-w-[200px]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
-            <Rocket className="w-5 h-5 text-indigo-400 group-hover:text-indigo-300 transition-colors" />
+          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+            <Rocket className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors" />
           </div>
           <div>
-            <div className="font-bold text-white group-hover:text-indigo-300 transition-colors truncate">
+            <div className="font-bold text-theme-heading group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
               {deployment.project}
             </div>
-            <div className="text-xs text-slate-400 font-mono mt-0.5">
+            <div className="text-xs text-theme-muted font-mono mt-0.5">
               {deployment.id} • {deployment.latestCommit}
             </div>
           </div>
         </div>
       </td>
       <td className="px-5 py-4 whitespace-nowrap">
-        <div className="flex items-center gap-1.5 text-sm text-slate-300">
-          <User className="w-3.5 h-3.5 text-slate-500" />
+        <div className="flex items-center gap-1.5 text-sm text-theme-secondary">
+          <User className="w-3.5 h-3.5 text-theme-muted" />
           {deployment.owner}
         </div>
       </td>
@@ -54,12 +54,12 @@ export default function DeploymentRow({
       <td className="px-5 py-4 whitespace-nowrap">
         <Badge status={deployment.status} />
       </td>
-      <td className="px-5 py-4 whitespace-nowrap text-xs text-slate-400 font-mono">
+      <td className="px-5 py-4 whitespace-nowrap text-xs text-theme-muted font-mono">
         {deployment.duration}
       </td>
-      <td className="px-5 py-4 whitespace-nowrap text-slate-400 text-xs">
+      <td className="px-5 py-4 whitespace-nowrap text-theme-muted text-xs">
         <span className="inline-flex items-center gap-1.5">
-          <Clock className="w-3.5 h-3.5 text-slate-500" />
+          <Clock className="w-3.5 h-3.5 text-theme-muted" />
           {new Date(deployment.createdAt).toLocaleString()}
         </span>
       </td>
