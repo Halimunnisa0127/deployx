@@ -17,23 +17,23 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
   }
 
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 overflow-hidden shadow-lg">
-      <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
+    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 overflow-hidden shadow-lg">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-900 flex items-center justify-between">
         <h3 className="text-lg font-bold text-white tracking-tight">
           Recent Deployments
         </h3>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm whitespace-nowrap">
-          <thead className="bg-slate-900/90 text-slate-400 border-b border-slate-800/80 sticky top-0">
+      <div className="overflow-x-auto [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-700/50 hover:[&::-webkit-scrollbar-thumb]:bg-slate-600/50 [&::-webkit-scrollbar-thumb]:rounded-full pb-2">
+        <table className="w-full text-left text-sm">
+          <thead className="bg-slate-900 text-slate-400 border-b border-slate-200 dark:border-slate-900 sticky top-0">
             <tr>
-              <th className="px-5 py-3 font-medium">Project</th>
-              <th className="px-5 py-3 font-medium">Status</th>
-              <th className="px-5 py-3 font-medium">Region</th>
-              <th className="px-5 py-3 font-medium">Duration</th>
-              <th className="px-5 py-3 font-medium">Created Time</th>
-              <th className="px-5 py-3 font-medium text-right">Actions</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Project</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Status</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Region</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Duration</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Created Time</th>
+              <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/50">
@@ -42,7 +42,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                 key={dep.id}
                 className="group hover:bg-slate-800/30 transition-colors"
               >
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-white group-hover:text-indigo-300 transition-colors">
                       {dep.project}
@@ -52,25 +52,25 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                     </span>
                   </div>
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <Badge status={dep.status} type="deployment" />
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <span className="text-slate-300">{dep.region}</span>
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <span className="inline-flex items-center gap-1.5 text-slate-300 bg-slate-800/60 px-2.5 py-1 rounded border border-slate-700/40 font-mono text-[11px]">
                     <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                     {dep.duration}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-slate-400 text-xs">
+                <td className="px-4 py-4 text-slate-400 text-xs">
                   <span className="inline-flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-slate-500" />
                     {new Date(dep.createdAt).toLocaleString()}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-right">
+                <td className="px-4 py-4 text-right">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -88,7 +88,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-5 py-4 border-t border-slate-800/80 flex items-center justify-between text-sm">
+        <div className="px-4 py-4 border-t border-slate-200 dark:border-slate-900 flex items-center justify-between text-sm">
           <span className="text-slate-400">
             Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
             {Math.min(currentPage * itemsPerPage, deployments.length)} of{" "}
@@ -117,3 +117,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
     </div>
   );
 }
+
+
+
+

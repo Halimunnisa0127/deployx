@@ -92,9 +92,9 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
   const sidebarWidth = isCollapsed ? "w-20" : "w-64";
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-slate-950 text-slate-200 border-r border-slate-800/80 shadow-2xl relative select-none transition-colors duration-300">
+    <div className="flex flex-col h-full bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-200 border-r border-slate-200 dark:border-slate-200 dark:border-slate-900 shadow-2xl relative select-none transition-colors duration-300">
       {/* Top Section */}
-      <div className="p-4 flex flex-col gap-3.5 border-b border-slate-800/60 transition-colors duration-300">
+      <div className="p-4 flex flex-col gap-3.5 border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-indigo-600 flex items-center justify-center shadow-lg flex-shrink-0">
@@ -170,7 +170,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
       </div>
 
       {/* Bottom Section */}
-      <div className="p-3 border-t border-slate-800/80 bg-slate-900/40 space-y-2">
+      <div className="p-3 border-t border-slate-200 dark:border-slate-200 dark:border-slate-900 bg-slate-100/50 dark:bg-slate-950/40 space-y-2 transition-colors duration-300">
         <div
           className={`hidden md:flex ${isCollapsed ? "justify-center" : "justify-end"}`}
         >
@@ -195,7 +195,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
               align="left"
               position="top"
               trigger={
-                <div className="w-full flex items-center justify-between p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800/80 border border-slate-800/80 transition-all group shadow-sm cursor-pointer">
+                <div className="w-full flex items-center justify-between p-2 rounded-xl bg-white dark:bg-black dark:bg-black hover:bg-slate-50 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-200 dark:border-slate-900 transition-all group shadow-sm cursor-pointer">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Avatar
                       name={user?.name || "Admin"}
@@ -203,15 +203,15 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
                       status="online"
                     />
                     <div className="flex flex-col text-left min-w-0">
-                      <span className="text-xs font-semibold text-slate-100 truncate group-hover:text-white transition-colors">
+                      <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                         {user?.name || "Administrator"}
                       </span>
-                      <span className="text-[10px] text-slate-400 truncate transition-colors">
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate transition-colors">
                         admin@deployx.dev
                       </span>
                     </div>
                   </div>
-                  <ChevronsUpDown className="w-3.5 h-3.5 text-slate-400 transition-colors" />
+                  <ChevronsUpDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors" />
                 </div>
               }
             >
@@ -274,3 +274,4 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
     </>
   );
 }
+

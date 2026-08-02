@@ -8,7 +8,7 @@ export function KPISkeleton() {
       {[1, 2, 3, 4, 5, 6].map((i) => (
         <Card
           key={i}
-          className="p-5 sm:p-6 bg-slate-900/60 border-slate-800/80"
+          className="p-5 sm:p-6 bg-black dark:bg-black border-slate-200 dark:border-slate-900"
         >
           <div className="flex justify-between items-start mb-4">
             <Skeleton className="w-10 h-10 rounded-xl" />
@@ -26,7 +26,7 @@ export function KPISkeleton() {
 
 export function ChartSkeleton() {
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 shadow-lg h-[350px] flex flex-col animate-pulse">
+    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col animate-pulse">
       <div className="mb-4">
         <Skeleton className="h-6 w-32 mb-2" />
         <Skeleton className="h-4 w-48" />
@@ -46,7 +46,7 @@ export function ChartSkeleton() {
 
 export function ListSkeleton() {
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 shadow-lg h-[350px] flex flex-col animate-pulse">
+    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col animate-pulse">
       <div className="mb-4">
         <Skeleton className="h-6 w-32 mb-2" />
         <Skeleton className="h-4 w-48" />
@@ -71,3 +71,4 @@ export function ListSkeleton() {
     </div>
   );
 }
+

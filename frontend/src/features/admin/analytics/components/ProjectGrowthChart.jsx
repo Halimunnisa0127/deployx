@@ -13,7 +13,7 @@ export default function ProjectGrowthChart({ data }) {
   if (!data || !data.length) return null;
 
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 shadow-lg h-[350px] flex flex-col">
+    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col">
       <div className="mb-4">
         <h3 className="text-lg font-bold text-white">Project Growth</h3>
         <p className="text-sm text-slate-400">Monthly new projects</p>
@@ -65,3 +65,4 @@ export default function ProjectGrowthChart({ data }) {
     </div>
   );
 }
+

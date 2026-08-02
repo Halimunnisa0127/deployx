@@ -7,7 +7,7 @@ import {
   CheckCircle,
   Clock,
 } from "lucide-react";
-import { Card } from "../../../components/common/Card";
+import Card from "../../../components/ui/Card";
 
 const getIcon = (type) => {
   switch (type) {
@@ -57,7 +57,7 @@ export default function ActivityTimeline({ activity = [] }) {
   if (!activity.length) return null;
 
   return (
-    <Card className="h-full p-5 sm:p-6 bg-slate-900/60 border-slate-800/80 shadow-lg overflow-hidden">
+    <Card className="h-full p-5 sm:p-6  shadow-lg overflow-hidden">
       <h3 className="text-lg font-bold text-white mb-6 tracking-tight flex items-center gap-2">
         <Clock className="w-5 h-5 text-indigo-400" />
         Recent Activity
@@ -105,3 +105,4 @@ export default function ActivityTimeline({ activity = [] }) {
     </Card>
   );
 }
+

@@ -3,7 +3,7 @@ import { Globe, Server } from "lucide-react";
 
 export default function TopRegionsCard({ regions = [] }) {
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 shadow-lg h-[350px] flex flex-col">
+    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col">
       <div className="mb-4">
         <h3 className="text-lg font-bold text-white">Top Regions</h3>
         <p className="text-sm text-slate-400">By deployment volume</p>
@@ -43,3 +43,4 @@ export default function TopRegionsCard({ regions = [] }) {
     </div>
   );
 }
+

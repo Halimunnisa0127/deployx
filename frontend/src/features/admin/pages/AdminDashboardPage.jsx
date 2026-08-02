@@ -115,8 +115,8 @@ export default function AdminDashboardPage() {
 
       {/* Data Tables Row */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-6">
-          {/* Recent Deployments */}
+        {/* Recent Deployments */}
+        <div>
           {loading ? (
             <TableSkeleton rows={5} />
           ) : data.deployments.length > 0 ? (
@@ -124,8 +124,10 @@ export default function AdminDashboardPage() {
           ) : (
             <NoDeploymentsEmptyState />
           )}
+        </div>
 
-          {/* Recent Users */}
+        {/* Recent Users */}
+        <div>
           {loading ? (
             <TableSkeleton rows={5} />
           ) : data.users.length > 0 ? (
@@ -134,16 +136,21 @@ export default function AdminDashboardPage() {
             <NoUsersEmptyState />
           )}
         </div>
+      </div>
 
-        <div className="flex flex-col gap-6 xl:grid xl:grid-cols-2">
-          {/* Platform Health */}
+      {/* Widgets Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Platform Health */}
+        <div>
           {loading ? (
             <PlatformHealthSkeleton />
           ) : (
             <PlatformHealthCard health={data.health} />
           )}
+        </div>
 
-          {/* Recent Activity */}
+        {/* Recent Activity */}
+        <div>
           {loading ? (
             <ActivitySkeleton />
           ) : data.activity.length > 0 ? (

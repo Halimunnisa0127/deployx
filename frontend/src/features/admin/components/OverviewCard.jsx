@@ -1,6 +1,6 @@
 import React from "react";
 import { ArrowUpRight, ArrowDownRight, ArrowRight } from "lucide-react";
-import { Card } from "../../../components/common/Card";
+import Card from "../../../components/ui/Card";
 
 export default function OverviewCard({
   title,
@@ -14,7 +14,7 @@ export default function OverviewCard({
   return (
     <Card
       onClick={onClick}
-      className="group p-5 sm:p-6 bg-slate-900/60 hover:bg-slate-900/90 border-slate-800/80 hover:border-indigo-500/50 cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_12px_36px_rgba(79,70,229,0.18)]"
+      className="group p-5 sm:p-6 cursor-pointer"
     >
       <div className="flex justify-between items-start mb-4">
         <div className="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 transition-colors">
@@ -60,3 +60,4 @@ export default function OverviewCard({
     </Card>
   );
 }
+

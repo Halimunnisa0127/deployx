@@ -35,7 +35,7 @@ export default function ReportsCard({
   ];
 
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 shadow-lg h-[350px] flex flex-col">
+    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col">
       <div className="mb-4">
         <h3 className="text-lg font-bold text-white">Reports & Export</h3>
         <p className="text-sm text-slate-400">Generate analytics reports</p>
@@ -45,7 +45,7 @@ export default function ReportsCard({
           <button
             key={idx}
             onClick={report.onClick}
-            className="flex items-center gap-4 w-full p-3 bg-slate-900/40 hover:bg-slate-800/80 border border-slate-800/80 rounded-xl transition-colors text-left group"
+            className="flex items-center gap-4 w-full p-3 bg-slate-900/40 hover:bg-slate-800/80 border border-slate-200 dark:border-slate-900 rounded-xl transition-colors text-left group"
           >
             <div className="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
               <report.icon className="w-5 h-5" />
@@ -62,3 +62,4 @@ export default function ReportsCard({
     </div>
   );
 }
+

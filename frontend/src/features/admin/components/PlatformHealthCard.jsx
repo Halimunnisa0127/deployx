@@ -8,7 +8,7 @@ import {
   Box,
   Layers,
 } from "lucide-react";
-import { Card } from "../../../components/common/Card";
+import Card from "../../../components/ui/Card";
 import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
 
@@ -33,7 +33,7 @@ export default function PlatformHealthCard({ health = [] }) {
   if (!health.length) return null;
 
   return (
-    <Card className="h-full flex flex-col p-5 sm:p-6 bg-slate-900/60 border-slate-800/80 shadow-lg">
+    <Card className="h-full flex flex-col p-5 sm:p-6  shadow-lg">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold text-white flex items-center gap-2 tracking-tight">
           <Activity className="w-5 h-5 text-indigo-400" />
@@ -85,3 +85,4 @@ export default function PlatformHealthCard({ health = [] }) {
     </Card>
   );
 }
+
