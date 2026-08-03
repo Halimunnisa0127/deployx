@@ -72,7 +72,7 @@ export default function Home() {
               <Link to="/login" className="text-sm font-medium text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors">
                 Sign In
               </Link>
-              <Link to="/register" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)]">
+              <Link to="/signup" className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all shadow-[0_0_15px_rgba(37,99,235,0.35)]">
                 Get Started
               </Link>
             </div>
@@ -130,9 +130,9 @@ export default function Home() {
                 Sign In
               </Link>
               <Link 
-                to="/register" 
+                to="/signup" 
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-2 mt-4 text-center text-base font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-lg"
+                className="block px-3 py-2 mt-4 text-center text-base font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-full shadow-lg"
               >
                 Get Started
               </Link>

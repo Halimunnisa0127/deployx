@@ -37,7 +37,7 @@ export default function WhyDeployXSection() {
   ];
 
   return (
-    <section className="py-28 lg:py-36 bg-white dark:bg-[#0a0a0d] border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
+    <section className="py-28 lg:py-36 bg-transparent border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}

@@ -29,7 +29,7 @@ const fadeInUp = {
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="py-28 lg:py-36 bg-white dark:bg-[#0d0e14] border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
+    <section id="features" className="py-28 lg:py-36 bg-transparent border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
       {/* Background radial accent */}
       <div className="absolute top-1/3 right-0 w-[550px] h-[550px] bg-blue-600/15 rounded-full blur-[150px] pointer-events-none" />
 
@@ -74,15 +74,15 @@ export default function FeaturesSection() {
                 <GithubIcon className="w-6 h-6" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
                 GitHub Integration & Automatic Deployments
               </h3>
 
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-slate-600 dark:text-gray-400 leading-relaxed">
                 Connect your GitHub repositories in seconds. Every push to your main branch automatically triggers a fresh build and deploys your changes instantly.
               </p>
 
-              <ul className="space-y-3 pt-2 text-sm text-gray-300">
+              <ul className="space-y-3 pt-2 text-sm text-slate-700 dark:text-gray-300">
                 <li className="flex items-center gap-3">
                   <CheckCircle className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>Automatic branch sync & commit triggers</span>
