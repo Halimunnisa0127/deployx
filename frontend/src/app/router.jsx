@@ -107,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <LazyElement><PlatformSettingsPage /></LazyElement>
+      },
+      {
+        path: "notifications",
+        element: <Notifications />
       }
     ]
   },
