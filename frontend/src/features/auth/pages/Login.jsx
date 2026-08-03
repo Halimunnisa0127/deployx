@@ -24,7 +24,7 @@ export default function Login() {
   };
 
   return (
-    <Card animated>
+    <Card animated size="sm">
       <div style={headerStyle}>
         <h2 className="text-slate-900 dark:text-slate-100" style={headingStyle}>⚡Deploy Your Projects with Confidence</h2>
         <p className="text-slate-500 dark:text-slate-400" style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>

@@ -5,7 +5,7 @@ import { ArrowRight, LayoutDashboard, Rocket } from 'lucide-react';
 
 export default function CtaSection() {
   return (
-    <section className="py-32 lg:py-40 bg-[#0a0a0d] border-t border-white/[0.06] relative overflow-hidden">
+    <section className="py-32 lg:py-40 bg-white dark:bg-[#0a0a0d] border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
       {/* Soft background glows */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 to-transparent pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-blue-600/25 rounded-full blur-[160px] opacity-60 pointer-events-none" />
@@ -21,11 +21,11 @@ export default function CtaSection() {
           <Rocket className="w-7 h-7" />
         </div>
 
-        <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+        <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
           Ready to deploy your next project?
         </h2>
 
-        <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg sm:text-xl text-slate-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
           Deploy applications in minutes with GitHub integration, automatic builds, and real-time deployment logs.
         </p>
 
@@ -40,7 +40,7 @@ export default function CtaSection() {
 
           <Link 
             to="/dashboard" 
-            className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-gray-300 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 rounded-xl transition-all flex items-center justify-center gap-2 backdrop-blur-md"
+            className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-slate-700 dark:text-gray-300 bg-slate-100 dark:bg-white/[0.03] hover:bg-slate-200 dark:hover:bg-white/[0.08] border border-slate-300 dark:border-white/10 hover:border-slate-400 dark:hover:border-white/20 rounded-xl transition-all flex items-center justify-center gap-2 backdrop-blur-md"
           >
             <LayoutDashboard className="w-5 h-5 text-blue-400" />
             <span>View Dashboard</span>

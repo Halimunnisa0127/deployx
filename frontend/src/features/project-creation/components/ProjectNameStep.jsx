@@ -9,10 +9,10 @@ export default function ProjectNameStep({ projectName, setProjectName, previewUr
           <Folder className="w-3.5 h-3.5" />
           Step 1 of 6
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-100 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
           Name your project
         </h1>
-        <p className="text-sm text-slate-400 leading-relaxed">
+        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
           Enter a unique name for your project. This will be used to identify your application across your dashboard and generate your default preview URL.
         </p>
       </div>
@@ -31,11 +31,11 @@ export default function ProjectNameStep({ projectName, setProjectName, previewUr
         />
 
         {/* Domain Preview Pill */}
-        <div className="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2 text-slate-400 overflow-hidden">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950/60 dark:border-slate-800/80 flex items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 overflow-hidden">
             <Globe className="w-4 h-4 text-blue-400 flex-shrink-0" />
-            <span className="text-slate-500">Deployment URL:</span>
-            <span className="font-mono text-slate-200 truncate">{previewUrl}</span>
+            <span className="text-slate-400 dark:text-slate-500">Deployment URL:</span>
+            <span className="font-mono text-slate-900 dark:text-slate-200 truncate">{previewUrl}</span>
           </div>
           <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-xs font-semibold flex-shrink-0">
             Auto-generated

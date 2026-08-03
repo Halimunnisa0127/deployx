@@ -42,7 +42,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section id="faq" className="py-28 lg:py-36 bg-[#08090c] border-t border-white/[0.06] relative overflow-hidden">
+    <section id="faq" className="py-28 lg:py-36 bg-slate-50 dark:bg-[#08090c] border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
@@ -56,10 +56,10 @@ export default function FaqSection() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             FAQ
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-400">
+          <p className="text-lg text-slate-600 dark:text-gray-400">
             Everything you need to know about DeployX and automated deployments.
           </p>
         </motion.div>
@@ -79,8 +79,8 @@ export default function FaqSection() {
                 key={index} 
                 className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isOpen 
-                    ? "bg-white/[0.04] border-blue-500/40 shadow-[0_0_25px_rgba(37,99,235,0.15)]" 
-                    : "bg-white/[0.015] border-white/5 hover:border-white/15 hover:bg-white/[0.03]"
+                    ? "bg-slate-100 dark:bg-white/[0.04] border-blue-500/40 shadow-[0_0_25px_rgba(37,99,235,0.15)]" 
+                    : "bg-slate-50 dark:bg-white/[0.015] border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/15 hover:bg-slate-100 dark:hover:bg-white/[0.03]"
                 }`}
               >
                 <button
@@ -88,7 +88,7 @@ export default function FaqSection() {
                   className="w-full px-6 py-5 flex items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base sm:text-lg font-semibold text-white">
+                  <span className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
                     {faq.question}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-blue-400 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
@@ -102,7 +102,7 @@ export default function FaqSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                     >
-                      <div className="px-6 pb-6 text-sm sm:text-base text-gray-400 leading-relaxed border-t border-white/5 pt-4">
+                      <div className="px-6 pb-6 text-sm sm:text-base text-slate-600 dark:text-gray-400 leading-relaxed border-t border-slate-200 dark:border-white/5 pt-4">
                         {faq.answer}
                       </div>
                     </motion.div>
