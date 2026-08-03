@@ -2,45 +2,43 @@ import React from "react";
 import { Card } from "../../../../components/common/Card";
 import Skeleton from "../../../../components/ui/Skeleton";
 
-export function DomainsTableSkeleton({ rows = 6 }) {
+export function DomainsTableSkeleton({ rows = 5 }) {
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 overflow-hidden shadow-lg animate-in fade-in duration-300">
-      <div className="p-5 border-b border-slate-800/80">
+    <Card className="overflow-hidden p-0 animate-in fade-in duration-300">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">
         {[...Array(rows)].map((_, i) => (
           <div
             key={i}
-            className="flex justify-between items-center py-3 border-b border-slate-800/30 last:border-0"
+            className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-800/30 last:border-0"
           >
             <div className="flex items-center gap-3 w-1/4">
               <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
               <div className="flex-1">
-                <Skeleton className="h-4 w-32 mb-2" />
-                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-4 w-40 mb-1.5" />
+                <Skeleton className="h-3 w-24" />
               </div>
             </div>
-            <Skeleton className="h-5 w-20 rounded" />
             <Skeleton className="h-5 w-24 rounded" />
-            <Skeleton className="h-5 w-16 rounded" />
-            <Skeleton className="h-4 w-12" />
-            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-5 w-20 rounded" />
+            <Skeleton className="h-5 w-32 rounded" />
             <Skeleton className="h-6 w-6 rounded shrink-0" />
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
-export function AnalyticsSkeleton() {
+export function DomainsStatisticsSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-      {[1, 2, 3, 4, 5, 6].map((i) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {[1, 2, 3, 4].map((i) => (
         <Card
           key={i}
-          className="p-5 sm:p-6 bg-slate-900/60 border-slate-800/80"
+          className="p-5 sm:p-6"
         >
           <div className="flex justify-between items-start mb-4">
             <Skeleton className="w-10 h-10 rounded-xl" />
@@ -59,19 +57,45 @@ export function AnalyticsSkeleton() {
 export function DrawerSkeleton() {
   return (
     <div className="p-6 space-y-8 animate-pulse">
-      <div className="flex items-center gap-4">
-        <Skeleton className="w-16 h-16 rounded-xl" />
-        <div>
-          <Skeleton className="h-6 w-48 mb-2" />
-          <Skeleton className="h-4 w-32" />
+      {/* Overview Skeleton */}
+      <div className="flex items-start gap-4">
+        <Skeleton className="w-16 h-16 rounded-xl shrink-0" />
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-2">
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-6 w-24 rounded-full" />
+          </div>
+          <Skeleton className="h-4 w-32 mt-2" />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <Skeleton className="h-20 w-full rounded-xl" />
-        <Skeleton className="h-20 w-full rounded-xl" />
+
+      {/* Grid Cards Skeleton */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-5 w-24" />
+          </div>
+        ))}
       </div>
-      <Skeleton className="h-40 w-full rounded-xl" />
-      <Skeleton className="h-64 w-full rounded-xl" />
+
+      {/* Sections Skeleton */}
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-40" />
+        <Skeleton className="h-32 w-full rounded-xl" />
+      </div>
+
+      <div className="space-y-4">
+        <Skeleton className="h-6 w-40" />
+        <Skeleton className="h-24 w-full rounded-xl" />
+      </div>
+
+      {/* Actions Skeleton */}
+      <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 sm:grid-cols-4 gap-3">
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-10 w-full rounded-lg" />
+        ))}
+      </div>
     </div>
   );
 }

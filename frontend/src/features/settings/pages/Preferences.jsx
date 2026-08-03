@@ -33,7 +33,7 @@ export default function Preferences() {
       
       {/* Toast Alert */}
       {toast && (
-        <div className="flex items-center justify-between gap-3 p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/80 text-emerald-300 text-xs font-semibold shadow-lg transition-all animate-in fade-in duration-300">
+        <div className="flex items-center justify-between gap-3 p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-950/80 dark:text-emerald-300 text-xs font-semibold shadow-lg transition-all animate-in fade-in duration-300">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>{toast.message}</span>
@@ -114,7 +114,7 @@ export default function Preferences() {
                 type="checkbox"
                 checked={preferences.emailNotifications}
                 onChange={(e) => setPreferences({ ...preferences, emailNotifications: e.target.checked })}
-                className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500/40 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-300 bg-white text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-indigo-500 focus:ring-indigo-500/40 cursor-pointer"
               />
             </div>
 
@@ -132,7 +132,7 @@ export default function Preferences() {
                 type="checkbox"
                 checked={preferences.browserNotifications}
                 onChange={(e) => setPreferences({ ...preferences, browserNotifications: e.target.checked })}
-                className="w-4 h-4 rounded border-slate-700 bg-slate-900 text-indigo-500 focus:ring-indigo-500/40 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-300 bg-white text-indigo-600 dark:border-slate-700 dark:bg-slate-900 dark:text-indigo-500 focus:ring-indigo-500/40 cursor-pointer"
               />
             </div>
           </div>

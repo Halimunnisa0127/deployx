@@ -5,7 +5,7 @@ export default function DeploymentTimeline({ timeline = [] }) {
   if (!timeline.length) return null;
 
   return (
-    <div className="relative pl-6 border-l-2 border-slate-800/60 ml-4 space-y-6 my-4">
+    <div className="relative pl-6 border-l-2 border-slate-200 dark:border-slate-800/60 ml-4 space-y-6 my-4">
       {timeline.map((item, idx) => {
         const isCompleted = item.status === "completed";
         const isRunning = item.status === "running";

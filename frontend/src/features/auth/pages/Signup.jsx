@@ -23,10 +23,10 @@ export default function Signup() {
   };
 
   return (
-    <Card animated>
+    <Card animated size="sm">
       <div style={headerStyle}>
-        <h2 style={headingStyle}>⚡Create your account</h2>
-        <p style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>
+        <h2 className="text-slate-900 dark:text-slate-100" style={headingStyle}>⚡Create your account</h2>
+        <p className="text-slate-500 dark:text-slate-400" style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>
       </div>
 
       <div style={oauthContainer}>
@@ -55,8 +55,8 @@ export default function Signup() {
       <SignupForm onSubmit={handleEmailSignup} isLoading={false} />
 
       <div style={footerStyle}>
-        <p style={switchText}>
-          Already have an account? <Link to="/login" className="auth-link-highlight" style={linkHighlight}>Sign In</Link>
+        <p className="text-slate-500 dark:text-slate-400" style={switchText}>
+          Already have an account? <Link to="/login" className="auth-link-highlight text-blue-600 hover:text-blue-700 dark:text-slate-200 dark:hover:text-white" style={linkHighlight}>Sign In</Link>
         </p>
       </div>
     </Card>
@@ -77,14 +77,12 @@ const headingStyle = {
   margin: '0 0 8px 0',
   fontSize: '18px',
   fontWeight: 600,
-  color: '#cbd5e1',
   fontFamily: "'Inter', sans-serif",
 };
 
 const subtitleStyle = {
   margin: 0,
   fontSize: '13px',
-  color: '#64748b',
   fontFamily: "'Inter', sans-serif",
   letterSpacing: '0.2px',
 };
@@ -107,12 +105,10 @@ const footerStyle = {
 const switchText = {
   margin: 0,
   fontSize: '14px',
-  color: '#94a3b8',
   fontFamily: "'Inter', sans-serif",
 };
 
 const linkHighlight = {
-  color: '#e2e8f0',
   textDecoration: 'none',
   fontWeight: 600,
   transition: 'color 0.2s',

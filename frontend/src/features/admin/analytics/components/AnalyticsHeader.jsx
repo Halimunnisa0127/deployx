@@ -11,28 +11,28 @@ export default function AnalyticsHeader({
   setDateRange,
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-800/60 pb-6">
+    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-border pb-6">
       <div>
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
-          <span className="hover:text-slate-300 cursor-pointer transition-colors">
+        <div className="flex items-center gap-2 text-sm text-theme-muted mb-4">
+          <span className="hover:text-theme-body cursor-pointer transition-colors">
             Home
           </span>
           <span>&gt;</span>
-          <span className="hover:text-slate-300 cursor-pointer transition-colors">
+          <span className="hover:text-theme-body cursor-pointer transition-colors">
             Admin
           </span>
           <span>&gt;</span>
-          <span className="text-slate-200">Analytics</span>
+          <span className="text-theme-secondary">Analytics</span>
         </div>
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
             <BarChart3 className="w-5 h-5 text-indigo-400" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-theme-heading tracking-tight">
             Platform Analytics
           </h1>
         </div>
-        <p className="text-sm text-slate-400 mt-1.5 leading-relaxed max-w-2xl">
+        <p className="text-sm text-theme-muted mt-1.5 leading-relaxed max-w-2xl">
           Monitor platform usage, growth, infrastructure metrics, deployment
           performance and business insights.
         </p>

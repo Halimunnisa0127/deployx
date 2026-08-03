@@ -62,7 +62,7 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
       </Link>
 
       {/* Main Header Container */}
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-5 pb-2 border-b border-slate-800/60">
+      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-5 pb-2 border-b border-slate-200 dark:border-slate-800/60">
         {/* Left Column: Title, Badges & Metadata */}
         <div className="space-y-2.5 min-w-0 flex-1">
           {/* Title & Badges Row */}
@@ -103,20 +103,20 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
               href={repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-theme-secondary hover:text-white transition-colors"
+              className="inline-flex items-center gap-1.5 text-theme-secondary hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               <GithubIcon className="text-theme-muted" />
               <span className="font-medium">{repoPath}</span>
             </a>
 
-            <span className="text-slate-700">•</span>
+            <span className="text-slate-300 dark:text-slate-700">•</span>
 
             <span className="inline-flex items-center gap-1.5">
               <GitBranch className="w-3.5 h-3.5 text-theme-muted" />
               <span className="font-mono text-theme-secondary">{project?.branch || 'main'}</span>
             </span>
 
-            <span className="text-slate-700">•</span>
+            <span className="text-slate-300 dark:text-slate-700">•</span>
 
             <a
               href={`https://${defaultUrl}`}

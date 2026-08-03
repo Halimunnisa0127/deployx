@@ -3,7 +3,7 @@ import Skeleton from "../../../../components/ui/Skeleton";
 
 export function OverviewSkeleton() {
   return (
-    <div className="p-6 bg-slate-900/60 border border-slate-800/80 rounded-2xl mb-8 flex flex-col md:flex-row justify-between gap-6 animate-pulse">
+    <div className="p-6 bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl mb-8 flex flex-col md:flex-row justify-between gap-6 animate-pulse">
       <div className="flex items-center gap-6">
         <Skeleton className="w-24 h-24 rounded-full" />
         <div>
@@ -12,7 +12,7 @@ export function OverviewSkeleton() {
           <Skeleton className="h-3 w-40" />
         </div>
       </div>
-      <div className="flex gap-4 md:gap-8 bg-slate-900/40 p-4 rounded-xl border border-slate-800">
+      <div className="flex gap-4 md:gap-8 bg-slate-50 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="flex flex-col items-center">
             <Skeleton className="h-4 w-16 mb-2" />
@@ -30,7 +30,7 @@ export function InfraSkeleton() {
       {[1, 2, 3, 4, 5, 6].map((i) => (
         <div
           key={i}
-          className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 animate-pulse"
+          className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 animate-pulse"
         >
           <div className="flex items-start gap-3 mb-4">
             <Skeleton className="w-10 h-10 rounded-xl" />
@@ -40,7 +40,7 @@ export function InfraSkeleton() {
             </div>
             <Skeleton className="w-6 h-6 rounded" />
           </div>
-          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-800/60">
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200 dark:border-slate-800/60">
             <div>
               <Skeleton className="h-3 w-12 mb-1" />
               <Skeleton className="h-4 w-16" />
@@ -62,7 +62,7 @@ export function MetricSkeleton() {
       {[1, 2, 3, 4, 5, 6].map((i) => (
         <div
           key={i}
-          className="bg-slate-900/60 rounded-2xl border border-slate-800/80 p-5 h-[250px] flex flex-col animate-pulse"
+          className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 h-[250px] flex flex-col animate-pulse"
         >
           <Skeleton className="h-5 w-24 mb-2" />
           <Skeleton className="h-8 w-16" />

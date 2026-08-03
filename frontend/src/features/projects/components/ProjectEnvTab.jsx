@@ -143,21 +143,21 @@ export default function ProjectEnvTab({ project, onAction }) {
     <div className="space-y-6 font-sans">
       {/* Top Toolbar Card */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800/80 mb-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
               <Key className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-slate-100 tracking-tight">
+                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   Environment Variables
                 </h2>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   <ShieldCheck className="w-3 h-3" /> Encrypted & Masked
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Set configuration secrets and runtime variables for your deployments.
               </p>
             </div>
@@ -184,7 +184,7 @@ export default function ProjectEnvTab({ project, onAction }) {
             className="w-full sm:w-72"
           />
 
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900/80 border border-slate-800 overflow-x-auto">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-800 overflow-x-auto">
             {['All', 'Production', 'Preview', 'Development'].map((env) => (
               <button
                 key={env}
@@ -192,7 +192,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                   selectedEnv === env
                     ? 'bg-indigo-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-200/50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800/60'
                 }`}
               >
                 {env}
@@ -207,7 +207,7 @@ export default function ProjectEnvTab({ project, onAction }) {
         <div className="overflow-x-auto w-full scrollbar-thin">
           <table className="w-full min-w-[640px] text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-900/80 border-b border-slate-800 text-slate-400 uppercase text-sm tracking-wider font-semibold">
+              <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 dark:bg-slate-900/80 dark:border-slate-800 dark:text-slate-400 uppercase text-sm tracking-wider font-semibold">
                 <th className="py-3.5 px-6">Key</th>
                 <th className="py-3.5 px-6">Value (Masked)</th>
                 <th className="py-3.5 px-6">Environment</th>
@@ -215,7 +215,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                 <th className="py-3.5 px-6 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 text-slate-200">
+            <tbody className="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800/60 dark:text-slate-200">
               {filteredVars.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="py-6">
@@ -242,10 +242,10 @@ export default function ProjectEnvTab({ project, onAction }) {
                   return (
                     <tr
                       key={item.id}
-                      className="hover:bg-slate-800/30 transition-colors group"
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group"
                     >
                       {/* KEY */}
-                      <td className="py-4 px-6 font-mono font-semibold text-slate-100">
+                      <td className="py-4 px-6 font-mono font-semibold text-slate-900 dark:text-slate-100">
                         <div className="flex items-center gap-2">
                           <Lock className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
                           <span className="truncate">{item.key}</span>
@@ -255,14 +255,14 @@ export default function ProjectEnvTab({ project, onAction }) {
                       {/* VALUE (Masked) */}
                       <td className="py-4 px-6 font-mono">
                         <div className="flex items-center gap-2 max-w-xs">
-                          <span className="truncate bg-slate-900 px-2.5 py-1 rounded border border-slate-800 text-slate-300 font-mono text-sm">
+                          <span className="truncate bg-slate-100 px-2.5 py-1 rounded border border-slate-200 text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300 font-mono text-sm">
                             {isRevealed ? item.value : '••••••••••••••••'}
                           </span>
 
                           <button
                             type="button"
                             onClick={() => toggleReveal(item.id)}
-                            className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
+                            className="p-1 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
                             title={isRevealed ? 'Mask secret' : 'Reveal secret'}
                           >
                             {isRevealed ? (
@@ -275,7 +275,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                           <button
                             type="button"
                             onClick={() => handleCopyValue(item.id, item.value)}
-                            className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
+                            className="p-1 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
                             title="Copy secret"
                           >
                             {isCopied ? (
@@ -298,7 +298,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                       </td>
 
                       {/* UPDATED */}
-                      <td className="py-4 px-6 text-slate-400 text-sm">
+                      <td className="py-4 px-6 text-slate-500 dark:text-slate-400 text-sm">
                         {item.updatedAt}
                       </td>
 
@@ -379,7 +379,7 @@ export default function ProjectEnvTab({ project, onAction }) {
           />
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-2">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Environment Scope
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -390,8 +390,8 @@ export default function ProjectEnvTab({ project, onAction }) {
                   onClick={() => setFormData((prev) => ({ ...prev, environment: env }))}
                   className={`p-2.5 rounded-xl border text-xs font-semibold text-left transition-all ${
                     formData.environment === env
-                      ? 'bg-indigo-600/20 border-indigo-500 text-indigo-200'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                      ? 'bg-indigo-600/20 border-indigo-500 text-indigo-700 dark:text-indigo-200'
+                      : 'bg-slate-100 border-slate-200 text-slate-500 hover:border-slate-300 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700'
                   }`}
                 >
                   {env}
@@ -400,7 +400,7 @@ export default function ProjectEnvTab({ project, onAction }) {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

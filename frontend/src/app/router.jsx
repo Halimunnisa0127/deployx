@@ -19,7 +19,6 @@ import PrivateRoute from "../routes/PrivateRoute";
 import PageLoader from "../components/ui/PageLoader";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminRoute from "../routes/AdminRoute";
-import AdminLogin from "../features/admin/auth/AdminLogin";
 
 // Lazy-loaded Admin Modules
 const AdminDashboardPage = lazy(() => import("../features/admin/pages/AdminDashboardPage"));
@@ -62,11 +61,7 @@ const router = createBrowserRouter([
     ],
   },
   
-  /* --- Dedicated Admin Auth Portal --- */
-  {
-    path: "/admin/login",
-    element: <AdminLogin />
-  },
+
 
   /* --- Separate Admin Space --- */
   {
@@ -112,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <LazyElement><PlatformSettingsPage /></LazyElement>
+      },
+      {
+        path: "notifications",
+        element: <Notifications />
       }
     ]
   },

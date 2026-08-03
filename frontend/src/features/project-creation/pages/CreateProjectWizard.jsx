@@ -295,27 +295,27 @@ export default function CreateProjectWizard() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-slate-100 flex flex-col font-sans antialiased relative overflow-x-hidden selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen w-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col font-sans antialiased relative overflow-x-hidden selection:bg-blue-500 selection:text-white">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Header Navigation Bar */}
-      <header className="h-16 px-4 sm:px-8 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/70 backdrop-blur-md sticky top-0 z-30">
+      <header className="h-16 px-4 sm:px-8 border-b border-slate-200 bg-white/70 dark:border-slate-800/80 dark:bg-slate-900/70 backdrop-blur-md sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <Link
             to="/dashboard/projects"
-            className="flex items-center gap-2.5 text-slate-200 hover:text-white transition-colors group"
+            className="flex items-center gap-2.5 text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white transition-colors group"
           >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md group-hover:scale-105 transition-transform">
               DX
             </div>
-            <span className="font-bold tracking-tight text-lg text-slate-100 hidden sm:inline">
+            <span className="font-bold tracking-tight text-lg text-slate-900 dark:text-slate-100 hidden sm:inline">
               DeployX
             </span>
           </Link>
-          <span className="text-slate-700 hidden sm:inline">/</span>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400">
+          <span className="text-slate-400 dark:text-slate-700 hidden sm:inline">/</span>
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400">
             {isDeployingProgress ? 'Deployment Progress' : 'Create Project'}
           </span>
         </div>
@@ -323,10 +323,10 @@ export default function CreateProjectWizard() {
         {!isDeployingProgress && (
           <div className="flex items-center gap-4">
             <div className="flex flex-col items-end sm:items-center">
-              <span className="text-xs font-semibold text-slate-400">
-                Step <span className="text-blue-400 font-bold">{currentStep}</span> of 6
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                Step <span className="text-blue-600 dark:text-blue-400 font-bold">{currentStep}</span> of 6
               </span>
-              <div className="w-32 sm:w-48 h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
+              <div className="w-32 sm:w-48 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
                 <div
                   className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-300 ease-out"
                   style={{ width: `${(currentStep / 6) * 100}%` }}
@@ -340,7 +340,7 @@ export default function CreateProjectWizard() {
           variant="ghost"
           size="sm"
           onClick={() => navigate('/dashboard/projects')}
-          className="text-slate-400 hover:text-slate-100 hover:bg-slate-800/60"
+          className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-800/60"
           iconLeft={<X className="w-4 h-4" />}
         >
           <span className="hidden sm:inline">Exit</span>
@@ -361,7 +361,7 @@ export default function CreateProjectWizard() {
             onCancel={() => setIsDeployingProgress(false)}
           />
         ) : (
-          <div className="max-w-3xl w-full bg-slate-900/80 border border-slate-800/90 rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[520px] transition-all">
+          <div className="max-w-3xl w-full bg-white/80 border border-slate-200 dark:bg-slate-900/80 dark:border-slate-800/90 rounded-2xl p-6 sm:p-8 md:p-10 shadow-2xl backdrop-blur-xl flex flex-col justify-between min-h-[520px] transition-all">
             
             {/* STEP 1: PROJECT NAME */}
             {currentStep === 1 && (
@@ -460,7 +460,7 @@ export default function CreateProjectWizard() {
             )}
 
             {/* Footer Action Buttons */}
-            <div className="pt-8 mt-6 border-t border-slate-800/80 flex items-center justify-between gap-4">
+            <div className="pt-8 mt-6 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between gap-4">
               {currentStep > 1 ? (
                 <Button
                   type="button"

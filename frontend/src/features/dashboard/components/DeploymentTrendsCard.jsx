@@ -75,7 +75,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
   return (
     <Card
       style={{ maxWidth: '100%', padding: '24px' }}
-      className="border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl bg-white/70 dark:bg-slate-900/40 opacity-95 hover:opacity-100 shadow-sm dark:shadow-xl transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md hover:border-slate-300 dark:hover:border-white/10"
+      className="hover:-translate-y-[3px]"
     >
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-white/5 mb-4">

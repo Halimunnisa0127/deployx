@@ -13,10 +13,10 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Card animated>
+    <Card animated size="sm">
       <div style={headerStyle}>
-        <h2 style={headingStyle}>Reset Password</h2>
-        <p style={subtitleStyle}>
+        <h2 className="text-slate-900 dark:text-slate-100" style={headingStyle}>Reset Password</h2>
+        <p className="text-slate-500 dark:text-slate-400" style={subtitleStyle}>
           {isSubmitted 
             ? "Check your email for a link to reset your password. If it doesn't appear within a few minutes, check your spam folder."
             : "Enter your email address and we'll send you a link to reset your password."}
@@ -28,8 +28,8 @@ export default function ForgotPassword() {
       )}
 
       <div style={footerStyle}>
-        <p style={switchText}>
-          <Link to="/login" className="auth-link-highlight" style={linkHighlight}>← Back to Login</Link>
+        <p className="text-slate-500 dark:text-slate-400" style={switchText}>
+          <Link to="/login" className="auth-link-highlight text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white" style={linkHighlight}>← Back to Login</Link>
         </p>
       </div>
     </Card>
@@ -50,14 +50,12 @@ const headingStyle = {
   margin: '0 0 8px 0',
   fontSize: '18px',
   fontWeight: 600,
-  color: '#cbd5e1',
   fontFamily: "'Inter', sans-serif",
 };
 
 const subtitleStyle = {
   margin: 0,
   fontSize: '14px',
-  color: '#94a3b8',
   fontFamily: "'Inter', sans-serif",
   lineHeight: 1.5,
   letterSpacing: '0.2px',
@@ -74,12 +72,10 @@ const footerStyle = {
 const switchText = {
   margin: 0,
   fontSize: '14px',
-  color: '#94a3b8',
   fontFamily: "'Inter', sans-serif",
 };
 
 const linkHighlight = {
-  color: '#e2e8f0',
   textDecoration: 'none',
   fontWeight: 600,
   transition: 'color 0.2s',

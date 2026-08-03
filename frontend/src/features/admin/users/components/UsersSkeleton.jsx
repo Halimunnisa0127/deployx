@@ -4,8 +4,8 @@ import Skeleton from "../../../../components/ui/Skeleton";
 
 export function UsersTableSkeleton({ rows = 5 }) {
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800/80 overflow-hidden shadow-lg animate-in fade-in duration-300">
-      <div className="p-5 border-b border-slate-800/80">
+    <Card className="overflow-hidden p-0 animate-in fade-in duration-300">
+      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">
@@ -26,7 +26,7 @@ export function UsersTableSkeleton({ rows = 5 }) {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -36,7 +36,7 @@ export function UsersStatisticsSkeleton() {
       {[1, 2, 3, 4].map((i) => (
         <Card
           key={i}
-          className="p-5 sm:p-6 bg-slate-900/60 border-slate-800/80"
+          className="p-5 sm:p-6"
         >
           <div className="flex justify-between items-start mb-4">
             <Skeleton className="w-10 h-10 rounded-xl" />

@@ -27,7 +27,7 @@ export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
   return (
     <Card
       style={{ maxWidth: '100%', padding: '24px' }}
-      className="relative overflow-hidden border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl shadow-sm dark:shadow-xl bg-gradient-to-b from-white/90 via-white/80 to-amber-50/10 dark:from-slate-900/80 dark:via-slate-900/60 dark:to-amber-950/10 transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md dark:hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-amber-500 before:to-indigo-500"
+      className="relative overflow-hidden hover:-translate-y-[3px] hover:border-amber-500/40 dark:hover:border-amber-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-amber-500 before:to-indigo-500"
     >
       {/* Card Header */}
       <div className="flex items-center gap-2.5 pb-4 border-b border-slate-200 dark:border-white/5 mb-4">
