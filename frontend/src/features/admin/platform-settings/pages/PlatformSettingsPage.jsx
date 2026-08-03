@@ -182,24 +182,35 @@ export default function PlatformSettingsPage() {
           <div className="flex-1 space-y-10 min-w-0">
             <SettingsSummaryCard data={formData} />
 
-            <GeneralSettingsCard register={register} errors={errors} />
-            <BrandingSettingsCard register={register} watch={watch} />
-            <MaintenanceSettingsCard
-              register={register}
-              watch={watch}
-              setValue={setValue}
-            />
-            <FeatureFlagsCard watch={watch} setValue={setValue} />
-            <EmailSettingsCard
-              register={register}
-              errors={errors}
-              onTestEmail={handleTestEmail}
-            />
-            <SecuritySettingsCard
-              register={register}
-              watch={watch}
-              setValue={setValue}
-            />
+            {activeSection === "general" && <GeneralSettingsCard register={register} errors={errors} />}
+            
+            {activeSection === "branding" && <BrandingSettingsCard register={register} watch={watch} />}
+            
+            {activeSection === "maintenance" && (
+              <MaintenanceSettingsCard
+                register={register}
+                watch={watch}
+                setValue={setValue}
+              />
+            )}
+            
+            {activeSection === "features" && <FeatureFlagsCard watch={watch} setValue={setValue} />}
+            
+            {activeSection === "email" && (
+              <EmailSettingsCard
+                register={register}
+                errors={errors}
+                onTestEmail={handleTestEmail}
+              />
+            )}
+            
+            {activeSection === "security" && (
+              <SecuritySettingsCard
+                register={register}
+                watch={watch}
+                setValue={setValue}
+              />
+            )}
           </div>
 
           {/* Floating Save Bar */}

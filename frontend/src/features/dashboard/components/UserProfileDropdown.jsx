@@ -55,7 +55,8 @@ export default function UserProfileDropdown({ user, close }) {
         <div
           className={navItemClass}
           onClick={() => {
-            navigate('/dashboard/account/profile');
+            const role = localStorage.getItem("role");
+            navigate(role === 'admin' ? '/admin/settings' : '/dashboard/account/profile');
             if (close) close();
           }}
         >
