@@ -85,7 +85,7 @@ export default function FaqSection() {
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-5 flex items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
+                  className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
                   aria-expanded={isOpen}
                 >
                   <span className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">

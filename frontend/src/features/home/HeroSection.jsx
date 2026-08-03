@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Play, Sparkles, GitBranch, Zap, Activity, Globe } from 'lucide-react';
 import FloatingBadge from './FloatingBadge';
-import SplitText from '../ui/SplitText';
+import SplitText from '../../components/ui/SplitText';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },

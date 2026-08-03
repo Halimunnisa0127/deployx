@@ -130,7 +130,7 @@ export default function HowItWorksSection() {
                 </div>
 
                 {/* Step Card Content */}
-                <div className="flex-1 p-6 sm:p-7 rounded-2xl bg-slate-100 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 group-hover:border-slate-300 dark:group-hover:border-white/15 group-hover:bg-slate-200 dark:group-hover:bg-white/[0.04] transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex-1 p-3 sm:p-3 rounded-2xl bg-slate-100 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 group-hover:border-slate-300 dark:group-hover:border-white/15 group-hover:bg-slate-200 dark:group-hover:bg-white/[0.04] transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div>
                     <div className="text-xs font-semibold uppercase tracking-wider text-blue-400 mb-1">
                       {step.step}
@@ -144,8 +144,8 @@ export default function HowItWorksSection() {
                   </div>
 
                   {/* Micro Code/UI Snippet Tag */}
-                  <div className="shrink-0 bg-slate-900/80 dark:bg-black/60 border border-slate-700 dark:border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono text-blue-400 dark:text-blue-300 flex items-center gap-2">
-                    <Code2 className="w-3.5 h-3.5 text-blue-400" />
+                  <div className="shrink-0 bg-slate-100 dark:bg-black/60 border border-slate-200 dark:border-white/10 px-3.5 py-2 rounded-xl text-xs font-mono text-blue-600 dark:text-blue-300 flex items-center gap-2">
+                    <Code2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                     <span>{step.snippet}</span>
                   </div>
                 </div>

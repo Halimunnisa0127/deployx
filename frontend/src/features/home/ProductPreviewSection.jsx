@@ -178,28 +178,28 @@ export default function ProductPreviewSection() {
               </div>
 
               {/* Terminal Logs Preview (2 cols) */}
-              <div className="lg:col-span-2 p-5 rounded-xl bg-slate-900/80 dark:bg-black/60 border border-slate-700 dark:border-white/10 font-mono text-xs text-gray-200 dark:text-gray-300 flex flex-col justify-between">
+              <div className="lg:col-span-2 p-5 rounded-xl bg-slate-100 dark:bg-black/60 border border-slate-200 dark:border-white/10 font-mono text-xs text-slate-700 dark:text-gray-300 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between border-b border-slate-700 dark:border-white/10 pb-2.5 mb-3">
-                    <span className="flex items-center gap-2 text-blue-400 font-semibold">
+                  <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-2.5 mb-3">
+                    <span className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold">
                       <Terminal className="w-3.5 h-3.5" /> Live Build Logs
                     </span>
-                    <span className="text-xs text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded">
+                    <span className="text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-500/30 px-2 py-0.5 rounded">
                       STREAMING
                     </span>
                   </div>
 
-                  <div className="space-y-1.5 text-sm leading-relaxed text-gray-300 dark:text-gray-400">
-                    <p><span className="text-blue-400">[00:01]</span> Cloning github.com/user/deployx-api...</p>
-                    <p><span className="text-blue-400">[00:05]</span> Detecting Node.js environment (v20.x)</p>
-                    <p><span className="text-blue-400">[00:12]</span> Running `npm run build`...</p>
-                    <p><span className="text-emerald-400">[00:28]</span> Build optimized: 4 static pages, 2 edge routes</p>
-                    <p><span className="text-blue-400">[00:32]</span> Uploading artifacts to DeployX edge network</p>
-                    <p className="text-emerald-300 font-semibold"><span className="text-emerald-400">[00:34]</span> Deployment successful: https://deployx-api.deployx.app</p>
+                  <div className="space-y-1.5 text-sm leading-relaxed text-slate-600 dark:text-gray-400">
+                    <p><span className="text-blue-500 dark:text-blue-400">[00:01]</span> Cloning github.com/user/deployx-api...</p>
+                    <p><span className="text-blue-500 dark:text-blue-400">[00:05]</span> Detecting Node.js environment (v20.x)</p>
+                    <p><span className="text-blue-500 dark:text-blue-400">[00:12]</span> Running `npm run build`...</p>
+                    <p><span className="text-emerald-600 dark:text-emerald-400">[00:28]</span> Build optimized: 4 static pages, 2 edge routes</p>
+                    <p><span className="text-blue-500 dark:text-blue-400">[00:32]</span> Uploading artifacts to DeployX edge network</p>
+                    <p className="text-emerald-600 dark:text-emerald-300 font-semibold"><span className="text-emerald-600 dark:text-emerald-400">[00:34]</span> Deployment successful: https://deployx-api.deployx.app</p>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-700 dark:border-white/10 flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
+                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-xs text-slate-500 dark:text-gray-500">
                   <span>Region: us-east (N. Virginia)</span>
                   <span>SSL: Managed TLS 1.3</span>
                 </div>

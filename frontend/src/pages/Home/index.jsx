@@ -5,13 +5,13 @@ import RocketBackground from '../../components/ui/RocketBackground';
 import Footer from '../../components/layout/Footer';
 
 // Landing Page Modular Sections
-import HeroSection from '../../components/home/HeroSection';
-import ProductPreviewSection from '../../components/home/ProductPreviewSection';
-import FeaturesSection from '../../components/home/FeaturesSection';
-import HowItWorksSection from '../../components/home/HowItWorksSection';
-import WhyDeployXSection from '../../components/home/WhyDeployXSection';
-import FaqSection from '../../components/home/FaqSection';
-import CtaSection from '../../components/home/CtaSection';
+import HeroSection from '../../features/home/HeroSection';
+import ProductPreviewSection from '../../features/home/ProductPreviewSection';
+import FeaturesSection from '../../features/home/FeaturesSection';
+import HowItWorksSection from '../../features/home/HowItWorksSection';
+import WhyDeployXSection from '../../features/home/WhyDeployXSection';
+import FaqSection from '../../features/home/FaqSection';
+import CtaSection from '../../features/home/CtaSection';
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

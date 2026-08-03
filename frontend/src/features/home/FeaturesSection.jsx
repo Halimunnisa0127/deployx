@@ -128,12 +128,12 @@ export default function FeaturesSection() {
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-lg bg-blue-950/40 border border-blue-500/30 flex items-center justify-between font-sans">
+                <div className="p-3.5 rounded-lg bg-blue-100 dark:bg-blue-950/60 border border-blue-300 dark:border-blue-500/30 flex items-center justify-between font-sans shadow-sm">
                   <div className="flex items-center gap-3">
-                    <Zap className="w-4 h-4 text-blue-400" />
-                    <span className="text-xs text-slate-900 dark:text-white">Push to main detected &bull; Deploying commit <code>#a4b9c1</code></span>
+                    <Zap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <span className="text-xs text-slate-900 dark:text-white">Push to main detected &bull; Deploying commit <code className="bg-white/50 dark:bg-black/20 px-1 rounded">#a4b9c1</code></span>
                   </div>
-                  <span className="text-sm font-medium text-blue-300">In Progress (14s)</span>
+                  <span className="text-sm font-medium text-blue-700 dark:text-blue-300">In Progress (14s)</span>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@ export default function FeaturesSection() {
                 </div>
 
                 {/* Simulated Log Output */}
-                <div className="p-4 rounded-xl bg-slate-900/80 dark:bg-black/80 border border-slate-700 dark:border-white/10 space-y-1.5 text-gray-300 dark:text-gray-400 text-sm">
+                <div className="p-4 rounded-xl bg-slate-100 dark:bg-black/80 border border-slate-200 dark:border-white/10 space-y-1.5 text-slate-700 dark:text-gray-400 text-sm">
                   <p><span className="text-blue-400">[BUILD]</span> Loading environment variables (DATABASE_URL, API_KEY)</p>
                   <p><span className="text-blue-400">[BUILD]</span> Compiling TypeScript files (32 modules)</p>
                   <p><span className="text-emerald-400">[SUCCESS]</span> Bundle optimized: index.js (142 kB)</p>

@@ -5,6 +5,11 @@ export default function Skeleton({
   className,
   rounded = 'md',
   animation = 'pulse',
+  width,
+  height,
+  borderRadius,
+  variant,
+  style,
   ...props
 }) {
   const roundedClasses = {
@@ -24,10 +29,11 @@ export default function Skeleton({
     <div
       className={cn(
         'bg-slate-200 dark:bg-slate-800',
-        roundedClasses[rounded] || roundedClasses.md,
+        variant === 'circular' ? 'rounded-full' : (roundedClasses[rounded] || roundedClasses.md),
         animationClasses[animation],
         className
       )}
+      style={{ width, height, borderRadius, ...style }}
       {...props}
     />
   );
