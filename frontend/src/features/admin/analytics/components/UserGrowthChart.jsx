@@ -14,6 +14,7 @@ export default function UserGrowthChart({ data }) {
 
   return (
     <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col">
+
       <div className="mb-4">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">User Growth</h3>
         <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -87,3 +88,4 @@ export default function UserGrowthChart({ data }) {
     </div>
   );
 }
+

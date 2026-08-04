@@ -19,6 +19,7 @@ export default function DeploymentTrendChart({ data }) {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-theme-heading">Deployments Trend</h3>
         <p className="text-sm text-theme-muted">Daily deployment volume</p>
+
       </div>
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
@@ -74,3 +75,4 @@ export default function DeploymentTrendChart({ data }) {
     </Card>
   );
 }
+

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import {
   HeartPulse,
   CheckCircle2,
@@ -26,7 +27,7 @@ export default function HealthOverviewCard({ data }) {
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
               />
 
-              <path
+              <motion.path
                 className={
                   data.healthScore >= 95
                     ? "text-emerald-500"
@@ -35,17 +36,24 @@ export default function HealthOverviewCard({ data }) {
                       : "text-rose-500"
                 }
                 strokeWidth="3"
-                strokeDasharray={`${data.healthScore}, 100`}
                 strokeLinecap="round"
                 stroke="currentColor"
                 fill="none"
                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                initial={{ strokeDasharray: "0, 100" }}
+                animate={{ strokeDasharray: `${data.healthScore}, 100` }}
+                transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
               />
             </svg>
             <div className="absolute flex flex-col items-center justify-center text-center">
-              <span className="text-2xl font-bold text-slate-900 dark:text-white">
+              <motion.span 
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="text-2xl font-bold text-slate-900 dark:text-white"
+              >
                 {data.healthScore}
-              </span>
+              </motion.span>
             </div>
           </div>
           <div>

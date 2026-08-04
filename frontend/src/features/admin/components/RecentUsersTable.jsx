@@ -26,11 +26,11 @@ export default function RecentUsersTable({ users = [] }) {
         <table className="w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-slate-50/90 dark:bg-slate-900/90 text-theme-muted border-b border-slate-200 dark:border-slate-800/80 sticky top-0">
             <tr>
-              <th className="px-5 py-3 font-medium">User</th>
-              <th className="px-5 py-3 font-medium">Role</th>
-              <th className="px-5 py-3 font-medium">Status</th>
-              <th className="px-5 py-3 font-medium">Joined Date</th>
-              <th className="px-5 py-3 font-medium text-right">Actions</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">User</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Role</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Status</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Joined Date</th>
+              <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-800/50">
@@ -39,7 +39,7 @@ export default function RecentUsersTable({ users = [] }) {
                 key={usr.id}
                 className="group hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors"
               >
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
                       {usr.name.charAt(0)}
@@ -57,7 +57,7 @@ export default function RecentUsersTable({ users = [] }) {
                     {usr.role}
                   </span>
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <Badge status={usr.status} type="user" />
                 </td>
                 <td className="px-5 py-4 text-theme-muted text-xs">
@@ -66,7 +66,7 @@ export default function RecentUsersTable({ users = [] }) {
                     {usr.joinedAt}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-right">
+                <td className="px-4 py-4 text-right">
                   <div className="flex justify-end gap-2">
                     <Button
                       variant="ghost"
@@ -120,3 +120,7 @@ export default function RecentUsersTable({ users = [] }) {
     </div>
   );
 }
+
+
+
+

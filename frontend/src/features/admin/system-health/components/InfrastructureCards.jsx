@@ -5,12 +5,12 @@ import {
   Box,
   Layers,
   HardDrive,
-  GitBranch,
   MoreVertical,
   Play,
   Pause,
   RefreshCw,
 } from "lucide-react";
+import GithubIcon from "../../../../components/ui/GithubIcon";
 import Badge from "../../../../components/ui/Badge";
 import Dropdown from "../../../../components/ui/Dropdown";
 
@@ -27,7 +27,7 @@ const getIconForType = (type) => {
     case "storage":
       return HardDrive;
     case "github":
-      return GitBranch;
+      return GithubIcon;
     default:
       return Server;
   }
@@ -75,7 +75,7 @@ export function InfrastructureCard({
   return (
     <div
       onClick={() => onClick(service)}
-      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-lg hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:border-indigo-500/30 transition-all cursor-pointer group"
+      className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-lg hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:border-indigo-500/30 transition-all cursor-pointer group"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">

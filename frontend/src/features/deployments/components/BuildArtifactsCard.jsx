@@ -69,7 +69,7 @@ function BuildArtifactsCard({ deployment }) {
           <Package className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
           Build Artifacts
         </h3>
-        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium font-mono bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-700/60">
+        <span className="text-xs text-slate-400 font-medium font-mono bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">
           {artifacts.length} Artifacts Available
         </span>
       </div>
@@ -83,28 +83,28 @@ function BuildArtifactsCard({ deployment }) {
           return (
             <div
               key={artifact.id}
-              className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-100 dark:hover:bg-slate-900/50 transition-colors"
+              className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-900/50 transition-colors"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 shrink-0">
                   <IconComponent className="w-5 h-5" />
                 </div>
 
                 <div className="min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate font-mono">
+                    <span className="text-sm font-bold text-slate-100 truncate font-mono">
                       {artifact.name}
                     </span>
-                    <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-200 dark:border-indigo-500/20 uppercase tracking-wider font-mono">
+                    <span className="text-xs font-bold text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 uppercase tracking-wider font-mono">
                       {artifact.type}
                     </span>
-                    <span className="text-sm font-mono text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-slate-900 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-800">
+                    <span className="text-sm font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
                       {artifact.size}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-                    <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500 shrink-0" />
+                  <div className="flex items-center gap-1.5 text-xs text-slate-400">
+                    <Clock className="w-3 h-3 text-slate-500 shrink-0" />
                     <span>{artifact.createdTime}</span>
                   </div>
                 </div>

@@ -1,3 +1,4 @@
+import RouteErrorBoundary from "./RouteErrorBoundary";
 import React, { Suspense, lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
@@ -40,11 +41,11 @@ const LazyElement = ({ children }) => (
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/", errorElement: <RouteErrorBoundary />,
     element: <Home />,
   },
   {
-    element: <AuthLayout />,
+    element: <AuthLayout />, errorElement: <RouteErrorBoundary />,
     children: [
       {
         path: "/login",
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       },
       {
         path: "/signup",
+        element: <Signup />,
+      },
+      {
+        path: "/register",
         element: <Signup />,
       },
       {
@@ -70,7 +75,7 @@ const router = createBrowserRouter([
       <AdminRoute>
         <AdminLayout />
       </AdminRoute>
-    ),
+    ), errorElement: <RouteErrorBoundary />,
     children: [
       {
         index: true,
@@ -333,3 +338,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+

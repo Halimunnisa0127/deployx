@@ -55,7 +55,7 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
       {/* Back Navigation Link */}
       <Link
         to="/dashboard/projects"
-        className="inline-flex items-center gap-2 text-xs font-semibold text-theme-muted hover:text-theme-body transition-colors"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Projects
@@ -67,7 +67,7 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
         <div className="space-y-2.5 min-w-0 flex-1">
           {/* Title & Badges Row */}
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-2xl font-bold text-theme-heading tracking-tight truncate">
+            <h1 className="text-2xl font-bold text-slate-100 tracking-tight truncate">
               {project?.name || 'DeployX Application'}
             </h1>
 
@@ -98,22 +98,23 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
           </div>
 
           {/* Repository & Link Metadata Row */}
-          <div className="flex items-center gap-3 text-xs text-theme-muted flex-wrap">
+          <div className="flex items-center gap-3 text-xs text-slate-400 flex-wrap">
             <a
               href={repoUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-theme-secondary hover:text-slate-900 dark:hover:text-white transition-colors"
+
             >
-              <GithubIcon className="text-theme-muted" />
+              <GithubIcon className="text-slate-400" />
               <span className="font-medium">{repoPath}</span>
             </a>
 
             <span className="text-slate-300 dark:text-slate-700">•</span>
 
             <span className="inline-flex items-center gap-1.5">
-              <GitBranch className="w-3.5 h-3.5 text-theme-muted" />
-              <span className="font-mono text-theme-secondary">{project?.branch || 'main'}</span>
+              <GitBranch className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-mono text-slate-300">{project?.branch || 'main'}</span>
             </span>
 
             <span className="text-slate-300 dark:text-slate-700">•</span>
@@ -167,7 +168,7 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
           <Button
             variant="secondary"
             size="sm"
-            iconLeft={<RotateCcw className="w-3.5 h-3.5 text-theme-secondary" />}
+            iconLeft={<RotateCcw className="w-3.5 h-3.5 text-slate-300" />}
             onClick={() => onAction && onAction('Rollback')}
           >
             Rollback

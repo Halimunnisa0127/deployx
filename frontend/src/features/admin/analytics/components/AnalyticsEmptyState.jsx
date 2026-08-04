@@ -7,6 +7,7 @@ import Card from "../../../../components/ui/Card";
 export function NoAnalyticsEmptyState({ onRefresh }) {
   return (
     <Card className="flex flex-col items-center justify-center text-center col-span-full min-h-[400px]" style={{ padding: '2.5rem' }}>
+
       <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
         <BarChart3 className="w-8 h-8 text-indigo-400" />
       </div>
@@ -20,3 +21,4 @@ export function NoAnalyticsEmptyState({ onRefresh }) {
     </Card>
   );
 }
+

@@ -38,6 +38,7 @@ export function TableSkeleton({ rows = 5 }) {
   return (
     <Card className="overflow-hidden p-0">
       <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
+
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">
@@ -113,3 +114,4 @@ export function QuickActionSkeleton() {
     </div>
   );
 }
+

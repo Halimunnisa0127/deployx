@@ -65,6 +65,7 @@ export default function Notifications() {
         onSettingsClick={() => setIsSettingsModalOpen(true)}
       />
 
+
       <NotificationControls
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -95,6 +96,7 @@ export default function Notifications() {
       />
 
       <NotificationDeleteModal
+
         isOpen={Boolean(itemToDelete)}
         itemToDelete={itemToDelete}
         onClose={() => setItemToDelete(null)}
@@ -111,10 +113,12 @@ export default function Notifications() {
       />
 
       <NotificationDetailsModal
+
         isOpen={Boolean(selectedNotification)}
         notification={selectedNotification}
         onClose={() => setSelectedNotification(null)}
       />
+
     </div>
   );
 }

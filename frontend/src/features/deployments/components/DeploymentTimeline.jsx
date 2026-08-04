@@ -42,8 +42,8 @@ const STATUS_CONFIG_MAP = {
   pending: {
     variant: 'neutral',
     label: 'Pending',
-    dotBg: 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-500',
-    iconColor: 'text-slate-400 dark:text-slate-500',
+    dotBg: 'bg-slate-900 border-slate-700 text-slate-500',
+    iconColor: 'text-slate-500',
     anim: '',
   },
 };
@@ -172,7 +172,7 @@ function DeploymentTimeline({ status = 'success' }) {
           <Activity className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
           Deployment Progress Timeline
         </h3>
-        <span className="text-xs font-mono text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-200 dark:border-slate-700/60">
+        <span className="text-xs font-mono text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">
           9 Pipeline Steps
         </span>
       </div>
@@ -203,20 +203,20 @@ function DeploymentTimeline({ status = 'success' }) {
                     </Badge>
                   </div>
 
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     {step.description}
                   </p>
                 </div>
 
                 {/* Metadata: Duration & Timestamp */}
                 <div className="flex items-center gap-3 shrink-0 text-xs font-mono">
-                  <span className="inline-flex items-center gap-1 text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-slate-900 px-2.5 py-1 rounded border border-slate-300 dark:border-slate-800 text-sm">
-                    <Timer className="w-3 h-3 text-amber-500 dark:text-amber-400" />
+                  <span className="inline-flex items-center gap-1 text-slate-300 bg-slate-900 px-2.5 py-1 rounded border border-slate-800 text-sm">
+                    <Timer className="w-3 h-3 text-amber-400" />
                     {step.duration}
                   </span>
 
-                  <span className="inline-flex items-center gap-1 text-slate-500 dark:text-slate-400">
-                    <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500" />
+                  <span className="inline-flex items-center gap-1 text-slate-400">
+                    <Clock className="w-3 h-3 text-slate-500" />
                     {step.timestamp}
                   </span>
                 </div>

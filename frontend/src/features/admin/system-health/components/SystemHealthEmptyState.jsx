@@ -4,7 +4,7 @@ import Button from "../../../../components/ui/Button";
 
 export function NoMetricsEmptyState({ onRefresh }) {
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-10 flex flex-col items-center justify-center text-center col-span-full h-[300px]">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-10 flex flex-col items-center justify-center text-center col-span-full h-[300px]">
       <div className="w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-4">
         <Activity className="w-8 h-8 text-indigo-400" />
       </div>
@@ -21,7 +21,7 @@ export function NoMetricsEmptyState({ onRefresh }) {
 
 export function NoIncidentsEmptyState() {
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-10 flex flex-col items-center justify-center text-center">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-10 flex flex-col items-center justify-center text-center">
       <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
         <ShieldCheck className="w-8 h-8 text-emerald-400" />
       </div>
@@ -38,7 +38,7 @@ export function NoIncidentsEmptyState() {
 
 export function NoInfrastructureEmptyState({ onRefresh }) {
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-10 flex flex-col items-center justify-center text-center col-span-full h-[300px]">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-10 flex flex-col items-center justify-center text-center col-span-full h-[300px]">
       <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mb-4">
         <ServerCrash className="w-8 h-8 text-rose-400" />
       </div>

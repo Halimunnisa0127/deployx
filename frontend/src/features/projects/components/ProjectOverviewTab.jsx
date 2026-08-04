@@ -117,6 +117,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
         <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted flex items-center gap-2">
+
             <Server className="w-4 h-4 text-indigo-400" />
             Project Details & Environment
           </h3>
@@ -127,26 +128,26 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-8 text-xs">
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Project Name
             </span>
-            <span className="text-theme-heading font-semibold text-sm block">
+            <span className="text-slate-100 font-semibold text-sm block">
               {project?.name || 'DeployX Application'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Framework
             </span>
-            <span className="text-theme-heading font-semibold text-sm flex items-center gap-2">
+            <span className="text-slate-100 font-semibold text-sm flex items-center gap-2">
               <Code2 className="w-4 h-4 text-purple-400" />
               {project?.framework || 'Vite / React'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Environment
             </span>
             <div>
@@ -157,32 +158,32 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Region
             </span>
-            <span className="text-theme-body font-medium block">
+            <span className="text-slate-200 font-medium block">
               {project?.region || 'us-east-1 (N. Virginia)'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Repository
             </span>
             <a
               href={repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-theme-body hover:text-white font-medium transition-colors group"
+              className="inline-flex items-center gap-1.5 text-slate-200 hover:text-white font-medium transition-colors group"
             >
-              <GithubIcon className="text-theme-muted group-hover:text-white transition-colors" />
+              <GithubIcon className="text-slate-400 group-hover:text-white transition-colors" />
               <span className="truncate">{repoPath}</span>
-              <ArrowUpRight className="w-3 h-3 text-theme-muted group-hover:text-white" />
+              <ArrowUpRight className="w-3 h-3 text-slate-400 group-hover:text-white" />
             </a>
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm font-medium uppercase tracking-wider">
+            <span className="text-slate-400 block text-sm font-medium uppercase tracking-wider">
               Production URL
             </span>
             <a
@@ -200,9 +201,10 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           <div className="space-y-1 md:col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <span className="text-theme-muted text-sm font-medium uppercase tracking-wider inline-flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-theme-muted" />
+
               Created Date:
             </span>
-            <span className="text-theme-secondary font-medium text-sm">
+            <span className="text-slate-300 font-medium text-sm">
               {project?.createdAt || 'Jul 12, 2026'}
             </span>
           </div>
@@ -219,13 +221,13 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           >
             <div className="flex items-center justify-between gap-4">
               <div className="space-y-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-theme-muted block">
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
                   {item.title}
                 </span>
-                <div className="text-2xl font-extrabold text-theme-heading tracking-tight">
+                <div className="text-2xl font-extrabold text-slate-100 tracking-tight">
                   {item.value}
                 </div>
-                <span className="text-sm font-medium text-theme-muted block">
+                <span className="text-sm font-medium text-slate-400 block">
                   {item.subtitle}
                 </span>
               </div>
@@ -259,7 +261,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
             </span>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-theme-body">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-200">
               Latest Deployment Summary
             </h3>
           </div>
@@ -270,10 +272,10 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-5">
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Commit Hash & Message
             </span>
-            <span className="text-theme-body font-semibold block truncate">
+            <span className="text-slate-200 font-semibold block truncate">
               {latestDeployment.commit}
             </span>
             <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block">
@@ -282,31 +284,31 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Branch
             </span>
-            <span className="font-mono text-theme-body font-semibold flex items-center gap-1.5">
-              <GitBranch className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
+            <span className="font-mono text-slate-200 font-semibold flex items-center gap-1.5">
+              <GitBranch className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               {latestDeployment.branch}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Triggered By
             </span>
-            <span className="text-theme-body font-medium flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
+            <span className="text-slate-200 font-medium flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               {latestDeployment.triggeredBy || 'GitHub Push by @alex-dev'}
             </span>
           </div>
 
           <div className="space-y-1">
-            <span className="text-theme-muted block text-sm uppercase tracking-wider font-medium">
+            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
               Duration & Timestamp
             </span>
-            <span className="text-theme-body font-medium flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-theme-muted flex-shrink-0" />
+            <span className="text-slate-200 font-medium flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               {latestDeployment.time} ({latestDeployment.duration})
             </span>
           </div>
@@ -314,6 +316,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
         <div className="pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
           <span className="text-sm text-theme-muted font-mono">
+
             Deployment ID: {latestDeployment.id || 'dep-101'}
           </span>
           <Button
@@ -332,7 +335,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
         <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-sky-400" />
-            <h3 className="text-xs font-bold uppercase tracking-wider text-theme-secondary">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">
               Recent Activity Timeline
             </h3>
           </div>
@@ -347,20 +350,21 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
                 } flex items-center justify-center flex-shrink-0 z-10 bg-white dark:bg-[#0c121e]`}
               >
                 {TIMELINE_ICON_MAP[act.type] || (
-                  <Activity className="w-3.5 h-3.5 text-theme-muted" />
+                  <Activity className="w-3.5 h-3.5 text-slate-400" />
                 )}
               </div>
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-semibold text-theme-body group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">
+
                     {act.title}
                   </span>
-                  <span className="text-sm text-theme-muted font-mono flex-shrink-0">
+                  <span className="text-sm text-slate-400 font-mono flex-shrink-0">
                     {act.timeAgo}
                   </span>
                 </div>
-                <p className="text-sm text-theme-muted mt-0.5 truncate">
+                <p className="text-sm text-slate-400 mt-0.5 truncate">
                   {act.description}
                 </p>
               </div>
@@ -371,7 +375,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
       {/* SECTION 5 — Quick Actions */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-4">
+        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">
           Quick Actions
         </h3>
         <div className="flex flex-wrap gap-3">

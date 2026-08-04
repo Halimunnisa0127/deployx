@@ -211,7 +211,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
                       </span>
                     </div>
                   </div>
-                  <ChevronsUpDown className="w-3.5 h-3.5 text-slate-400 transition-colors" />
+                  <ChevronsUpDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors" />
                 </div>
               }
             >
@@ -274,3 +274,4 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
     </>
   );
 }
+

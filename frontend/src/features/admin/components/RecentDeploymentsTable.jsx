@@ -28,12 +28,12 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
         <table className="w-full text-left text-sm whitespace-nowrap">
           <thead className="bg-slate-50/90 dark:bg-slate-900/90 text-theme-muted border-b border-slate-200 dark:border-slate-800/80 sticky top-0">
             <tr>
-              <th className="px-5 py-3 font-medium">Project</th>
-              <th className="px-5 py-3 font-medium">Status</th>
-              <th className="px-5 py-3 font-medium">Region</th>
-              <th className="px-5 py-3 font-medium">Duration</th>
-              <th className="px-5 py-3 font-medium">Created Time</th>
-              <th className="px-5 py-3 font-medium text-right">Actions</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Project</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Status</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Region</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Duration</th>
+              <th className="px-4 py-3 font-medium whitespace-nowrap">Created Time</th>
+              <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200 dark:divide-slate-800/50">
@@ -52,7 +52,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                     </span>
                   </div>
                 </td>
-                <td className="px-5 py-4">
+                <td className="px-4 py-4">
                   <Badge status={dep.status} type="deployment" />
                 </td>
                 <td className="px-5 py-4">
@@ -70,7 +70,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                     {new Date(dep.createdAt).toLocaleString()}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-right">
+                <td className="px-4 py-4 text-right">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -117,3 +117,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
     </div>
   );
 }
+
+
+
+
