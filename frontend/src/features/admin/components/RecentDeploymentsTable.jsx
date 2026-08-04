@@ -74,8 +74,8 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    iconLeft={<Eye className="w-4 h-4 text-indigo-400" />}
-                    className="text-slate-300 hover:text-white"
+                    iconLeft={<Eye className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />}
+                    className="text-theme-secondary hover:text-indigo-600 dark:hover:text-indigo-400"
                   >
                     View
                   </Button>

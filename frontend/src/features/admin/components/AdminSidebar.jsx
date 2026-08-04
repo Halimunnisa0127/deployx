@@ -92,7 +92,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
   const sidebarWidth = isCollapsed ? "w-20" : "w-64";
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-200 border-r border-slate-200 dark:border-slate-800/80 shadow-2xl relative select-none transition-colors duration-300">
+    <div className="flex flex-col h-full bg-card text-card-foreground border-r border-border shadow-2xl relative select-none transition-colors duration-300">
       {/* Top Section */}
       <div className="p-4 flex flex-col gap-3.5 border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
         <div className="flex items-center justify-between">
@@ -170,7 +170,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
       </div>
 
       {/* Bottom Section */}
-      <div className="p-3.5 border-t border-slate-200 dark:border-white/5 bg-slate-100/60 dark:bg-slate-950/60 space-y-3 transition-colors duration-300">
+      <div className="p-3.5 border-t border-border bg-muted/50 space-y-3 transition-colors duration-300">
         <div
           className={`hidden md:flex ${isCollapsed ? "justify-center" : "justify-end"}`}
         >
@@ -195,7 +195,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
               align="left"
               position="top"
               trigger={
-                <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white/90 dark:bg-slate-900/90 hover:bg-slate-100 dark:hover:bg-slate-800/90 border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all duration-200 group shadow-sm cursor-pointer">
+                <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-background hover:bg-muted border border-border transition-all duration-200 group shadow-sm cursor-pointer">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <Avatar
                       name={user?.name || "Admin"}

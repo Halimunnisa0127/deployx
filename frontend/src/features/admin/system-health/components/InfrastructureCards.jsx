@@ -9,6 +9,10 @@ import {
   Play,
   Pause,
   RefreshCw,
+  Cpu,
+  Clock,
+  Mail,
+  Shield
 } from "lucide-react";
 import GithubIcon from "../../../../components/ui/GithubIcon";
 import Badge from "../../../../components/ui/Badge";
@@ -28,6 +32,14 @@ const getIconForType = (type) => {
       return HardDrive;
     case "github":
       return GithubIcon;
+    case "worker":
+      return Cpu;
+    case "scheduler":
+      return Clock;
+    case "email":
+      return Mail;
+    case "ssl":
+      return Shield;
     default:
       return Server;
   }

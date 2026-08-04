@@ -118,7 +118,7 @@ export default function DashboardHeader({ onToggleMobile }) {
           {/* Breadcrumb Navigation */}
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-400">
             <Link
-              to="/dashboard"
+              to={location.pathname.startsWith('/admin') ? '/admin' : '/dashboard'}
               className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
             >
               <Home className="w-3.5 h-3.5" />
@@ -209,7 +209,7 @@ export default function DashboardHeader({ onToggleMobile }) {
 
         {/* Notifications Button with Unread Counter */}
         <Link
-          to="/dashboard/notifications"
+          to={location.pathname.startsWith('/admin') ? '/admin/notifications' : '/dashboard/notifications'}
           className="relative p-2 rounded-xl bg-slate-100 dark:bg-slate-900/60 hover:bg-slate-200 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           aria-label="View notifications (2 unread)"
         >

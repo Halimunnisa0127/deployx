@@ -64,8 +64,8 @@ export default function ProjectGrowthChart({ data }) {
             />
           </BarChart>
         </ResponsiveContainer>
-      </Card>
-    </div>
+      </div>
+    </Card>
   );
 }
 

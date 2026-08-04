@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart3, Download, RefreshCw } from "lucide-react";
+import { BarChart3, Download, RefreshCw, Filter } from "lucide-react";
 import Button from "../../../../components/ui/Button";
 import DateRangePicker from "./DateRangePicker";
 
@@ -39,15 +39,39 @@ export default function AnalyticsHeader({
       </div>
 
       <div className="flex flex-wrap items-center gap-3 mt-2 md:mt-0">
-        <DateRangePicker value={dateRange} onChange={setDateRange} />
+        <div className="flex items-center gap-2 mr-2">
+          <input type="checkbox" id="comparePeriod" className="rounded border-slate-300 text-indigo-500 focus:ring-indigo-500 bg-transparent" />
+          <label htmlFor="comparePeriod" className="text-sm text-theme-muted font-medium cursor-pointer">Compare</label>
+        </div>
 
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
+        
+        <Button
+          variant="secondary"
+          iconLeft={<Filter className="w-4 h-4" />}
+          onClick={() => alert("Open Filters Panel")}
+          title="Filters"
+        >
+          Filters
+        </Button>
+        
         <Button
           variant="secondary"
           iconLeft={<Download className="w-4 h-4" />}
-          onClick={onExport}
+          onClick={() => onExport("csv")}
+          title="Export CSV"
         >
-          Export Report
+          CSV
         </Button>
+        <Button
+          variant="secondary"
+          iconLeft={<Download className="w-4 h-4" />}
+          onClick={() => onExport("pdf")}
+          title="Export PDF"
+        >
+          PDF
+        </Button>
+        
         <Button
           variant="primary"
           iconLeft={

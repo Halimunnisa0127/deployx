@@ -78,7 +78,7 @@ export default function HealthOverviewCard({ data }) {
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-1">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm">Active</span>
+              <span className="text-sm">Healthy</span>
             </div>
             <span className="text-xl font-bold text-slate-900 dark:text-white">
               {data.activeServices}
@@ -92,6 +92,16 @@ export default function HealthOverviewCard({ data }) {
             </div>
             <span className="text-xl font-bold text-slate-900 dark:text-white">
               {data.warningServices}
+            </span>
+          </div>
+          <div className="w-px bg-slate-200 dark:bg-slate-800/80"></div>
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 mb-1">
+              <AlertTriangle className="w-4 h-4 text-orange-500" />
+              <span className="text-sm">Critical</span>
+            </div>
+            <span className="text-xl font-bold text-slate-900 dark:text-white">
+              {data.criticalServices || 0}
             </span>
           </div>
           <div className="w-px bg-slate-200 dark:bg-slate-800/80"></div>

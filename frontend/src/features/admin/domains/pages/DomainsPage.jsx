@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState } from "react";
 import DomainsHeader from "../components/DomainsHeader";
 import AnalyticsCards from "../components/AnalyticsCards";
 import DomainsFilters from "../components/DomainsFilters";
@@ -16,78 +16,25 @@ import {
   NoFailedDomainsEmptyState,
 } from "../components/DomainsEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
-import {
-  getDomains,
-  verifyDomain,
-  refreshDomain,
-  removeDomain,
-} from "../services/domains.service";
+import { useDomains } from "../hooks/useDomains";
 
 export default function DomainsPage() {
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [domains, setDomains] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const {
+    domains,
+    loading,
+    refreshing,
+    activeFilter,
+    setActiveFilter,
+    counts,
+    refresh,
+    actions,
+    table,
+  } = useDomains();
+
   const [selectedDomain, setSelectedDomain] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [domainToRemove, setDomainToRemove] = useState(null);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      const data = await getDomains();
-      setDomains(data);
-    } catch (error) {
-      console.error("Failed to load domains:", error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  const counts = useMemo(() => {
-    const res = {
-      all: domains.length,
-      verified: 0,
-      pending: 0,
-      failed: 0,
-      "ssl-expiring": 0,
-    };
-    domains.forEach((d) => {
-      if (res[d.verificationStatus] !== undefined) res[d.verificationStatus]++;
-      if (d.sslStatus === "expiring") res["ssl-expiring"]++;
-    });
-    return res;
-  }, [domains]);
-
-  const filteredDomains = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    return domains.filter((d) => {
-      if (activeFilter === "ssl-expiring" && d.sslStatus !== "expiring")
-        return false;
-      if (
-        activeFilter !== "all" &&
-        activeFilter !== "ssl-expiring" &&
-        d.verificationStatus !== activeFilter
-      )
-        return false;
-      if (query) {
-        return (
-          d.name.toLowerCase().includes(query) ||
-          d.project.toLowerCase().includes(query) ||
-          d.owner.toLowerCase().includes(query)
-        );
-      }
-      return true;
-    });
-  }, [domains, activeFilter, searchQuery]);
 
   const handleRowClick = (domain) => {
     setSelectedDomain(domain);
@@ -95,14 +42,12 @@ export default function DomainsPage() {
   };
 
   const handleVerify = async (domain) => {
-    await verifyDomain(domain.id);
-    fetchData(true);
+    await actions.verifyDomain(domain.id);
   };
 
   const handleRefreshDNS = async (domain) => {
-    await refreshDomain(domain.id);
+    await actions.refreshDomain(domain.id);
     alert("DNS records refreshed successfully.");
-    fetchData(true);
   };
 
   const handleOpenProject = (domain) => {
@@ -116,11 +61,10 @@ export default function DomainsPage() {
 
   const executeRemove = async () => {
     if (!domainToRemove) return;
-    await removeDomain(domainToRemove.id);
+    await actions.removeDomain(domainToRemove.id);
     if (selectedDomain?.id === domainToRemove.id) setIsDrawerOpen(false);
     setIsModalOpen(false);
     setDomainToRemove(null);
-    fetchData(true);
   };
 
   const actionHandlers = {
@@ -134,7 +78,7 @@ export default function DomainsPage() {
   return (
     <div className="space-y-6 md:space-y-8 pb-10 text-left animate-in fade-in duration-300">
       <DomainsHeader
-        onRefresh={() => fetchData(true)}
+        onRefresh={() => refresh(true)}
         isRefreshing={refreshing}
       />
 
@@ -154,9 +98,9 @@ export default function DomainsPage() {
         />
 
         <SearchBar
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onClear={() => setSearchQuery("")}
+          value={table.search.query}
+          onChange={(e) => table.search.setQuery(e.target.value)}
+          onClear={() => table.search.setQuery("")}
           placeholder="Search by domain, project, or owner..."
           shortcut="⌘K"
           size="md"
@@ -169,7 +113,7 @@ export default function DomainsPage() {
         <DomainsTableSkeleton />
       ) : domains.length === 0 ? (
         <NoDomainsEmptyState />
-      ) : filteredDomains.length === 0 ? (
+      ) : table.tableData.length === 0 ? (
         activeFilter === "pending" ? (
           <NoPendingDomainsEmptyState onClear={() => setActiveFilter("all")} />
         ) : activeFilter === "failed" ? (
@@ -177,14 +121,14 @@ export default function DomainsPage() {
         ) : (
           <NoSearchResultsEmptyState
             onClear={() => {
-              setSearchQuery("");
+              table.search.setQuery("");
               setActiveFilter("all");
             }}
           />
         )
       ) : (
         <DomainsTable
-          domains={filteredDomains}
+          domains={table.tableData}
           onRowClick={handleRowClick}
           actionHandlers={actionHandlers}
         />

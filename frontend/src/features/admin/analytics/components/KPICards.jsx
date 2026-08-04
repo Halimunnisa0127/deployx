@@ -38,10 +38,16 @@ export default function KPICards({ data }) {
       icon: FolderGit2,
     },
     {
-      title: "Storage Usage",
-      value: data.storageUsage.value,
-      change: data.storageUsage.trend,
-      icon: HardDrive,
+      title: "Failure Rate",
+      value: `${data.failureRate.value}%`,
+      change: data.failureRate.trend,
+      icon: Activity,
+    },
+    {
+      title: "Deployment Time",
+      value: data.deploymentDuration.value,
+      change: data.deploymentDuration.trend,
+      icon: Rocket,
     },
     {
       title: "Bandwidth Usage",
@@ -60,7 +66,7 @@ export default function KPICards({ data }) {
           value={card.value}
           change={card.change}
           icon={card.icon}
-          onClick={() => {}}
+          onClick={() => alert(`Drill down into ${card.title}`)}
         />
       ))}
     </div>

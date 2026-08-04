@@ -1,7 +1,7 @@
 import React from "react";
 import { Layers, Bell, User as UserIcon, Search } from "lucide-react";
 
-export default function DashboardHeader({ stats }) {
+export default function DashboardHeader({ stats, dateRange, setDateRange, refreshData, refreshing }) {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/60 pb-6">
       <div>
@@ -31,6 +31,39 @@ export default function DashboardHeader({ stats }) {
       </div>
 
       <div className="flex items-center gap-3">
+        <select
+          value={dateRange || '7d'}
+          onChange={(e) => setDateRange && setDateRange(e.target.value)}
+          className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm rounded-xl px-3 py-2 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <option value="24h">Last 24 Hours</option>
+          <option value="7d">Last 7 Days</option>
+          <option value="30d">Last 30 Days</option>
+          <option value="all">All Time</option>
+        </select>
+        <button 
+          onClick={refreshData}
+          disabled={refreshing}
+          className="w-9 h-9 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm disabled:opacity-50"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className={refreshing ? "animate-spin" : ""}
+          >
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+            <path d="M16 21v-5h5" />
+          </svg>
+        </button>
         <button className="w-9 h-9 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm">
           <Search className="w-4 h-4" />
         </button>

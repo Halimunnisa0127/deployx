@@ -41,7 +41,7 @@ export default function RecentUsersTable({ users = [] }) {
               >
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+                    <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
                       {usr.name.charAt(0)}
                     </div>
                     <div>

@@ -22,7 +22,7 @@ import {
   getDNSRecords,
   getSSLInfo,
   getVerificationHistory,
-} from "../services/domains.service";
+} from "../services/domainsService";
 
 export default function DomainDetailsDrawer({
   isOpen,

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import AnalyticsHeader from "../components/AnalyticsHeader";
 import KPICards from "../components/KPICards";
 import DeploymentTrendChart from "../components/DeploymentTrendChart";
 import UserGrowthChart from "../components/UserGrowthChart";
+import ProjectGrowthChart from "../components/ProjectGrowthChart";
 import FrameworkDistributionChart from "../components/FrameworkDistributionChart";
 import RegionDistributionChart from "../components/RegionDistributionChart";
 import DeploymentSuccessChart from "../components/DeploymentSuccessChart";
@@ -16,96 +17,32 @@ import {
   ListSkeleton,
 } from "../components/AnalyticsSkeleton";
 import { NoAnalyticsEmptyState } from "../components/AnalyticsEmptyState";
-
-import {
-  getDashboardAnalytics,
-  getDeploymentTrend,
-  getUserGrowth,
-  getProjectGrowth,
-  getFrameworkDistribution,
-  getRegionDistribution,
-  getTopProjects,
-  getTopUsers,
-  exportReport,
-} from "../services/analytics.service";
+import { useAnalytics } from "../hooks/useAnalytics";
 
 export default function AnalyticsDashboardPage() {
-  const [dateRange, setDateRange] = useState("30d");
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [hasData, setHasData] = useState(true);
-
-  // Data states
-  const [kpiData, setKpiData] = useState(null);
-  const [deploymentTrend, setDeploymentTrend] = useState([]);
-  const [userGrowth, setUserGrowth] = useState([]);
-  const [projectGrowth, setProjectGrowth] = useState([]);
-  const [frameworks, setFrameworks] = useState([]);
-  const [regions, setRegions] = useState([]);
-  const [topProjects, setTopProjects] = useState([]);
-  const [topUsers, setTopUsers] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, [dateRange]);
-
-  const fetchData = async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-
-      const [
-        kpiRes,
-        trendRes,
-        usersRes,
-        projRes,
-        frameRes,
-        regRes,
-        topProjRes,
-        topUsersRes,
-      ] = await Promise.all([
-        getDashboardAnalytics(dateRange),
-        getDeploymentTrend(dateRange),
-        getUserGrowth(dateRange),
-        getProjectGrowth(dateRange),
-        getFrameworkDistribution(),
-        getRegionDistribution(),
-        getTopProjects(),
-        getTopUsers(),
-      ]);
-
-      setKpiData(kpiRes);
-      setDeploymentTrend(trendRes);
-      setUserGrowth(usersRes);
-      setProjectGrowth(projRes);
-      setFrameworks(frameRes);
-      setRegions(regRes);
-      setTopProjects(topProjRes);
-      setTopUsers(topUsersRes);
-      setHasData(true);
-    } catch (error) {
-      console.error("Failed to fetch analytics:", error);
-      setHasData(false);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  const handleExport = async (format = "pdf") => {
-    try {
-      await exportReport(format);
-      alert(`Exporting ${format.toUpperCase()} report...`);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const {
+    dateRange,
+    setDateRange,
+    loading,
+    refreshing,
+    hasData,
+    kpiData,
+    deploymentTrend,
+    userGrowth,
+    projectGrowth,
+    frameworks,
+    regions,
+    topProjects,
+    topUsers,
+    fetchData,
+    handleExport,
+  } = useAnalytics();
 
   return (
     <div className="space-y-6 md:space-y-8 pb-10 text-left animate-in fade-in duration-300">
       <AnalyticsHeader
         onRefresh={() => fetchData(true)}
-        onExport={() => handleExport("pdf")}
+        onExport={handleExport}
         isRefreshing={refreshing}
         dateRange={dateRange}
         setDateRange={setDateRange}
@@ -125,9 +62,10 @@ export default function AnalyticsDashboardPage() {
           </section>
 
           {/* Main Charts */}
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {loading && !refreshing ? (
               <>
+                <ChartSkeleton />
                 <ChartSkeleton />
                 <ChartSkeleton />
               </>
@@ -135,6 +73,7 @@ export default function AnalyticsDashboardPage() {
               <>
                 <DeploymentTrendChart data={deploymentTrend} />
                 <UserGrowthChart data={userGrowth} />
+                <ProjectGrowthChart data={projectGrowth} />
               </>
             )}
           </section>

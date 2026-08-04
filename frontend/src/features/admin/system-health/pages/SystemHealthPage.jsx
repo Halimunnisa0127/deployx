@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import SystemHealthHeader from "../components/SystemHealthHeader";
 import HealthOverviewCard from "../components/HealthOverviewCard";
 import InfrastructureCards from "../components/InfrastructureCards";
@@ -12,103 +12,42 @@ import {
 } from "../components/SystemHealthSkeleton";
 import { NoInfrastructureEmptyState } from "../components/SystemHealthEmptyState";
 
-import {
-  getSystemOverview,
-  getInfrastructureStatus,
-  getPerformanceMetrics,
-  getIncidentTimeline,
-  restartService,
-  toggleMaintenanceMode,
-  exportHealthReport,
-} from "../services/systemHealth.service";
+import { useSystemHealth } from "../hooks/useSystemHealth";
 
 export default function SystemHealthPage() {
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [hasData, setHasData] = useState(true);
-  const [autoRefresh, setAutoRefresh] = useState("off");
-
-  // Data states
-  const [overview, setOverview] = useState(null);
-  const [infrastructure, setInfrastructure] = useState([]);
-  const [metrics, setMetrics] = useState(null);
-  const [incidents, setIncidents] = useState([]);
+  const {
+    loading,
+    refreshing,
+    hasData,
+    autoRefresh,
+    setAutoRefresh,
+    overview,
+    infrastructure,
+    metrics,
+    incidents,
+    fetchData,
+    handleExport,
+    handleRestartService,
+    handleToggleMaintenance,
+  } = useSystemHealth();
 
   // Drawer state
   const [selectedService, setSelectedService] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const fetchData = useCallback(async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-
-      const [overviewRes, infraRes, metricsRes, incidentsRes] =
-        await Promise.all([
-          getSystemOverview(),
-          getInfrastructureStatus(),
-          getPerformanceMetrics(),
-          getIncidentTimeline(),
-        ]);
-
-      setOverview(overviewRes);
-      setInfrastructure(infraRes);
-      setMetrics(metricsRes);
-      setIncidents(incidentsRes);
-      setHasData(true);
-    } catch (error) {
-      console.error("Failed to fetch system health:", error);
-      setHasData(false);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  // Auto-refresh mechanism
-  useEffect(() => {
-    if (autoRefresh === "off") return;
-    const interval = parseInt(autoRefresh) * 1000;
-    const timer = setInterval(() => fetchData(true), interval);
-    return () => clearInterval(timer);
-  }, [autoRefresh, fetchData]);
-
-  const handleExport = async () => {
-    try {
-      await exportHealthReport();
-      alert(`Exporting system health report...`);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleServiceClick = (service) => {
+  const onServiceClick = (service) => {
     setSelectedService(service.id);
     setIsDrawerOpen(true);
   };
 
-  const handleRestartService = async (service) => {
-    try {
-      await restartService(service.id);
-      fetchData(true);
-    } catch (err) {
-      console.error(err);
-    }
+  const onRestart = async (service) => {
+    await handleRestartService(service.id);
   };
 
-  const handleToggleMaintenance = async (service, enable) => {
-    try {
-      await toggleMaintenanceMode(service.id, enable);
-      fetchData(true);
-      if (isDrawerOpen && selectedService === service.id) {
-        setIsDrawerOpen(false); // Close drawer to refresh state easily for now
-      }
-    } catch (err) {
-      console.error(err);
+  const onToggleMaintenance = async (service, enable) => {
+    const success = await handleToggleMaintenance(service.id, enable);
+    if (success && isDrawerOpen && selectedService === service.id) {
+      setIsDrawerOpen(false);
     }
   };
 
@@ -137,9 +76,9 @@ export default function SystemHealthPage() {
           ) : (
             <InfrastructureCards
               services={infrastructure}
-              onServiceClick={handleServiceClick}
-              onRestart={handleRestartService}
-              onToggleMaintenance={handleToggleMaintenance}
+              onServiceClick={onServiceClick}
+              onRestart={onRestart}
+              onToggleMaintenance={onToggleMaintenance}
             />
           )}
 
@@ -161,8 +100,8 @@ export default function SystemHealthPage() {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
         serviceId={selectedService}
-        onRestart={handleRestartService}
-        onToggleMaintenance={handleToggleMaintenance}
+        onRestart={onRestart}
+        onToggleMaintenance={onToggleMaintenance}
       />
     </div>
   );
