@@ -150,7 +150,7 @@ export default function SystemHealthPage() {
           )}
 
           {loading && !refreshing ? (
-            <div className="h-48 bg-slate-900/60 rounded-2xl border border-slate-800/80 animate-pulse"></div>
+            <div className="h-48 bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 animate-pulse"></div>
           ) : (
             <IncidentTimeline events={incidents} />
           )}

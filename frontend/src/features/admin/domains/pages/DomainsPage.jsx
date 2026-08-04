@@ -7,7 +7,7 @@ import DomainDetailsDrawer from "../components/DomainDetailsDrawer";
 import ConfirmationDialog from "../../../../components/ui/ConfirmationDialog";
 import {
   DomainsTableSkeleton,
-  AnalyticsSkeleton,
+  DomainsStatisticsSkeleton as AnalyticsSkeleton,
 } from "../components/DomainsSkeleton";
 import {
   NoDomainsEmptyState,

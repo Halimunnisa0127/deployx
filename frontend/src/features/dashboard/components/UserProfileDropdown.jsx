@@ -11,25 +11,18 @@ import {
   LogOut,
 } from 'lucide-react';
 import { logout } from '../../auth/slice/authSlice';
+import { setTheme } from '../../../store/slices/uiSlice';
+import { useSelector } from 'react-redux';
 
 export default function UserProfileDropdown({ user, close }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [theme, setThemeState] = useState(() => localStorage.getItem('theme') || 'system');
+  const theme = useSelector((state) => state.ui.theme);
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
-    
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.classList.add(systemTheme);
-    } else {
-      root.classList.add(theme);
-    }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  const handleSetTheme = (newTheme) => {
+    dispatch(setTheme(newTheme));
+  };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -62,7 +55,8 @@ export default function UserProfileDropdown({ user, close }) {
         <div
           className={navItemClass}
           onClick={() => {
-            navigate('/dashboard/account/profile');
+            const role = localStorage.getItem("role");
+            navigate(role === 'admin' ? '/admin/settings' : '/dashboard/account/profile');
             if (close) close();
           }}
         >
@@ -89,7 +83,7 @@ export default function UserProfileDropdown({ user, close }) {
           <div className="flex items-center gap-1.5 p-1 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/50 transition-colors">
             <button 
               type="button"
-              onClick={(e) => { e.stopPropagation(); setThemeState('system'); }}
+              onClick={(e) => { e.stopPropagation(); handleSetTheme('system'); }}
               className={`p-1 rounded-full cursor-pointer transition-all ${theme === 'system' ? 'bg-white dark:bg-slate-200 text-slate-900 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
               title="System Theme"
               aria-label="System Theme"
@@ -98,7 +92,7 @@ export default function UserProfileDropdown({ user, close }) {
             </button>
             <button 
               type="button"
-              onClick={(e) => { e.stopPropagation(); setThemeState('light'); }}
+              onClick={(e) => { e.stopPropagation(); handleSetTheme('light'); }}
               className={`p-1 rounded-full cursor-pointer transition-all ${theme === 'light' ? 'bg-white dark:bg-slate-200 text-slate-900 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
               title="Light Theme"
               aria-label="Light Theme"
@@ -107,7 +101,7 @@ export default function UserProfileDropdown({ user, close }) {
             </button>
             <button 
               type="button"
-              onClick={(e) => { e.stopPropagation(); setThemeState('dark'); }}
+              onClick={(e) => { e.stopPropagation(); handleSetTheme('dark'); }}
               className={`p-1 rounded-full cursor-pointer transition-all ${theme === 'dark' ? 'bg-white dark:bg-slate-200 text-slate-900 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'}`}
               title="Dark Theme"
               aria-label="Dark Theme"

@@ -54,7 +54,7 @@ export default function SignupForm({ onSubmit, isLoading }) {
         id="agreeToTerms"
         label={
           <>
-            I agree to the <Link to="/terms" style={linkHighlight}>Terms of Service</Link> and <Link to="/privacy" style={linkHighlight}>Privacy Policy</Link>
+            I agree to the <Link to="/terms" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium" style={{ textDecoration: 'none' }}>Terms of Service</Link> and <Link to="/privacy" className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium" style={{ textDecoration: 'none' }}>Privacy Policy</Link>
           </>
         }
         error={errors.agreeToTerms?.message}
@@ -68,8 +68,3 @@ export default function SignupForm({ onSubmit, isLoading }) {
   );
 }
 
-const linkHighlight = {
-  color: '#818cf8',
-  textDecoration: 'none',
-  fontWeight: 500,
-};

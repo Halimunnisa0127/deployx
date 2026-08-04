@@ -37,7 +37,7 @@ export default function WhyDeployXSection() {
   ];
 
   return (
-    <section className="py-28 lg:py-36 bg-[#0a0a0d] border-t border-white/[0.06] relative overflow-hidden">
+    <section className="py-28 lg:py-36 bg-transparent border-t border-slate-200 dark:border-white/[0.06] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
@@ -51,10 +51,10 @@ export default function WhyDeployXSection() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             COMPARISON
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
             Manual Deployment vs DeployX
           </h2>
-          <p className="text-lg text-gray-400">
+          <p className="text-lg text-slate-600 dark:text-gray-400">
             See how DeployX replaces slow manual server setups with a modern developer experience.
           </p>
         </motion.div>
@@ -68,18 +68,18 @@ export default function WhyDeployXSection() {
           className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto text-left"
         >
           {/* Manual Deployment Card */}
-          <div className="p-8 sm:p-10 rounded-2xl bg-red-950/10 border border-red-500/15 relative space-y-7">
-            <div className="flex items-center justify-between pb-5 border-b border-red-500/10">
-              <h3 className="text-xl font-bold text-gray-300">Manual Deployment</h3>
-              <span className="text-xs text-red-400 font-medium bg-red-500/10 px-3 py-1 rounded-full">Slow & Fragile</span>
+          <div className="p-8 sm:p-10 rounded-2xl bg-red-50 dark:bg-red-950/10 border border-red-200 dark:border-red-500/15 relative space-y-7">
+            <div className="flex items-center justify-between pb-5 border-b border-red-200 dark:border-red-500/10">
+              <h3 className="text-xl font-bold text-slate-700 dark:text-gray-300">Manual Deployment</h3>
+              <span className="text-xs text-red-600 dark:text-red-400 font-medium bg-red-100 dark:bg-red-500/10 px-3 py-1 rounded-full">Slow & Fragile</span>
             </div>
 
             <div className="space-y-6">
               {comparisonItems.map((item, index) => (
                 <div key={index} className="space-y-1.5">
-                  <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{item.topic}</div>
-                  <div className="flex items-start gap-2.5 text-sm text-gray-400">
-                    <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                  <div className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wider">{item.topic}</div>
+                  <div className="flex items-start gap-2.5 text-sm text-slate-600 dark:text-gray-400">
+                    <X className="w-4 h-4 text-red-500 dark:text-red-400 shrink-0 mt-0.5" />
                     <span>{item.manual}</span>
                   </div>
                 </div>
@@ -88,13 +88,13 @@ export default function WhyDeployXSection() {
           </div>
 
           {/* DeployX Card (Highlighted) */}
-          <div className="p-8 sm:p-10 rounded-2xl bg-blue-950/25 border border-blue-500/40 relative space-y-7 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
-            <div className="flex items-center justify-between pb-5 border-b border-blue-500/20">
+          <div className="p-8 sm:p-10 rounded-2xl bg-blue-50 dark:bg-blue-950/25 border border-blue-200 dark:border-blue-500/40 relative space-y-7 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
+            <div className="flex items-center justify-between pb-5 border-b border-blue-200 dark:border-blue-500/20">
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-bold text-white">DeployX</h3>
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">DeployX</h3>
                 <Sparkles className="w-4 h-4 text-blue-400" />
               </div>
-              <span className="text-xs text-emerald-400 font-semibold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-100 dark:bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-500/20">
                 Automated & Fast
               </span>
             </div>
@@ -102,9 +102,9 @@ export default function WhyDeployXSection() {
             <div className="space-y-6">
               {comparisonItems.map((item, index) => (
                 <div key={index} className="space-y-1.5">
-                  <div className="text-xs font-semibold text-blue-300 uppercase tracking-wider">{item.topic}</div>
-                  <div className="flex items-start gap-2.5 text-sm font-medium text-white">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <div className="text-xs font-semibold text-blue-600 dark:text-blue-300 uppercase tracking-wider">{item.topic}</div>
+                  <div className="flex items-start gap-2.5 text-sm font-medium text-slate-900 dark:text-white">
+                    <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
                     <span>{item.deployx}</span>
                   </div>
                 </div>

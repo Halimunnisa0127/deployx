@@ -86,16 +86,16 @@ export default function ProjectSettingsTab({ project, onAction }) {
     <div className="space-y-6 font-sans">
       {/* 1. GENERAL */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
               <Settings className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-100 tracking-tight">
+              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                 General
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Configure core settings and directory structure for your project.
               </p>
             </div>
@@ -140,21 +140,21 @@ export default function ProjectSettingsTab({ project, onAction }) {
 
       {/* 2. GIT REPOSITORY */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
               <GitBranch className="w-4 h-4" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-slate-100 tracking-tight">
+                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   Git Repository
                 </h2>
                 <Badge variant="success" dot={true}>
                   Connected
                 </Badge>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Manage connected git repository, branch, and automatic deployment triggers.
               </p>
             </div>
@@ -178,12 +178,12 @@ export default function ProjectSettingsTab({ project, onAction }) {
           />
 
           {/* Auto Deploy Toggle */}
-          <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div className="flex items-center justify-between p-3.5 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-900/60 dark:border-slate-800">
             <div>
-              <span className="text-xs font-semibold text-slate-200 block">
+              <span className="text-xs font-semibold text-slate-900 dark:text-slate-200 block">
                 Auto Deploy
               </span>
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
                 Automatically trigger deployments when code is pushed to the target branch.
               </span>
             </div>
@@ -195,7 +195,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
                 onChange={(e) => setGitForm((prev) => ({ ...prev, autoDeploy: e.target.checked }))}
                 className="sr-only peer"
               />
-              <div className="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+              <div className="w-9 h-5 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
             </label>
           </div>
 
@@ -226,16 +226,16 @@ export default function ProjectSettingsTab({ project, onAction }) {
 
       {/* 3. BUILD SETTINGS */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400">
               <Terminal className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-100 tracking-tight">
+              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                 Build Settings
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Override build commands, output artifact directories, and install scripts.
               </p>
             </div>
@@ -279,16 +279,16 @@ export default function ProjectSettingsTab({ project, onAction }) {
 
       {/* 4. ENVIRONMENT VARIABLES */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
               <Key className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-100 tracking-tight">
+              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                 Environment Variables
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Manage environment variables configured for your build and runtime environments.
               </p>
             </div>
@@ -296,16 +296,16 @@ export default function ProjectSettingsTab({ project, onAction }) {
         </div>
 
         <div className="space-y-4 max-w-xl">
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-slate-700 dark:text-slate-300">
             Environment variables are encrypted and automatically injected into production and preview deployments.
           </p>
 
-          <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between gap-4">
+          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-900/60 dark:border-slate-800 flex items-center justify-between gap-4">
             <div>
-              <span className="text-xs font-bold text-slate-200 block">
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-200 block">
                 Project Environment Variables
               </span>
-              <span className="text-sm text-slate-400">
+              <span className="text-sm text-slate-500 dark:text-slate-400">
                 Configure API keys, database URLs, and secret tokens.
               </span>
             </div>
@@ -343,7 +343,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
               <h2 className="text-base font-bold text-rose-400 tracking-tight">
                 Danger Zone
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Irreversible and destructive actions for this project workspace.
               </p>
             </div>
@@ -352,17 +352,17 @@ export default function ProjectSettingsTab({ project, onAction }) {
 
         <div className="space-y-6">
           {/* Transfer Project Ownership (UI only) */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-900/60 dark:border-slate-800">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-200">
+                <span className="text-xs font-bold text-slate-900 dark:text-slate-200">
                   Transfer Project Ownership
                 </span>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-500 border border-slate-700">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 text-slate-600 border border-slate-300 dark:bg-slate-800 dark:text-slate-500 dark:border-slate-700">
                   UI Only
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Transfer ownership of this project to another organization or user workspace.
               </p>
             </div>
@@ -382,10 +382,10 @@ export default function ProjectSettingsTab({ project, onAction }) {
           {/* Delete Project */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-rose-500/5 border border-rose-500/20">
             <div>
-              <span className="text-xs font-bold text-slate-200 block">
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-200 block">
                 Delete Project
               </span>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Permanently remove this project, custom domains, and all deployment history.
               </p>
             </div>
@@ -413,7 +413,7 @@ export default function ProjectSettingsTab({ project, onAction }) {
           <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-start gap-2.5">
             <AlertTriangle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-semibold text-slate-100 mb-1">
+              <p className="font-semibold text-slate-900 dark:text-slate-100 mb-1">
                 Warning: This action cannot be undone.
               </p>
               <p>
@@ -422,9 +422,9 @@ export default function ProjectSettingsTab({ project, onAction }) {
             </div>
           </div>
 
-          <p className="text-xs text-slate-300">
+          <p className="text-xs text-slate-700 dark:text-slate-300">
             To confirm deletion, please type{' '}
-            <strong className="text-white font-mono bg-slate-800 px-1.5 py-0.5 rounded">
+            <strong className="text-slate-900 dark:text-white font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">
               {project?.name || 'app'}
             </strong>{' '}
             below:

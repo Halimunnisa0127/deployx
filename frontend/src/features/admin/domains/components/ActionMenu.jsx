@@ -98,7 +98,7 @@ export default function ActionMenu({
     <div onClick={(e) => e.stopPropagation()}>
       <Dropdown
         trigger={
-          <button className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <button className="p-1.5 rounded-lg text-theme-muted hover:text-theme-heading hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
             <MoreVertical className="w-4 h-4" />
           </button>
         }

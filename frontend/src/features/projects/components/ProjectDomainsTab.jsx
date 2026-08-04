@@ -151,14 +151,14 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-slate-100 tracking-tight">
+                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                   Domain Management
                 </h2>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700">
                   {domains.length} Total
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Configure production system URLs and custom subdomains for your application.
               </p>
             </div>
@@ -206,14 +206,14 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
             <Card
               key={domain.id}
               style={{ padding: '24px', maxWidth: '100%' }}
-              className="hover:border-slate-700/80 transition-all duration-200 group"
+              className="hover:border-slate-300 dark:hover:border-slate-700/80 transition-all duration-200 group"
             >
               <div className="space-y-4">
                 {/* Row 1: Domain Name, Badges & Link */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-slate-800/60">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-slate-200 dark:border-slate-800/60">
                   <div className="space-y-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                         {domain.type}
                       </span>
                       {domain.isPrimary && (
@@ -227,10 +227,10 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                       href={`https://${domain.name}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-base font-bold text-slate-100 hover:text-indigo-400 transition-colors inline-flex items-center gap-2 truncate"
+                      className="text-base font-bold text-slate-900 hover:text-indigo-600 dark:text-slate-100 dark:hover:text-indigo-400 transition-colors inline-flex items-center gap-2 truncate"
                     >
                       <span className="truncate">{domain.name}</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <ExternalLink className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
                     </a>
                   </div>
 
@@ -238,7 +238,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   <div className="flex items-center gap-2.5 flex-wrap flex-shrink-0">
                     {/* SSL Status Badge */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm text-slate-400 font-medium">SSL:</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">SSL:</span>
                       <Badge variant={sslVariant} dot={true}>
                         SSL {domain.sslStatus}
                       </Badge>
@@ -246,7 +246,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
 
                     {/* DNS Verification Badge */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm text-slate-400 font-medium">DNS:</span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">DNS:</span>
                       <Badge variant={dnsVariant} dot={true}>
                         DNS {domain.dnsStatus}
                       </Badge>
@@ -254,37 +254,36 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   </div>
                 </div>
 
-                {/* Row 2: Metadata Details Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-slate-500" /> Created Date
+                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-slate-400 dark:text-slate-500" /> Created Date
                     </span>
-                    <span className="text-slate-200 font-medium block">
+                    <span className="text-slate-700 dark:text-slate-200 font-medium block">
                       {domain.createdDate}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-500" /> Last Checked
+                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500" /> Last Checked
                     </span>
-                    <span className="text-slate-200 font-medium block">
+                    <span className="text-slate-700 dark:text-slate-200 font-medium block">
                       {domain.lastChecked}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
-                      <ArrowRightLeft className="w-3 h-3 text-slate-500" /> Redirect Status
+                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                      <ArrowRightLeft className="w-3 h-3 text-slate-400 dark:text-slate-500" /> Redirect Status
                     </span>
-                    <span className="text-slate-200 font-medium block truncate">
+                    <span className="text-slate-700 dark:text-slate-200 font-medium block truncate">
                       {domain.redirectStatus}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
+                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium">
                       CNAME Record Target
                     </span>
                     <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block truncate">
@@ -294,9 +293,9 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                 </div>
 
                 {/* Row 3: Action Buttons Footer */}
-                <div className="pt-3 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-3">
-                  <span className="text-sm text-slate-400">
-                    Point CNAME to <code className="text-slate-200 font-mono">{domain.cnameTarget}</code> to complete routing.
+                <div className="pt-3 border-t border-slate-200 dark:border-slate-800/60 flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-sm text-slate-500 dark:text-slate-400">
+                    Point CNAME to <code className="text-slate-900 dark:text-slate-200 font-mono">{domain.cnameTarget}</code> to complete routing.
                   </span>
 
                   <div className="flex items-center gap-2 flex-wrap">
@@ -371,7 +370,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
           />
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-2">
+            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Routing / Redirect Behavior
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -380,8 +379,8 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                 onClick={() => setRedirectInput('Direct')}
                 className={`p-3 rounded-xl border text-xs font-semibold text-left transition-all ${
                   redirectInput === 'Direct'
-                    ? 'bg-indigo-600/20 border-indigo-500 text-indigo-200'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                    ? 'bg-indigo-600/20 border-indigo-500 text-indigo-700 dark:text-indigo-200'
+                    : 'bg-slate-100 border-slate-200 text-slate-500 hover:border-slate-300 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700'
                 }`}
               >
                 Direct Access
@@ -392,8 +391,8 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                 onClick={() => setRedirectInput('Redirect')}
                 className={`p-3 rounded-xl border text-xs font-semibold text-left transition-all ${
                   redirectInput === 'Redirect'
-                    ? 'bg-indigo-600/20 border-indigo-500 text-indigo-200'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700'
+                    ? 'bg-indigo-600/20 border-indigo-500 text-indigo-700 dark:text-indigo-200'
+                    : 'bg-slate-100 border-slate-200 text-slate-500 hover:border-slate-300 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700'
                 }`}
               >
                 301 Redirect
@@ -401,15 +400,15 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-400 space-y-1">
-            <span className="font-semibold text-slate-300 block">DNS Setup Instructions:</span>
+          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 space-y-1">
+            <span className="font-semibold text-slate-700 dark:text-slate-300 block">DNS Setup Instructions:</span>
             <p>Create a CNAME record with your DNS provider pointing your domain to:</p>
-            <code className="text-indigo-400 font-mono block bg-slate-950 p-1.5 rounded border border-slate-800">
+            <code className="text-indigo-600 dark:text-indigo-400 font-mono block bg-slate-100 border-slate-200 dark:bg-slate-950 p-1.5 rounded border dark:border-slate-800">
               cname.deployx.app
             </code>
           </div>
 
-          <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

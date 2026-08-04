@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+import Card from "../../../../components/ui/Card";
 import {
   BarChart,
   Bar,
@@ -13,10 +15,17 @@ export default function ProjectGrowthChart({ data }) {
   if (!data || !data.length) return null;
 
   return (
+<<<<<<< HEAD
     <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col">
       <div className="mb-4">
         <h3 className="text-lg font-bold text-white">Project Growth</h3>
         <p className="text-sm text-slate-400">Monthly new projects</p>
+=======
+    <Card className="h-[350px] flex flex-col" style={{ padding: '1.25rem' }}>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-theme-heading">Project Growth</h3>
+        <p className="text-sm text-theme-muted">Cumulative active projects</p>
+>>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
       </div>
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
@@ -61,7 +70,7 @@ export default function ProjectGrowthChart({ data }) {
             />
           </BarChart>
         </ResponsiveContainer>
-      </div>
+      </Card>
     </div>
   );
 }

@@ -1,253 +1,63 @@
-import { useState, useMemo, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { 
-  CheckCircle2, 
-  AlertTriangle, 
-  XCircle, 
-  Info, 
-  Check, 
-  Bell, 
-  Trash2, 
-  Eye, 
-  MailOpen, 
-  Mail, 
-  Clock, 
-  Calendar,
-  Layers,
-  Settings,
-  ShieldCheck,
-  Globe,
-  GitBranch
-} from 'lucide-react';
-import Button from '../../../components/ui/Button';
-import Badge from '../../../components/ui/Badge';
-import SearchBar from '../../../components/common/SearchBar';
-import EmptyState from '../../../components/common/EmptyState';
-import Skeleton from '../../../components/ui/Skeleton';
-import Modal from '../../../components/ui/Modal';
-
-// Standardized Mock Data with Timestamps & Extended Details
-const INITIAL_MOCK_NOTIFICATIONS = [
-  {
-    id: 'notif-1',
-    type: 'success',
-    title: 'Deployment Successful',
-    message: 'Your project "deployx-frontend" was successfully deployed to production.',
-    projectName: 'deployx-frontend',
-    commitHash: '7a8f3b2',
-    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // Today (15 mins ago)
-    unread: true,
-    details: 'Build completed in 1m 24s. All 42 unit tests passed. SSL certificates automatically renewed for deployx.dev domain.',
-  },
-  {
-    id: 'notif-2',
-    type: 'warning',
-    title: 'High CPU Usage Detected',
-    message: 'Your project "analytics-service" is experiencing higher than normal CPU usage (>85%).',
-    projectName: 'analytics-service',
-    commitHash: 'e49c10d',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), // Today (3 hours ago)
-    unread: true,
-    details: 'Worker node us-east-1a CPU spiked to 88.4%. Consider scaling up instance capacity or checking memory allocation.',
-  },
-  {
-    id: 'notif-3',
-    type: 'error',
-    title: 'Build Failed on Main Branch',
-    message: 'The build for "backend-api" failed during step npm run build with exit code 1.',
-    projectName: 'backend-api',
-    commitHash: '2c7104e',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(), // Yesterday (26 hours ago)
-    unread: false,
-    details: 'SyntaxError: Unexpected token in src/auth/jwt.js at line 42. Check build logs in Deployment Details dashboard.',
-  },
-  {
-    id: 'notif-4',
-    type: 'info',
-    title: 'New Team Member Joined',
-    message: 'Jane Doe (jane@deployx.dev) accepted your organization invitation.',
-    projectName: 'Workspace',
-    commitHash: 'N/A',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 30).toISOString(), // Yesterday (30 hours ago)
-    unread: false,
-    details: 'Jane Doe was assigned Developer permissions for all production and preview projects.',
-  },
-  {
-    id: 'notif-5',
-    type: 'success',
-    title: 'Custom Domain Connected',
-    message: 'Domain "api.deployx.dev" successfully routed with active TLS/SSL certificate.',
-    projectName: 'deployx-api-service',
-    commitHash: '9b3f81a',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(), // Earlier (3 days ago)
-    unread: false,
-    details: 'DNS CNAME records verified via Cloudflare DNS resolver. Automated Let\'s Encrypt SSL provisioning active.',
-  },
-  {
-    id: 'notif-6',
-    type: 'info',
-    title: 'Environment Variable Updated',
-    message: 'DATABASE_URL environment key updated for project "analytics-worker".',
-    projectName: 'analytics-worker',
-    commitHash: 'f812d90',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 120).toISOString(), // Earlier (5 days ago)
-    unread: false,
-    details: 'Updated by Alex Rivera. Secret value masked in runtime environment configs.',
-  },
-];
-
-const NOTIFICATION_ICONS = {
-  success: <CheckCircle2 className="w-5 h-5 text-emerald-400" />,
-  warning: <AlertTriangle className="w-5 h-5 text-amber-400" />,
-  error: <XCircle className="w-5 h-5 text-rose-400" />,
-  failed: <XCircle className="w-5 h-5 text-rose-400" />,
-  info: <Info className="w-5 h-5 text-indigo-400" />,
-};
-
-const BADGE_VARIANTS = {
-  success: 'success',
-  warning: 'warning',
-  error: 'danger',
-  failed: 'danger',
-  info: 'info',
-};
-
-const FILTER_TABS = [
-  { id: 'all', label: 'All' },
-  { id: 'unread', label: 'Unread' },
-  { id: 'success', label: 'Success' },
-  { id: 'warning', label: 'Warning' },
-  { id: 'failed', label: 'Failed' },
-  { id: 'info', label: 'Info' },
-];
-
-function formatTime(isoString) {
-  const date = new Date(isoString);
-  const now = new Date();
-  const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-
-  if (diffInHours < 1) return 'Just now';
-  if (diffInHours < 24) return `${diffInHours}h ago`;
-  
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
-
-// Group notifications into Today, Yesterday, Earlier
-function groupNotifications(items) {
-  const now = new Date();
-  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-  const yesterdayStart = todayStart - 24 * 60 * 60 * 1000;
-
-  const groups = {
-    Today: [],
-    Yesterday: [],
-    Earlier: [],
-  };
-
-  items.forEach((item) => {
-    const itemTime = new Date(item.timestamp).getTime();
-    if (itemTime >= todayStart) {
-      groups.Today.push(item);
-    } else if (itemTime >= yesterdayStart) {
-      groups.Yesterday.push(item);
-    } else {
-      groups.Earlier.push(item);
-    }
-  });
-
-  return groups;
-}
+  NotificationHeader, 
+  NotificationControls, 
+  NotificationList, 
+  NotificationSettingsModal, 
+  NotificationDeleteModal, 
+  NotificationDetailsModal 
+} from '../components';
+import { 
+  useNotifications, 
+  useNotificationFilters, 
+  useNotificationActions 
+} from '../hooks';
+import useAuth from '../../../hooks/useAuth';
 
 export default function Notifications() {
-  const [notifications, setNotifications] = useState(INITIAL_MOCK_NOTIFICATIONS);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [selectedNotification, setSelectedNotification] = useState(null);
-  const [itemToDelete, setItemToDelete] = useState(null);
-  const [isClearAllModalOpen, setIsClearAllModalOpen] = useState(false);
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const { user: currentUser } = useAuth();
 
-  // Notification Preferences State
-  const [settings, setSettings] = useState({
-    deployment: true,
-    domain: true,
-    github: true,
-    email: true,
-  });
+  // Core state & fetching
+  const { 
+    notifications, 
+    setNotifications, 
+    isLoading, 
 
-  // Simulate skeleton loading on initial mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 400);
-    return () => clearTimeout(timer);
-  }, []);
+    settings, 
+    setSettings 
+  } = useNotifications(currentUser);
 
-  const unreadCount = useMemo(() => notifications.filter((n) => n.unread).length, [notifications]);
+  // Filters, search, grouping
+  const {
+    searchQuery,
+    setSearchQuery,
+    activeFilter,
+    setActiveFilter,
+    unreadCount,
+    groupedData,
+    hasNotifications,
+  } = useNotificationFilters(notifications);
 
-  // Bulk Actions
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
-  };
-
-  const confirmClearAll = () => {
-    setNotifications([]);
-    setIsClearAllModalOpen(false);
-  };
-
-  // Single Item Actions
-  const toggleReadStatus = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, unread: !n.unread } : n))
-    );
-  };
-
-  const confirmDeleteSingle = () => {
-    if (itemToDelete) {
-      setNotifications((prev) => prev.filter((n) => n.id !== itemToDelete.id));
-      if (selectedNotification?.id === itemToDelete.id) {
-        setSelectedNotification(null);
-      }
-      setItemToDelete(null);
-    }
-  };
-
-  const handleViewDetails = (notification) => {
-    if (notification.unread) {
-      toggleReadStatus(notification.id);
-    }
-    setSelectedNotification(notification);
-  };
-
-  // Filter and Search Logic
-  const filteredNotifications = useMemo(() => {
-    return notifications.filter((item) => {
-      // 1. Category / Status Filter
-      if (activeFilter === 'unread' && !item.unread) return false;
-      if (activeFilter === 'success' && item.type !== 'success') return false;
-      if (activeFilter === 'warning' && item.type !== 'warning') return false;
-      if (activeFilter === 'failed' && item.type !== 'error' && item.type !== 'failed') return false;
-      if (activeFilter === 'info' && item.type !== 'info') return false;
-
-      // 2. Text Search Query
-      if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
-        const matchesTitle = item.title.toLowerCase().includes(query);
-        const matchesMessage = item.message.toLowerCase().includes(query);
-        const matchesProject = item.projectName?.toLowerCase().includes(query);
-        return matchesTitle || matchesMessage || matchesProject;
-      }
-
-      return true;
-    });
-  }, [notifications, activeFilter, searchQuery]);
-
-  // Grouped Notifications Object
-  const groupedData = useMemo(() => groupNotifications(filteredNotifications), [filteredNotifications]);
-  const hasNotifications = filteredNotifications.length > 0;
+  // Actions
+  const {
+    selectedNotification,
+    setSelectedNotification,
+    itemToDelete,
+    setItemToDelete,
+    isClearAllModalOpen,
+    setIsClearAllModalOpen,
+    isSettingsModalOpen,
+    setIsSettingsModalOpen,
+    markAllAsRead,
+    confirmClearAll,
+    toggleReadStatus,
+    confirmDeleteSingle,
+    handleViewDetails,
+  } = useNotificationActions(setNotifications);
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+<<<<<<< HEAD
       
       {/* ── Page Header ────────────────────────────────────────────── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-6 rounded-2xl border border-slate-800/80 shadow-xl backdrop-blur-xl transition-all">
@@ -282,19 +92,24 @@ export default function Notifications() {
               Mark all as read
             </Button>
           )}
+=======
+      <NotificationHeader
+        unreadCount={unreadCount}
+        notificationsLength={notifications.length}
+        onMarkAllAsRead={markAllAsRead}
+        onClearAllClick={() => setIsClearAllModalOpen(true)}
+        onSettingsClick={() => setIsSettingsModalOpen(true)}
+      />
+>>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
 
-          {notifications.length > 0 && (
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => setIsClearAllModalOpen(true)}
-              iconLeft={<Trash2 className="w-4 h-4 text-rose-400" />}
-              className="hover:border-rose-500/40 hover:text-rose-300"
-            >
-              Clear All
-            </Button>
-          )}
+      <NotificationControls
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
+      />
 
+<<<<<<< HEAD
           {/* 2. Notification Settings Button (⚙️) */}
           <Button
             variant="ghost"
@@ -537,8 +352,35 @@ export default function Notifications() {
 
       {/* ── 5. Delete Item Confirmation Modal ─────────────────────── */}
       <Modal
+=======
+      <NotificationList
+        isLoading={isLoading}
+        hasNotifications={hasNotifications}
+        groupedData={groupedData}
+        searchQuery={searchQuery}
+        activeFilter={activeFilter}
+        onClearFilters={() => {
+          setSearchQuery('');
+          setActiveFilter('all');
+        }}
+        onToggleRead={toggleReadStatus}
+        onViewDetails={handleViewDetails}
+        onDeleteClick={setItemToDelete}
+      />
+
+      <NotificationDeleteModal
+        isOpen={isClearAllModalOpen}
+        onClose={() => setIsClearAllModalOpen(false)}
+        onConfirm={confirmClearAll}
+        isClearAll={true}
+      />
+
+      <NotificationDeleteModal
+>>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
         isOpen={Boolean(itemToDelete)}
+        itemToDelete={itemToDelete}
         onClose={() => setItemToDelete(null)}
+<<<<<<< HEAD
         title="Delete Notification?"
         maxWidth="460px"
       >
@@ -665,8 +507,25 @@ export default function Notifications() {
 
       {/* ── View Details Modal ───────────────────────────────────────── */}
       <Modal
+=======
+        onConfirm={confirmDeleteSingle}
+        isClearAll={false}
+      />
+
+      <NotificationSettingsModal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        settings={settings}
+        onSettingsChange={setSettings}
+        onSave={() => setIsSettingsModalOpen(false)}
+      />
+
+      <NotificationDetailsModal
+>>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
         isOpen={Boolean(selectedNotification)}
+        notification={selectedNotification}
         onClose={() => setSelectedNotification(null)}
+<<<<<<< HEAD
         title={selectedNotification?.title || 'Notification Details'}
         maxWidth="520px"
       >
@@ -715,6 +574,9 @@ export default function Notifications() {
         )}
       </Modal>
 
+=======
+      />
+>>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
     </div>
   );
 }

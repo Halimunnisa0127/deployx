@@ -7,12 +7,12 @@ import DeploymentDetailsDrawer from "../components/DeploymentDetailsDrawer";
 import ConfirmationDialog from "../../../../components/ui/ConfirmationDialog";
 import {
   DeploymentsTableSkeleton,
-  AnalyticsSkeleton,
+  DeploymentsStatisticsSkeleton as AnalyticsSkeleton,
 } from "../components/DeploymentsSkeleton";
 import {
   NoDeploymentsEmptyState,
   NoSearchResultsEmptyState,
-  NoRunningDeploymentsEmptyState,
+  NoActiveDeploymentsEmptyState,
   NoFailedDeploymentsEmptyState,
 } from "../components/DeploymentsEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
@@ -175,7 +175,7 @@ export default function DeploymentsPage() {
         <NoDeploymentsEmptyState />
       ) : filteredDeployments.length === 0 ? (
         activeFilter === "running" ? (
-          <NoRunningDeploymentsEmptyState
+          <NoActiveDeploymentsEmptyState
             onClear={() => setActiveFilter("all")}
           />
         ) : activeFilter === "failed" ? (

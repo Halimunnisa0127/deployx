@@ -19,12 +19,19 @@ export default function Login() {
 
   const handleEmailLogin = (data) => {
     // Dummy auth — replace with actual API call later
-    dispatch(setCredentials({ user: { email: data.email }, token: 'dummy-token' }));
-    navigate('/dashboard');
+    if (data.email === 'admin@deployx.dev' && data.password === 'hunter2') {
+      localStorage.setItem("role", "admin");
+      dispatch(setCredentials({ user: { email: data.email, role: 'admin' }, token: 'dummy-admin-token' }));
+      navigate('/admin');
+    } else {
+      localStorage.setItem("role", "user");
+      dispatch(setCredentials({ user: { email: data.email, role: 'user' }, token: 'dummy-token' }));
+      navigate('/dashboard');
+    }
   };
 
   return (
-    <Card animated>
+    <Card animated size="sm">
       <div style={headerStyle}>
         <h2 style={headingStyle}>⚡Deploy Your Projects with Confidence</h2>
         <p style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>

@@ -33,15 +33,15 @@ export default function Drawer({ isOpen, onClose, title, children, width = 'w-fu
       
       {/* Drawer Panel */}
       <div 
-        className={`fixed top-0 right-0 bottom-0 z-50 bg-slate-900 border-l border-slate-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out transform ${width} ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 bottom-0 z-50 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out transform ${width} ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 shrink-0">
-            <h2 className="text-lg font-bold text-white">{title}</h2>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 shrink-0">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white">{title}</h2>
             <button 
               onClick={onClose}
-              className="p-2 -mr-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+              className="p-2 -mr-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/50 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>

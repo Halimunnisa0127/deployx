@@ -23,7 +23,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
   return (
     <Card
       style={{ maxWidth: '100%', padding: '24px' }}
-      className="relative overflow-hidden flex flex-col h-full border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl shadow-sm dark:shadow-xl bg-gradient-to-b from-white/90 via-white/80 to-indigo-50/20 dark:from-slate-900/90 dark:via-slate-900/70 dark:to-indigo-950/20 transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md dark:hover:shadow-indigo-500/10 hover:border-indigo-500/40 dark:hover:border-indigo-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1.5 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-sky-500"
+      className="relative overflow-hidden flex flex-col h-full hover:-translate-y-[3px] hover:border-indigo-500/40 dark:hover:border-indigo-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1.5 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-sky-500"
     >
       {/* Card Header */}
       <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/5 mb-4">

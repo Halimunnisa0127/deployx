@@ -19,7 +19,7 @@ const SECTIONS = [
 
 export default function SettingsNavigation({ activeSection, onSectionChange }) {
   return (
-    <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2 sticky top-24">
+    <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-2 sticky top-24">
       <nav className="flex flex-col gap-1">
         {SECTIONS.map((section) => {
           const isActive = activeSection === section.id;
@@ -31,7 +31,7 @@ export default function SettingsNavigation({ activeSection, onSectionChange }) {
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors w-full text-left ${
                 isActive
                   ? "bg-indigo-500/10 text-indigo-400"
-                  : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50"
               }`}
             >
               <Icon className="w-4 h-4" />

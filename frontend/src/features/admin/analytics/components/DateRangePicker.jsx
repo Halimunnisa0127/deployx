@@ -31,7 +31,7 @@ export default function DateRangePicker({ value, onChange }) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 h-9 px-3 bg-slate-900/80 border border-slate-800 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+        className="flex items-center gap-2 h-9 px-3 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
       >
         <Calendar className="w-4 h-4 text-slate-400" />
         {selectedLabel}
@@ -39,7 +39,7 @@ export default function DateRangePicker({ value, onChange }) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-slate-900 border border-slate-800 rounded-xl shadow-xl overflow-hidden z-50">
+        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl overflow-hidden z-50">
           <div className="p-1">
             {RANGES.map((range) => (
               <button
@@ -51,7 +51,7 @@ export default function DateRangePicker({ value, onChange }) {
                 className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors flex justify-between items-center ${
                   value === range.id
                     ? "bg-indigo-500/10 text-indigo-400 font-medium"
-                    : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+                    : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
                 {range.label}

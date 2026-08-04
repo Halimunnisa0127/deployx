@@ -1,1 +1,30 @@
-// ThemeProvider.jsx
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+export default function ThemeProvider({ children }) {
+  const theme = useSelector((state) => state.ui.theme);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.classList.add(systemTheme);
+
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleChange = (e) => {
+        if (theme === 'system') {
+          root.classList.remove('light', 'dark');
+          root.classList.add(e.matches ? 'dark' : 'light');
+        }
+      };
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    } else {
+      root.classList.add(theme);
+    }
+  }, [theme]);
+
+  return children;
+}

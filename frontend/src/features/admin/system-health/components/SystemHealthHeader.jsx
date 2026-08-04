@@ -15,28 +15,28 @@ export default function SystemHealthHeader({
   return (
     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-800/60 pb-6">
       <div>
-        <div className="flex items-center gap-2 text-sm text-slate-400 mb-4">
+        <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-4">
           <span
-            className="hover:text-slate-300 cursor-pointer transition-colors"
+            className="hover:text-slate-900 dark:hover:text-slate-300 cursor-pointer transition-colors"
             onClick={() => navigate("/dashboard/admin")}
           >
             Home
           </span>
           <span>&gt;</span>
           <span
-            className="hover:text-slate-300 cursor-pointer transition-colors"
+            className="hover:text-slate-900 dark:hover:text-slate-300 cursor-pointer transition-colors"
             onClick={() => navigate("/dashboard/admin")}
           >
             Admin
           </span>
           <span>&gt;</span>
-          <span className="text-slate-200">System Health</span>
+          <span className="text-slate-900 dark:text-slate-200">System Health</span>
         </div>
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
             <Activity className="w-5 h-5 text-indigo-400" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             System Health
           </h1>
         </div>
@@ -50,7 +50,7 @@ export default function SystemHealthHeader({
         <select
           value={autoRefresh}
           onChange={(e) => setAutoRefresh(e.target.value)}
-          className="h-9 px-3 bg-slate-900/80 border border-slate-800 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-colors outline-none cursor-pointer"
+          className="h-9 px-3 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors outline-none cursor-pointer"
         >
           <option value="off">Auto Refresh: Off</option>
           <option value="15">Auto Refresh: 15s</option>

@@ -48,7 +48,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
   return (
     <Card
       style={{ maxWidth: '100%', padding: '24px' }}
-      className="border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl shadow-sm dark:shadow-xl transition-all duration-300 hover:-translate-y-[3px] hover:shadow-md hover:border-slate-300 dark:hover:border-white/10"
+      className="hover:-translate-y-[3px]"
     >
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-white/5 mb-4">
