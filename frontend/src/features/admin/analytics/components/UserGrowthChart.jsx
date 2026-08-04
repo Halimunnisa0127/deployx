@@ -13,11 +13,8 @@ export default function UserGrowthChart({ data }) {
   if (!data || !data.length) return null;
 
   return (
-<<<<<<< HEAD
-    <div className="bg-black dark:bg-black rounded-2xl border border-slate-200 dark:border-slate-900 p-5 shadow-lg h-full flex flex-col">
-=======
     <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col">
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
       <div className="mb-4">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">User Growth</h3>
         <p className="text-sm text-slate-500 dark:text-slate-400">

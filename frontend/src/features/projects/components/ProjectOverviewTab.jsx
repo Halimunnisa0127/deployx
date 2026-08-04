@@ -115,13 +115,9 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
     <div className="space-y-6 font-sans">
       {/* SECTION 1 — Project Information */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-<<<<<<< HEAD
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-5">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-=======
         <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
           <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted flex items-center gap-2">
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
             <Server className="w-4 h-4 text-indigo-400" />
             Project Details & Environment
           </h3>
@@ -202,15 +198,10 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
             </a>
           </div>
 
-<<<<<<< HEAD
-          <div className="space-y-1 md:col-span-2 pt-2 border-t border-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <span className="text-slate-400 text-sm font-medium uppercase tracking-wider inline-flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
-=======
           <div className="space-y-1 md:col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <span className="text-theme-muted text-sm font-medium uppercase tracking-wider inline-flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-theme-muted" />
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
               Created Date:
             </span>
             <span className="text-slate-300 font-medium text-sm">
@@ -323,13 +314,9 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
         </div>
 
-<<<<<<< HEAD
-        <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between">
-          <span className="text-sm text-slate-400 font-mono">
-=======
         <div className="pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
           <span className="text-sm text-theme-muted font-mono">
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
             Deployment ID: {latestDeployment.id || 'dep-101'}
           </span>
           <Button
@@ -369,11 +356,8 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-<<<<<<< HEAD
-                  <span className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
-=======
                   <span className="text-xs font-semibold text-theme-body group-hover:text-indigo-600 dark:group-hover:text-white transition-colors">
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
                     {act.title}
                   </span>
                   <span className="text-sm text-slate-400 font-mono flex-shrink-0">

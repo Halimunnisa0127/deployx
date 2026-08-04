@@ -36,13 +36,9 @@ export function ChartSkeleton() {
 
 export function TableSkeleton({ rows = 5 }) {
   return (
-<<<<<<< HEAD
-    <Card className=" overflow-hidden">
-      <div className="p-5 border-b border-slate-200 dark:border-slate-900">
-=======
     <Card className="overflow-hidden p-0">
       <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">

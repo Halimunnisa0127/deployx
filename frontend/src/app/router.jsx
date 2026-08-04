@@ -66,15 +66,7 @@ const router = createBrowserRouter([
     ],
   },
   
-<<<<<<< HEAD
-  /* --- Dedicated Admin Auth Portal --- */
-  {
-    path: "/admin/login", errorElement: <RouteErrorBoundary />,
-    element: <AdminLogin />
-  },
-=======
 
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
 
   /* --- Separate Admin Space --- */
   {

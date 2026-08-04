@@ -11,7 +11,7 @@ import {
 
 function MetricChart({ title, data, color, current, unit }) {
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-lg h-[250px] flex flex-col">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-lg h-[250px] flex flex-col">
       <div className="flex justify-between items-start mb-2">
         <div>
           <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-300">{title}</h3>
@@ -30,7 +30,7 @@ function MetricChart({ title, data, color, current, unit }) {
             margin={{ top: 5, right: 0, left: -20, bottom: 0 }}
           >
             <defs>
-              <linearGradient id={`color-${title}`} x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id={`color-${title.replace(/ /g, '')}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={color} stopOpacity={0.3} />
                 <stop offset="95%" stopColor={color} stopOpacity={0} />
               </linearGradient>
@@ -71,7 +71,7 @@ function MetricChart({ title, data, color, current, unit }) {
               stroke={color}
               strokeWidth={2}
               fillOpacity={1}
-              fill={`url(#color-${title})`}
+              fill={`url(#color-${title.replace(/ /g, '')})`}
             />
           </AreaChart>
         </ResponsiveContainer>

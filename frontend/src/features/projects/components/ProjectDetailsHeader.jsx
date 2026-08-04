@@ -103,11 +103,8 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
               href={repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-<<<<<<< HEAD
-              className="inline-flex items-center gap-1.5 text-slate-300 hover:text-white transition-colors"
-=======
               className="inline-flex items-center gap-1.5 text-theme-secondary hover:text-slate-900 dark:hover:text-white transition-colors"
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
             >
               <GithubIcon className="text-slate-400" />
               <span className="font-medium">{repoPath}</span>

@@ -135,51 +135,6 @@ export default function AdminDashboardPage() {
       {/* Data Tables Row */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {/* Recent Deployments */}
-<<<<<<< HEAD
-        <div>
-          {loading ? (
-            <TableSkeleton rows={5} />
-          ) : data.deployments.length > 0 ? (
-            <RecentDeploymentsTable deployments={data.deployments} />
-          ) : (
-            <NoDeploymentsEmptyState />
-          )}
-        </div>
-
-        {/* Recent Users */}
-        <div>
-          {loading ? (
-            <TableSkeleton rows={5} />
-          ) : data.users.length > 0 ? (
-            <RecentUsersTable users={data.users} />
-          ) : (
-            <NoUsersEmptyState />
-          )}
-        </div>
-      </div>
-
-      {/* Widgets Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Platform Health */}
-        <div>
-          {loading ? (
-            <PlatformHealthSkeleton />
-          ) : (
-            <PlatformHealthCard health={data.health} />
-          )}
-        </div>
-
-        {/* Recent Activity */}
-        <div>
-          {loading ? (
-            <ActivitySkeleton />
-          ) : data.activity.length > 0 ? (
-            <ActivityTimeline activity={data.activity} />
-          ) : (
-            <NoActivityEmptyState />
-          )}
-        </div>
-=======
         {loading ? (
           <TableSkeleton rows={5} />
         ) : data.deployments.length > 0 ? (
@@ -196,7 +151,7 @@ export default function AdminDashboardPage() {
         ) : (
           <NoUsersEmptyState />
         )}
->>>>>>> e9bb4d3fc0ed5658293b72b9fb68775ffae8e7f0
+
       </div>
     </div>
   );

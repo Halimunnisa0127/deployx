@@ -84,7 +84,7 @@ export default function IncidentTimeline({ events = [] }) {
   return (
     <div className="mb-8">
       <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Incident Timeline</h2>
-      <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-lg">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-lg">
         {events.map((event, idx) => (
           <TimelineEvent
             key={event.id}

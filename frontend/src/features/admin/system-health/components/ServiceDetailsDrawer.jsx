@@ -76,7 +76,7 @@ export default function ServiceDetailsDrawer({
 
           {/* Overview Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Environment
               </span>
@@ -84,7 +84,7 @@ export default function ServiceDetailsDrawer({
                 <Box className="w-4 h-4 text-slate-400" /> {details.environment}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Region
               </span>
@@ -92,7 +92,7 @@ export default function ServiceDetailsDrawer({
                 <MapPin className="w-4 h-4 text-slate-400" /> {details.region}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Host
               </span>
@@ -103,7 +103,7 @@ export default function ServiceDetailsDrawer({
                 {details.host}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Uptime
               </span>
