@@ -143,7 +143,7 @@ export default function ProjectEnvTab({ project, onAction }) {
     <div className="space-y-6 font-sans">
       {/* Top Toolbar Card */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800/80 mb-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border mb-5">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
               <Key className="w-5 h-5" />
@@ -157,7 +157,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                   <ShieldCheck className="w-3 h-3" /> Encrypted & Masked
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Set configuration secrets and runtime variables for your deployments.
               </p>
             </div>
@@ -298,7 +298,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                       </td>
 
                       {/* UPDATED */}
-                      <td className="py-4 px-6 text-slate-500 dark:text-slate-400 text-sm">
+                      <td className="py-4 px-6 text-muted-foreground text-sm">
                         {item.updatedAt}
                       </td>
 
@@ -379,7 +379,7 @@ export default function ProjectEnvTab({ project, onAction }) {
           />
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs font-semibold text-foreground mb-2">
               Environment Scope
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -400,7 +400,7 @@ export default function ProjectEnvTab({ project, onAction }) {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-border flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

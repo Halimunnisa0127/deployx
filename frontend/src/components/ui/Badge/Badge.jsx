@@ -7,7 +7,7 @@ const variantClasses = {
   warning: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400',
   destructive: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
   info: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-  outline: 'text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700',
+  outline: 'text-foreground border border-border',
 };
 
 const sizeClasses = {

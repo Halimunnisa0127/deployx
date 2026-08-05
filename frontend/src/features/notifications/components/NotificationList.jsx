@@ -14,7 +14,7 @@ export default function NotificationList({
   onDeleteClick,
 }) {
   return (
-    <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-xl overflow-hidden">
+    <div className="bg-white/60 dark:bg-slate-900/60 border border-border rounded-2xl shadow-xl backdrop-blur-xl overflow-hidden">
       {isLoading ? (
         <NotificationEmptyState isLoading={true} />
       ) : !hasNotifications ? (
@@ -25,7 +25,7 @@ export default function NotificationList({
           onClearFilters={onClearFilters}
         />
       ) : (
-        <div className="divide-y divide-slate-200 dark:divide-slate-800/80">
+        <div className="divide-y divide-border">
           {Object.entries(groupedData).map(([groupTitle, items]) => (
             <NotificationGroup
               key={groupTitle}

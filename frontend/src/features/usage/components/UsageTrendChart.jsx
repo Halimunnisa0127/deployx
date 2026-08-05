@@ -88,9 +88,8 @@ export default function UsageTrendChart({
   return (
     <Card
       style={{ maxWidth: '100%', padding: '14px 16px 12px' }}
-      className="border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl
-                 bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl
-                 transition-colors duration-300 hover:border-slate-300 dark:hover:border-white/20"
+      className="border border-border rounded-2xl backdrop-blur-xl
+                 bg-card/80 shadow-sm transition-colors duration-300 hover:border-border"
     >
 
       {/* ── Row 1: Title + Period toggle + Zoom ─────────────── */}
@@ -102,7 +101,7 @@ export default function UsageTrendChart({
                           text-indigo-600 dark:text-indigo-400 shrink-0">
             <Activity className="w-3.5 h-3.5" />
           </div>
-          <span className="text-sm font-extrabold text-slate-900 dark:text-slate-100 tracking-tight truncate">
+          <span className="text-sm font-extrabold text-foreground tracking-tight truncate">
             Usage Trends
           </span>
         </div>
@@ -111,8 +110,8 @@ export default function UsageTrendChart({
         <div className="flex items-center gap-1.5 shrink-0">
 
           {/* Period toggle */}
-          <div className="flex items-center bg-slate-100 dark:bg-slate-800/80 rounded-lg
-                          border border-slate-200 dark:border-slate-700/80 p-0.5">
+          <div className="flex items-center bg-muted rounded-lg
+                          border border-border p-0.5">
             {['daily', 'weekly', 'monthly'].map((p) => (
               <button
                 key={p}
@@ -121,8 +120,8 @@ export default function UsageTrendChart({
                 className={`px-3 py-1 rounded-md text-xs font-bold capitalize
                             transition-all cursor-pointer ${
                   chartPeriod === p
-                    ? 'bg-white dark:bg-slate-900 text-indigo-600 dark:text-indigo-400 shadow-xs'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-card text-indigo-600 dark:text-indigo-400 shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {p}
@@ -131,29 +130,29 @@ export default function UsageTrendChart({
           </div>
 
           {/* Zoom */}
-          <div className="flex items-center bg-slate-100 dark:bg-slate-800/80 rounded-lg
-                          border border-slate-200 dark:border-slate-700/80 p-0.5">
+          <div className="flex items-center bg-muted rounded-lg
+                          border border-border p-0.5">
             <button
                type="button" onClick={zoomIn} disabled={zoomLevel >= 2} title="Zoom In"
-               className="p-1 rounded-md text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-900 hover:text-indigo-600 dark:hover:text-indigo-400 disabled:opacity-30 cursor-pointer"
+               className="p-1 rounded-md text-muted-foreground hover:bg-card hover:text-indigo-600 dark:hover:text-indigo-400 disabled:opacity-30 cursor-pointer"
             >
               <ZoomIn className="w-4 h-4" />
             </button>
             <button
                type="button" onClick={zoomOut} disabled={zoomLevel <= 1} title="Zoom Out"
-               className="p-1 rounded-md text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-900 hover:text-indigo-600 dark:hover:text-indigo-400 disabled:opacity-30 cursor-pointer"
+               className="p-1 rounded-md text-muted-foreground hover:bg-card hover:text-indigo-600 dark:hover:text-indigo-400 disabled:opacity-30 cursor-pointer"
             >
               <ZoomOut className="w-4 h-4" />
             </button>
             {zoomLevel > 1 && (
               <button
                 type="button" onClick={zoomReset} title="Reset"
-                className="p-1 rounded-md text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-900 hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
+                className="p-1 rounded-md text-muted-foreground hover:bg-card hover:text-indigo-600 dark:hover:text-indigo-400 cursor-pointer"
               >
                 <RotateCcw className="w-4 h-4" />
               </button>
             )}
-            <span className="text-xs font-mono font-bold px-1 text-slate-400 dark:text-slate-500">
+            <span className="text-xs font-mono font-bold px-1 text-muted-foreground">
               {zoomLevel}x
             </span>
           </div>
@@ -176,7 +175,7 @@ export default function UsageTrendChart({
                             border whitespace-nowrap transition-all cursor-pointer ${
                   active
                     ? 'bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border-indigo-500/30'
-                    : 'bg-transparent text-slate-500 dark:text-slate-400 border-transparent hover:border-slate-200 dark:hover:border-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
+                    : 'bg-transparent text-muted-foreground border-transparent hover:border-border hover:text-foreground'
                 }`}
               >
                 <TabIcon className="w-3.5 h-3.5 shrink-0" />
@@ -189,10 +188,10 @@ export default function UsageTrendChart({
         {/* Avg + Peak badges */}
         <div className="flex items-center gap-2 shrink-0">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold
-                          bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700
-                          text-slate-600 dark:text-slate-300">
+                          bg-muted border border-border
+                          text-muted-foreground">
             <span className="w-3 border-t border-dashed border-indigo-500 shrink-0" />
-            <span>Avg&nbsp;<strong className="text-slate-900 dark:text-white">{avgVal.toFixed(1)}&nbsp;{currentTab.unit}</strong></span>
+            <span>Avg&nbsp;<strong className="text-foreground">{avgVal.toFixed(1)}&nbsp;{currentTab.unit}</strong></span>
           </div>
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold
                           bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400">
@@ -226,12 +225,12 @@ export default function UsageTrendChart({
                   <line
                     x1={paddingX} y1={y} x2={svgWidth - paddingX} y2={y}
                     strokeWidth="0.7" strokeDasharray="3 3"
-                    className="stroke-slate-200 dark:stroke-slate-700/60"
+                    className="stroke-border"
                   />
                   <text
                     x={paddingX - 6} y={y + 3}
                     textAnchor="end"
-                    className="fill-slate-400 dark:fill-slate-500 font-mono text-[8px]"
+                    className="fill-muted-foreground font-mono text-[8px]"
                   >
                     {lbl}&nbsp;{currentTab.unit}
                   </text>
@@ -249,7 +248,7 @@ export default function UsageTrendChart({
                 />
                 <text
                   x={svgWidth - paddingX + 3} y={avgY + 3}
-                  className="fill-slate-400 dark:fill-slate-500 font-mono text-[7.5px] font-bold"
+                  className="fill-muted-foreground font-mono text-[7.5px] font-bold"
                 >
                   AVG
                 </text>
@@ -343,7 +342,7 @@ export default function UsageTrendChart({
                     className={`font-mono text-[8.5px] ${
                       isHov
                         ? 'fill-indigo-600 dark:fill-indigo-400 font-extrabold'
-                        : 'fill-slate-400 dark:fill-slate-500 font-semibold'
+                        : 'fill-muted-foreground font-semibold'
                     }`}
                   >
                     {pt.label}
@@ -362,7 +361,7 @@ export default function UsageTrendChart({
                 exit={{ opacity: 0, y: 3, scale: 0.95 }}
                 transition={{ duration: 0.12 }}
                 className="absolute -top-12 z-30 px-2.5 py-1.5 rounded-lg
-                           bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800
+                           bg-card border border-border
                            shadow-xl backdrop-blur-md pointer-events-none text-sm
                            space-y-0.5 max-w-[160px]"
                 style={{
@@ -371,8 +370,8 @@ export default function UsageTrendChart({
                 }}
               >
                 <div className="flex items-center justify-between gap-2 font-bold
-                                text-slate-900 dark:text-white pb-0.5
-                                border-b border-slate-100 dark:border-slate-800 font-mono">
+                                text-foreground pb-0.5
+                                border-b border-border font-mono">
                   <span>{points[hoveredIndex].label}</span>
                   {points[hoveredIndex].isPeak && (
                     <span className="px-1 text-[8px] font-black rounded bg-amber-500 text-white">PEAK</span>
@@ -384,7 +383,7 @@ export default function UsageTrendChart({
                   <span>{points[hoveredIndex].val}&nbsp;{currentTab.unit}</span>
                 </div>
                 {avgVal > 0 && (
-                  <div className="text-xs text-slate-400 dark:text-slate-500 font-mono">
+                  <div className="text-xs text-muted-foreground font-mono">
                     {points[hoveredIndex].val >= avgVal
                       ? `+${(((points[hoveredIndex].val - avgVal) / avgVal) * 100).toFixed(0)}% vs avg`
                       : `-${(((avgVal - points[hoveredIndex].val) / avgVal) * 100).toFixed(0)}% vs avg`

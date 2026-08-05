@@ -28,7 +28,7 @@ export default function AnalyticsHeader({
           <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
             <BarChart3 className="w-5 h-5 text-indigo-400" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-theme-heading tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Platform Analytics
           </h1>
         </div>

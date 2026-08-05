@@ -18,7 +18,7 @@ export default function NotificationDeleteModal({
       maxWidth="460px"
     >
       <div className="space-y-4 pt-1">
-        <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           {isClearAll ? (
             "Are you sure you want to clear all notifications? This action cannot be undone."
           ) : (
@@ -28,7 +28,7 @@ export default function NotificationDeleteModal({
           )}
         </p>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
           <Button
             variant="secondary"
             size="sm"

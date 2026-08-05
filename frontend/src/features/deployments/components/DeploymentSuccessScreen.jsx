@@ -122,7 +122,7 @@ export default function DeploymentSuccessScreen({
       <ConfettiCanvas />
 
       {/* Main Success Card */}
-      <div className="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl space-y-8 relative overflow-hidden text-center">
+      <div className="bg-card border border-border rounded-2xl p-6 sm:p-10 shadow-2xl backdrop-blur-xl space-y-8 relative overflow-hidden text-center">
         {/* Glow Accent Background */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -142,20 +142,20 @@ export default function DeploymentSuccessScreen({
               <ShieldCheck className="w-3.5 h-3.5" />
               Deployment Success
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
               Congratulations! Your project is live.
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-              Your application <span className="text-slate-700 dark:text-slate-200 font-bold">{projectName}</span> has been deployed successfully to DeployX global edge network.
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Your application <span className="text-foreground font-bold">{projectName}</span> has been deployed successfully to DeployX global edge network.
             </p>
           </div>
         </div>
 
         {/* 2. Production & Preview URLs Card */}
-        <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 text-left space-y-4 shadow-inner relative z-10">
+        <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-border text-left space-y-4 shadow-inner relative z-10">
           {/* Production URL Row */}
           <div className="space-y-1.5">
-            <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center justify-between">
+            <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-blue-500 dark:text-blue-400">
                 <Globe className="w-3.5 h-3.5" />
                 Production URL
@@ -163,7 +163,7 @@ export default function DeploymentSuccessScreen({
               <span className="text-xs text-emerald-600 dark:text-emerald-400 font-mono font-bold">Active</span>
             </label>
 
-            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-2 bg-card p-2.5 rounded-xl border border-border">
               <a
                 href={productionUrl}
                 target="_blank"
@@ -171,7 +171,7 @@ export default function DeploymentSuccessScreen({
                 className="font-mono text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 font-bold truncate flex-1 flex items-center gap-1.5"
               >
                 {productionUrl}
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 flex-shrink-0" />
+                <ExternalLink className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
               </a>
 
               <Button
@@ -189,20 +189,20 @@ export default function DeploymentSuccessScreen({
 
           {/* Preview URL Row */}
           <div className="space-y-1">
-            <label className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
               <GitBranch className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
               <span>Preview Branch Domain</span>
             </label>
-            <div className="bg-slate-100 dark:bg-slate-900/60 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-xs">
+            <div className="bg-muted px-3 py-2 rounded-lg border border-border flex items-center justify-between text-xs">
               <a
                 href={previewUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="font-mono text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white truncate"
+                className="font-mono text-muted-foreground hover:text-slate-900 dark:hover:text-white truncate"
               >
                 {previewUrl}
               </a>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Immutable</span>
+              <span className="text-xs text-muted-foreground font-mono">Immutable</span>
             </div>
           </div>
         </div>
@@ -210,17 +210,17 @@ export default function DeploymentSuccessScreen({
         {/* 3. Deployment Details Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-left relative z-10">
           {/* GitHub Repository */}
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <span className="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-border flex items-center justify-between">
+            <span className="text-muted-foreground flex items-center gap-2">
               <GithubIcon className="w-4 h-4 text-slate-400 dark:text-slate-300" />
               Repository:
             </span>
-            <span className="font-mono text-slate-700 dark:text-slate-200 font-semibold">{repository}</span>
+            <span className="font-mono text-foreground font-semibold">{repository}</span>
           </div>
 
           {/* Deployment ID */}
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <span className="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-border flex items-center justify-between">
+            <span className="text-muted-foreground flex items-center gap-2">
               <Folder className="w-4 h-4 text-blue-500 dark:text-blue-400" />
               Deployment ID:
             </span>
@@ -228,20 +228,20 @@ export default function DeploymentSuccessScreen({
           </div>
 
           {/* Commit Hash */}
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <span className="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-border flex items-center justify-between">
+            <span className="text-muted-foreground flex items-center gap-2">
               <Hash className="w-4 h-4 text-purple-500 dark:text-purple-400" />
               Commit Hash:
             </span>
-            <span className="font-mono text-slate-700 dark:text-slate-200 font-semibold flex items-center gap-1">
-              <GitBranch className="w-3 h-3 text-slate-400 dark:text-slate-500" />
+            <span className="font-mono text-foreground font-semibold flex items-center gap-1">
+              <GitBranch className="w-3 h-3 text-muted-foreground" />
               {commitHash}
             </span>
           </div>
 
           {/* Deployment Duration */}
-          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <span className="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-border flex items-center justify-between">
+            <span className="text-muted-foreground flex items-center gap-2">
               <Clock className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
               Build Duration:
             </span>
@@ -250,7 +250,7 @@ export default function DeploymentSuccessScreen({
         </div>
 
         {/* 4. Action Buttons Footer */}
-        <div className="pt-4 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 relative z-10">
+        <div className="pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 relative z-10">
           <Button
             type="button"
             variant="primary"
@@ -294,7 +294,7 @@ export default function DeploymentSuccessScreen({
               }
             }}
             iconLeft={<Plus className="w-4 h-4" />}
-            className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+            className="text-muted-foreground hover:text-slate-900 dark:hover:text-white"
           >
             Create Another
           </Button>

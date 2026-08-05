@@ -76,20 +76,20 @@ export default function UsageAlerts({ alerts = [] }) {
   return (
     <Card 
       style={{ maxWidth: '100%', padding: 0 }}
-      className="h-full flex flex-col border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl overflow-hidden"
+      className="h-full flex flex-col border border-border rounded-2xl backdrop-blur-xl bg-card shadow-sm dark:shadow-xl overflow-hidden"
     >
       
       {/* Header */}
-      <div className="px-4 py-3 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 shadow-sm shrink-0">
             <BellRing className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
+            <h2 className="text-sm font-extrabold text-foreground leading-none">
               Recent Usage Alerts ({sortedAlerts.length})
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               High-priority operational notices
             </p>
           </div>
@@ -108,19 +108,19 @@ export default function UsageAlerts({ alerts = [] }) {
         {sortedAlerts.length === 0 ? (
           <div className="p-8 text-center flex flex-col items-center justify-center space-y-3">
             <CheckCircle2 className="w-8 h-8 text-emerald-500" />
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               No active usage alerts. Your infrastructure is operating normally.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100 dark:divide-white/5">
+          <div className="divide-y divide-border">
             {sortedAlerts.map((item) => {
               const severityKey = item.severity === 'normal' ? 'information' : item.severity;
               const style = SEVERITY_CONFIG[severityKey] || SEVERITY_CONFIG.information;
               const SeverityIcon = style.icon;
 
               return (
-                <div key={item.id} className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 p-3 sm:p-4 hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                <div key={item.id} className="flex flex-col xl:flex-row xl:items-center justify-between gap-3 p-3 sm:p-4 hover:bg-muted transition-colors">
                   
                   {/* Left: Icon & Details */}
                   <div className="flex items-start gap-4 min-w-0 flex-1">
@@ -134,24 +134,24 @@ export default function UsageAlerts({ alerts = [] }) {
                         <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-extrabold border ${style.badgeClass} shrink-0 uppercase tracking-wider`}>
                           {style.label}
                         </span>
-                        <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 truncate">
+                        <h3 className="text-sm font-extrabold text-foreground truncate">
                           {item.title}
                         </h3>
                       </div>
                       
                       {/* Description */}
-                      <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-1" title={item.description}>
+                      <p className="text-xs text-muted-foreground line-clamp-1" title={item.description}>
                         {item.description}
                       </p>
 
                       {/* Bottom-left: Timestamp & Resource */}
                       <div className="flex flex-wrap items-center gap-3 mt-0.5">
-                        <span className="flex items-center gap-1.5 text-sm font-mono text-slate-400 dark:text-slate-500 shrink-0">
+                        <span className="flex items-center gap-1.5 text-sm font-mono text-muted-foreground shrink-0">
                           <Clock className="w-3 h-3" />
                           {compactTimestamp(item.timestamp)}
                         </span>
                         {item.affectedResource && (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shrink-0">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-bold bg-muted text-muted-foreground border border-border shrink-0">
                             <Layers className="w-3 h-3" />
                             {item.affectedResource}
                           </span>

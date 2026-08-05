@@ -88,7 +88,7 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Hero Title (Blue Gradient) */}
-        <motion.h1 variants={fadeInUp} className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-[1.1]">
+        <motion.h1 variants={fadeInUp} className="text-4xl sm:text-6xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-6 leading-[1.1]">
           <SplitText
             text="Deploy GitHub Projects"
             tag="span"
@@ -129,7 +129,7 @@ export default function HeroSection() {
           
           <a 
             href="#product-preview" 
-            className="w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-slate-700 dark:text-gray-300 bg-slate-100 dark:bg-white/[0.03] hover:bg-slate-200 dark:hover:bg-white/[0.08] border border-slate-300 dark:border-white/10 hover:border-slate-400 dark:hover:border-white/20 rounded-full transition-all flex items-center justify-center gap-2 backdrop-blur-md"
+            className="w-full sm:w-auto px-8 py-3.5 text-base font-semibold text-slate-700 dark:text-gray-300 bg-slate-100 dark:bg-white/[0.03] hover:bg-slate-200 dark:hover:bg-white/[0.08] border border-border hover:border-slate-400 dark:hover:border-white/20 rounded-full transition-all flex items-center justify-center gap-2 backdrop-blur-md"
           >
             <Play className="w-4 h-4 fill-slate-600 text-slate-600 dark:fill-gray-300 dark:text-gray-300" />
             <span>View Demo</span>
@@ -141,28 +141,28 @@ export default function HeroSection() {
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-blue-500" />
             <div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-white">Instant Sync</div>
+              <div className="text-sm font-semibold text-foreground">Instant Sync</div>
               <div className="text-xs text-slate-500 dark:text-gray-400">Push to main</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-blue-400" />
             <div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-white">Zero Downtime</div>
+              <div className="text-sm font-semibold text-foreground">Zero Downtime</div>
               <div className="text-xs text-slate-500 dark:text-gray-400">Atomic cutovers</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-emerald-400" />
             <div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-white">99.9% Uptime</div>
+              <div className="text-sm font-semibold text-foreground">99.9% Uptime</div>
               <div className="text-xs text-slate-500 dark:text-gray-400">Global edge</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-sky-400" />
             <div>
-              <div className="text-sm font-semibold text-slate-900 dark:text-white">Live Logs</div>
+              <div className="text-sm font-semibold text-foreground">Live Logs</div>
               <div className="text-xs text-slate-500 dark:text-gray-400">Real-time terminal</div>
             </div>
           </div>

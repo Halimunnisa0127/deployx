@@ -46,10 +46,10 @@ export default function StatCards({ metrics = MOCK_STAT_METRICS }) {
                   </span>
 
                   <div className="flex items-center gap-1.5">
-                    <div className={`p-2.5 rounded-xl border ${ACCENT_BG_MAP[item.iconName] || 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700'} flex-shrink-0 transition-colors duration-200`}>
+                    <div className={`p-2.5 rounded-xl border ${ACCENT_BG_MAP[item.iconName] || 'bg-muted border-border'} flex-shrink-0 transition-colors duration-200`}>
                       {ICON_MAP[item.iconName] || <FolderPlus className="w-5 h-5 text-slate-400" />}
                     </div>
-                    <ArrowUpRight className="w-4 h-4 text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+                    <ArrowUpRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
                   </div>
                 </div>
 

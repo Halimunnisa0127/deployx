@@ -55,7 +55,7 @@ export default function PlatformHealthCard({ health = [] }) {
           return (
             <div
               key={item.id}
-              className="p-4 rounded-xl border border-slate-200 dark:border-slate-700/50 flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+              className="p-4 rounded-xl border border-border flex items-center justify-between group hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-theme-bg border border-theme-border flex items-center justify-center text-slate-400 group-hover:text-indigo-400 transition-colors">

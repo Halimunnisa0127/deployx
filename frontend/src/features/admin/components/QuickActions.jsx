@@ -48,7 +48,7 @@ export default function QuickActions() {
       {actions.map((action, idx) => (
         <div
           key={idx}
-          className={`group cursor-pointer p-5 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-white/5 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-50 dark:hover:bg-slate-900/90 ${action.border}`}
+          className={`group cursor-pointer p-5 rounded-2xl bg-card border border-slate-200 dark:border-white/5 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:bg-slate-50 dark:hover:bg-slate-900/90 ${action.border}`}
         >
           <div className="flex justify-between items-start mb-3">
             <div

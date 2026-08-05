@@ -4,8 +4,8 @@ import Skeleton from "../../../../components/ui/Skeleton";
 export function SettingsSkeleton() {
   return (
     <div className="space-y-12 animate-pulse mt-6">
-      <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg">
-        <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
+      <div className="bg-card rounded-2xl border border-border p-6 shadow-sm dark:shadow-lg">
+        <div className="mb-6 border-b border-border pb-4">
           <Skeleton className="h-6 w-40 mb-2" />
           <Skeleton className="h-4 w-64" />
         </div>
@@ -31,8 +31,8 @@ export function SettingsSkeleton() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg">
-        <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
+      <div className="bg-card rounded-2xl border border-border p-6 shadow-sm dark:shadow-lg">
+        <div className="mb-6 border-b border-border pb-4">
           <Skeleton className="h-6 w-40 mb-2" />
           <Skeleton className="h-4 w-64" />
         </div>

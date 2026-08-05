@@ -102,8 +102,8 @@ export default function ProjectsList() {
       {/* Top Header Row */}
       <div className="flex items-start justify-between mb-7 flex-wrap gap-5">
         <div className="flex flex-col">
-          <h1 className="m-0 text-[26px] font-bold tracking-tight text-slate-900 dark:text-slate-50 transition-colors">Projects</h1>
-          <p className="mt-1.5 text-sm text-slate-600 dark:text-slate-400 transition-colors">
+          <h1 className="m-0 text-[26px] font-bold tracking-tight text-foreground transition-colors">Projects</h1>
+          <p className="mt-1.5 text-sm text-muted-foreground transition-colors">
             Manage, monitor, and deploy your web applications and services.
           </p>
           <div className="mt-3.5">
@@ -149,7 +149,7 @@ export default function ProjectsList() {
         {/* Right: Filters and Sort */}
         <div className="flex items-center gap-3 flex-wrap">
           {/* Filter Chips */}
-          <div className="flex items-center gap-1.5 bg-slate-200/50 dark:bg-slate-900/40 p-1 rounded-[10px] border border-slate-300 dark:border-white/5 transition-colors" role="tablist" aria-label="Project Status Filters">
+          <div className="flex items-center gap-1.5 bg-slate-200/50 dark:bg-slate-900/40 p-1 rounded-[10px] border border-border transition-colors" role="tablist" aria-label="Project Status Filters">
             {FILTER_OPTIONS.map((tab) => {
               const isActive = activeFilter === tab.id;
               const count = filterCounts[tab.id] ?? 0;
@@ -160,7 +160,7 @@ export default function ProjectsList() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveFilter(tab.id)}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-sm font-medium transition-all outline-none ${isActive ? 'bg-indigo-100 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-300 dark:border-indigo-500/40 shadow-sm' : 'bg-transparent text-slate-600 dark:text-slate-400 border-transparent hover:text-slate-900 dark:hover:text-slate-300'}`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-sm font-medium transition-all outline-none ${isActive ? 'bg-indigo-100 dark:bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-300 dark:border-indigo-500/40 shadow-sm' : 'bg-transparent text-muted-foreground border-transparent hover:text-slate-900 dark:hover:text-slate-300'}`}
                 >
                   {tab.label}
                   <span
@@ -176,7 +176,7 @@ export default function ProjectsList() {
           {/* Sort Dropdown */}
           <Dropdown
             trigger={
-              <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900/60 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-300 text-sm font-medium cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-card border border-border text-foreground text-sm font-medium cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 shadow-sm">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M11 5h10" />
                   <path d="M11 9h7" />

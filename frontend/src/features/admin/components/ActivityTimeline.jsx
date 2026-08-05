@@ -36,7 +36,7 @@ const getIcon = (type) => {
     default:
       return {
         icon: CheckCircle,
-        color: "text-slate-500 dark:text-slate-400",
+        color: "text-muted-foreground",
         bg: "bg-slate-500/10",
       };
   }

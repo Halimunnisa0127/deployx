@@ -27,7 +27,7 @@ export default function ProductPreviewSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="relative rounded-2xl border border-slate-300 dark:border-white/15 bg-white/90 dark:bg-[#0d0e12]/90 backdrop-blur-xl shadow-[0_0_100px_rgba(37,99,235,0.25)] overflow-hidden"
+          className="relative rounded-2xl border border-border bg-white/90 dark:bg-[#0d0e12]/90 backdrop-blur-xl shadow-[0_0_100px_rgba(37,99,235,0.25)] overflow-hidden"
         >
           {/* Top Window Bar */}
           <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-[#08090c]">
@@ -59,7 +59,7 @@ export default function ProductPreviewSection() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">deployx-api</h3>
+                    <h3 className="text-xl font-bold text-foreground">deployx-api</h3>
                     <span className="text-xs px-2 py-0.5 rounded bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-gray-300">Public</span>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-gray-400 flex items-center gap-1.5 mt-0.5">
@@ -87,7 +87,7 @@ export default function ProductPreviewSection() {
                   <span>Status</span>
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                 </div>
-                <div className="text-lg font-semibold text-slate-900 dark:text-white">Healthy</div>
+                <div className="text-lg font-semibold text-foreground">Healthy</div>
                 <div className="text-sm text-emerald-600 dark:text-emerald-400 mt-1">100% Uptime (24h)</div>
               </div>
 
@@ -96,7 +96,7 @@ export default function ProductPreviewSection() {
                   <span>Build Time</span>
                   <Clock className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                 </div>
-                <div className="text-lg font-semibold text-slate-900 dark:text-white">34s</div>
+                <div className="text-lg font-semibold text-foreground">34s</div>
                 <div className="text-sm text-slate-500 dark:text-gray-400 mt-1">Optimized cache hit</div>
               </div>
 
@@ -105,7 +105,7 @@ export default function ProductPreviewSection() {
                   <span>Avg Latency</span>
                   <Activity className="w-4 h-4 text-cyan-500 dark:text-cyan-400" />
                 </div>
-                <div className="text-lg font-semibold text-slate-900 dark:text-white">18ms</div>
+                <div className="text-lg font-semibold text-foreground">18ms</div>
                 <div className="text-sm text-cyan-600 dark:text-cyan-400 mt-1">Global Edge Routing</div>
               </div>
 
@@ -114,7 +114,7 @@ export default function ProductPreviewSection() {
                   <span>Active Domain</span>
                   <ShieldCheck className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                 </div>
-                <div className="text-lg font-semibold text-slate-900 dark:text-white">SSL Active</div>
+                <div className="text-lg font-semibold text-foreground">SSL Active</div>
                 <div className="text-sm text-slate-500 dark:text-gray-400 mt-1">Auto Let's Encrypt</div>
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function ProductPreviewSection() {
               {/* Deployments List (3 cols) */}
               <div className="lg:col-span-3 p-5 rounded-xl bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                  <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
                     <Layers className="w-4 h-4 text-blue-400" />
                     Recent Deployments
                   </h4>
@@ -137,7 +137,7 @@ export default function ProductPreviewSection() {
                     <div className="flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
                       <div>
-                        <div className="text-xs font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                        <div className="text-xs font-semibold text-foreground flex items-center gap-2">
                           <span>feat: add real-time log streaming</span>
                           <span className="text-xs px-1.5 py-0.2 rounded bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300">d7a9b2c</span>
                         </div>

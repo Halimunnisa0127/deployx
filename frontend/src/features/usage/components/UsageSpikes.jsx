@@ -18,22 +18,22 @@ export default function UsageSpikes({ spikes = [] }) {
   return (
     <Card 
       style={{ maxWidth: '100%' }}
-      className="border border-slate-200/80 dark:border-white/10 rounded-2xl
-                     backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
-                     shadow-sm dark:shadow-xl overflow-hidden p-0 flex flex-col h-full"
+      className="border border-border rounded-2xl
+                     backdrop-blur-xl bg-card/80
+                     shadow-sm overflow-hidden p-0 flex flex-col h-full"
     >
       
       {/* Header */}
-      <div className="px-5 py-4 border-b border-slate-200/80 dark:border-white/10 flex items-center justify-between">
+      <div className="px-5 py-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-500 shrink-0">
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
+            <h2 className="text-sm font-extrabold text-foreground leading-none">
               Usage Spikes
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Abnormal consumption events
             </p>
           </div>
@@ -56,8 +56,8 @@ export default function UsageSpikes({ spikes = [] }) {
           return (
             <div 
               key={spike.id} 
-              className={`flex items-start sm:items-center justify-between gap-4 p-4 sm:p-5 transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/50 ${
-                idx !== topSpikes.length - 1 ? 'border-b border-slate-100 dark:border-white/5' : ''
+              className={`flex items-start sm:items-center justify-between gap-4 p-4 sm:p-5 transition-colors hover:bg-muted/50 ${
+                idx !== topSpikes.length - 1 ? 'border-b border-border' : ''
               }`}
             >
               {/* Left: Icon & Details */}
@@ -68,14 +68,14 @@ export default function UsageSpikes({ spikes = [] }) {
                 
                 <div className="min-w-0">
                   <div className="flex items-baseline gap-2.5">
-                    <span className="text-sm font-extrabold text-slate-800 dark:text-slate-200 truncate">
+                    <span className="text-sm font-extrabold text-foreground truncate">
                       {spike.resource}
                     </span>
-                    <span className="text-xs font-mono text-slate-400 dark:text-slate-500 shrink-0">
+                    <span className="text-xs font-mono text-muted-foreground shrink-0">
                       {spike.date}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 sm:line-clamp-none max-w-[180px] sm:max-w-[280px] truncate" title={spike.reason}>
+                  <p className="text-xs text-muted-foreground mt-1 line-clamp-1 sm:line-clamp-none max-w-[180px] sm:max-w-[280px] truncate" title={spike.reason}>
                     {spike.reason}
                   </p>
                 </div>

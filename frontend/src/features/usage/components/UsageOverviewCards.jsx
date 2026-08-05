@@ -37,10 +37,10 @@ export default function UsageOverviewCards({ summary = {} }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h2 className="text-base sm:text-lg font-extrabold text-foreground tracking-tight">
           Usage Overview
         </h2>
-        <span className="text-xs font-mono text-slate-600 dark:text-slate-400">
+        <span className="text-xs font-mono text-muted-foreground">
           Updated live
         </span>
       </div>
@@ -55,12 +55,12 @@ export default function UsageOverviewCards({ summary = {} }) {
             <Card
               key={item.id}
               style={{ maxWidth: '100%', padding: '24px 28px' }}
-              className="relative border-slate-200 dark:border-white/5 rounded-[18px] backdrop-blur-xl bg-white/80 dark:bg-slate-900/60 shadow-sm dark:shadow-xl hover:-translate-y-[3px] hover:shadow-md transition-all duration-300 group"
+              className="relative border-border rounded-[18px] backdrop-blur-xl bg-card/80 shadow-sm transition-all duration-300 group"
             >
               <div className="space-y-6">
                 {/* Header: Title & Icon Pill */}
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-400">
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                     {item.title}
                   </span>
                   <div className={`p-2.5 rounded-xl border ${colors.badgeBg} transition-colors`}>
@@ -70,16 +70,16 @@ export default function UsageOverviewCards({ summary = {} }) {
 
                 {/* Main Metric: Current Usage / Limit */}
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-                    {item.used} <span className="text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-400">{item.unit}</span>
+                  <div className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+                    {item.used} <span className="text-xs sm:text-sm font-semibold text-muted-foreground">{item.unit}</span>
                   </div>
-                  <div className="text-xs text-slate-600 dark:text-slate-400 font-mono mt-1">
-                    Limit: <span className="font-semibold text-slate-800 dark:text-slate-200">{item.limit} {item.unit}</span>
+                  <div className="text-xs text-muted-foreground font-mono mt-1">
+                    Limit: <span className="font-semibold text-foreground">{item.limit} {item.unit}</span>
                   </div>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-2.5 w-full bg-slate-200/80 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div className="h-2.5 w-full bg-secondary rounded-full overflow-hidden">
                   <div
                     className={`h-full ${colors.barColor} rounded-full transition-all duration-500 ease-out`}
                     style={{ width: `${Math.min(item.percent, 100)}%` }}
@@ -87,7 +87,7 @@ export default function UsageOverviewCards({ summary = {} }) {
                 </div>
 
                 {/* Footer: Trend */}
-                <div className="flex items-center pt-2 border-t border-slate-200/80 dark:border-slate-800/80 text-xs">
+                <div className="flex items-center pt-2 border-t border-border text-xs">
                   <div className={`flex items-center gap-1 font-bold ${item.isUp ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
                     <TrendIcon className="w-4 h-4" />
                     <span>{item.trend}</span>
@@ -103,14 +103,14 @@ export default function UsageOverviewCards({ summary = {} }) {
                            group-hover:opacity-100 group-hover:translate-y-full group-hover:pointer-events-auto"
               >
                 <div className="mx-0.5 mt-1 rounded-xl
-                                bg-white/98 dark:bg-slate-900/98
-                                border border-slate-200 dark:border-slate-700
+                                bg-card
+                                border border-border
                                 backdrop-blur-md shadow-xl px-4 py-3">
                   <div className="flex justify-between items-center text-xs font-mono font-semibold">
-                    <span className="text-slate-800 dark:text-slate-200">{item.percent}% used</span>
-                    <span className="text-slate-600 dark:text-slate-400">{item.remaining} {item.unit} remaining</span>
+                    <span className="text-foreground">{item.percent}% used</span>
+                    <span className="text-muted-foreground">{item.remaining} {item.unit} remaining</span>
                   </div>
-                  <div className="text-sm text-slate-500 dark:text-slate-500 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-center">
+                  <div className="text-sm text-muted-foreground mt-2 pt-2 border-t border-border text-center">
                     vs last period
                   </div>
                 </div>

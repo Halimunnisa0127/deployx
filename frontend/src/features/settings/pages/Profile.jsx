@@ -128,7 +128,7 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl space-y-6">
+      <div className="bg-white/60 dark:bg-slate-900/60 border border-border rounded-2xl p-6 backdrop-blur-xl space-y-6">
         <div className="flex items-center gap-6">
           <Skeleton variant="circular" width="80px" height="80px" />
           <div className="space-y-2">
@@ -184,7 +184,7 @@ export default function Profile() {
       )}
 
       {/* Main Form Container */}
-      <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl shadow-xl space-y-8">
+      <div className="bg-white/60 dark:bg-slate-900/60 border border-border rounded-2xl p-6 backdrop-blur-xl shadow-xl space-y-8">
         
         {isProfileEmpty ? (
           /* Empty State */
@@ -204,14 +204,14 @@ export default function Profile() {
         ) : (
           <>
             {/* Avatar Section */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-slate-200 dark:border-slate-800/80">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-border">
               <div className="flex items-center gap-5">
                 <Avatar name={formData.avatarPreset} size="xl" variant="rounded" />
                 <div className="space-y-1">
                   <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                     Profile Picture
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="text-xs text-muted-foreground">
                     Square image recommended (JPG, PNG, max 2MB).
                   </p>
                 </div>
@@ -241,7 +241,7 @@ export default function Profile() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Full Name <span className="text-rose-400">*</span>
                 </label>
                 <Input
@@ -254,7 +254,7 @@ export default function Profile() {
 
               {/* Username */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Username
                 </label>
                 <Input
@@ -267,7 +267,7 @@ export default function Profile() {
 
               {/* Email Address */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Email Address <span className="text-rose-400">*</span>
                 </label>
                 <Input
@@ -281,14 +281,14 @@ export default function Profile() {
 
               {/* Phone Number */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Phone Number
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={formData.countryCode}
                     onChange={(e) => handleChange('countryCode', e.target.value)}
-                    className="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl px-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 w-28 shrink-0"
+                    className="bg-white dark:bg-slate-950 border border-border text-foreground text-xs rounded-xl px-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 w-28 shrink-0"
                   >
                     {COUNTRY_CODES.map((c) => (
                       <option key={c.country} value={c.code}>
@@ -311,7 +311,7 @@ export default function Profile() {
 
               {/* Company Name */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Company Name
                 </label>
                 <Input
@@ -324,7 +324,7 @@ export default function Profile() {
 
               {/* Job Title */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Job Title
                 </label>
                 <Input
@@ -337,14 +337,14 @@ export default function Profile() {
 
               {/* Timezone */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Timezone
                 </label>
                 <div className="relative">
                   <select
                     value={formData.timezone}
                     onChange={(e) => handleChange('timezone', e.target.value)}
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none"
+                    className="w-full bg-white dark:bg-slate-950 border border-border text-foreground text-xs rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none"
                   >
                     {TIMEZONE_OPTIONS.map((tz) => (
                       <option key={tz} value={tz}>
@@ -352,20 +352,20 @@ export default function Profile() {
                       </option>
                     ))}
                   </select>
-                  <Clock className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Clock className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
 
               {/* Language */}
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                <label className="text-xs font-bold text-foreground">
                   Preferred Language
                 </label>
                 <div className="relative">
                   <select
                     value={formData.language}
                     onChange={(e) => handleChange('language', e.target.value)}
-                    className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-xs rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none"
+                    className="w-full bg-white dark:bg-slate-950 border border-border text-foreground text-xs rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all appearance-none"
                   >
                     {LANGUAGE_OPTIONS.map((lang) => (
                       <option key={lang} value={lang}>
@@ -373,19 +373,19 @@ export default function Profile() {
                       </option>
                     ))}
                   </select>
-                  <Globe className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Globe className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 </div>
               </div>
             </div>
 
             {/* Bottom Form Actions */}
-            <div className="flex items-center justify-between gap-4 pt-6 border-t border-slate-200 dark:border-slate-800/80">
+            <div className="flex items-center justify-between gap-4 pt-6 border-t border-border">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleClearProfile}
                 iconLeft={<RotateCcw className="w-3.5 h-3.5" />}
-                className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+                className="text-muted-foreground hover:text-slate-700 dark:hover:text-slate-200"
               >
                 Clear Fields
               </Button>
@@ -431,7 +431,7 @@ export default function Profile() {
         maxWidth="460px"
       >
         <div className="space-y-4 pt-2">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-muted-foreground">
             Choose an avatar style to personalize your DeployX profile.
           </p>
 
@@ -447,7 +447,7 @@ export default function Profile() {
                 className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${
                   formData.avatarPreset === preset.name
                     ? 'bg-indigo-50 dark:bg-indigo-500/20 border-indigo-300 dark:border-indigo-500/40 text-indigo-700 dark:text-indigo-300'
-                    : 'bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
+                    : 'bg-white dark:bg-slate-950 border-border text-muted-foreground hover:border-slate-300 dark:hover:border-slate-700 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
                 <Avatar name={preset.name} size="md" variant="rounded" />

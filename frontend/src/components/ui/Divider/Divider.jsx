@@ -14,8 +14,8 @@ export default function Divider({
   };
 
   const variantClasses = {
-    solid: 'border-slate-200 dark:border-slate-800',
-    dashed: 'border-slate-200 dark:border-slate-800 border-dashed',
+    solid: 'border-border',
+    dashed: 'border-border border-dashed',
   };
 
   const spacingClasses = {

@@ -32,12 +32,12 @@ export default function Login() {
 
   return (
     <Card animated size="sm">
-      <div style={headerStyle}>
-        <h2 style={headingStyle}>⚡Deploy Your Projects with Confidence</h2>
-        <p style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>
+      <div className="flex flex-col items-center text-center mb-9">
+        <h2 className="m-0 mb-2 text-lg font-bold text-foreground font-sans">⚡Deploy Your Projects with Confidence</h2>
+        <p className="m-0 text-sm text-muted-foreground font-sans tracking-wide">GitHub • Docker • CI/CD • Instant Deployments</p>
       </div>
 
-      <div style={oauthContainer}>
+      <div className="flex flex-col gap-3 mb-2">
         <Button
           type="button"
           variant="oauth"
@@ -62,90 +62,16 @@ export default function Login() {
 
       <LoginForm onSubmit={handleEmailLogin} isLoading={false} />
 
-      <div style={footerStyle}>
-        <div style={linkContainer}>
-          <Link to="/forgot-password" className="auth-link" style={linkStyle}>Forgot Password?</Link>
+      <div className="mt-7 flex flex-col items-center gap-4">
+        <div className="w-full flex justify-center">
+          <Link to="/forgot-password" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors font-sans decoration-none">Forgot Password?</Link>
         </div>
-        <p style={switchText}>
-          Don't have an account? <Link to="/signup" className="auth-link-highlight" style={linkHighlight}>Sign Up</Link>
+        <p className="m-0 text-sm text-muted-foreground font-sans">
+          Don't have an account? <Link to="/signup" className="text-primary hover:text-primary/90 font-semibold transition-colors decoration-none">Sign Up</Link>
         </p>
       </div>
     </Card>
   );
 }
 
-/* ── Styles ──────────────────────────────────────────────────────── */
-
-const headerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  textAlign: 'center',
-  marginBottom: '36px',
-};
-
-const headingStyle = {
-  margin: '0 0 8px 0',
-  fontSize: '18px',
-  fontWeight: 600,
-  color: '#cbd5e1',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const subtitleStyle = {
-  margin: 0,
-  fontSize: '13px',
-  color: '#64748b',
-  fontFamily: "'Inter', sans-serif",
-  letterSpacing: '0.2px',
-};
-
-const oauthContainer = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  marginBottom: '8px',
-};
-
-const footerStyle = {
-  marginTop: '28px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '16px',
-};
-
-const linkContainer = {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-};
-
-const linkStyle = {
-  fontSize: '13px',
-  color: '#94a3b8',
-  textDecoration: 'none',
-  fontFamily: "'Inter', sans-serif",
-  fontWeight: 500,
-  transition: 'color 0.2s',
-};
-
-const switchText = {
-  margin: 0,
-  fontSize: '14px',
-  color: '#94a3b8',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const linkHighlight = {
-  color: '#e2e8f0',
-  textDecoration: 'none',
-  fontWeight: 600,
-  transition: 'color 0.2s',
-};
-
-const logoStyle = {
-  width: '300px',
-  marginBottom: '32px',
-  objectFit: 'contain',
-};
+/* ── Styles removed in favor of Tailwind CSS ── */

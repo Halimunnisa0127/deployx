@@ -81,7 +81,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
           <div className="p-2.5 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 border border-purple-500/30 text-purple-500 dark:text-purple-400 shadow-sm shadow-purple-500/20">
             <LayoutGrid className="w-5 h-5" />
           </div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+          <h2 className="text-lg font-semibold text-foreground tracking-tight">
             Project Health
           </h2>
         </div>
@@ -99,7 +99,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
             className="block space-y-1.5 group p-2 -mx-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+              <span className="font-semibold text-foreground flex items-center gap-2 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                 <span className={`w-2 h-2 rounded-full ${cat.color}`} />
                 {cat.label}
               </span>
@@ -109,9 +109,9 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
                     {cat.badgeText}
                   </Badge>
                 )}
-                <span className="font-mono font-semibold text-slate-800 dark:text-slate-200 min-w-[60px] text-right">
+                <span className="font-mono font-semibold text-foreground min-w-[60px] text-right">
                   {cat.count}{' '}
-                  <span className="text-slate-600 dark:text-slate-400 font-normal">({cat.percent}%)</span>
+                  <span className="text-muted-foreground font-normal">({cat.percent}%)</span>
                 </span>
               </div>
             </div>

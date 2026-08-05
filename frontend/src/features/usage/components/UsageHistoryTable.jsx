@@ -33,7 +33,7 @@ function StatusBadge({ status }) {
     cls = 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20';
     dot = 'bg-rose-500';
   } else {
-    cls = 'bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20';
+    cls = 'bg-slate-500/10 text-muted-foreground border-slate-500/20';
     dot = 'bg-slate-400';
   }
   return (
@@ -55,7 +55,7 @@ function SortTh({ field, label, alignRight = false, sortField, sortOrder, onSort
                   ${alignRight ? 'text-right' : 'text-left'}
                   ${active
                     ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50/60 dark:bg-indigo-500/10'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400'
+                    : 'text-muted-foreground hover:text-indigo-600 dark:hover:text-indigo-400'
                   }`}
     >
       <span className={`inline-flex items-center gap-1 ${alignRight ? 'flex-row-reverse' : ''}`}>
@@ -65,7 +65,7 @@ function SortTh({ field, label, alignRight = false, sortField, sortOrder, onSort
             ? <ChevronUp   className="w-3 h-3 text-indigo-500 shrink-0" />
             : <ChevronDown className="w-3 h-3 text-indigo-500 shrink-0" />
         ) : (
-          <ArrowUpDown className="w-2.5 h-2.5 text-slate-300 dark:text-slate-600 shrink-0" />
+          <ArrowUpDown className="w-2.5 h-2.5 text-muted-foreground shrink-0" />
         )}
       </span>
     </th>
@@ -76,7 +76,7 @@ function SortTh({ field, label, alignRight = false, sortField, sortOrder, onSort
 function MiniBar({ pct }) {
   const color = pct >= 85 ? 'bg-rose-500' : pct >= 70 ? 'bg-amber-500' : 'bg-indigo-500';
   return (
-    <div className="w-10 h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden hidden sm:block shrink-0">
+    <div className="w-10 h-1 bg-secondary rounded-full overflow-hidden hidden sm:block shrink-0">
       <div className={`h-full rounded-full ${color}`} style={{ width: `${Math.min(pct, 100)}%` }} />
     </div>
   );
@@ -198,10 +198,10 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
   return (
     <Card
       style={{ maxWidth: '100%', padding: '14px 16px 16px' }}
-      className="border border-slate-200/80 dark:border-white/10 rounded-2xl
-                 backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
-                 shadow-sm dark:shadow-xl transition-colors duration-300
-                 hover:border-slate-300 dark:hover:border-white/20 space-y-3"
+      className="border border-border rounded-2xl
+                 backdrop-blur-xl bg-card
+                 shadow-sm transition-colors duration-300
+                 hover:border-border/80 space-y-3"
     >
       {/* ── Header toolbar ──────────────────────────────────── */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
@@ -212,10 +212,10 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
             <History className="w-3.5 h-3.5" />
           </div>
           <div>
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
+            <h2 className="text-sm font-extrabold text-foreground leading-none">
               Usage History
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Historical consumption records &amp; quota percentages
             </p>
           </div>
@@ -224,18 +224,18 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
         {/* Controls */}
         <div className="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">
           {/* Exports */}
-          <div className="flex items-center gap-1.5 border-r border-slate-200 dark:border-slate-700 pr-2 mr-1">
+          <div className="flex items-center gap-1.5 border-r border-border pr-2 mr-1">
             <button
               onClick={handleExportCSV}
               title="Export CSV"
-              className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              className="p-1.5 rounded-lg bg-muted text-muted-foreground hover:bg-muted transition-colors"
             >
               <FileText className="w-4 h-4" />
             </button>
             <button
               onClick={handleExportExcel}
               title="Export Excel"
-              className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              className="p-1.5 rounded-lg bg-muted text-muted-foreground hover:bg-muted transition-colors"
             >
               <FileSpreadsheet className="w-4 h-4" />
             </button>
@@ -247,7 +247,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
               placeholder="Search..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-              iconLeft={<Search className="w-3.5 h-3.5 text-slate-400" />}
+              iconLeft={<Search className="w-3.5 h-3.5 text-muted-foreground" />}
               size="sm"
               style={{ padding: '6px 12px', fontSize: '13px' }}
             />
@@ -258,9 +258,9 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
           <select
             value={filterStatus}
             onChange={(e) => { setFilterStatus(e.target.value); setCurrentPage(1); }}
-            className="px-2.5 py-1.5 rounded-lg bg-white dark:bg-slate-900
-                       border border-slate-200 dark:border-slate-800
-                       text-sm font-semibold text-slate-700 dark:text-slate-200
+            className="px-2.5 py-1.5 rounded-lg bg-card
+                       border border-border
+                       text-sm font-semibold text-foreground
                        outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
           >
             <option value="all">All Statuses</option>
@@ -274,9 +274,9 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
               type="button"
               onClick={handleReset}
               title="Reset Filters"
-              className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800
-                         text-slate-500 dark:text-slate-400
-                         hover:bg-slate-200 dark:hover:bg-slate-700
+              className="p-1.5 rounded-lg bg-muted
+                         text-muted-foreground
+                         hover:bg-muted
                          cursor-pointer transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -286,13 +286,13 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
       </div>
 
       {/* ── Table ────────────────────────────────────────────── */}
-      <div className="rounded-xl border border-slate-200/80 dark:border-slate-800/80
+      <div className="rounded-xl border border-border
                       overflow-x-auto overflow-y-auto max-h-[520px] scrollbar-thin">
         <table className="w-full text-left border-collapse min-w-[680px] text-xs">
 
           {/* Sticky header */}
-          <thead className="sticky top-0 z-10 bg-slate-100/98 dark:bg-slate-900/98
-                            backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+          <thead className="sticky top-0 z-10 bg-muted/90
+                            backdrop-blur-md border-b border-border">
             <tr>
               <SortTh field="date"       label="Date"       {...thProps} />
               <SortTh field="resource"   label="Resource"   {...thProps} />
@@ -304,7 +304,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
+          <tbody className="divide-y divide-border">
             {isLoading ? (
               /* Skeleton */
               Array.from({ length: 8 }).map((_, i) => (
@@ -312,7 +312,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                   {[24, 28, 16, 16, 16, 20, 20].map((w, j) => (
                     <td key={j} className="py-2 px-3">
                       <div
-                        className="h-3 bg-slate-200 dark:bg-slate-800 rounded"
+                        className="h-3 bg-muted rounded"
                         style={{ width: `${w * 4}px`, marginLeft: j === 6 ? 'auto' : 0 }}
                       />
                     </td>
@@ -324,16 +324,16 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
               <tr>
                 <td colSpan="7" className="py-8 text-center">
                   <div className="flex flex-col items-center gap-2.5">
-                    <div className="p-3 rounded-full bg-slate-100 dark:bg-slate-800
-                                    border border-slate-200 dark:border-slate-700
-                                    text-slate-400 dark:text-slate-500">
+                    <div className="p-3 rounded-full bg-muted
+                                    border border-border
+                                    text-muted-foreground">
                       <Inbox className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-700 dark:text-slate-200">
+                      <p className="text-sm font-bold text-foreground">
                         No matching records
                       </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                      <p className="text-sm text-muted-foreground mt-0.5">
                         Adjust your filters or clear the search.
                       </p>
                     </div>
@@ -358,11 +358,11 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                     className={`group cursor-pointer transition-all duration-100 border-l-2
                       ${isSelected
                         ? 'bg-indigo-50/80 dark:bg-indigo-500/10 border-l-indigo-500'
-                        : 'border-l-transparent hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:border-l-indigo-300 dark:hover:border-l-indigo-600'
+                        : 'border-l-transparent hover:bg-muted/50 hover:border-l-indigo-300 dark:hover:border-l-indigo-600'
                       }`}
                   >
                     {/* Date */}
-                    <td className="py-2 px-3 font-mono text-slate-600 dark:text-slate-300
+                    <td className="py-2 px-3 font-mono text-muted-foreground
                                    font-medium whitespace-nowrap">
                       <span className="flex items-center gap-1.5">
                         <Calendar className="w-3 h-3 text-indigo-400 shrink-0" />
@@ -371,11 +371,11 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                     </td>
 
                     {/* Resource */}
-                    <td className="py-2 px-3 font-semibold text-slate-800 dark:text-slate-100
+                    <td className="py-2 px-3 font-semibold text-foreground
                                    whitespace-nowrap">
                       <div className="flex items-center gap-1.5">
-                        <div className="p-0.5 rounded bg-slate-100 dark:bg-slate-800
-                                        border border-slate-200 dark:border-slate-700 shrink-0">
+                        <div className="p-0.5 rounded bg-muted
+                                        border border-border shrink-0">
                           <ResourceIcon className="w-3 h-3 text-indigo-500 dark:text-indigo-400" />
                         </div>
                         <span>{row.resource}</span>
@@ -383,19 +383,18 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                     </td>
 
                     {/* Used */}
-                    <td className="py-2 px-3 font-mono font-bold text-slate-900
-                                   dark:text-white whitespace-nowrap">
+                    <td className="py-2 px-3 font-mono font-bold text-foreground whitespace-nowrap">
                       {row.used}
                     </td>
 
                     {/* Remaining */}
-                    <td className="py-2 px-3 font-mono text-slate-500 dark:text-slate-400
+                    <td className="py-2 px-3 font-mono text-muted-foreground
                                    whitespace-nowrap">
                       {row.remaining}
                     </td>
 
                     {/* Limit */}
-                    <td className="py-2 px-3 font-mono text-slate-400 dark:text-slate-500
+                    <td className="py-2 px-3 font-mono text-muted-foreground
                                    whitespace-nowrap">
                       {row.limit}
                     </td>
@@ -408,7 +407,7 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                             ? 'text-rose-600 dark:text-rose-400'
                             : row.percentage >= 70
                             ? 'text-amber-600 dark:text-amber-400'
-                            : 'text-slate-700 dark:text-slate-300'
+                            : 'text-foreground'
                         }`}>
                           {row.percentage}%
                         </span>
@@ -431,20 +430,20 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
       {/* ── Pagination footer ────────────────────────────────── */}
       {!isLoading && totalItems > 0 && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2
-                        pt-1 text-sm font-semibold text-slate-500 dark:text-slate-400
-                        border-t border-slate-100 dark:border-slate-800/60">
+                        pt-1 text-sm font-semibold text-muted-foreground
+                        border-t border-border">
 
           <span>
             Showing{' '}
-            <strong className="text-slate-800 dark:text-slate-200">
+            <strong className="text-foreground">
               {(validPage - 1) * pageSize + 1}
             </strong>{' '}
             –{' '}
-            <strong className="text-slate-800 dark:text-slate-200">
+            <strong className="text-foreground">
               {Math.min(validPage * pageSize, totalItems)}
             </strong>{' '}
             of{' '}
-            <strong className="text-slate-800 dark:text-slate-200">{totalItems}</strong>
+            <strong className="text-foreground">{totalItems}</strong>
           </span>
 
           <div className="flex items-center gap-2.5">
@@ -454,9 +453,9 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
               <select
                 value={pageSize}
                 onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
-                className="px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800
-                           border border-slate-200 dark:border-slate-700
-                           text-sm font-bold text-slate-800 dark:text-slate-200
+                className="px-1.5 py-0.5 rounded-md bg-muted
+                           border border-border
+                           text-sm font-bold text-foreground
                            outline-none cursor-pointer"
               >
                 <option value={5}>5</option>
@@ -473,17 +472,17 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                 type="button"
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={validPage === 1}
-                className="p-1 rounded-md border border-slate-200 dark:border-slate-700
-                           bg-white dark:bg-slate-800
-                           hover:bg-slate-100 dark:hover:bg-slate-700
-                           text-slate-600 dark:text-slate-300
+                className="p-1 rounded-md border border-border
+                           bg-card
+                           hover:bg-muted
+                           text-muted-foreground
                            disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer
                            transition-colors"
               >
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
 
-              <span className="px-2 font-mono font-bold text-slate-700 dark:text-slate-300">
+              <span className="px-2 font-mono font-bold text-foreground">
                 {validPage}/{totalPages}
               </span>
 
@@ -491,10 +490,10 @@ export default function UsageHistoryTable({ history = [], isLoading = false, act
                 type="button"
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={validPage === totalPages}
-                className="p-1 rounded-md border border-slate-200 dark:border-slate-700
-                           bg-white dark:bg-slate-800
-                           hover:bg-slate-100 dark:hover:bg-slate-700
-                           text-slate-600 dark:text-slate-300
+                className="p-1 rounded-md border border-border
+                           bg-card
+                           hover:bg-muted
+                           text-muted-foreground
                            disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer
                            transition-colors"
               >

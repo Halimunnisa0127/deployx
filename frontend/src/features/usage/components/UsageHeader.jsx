@@ -79,12 +79,12 @@ export default function UsageHeader({
   };
 
   return (
-    <div className="relative pb-6 border-b border-slate-200/80 dark:border-white/10 space-y-4">
+    <div className="relative pb-6 border-b border-border space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
         {/* Left: Title, Subtitle & Active Filter Badge */}
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
               Usage
             </h1>
 
@@ -95,7 +95,7 @@ export default function UsageHeader({
             </span>
           </div>
 
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground font-normal leading-relaxed">
             Monitor infrastructure resource consumption, monthly quotas, and historical trends.
           </p>
         </div>
@@ -103,12 +103,12 @@ export default function UsageHeader({
         {/* Right: Controls (Last Updated, Refresh, Date Range Dropdown, Export Dropdown) */}
         <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
           {/* Last Updated Status Display */}
-          <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-slate-100/90 dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-sm">
+          <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-card border border-border text-xs font-medium text-muted-foreground shadow-sm">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <Clock className="w-3.5 h-3.5 text-muted-foreground" />
             <span>{lastUpdated}</span>
           </div>
 
@@ -123,7 +123,7 @@ export default function UsageHeader({
             aria-label="Refresh usage data"
             className="shrink-0"
           >
-            <RefreshCw className={`w-4 h-4 text-slate-700 dark:text-slate-300 ${isRefreshing ? 'animate-spin text-indigo-500 dark:text-indigo-400' : ''}`} />
+            <RefreshCw className={`w-4 h-4 text-foreground ${isRefreshing ? 'animate-spin text-indigo-500 dark:text-indigo-400' : ''}`} />
           </Button>
 
           {/* Date Range Dropdown with Framer Motion Animation */}
@@ -134,7 +134,7 @@ export default function UsageHeader({
                 setIsDropdownOpen(!isDropdownOpen);
                 setIsExportDropdownOpen(false);
               }}
-              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-white/10 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/90 shadow-sm hover:shadow transition-all cursor-pointer outline-none focus:ring-2 focus:ring-indigo-500/70"
+              className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-card backdrop-blur-md border border-border text-xs sm:text-sm font-semibold text-foreground hover:bg-muted shadow-sm hover:shadow transition-all cursor-pointer outline-none focus:ring-2 focus:ring-indigo-500/70"
             >
               <Calendar className="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />
               <span>
@@ -142,7 +142,7 @@ export default function UsageHeader({
                   ? `${customStartDate} to ${customEndDate}`
                   : currentLabel}
               </span>
-              <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             <AnimatePresence>
@@ -157,7 +157,7 @@ export default function UsageHeader({
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: -8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-52 z-30 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-md"
+                    className="absolute right-0 mt-2 w-52 z-30 py-1.5 rounded-xl bg-card border border-border shadow-2xl backdrop-blur-md"
                   >
                     {DATE_OPTIONS.map((opt) => (
                       <button
@@ -166,8 +166,8 @@ export default function UsageHeader({
                         onClick={() => handleSelectOption(opt.id)}
                         className={`w-full flex items-center justify-between px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
                           dateRange === opt.id
-                            ? 'bg-indigo-50 dark:bg-slate-800/90 text-indigo-600 dark:text-indigo-400'
-                            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60'
+                            ? 'bg-muted text-indigo-600 dark:text-indigo-400'
+                            : 'text-foreground hover:bg-muted'
                         }`}
                       >
                         <span>{opt.label}</span>
@@ -190,8 +190,8 @@ export default function UsageHeader({
                 setIsExportDropdownOpen(!isExportDropdownOpen);
                 setIsDropdownOpen(false);
               }}
-              iconLeft={<Download className="w-4 h-4 text-slate-600 dark:text-slate-300" />}
-              iconRight={<ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isExportDropdownOpen ? 'rotate-180' : ''}`} />}
+              iconLeft={<Download className="w-4 h-4 text-muted-foreground" />}
+              iconRight={<ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ${isExportDropdownOpen ? 'rotate-180' : ''}`} />}
             >
               Export Report
             </Button>
@@ -208,9 +208,9 @@ export default function UsageHeader({
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: -8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-2 w-60 z-30 p-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-md space-y-1"
+                    className="absolute right-0 mt-2 w-60 z-30 p-1.5 rounded-xl bg-card border border-border shadow-2xl backdrop-blur-md space-y-1"
                   >
-                    <div className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+                    <div className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                       Choose Export Format
                     </div>
                     {EXPORT_OPTIONS.map((exp) => {
@@ -220,16 +220,16 @@ export default function UsageHeader({
                           key={exp.id}
                           type="button"
                           onClick={() => handleSelectExport(exp.id)}
-                          className="w-full flex items-start gap-2.5 px-3 py-2 rounded-lg text-left transition-colors hover:bg-slate-100 dark:hover:bg-slate-800/80 cursor-pointer group"
+                          className="w-full flex items-start gap-2.5 px-3 py-2 rounded-lg text-left transition-colors hover:bg-muted cursor-pointer group"
                         >
                           <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5">
                             <ExpIcon className="w-4 h-4" />
                           </div>
                           <div>
-                            <div className="text-xs font-bold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                            <div className="text-xs font-bold text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                               {exp.label}
                             </div>
-                            <div className="text-xs text-slate-500 dark:text-slate-400">
+                            <div className="text-xs text-muted-foreground">
                               {exp.desc}
                             </div>
                           </div>
@@ -247,38 +247,38 @@ export default function UsageHeader({
       {/* Custom Range Selector Modal */}
       {isCustomModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 w-full max-w-sm shadow-2xl space-y-4">
+          <div className="bg-card border border-border rounded-2xl p-5 w-full max-w-sm shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">Custom Date Range</h3>
+              <h3 className="text-base font-bold text-foreground">Custom Date Range</h3>
               <button
                 type="button"
                 onClick={() => setIsCustomModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                className="text-muted-foreground hover:text-foreground cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
             <form onSubmit={handleApplyCustomRange} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-foreground mb-1">
                   Start Date
                 </label>
                 <input
                   type="date"
                   value={customStartDate}
                   onChange={(e) => setCustomStartDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-muted border border-border text-xs font-semibold text-foreground focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-foreground mb-1">
                   End Date
                 </label>
                 <input
                   type="date"
                   value={customEndDate}
                   onChange={(e) => setCustomEndDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 rounded-xl bg-muted border border-border text-xs font-semibold text-foreground focus:ring-2 focus:ring-indigo-500 outline-none"
                 />
               </div>
               <div className="flex justify-end gap-2 pt-2">

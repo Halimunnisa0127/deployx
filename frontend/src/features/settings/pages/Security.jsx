@@ -106,17 +106,17 @@ export default function Security() {
       )}
 
       {/* Main Container */}
-      <div className="bg-white/60 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 backdrop-blur-xl shadow-xl space-y-8">
+      <div className="bg-white/60 dark:bg-slate-900/60 border border-border rounded-2xl p-6 backdrop-blur-xl shadow-xl space-y-8">
         
         {/* 1. Change Password Section */}
         <form onSubmit={handlePasswordUpdate} className="space-y-4">
-          <div className="flex items-center gap-2 pb-2 border-b border-slate-200 dark:border-slate-800/80">
+          <div className="flex items-center gap-2 pb-2 border-b border-border">
             <Key className="w-5 h-5 text-indigo-400" />
             <div>
               <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                 Change Password
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Update your account password to maintain maximum workspace security.
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function Security() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Current Password</label>
+              <label className="text-xs font-bold text-foreground">Current Password</label>
               <Input
                 type="password"
                 placeholder="••••••••"
@@ -135,7 +135,7 @@ export default function Security() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">New Password</label>
+              <label className="text-xs font-bold text-foreground">New Password</label>
               <Input
                 type="password"
                 placeholder="••••••••"
@@ -146,7 +146,7 @@ export default function Security() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Confirm New Password</label>
+              <label className="text-xs font-bold text-foreground">Confirm New Password</label>
               <Input
                 type="password"
                 placeholder="••••••••"
@@ -164,10 +164,10 @@ export default function Security() {
           </div>
         </form>
 
-        <hr className="border-slate-200 dark:border-slate-800/80" />
+        <hr className="border-border" />
 
         {/* 2. Two-Factor Authentication Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-xl bg-slate-50/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-xl bg-slate-50/60 dark:bg-slate-950/60 border border-border">
           <div className="flex items-start gap-4">
             <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 text-indigo-500 dark:text-indigo-400 shrink-0">
               <Smartphone className="w-6 h-6" />
@@ -181,7 +181,7 @@ export default function Security() {
                   {twoFactorEnabled ? 'ENABLED' : 'DISABLED'}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Protect your DeployX account with TOTP authenticator app verification (1Password, Google Authenticator).
               </p>
             </div>
@@ -203,18 +203,18 @@ export default function Security() {
           </Button>
         </div>
 
-        <hr className="border-slate-200 dark:border-slate-800/80" />
+        <hr className="border-border" />
 
         {/* 3. Active Sessions Section */}
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800/80">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-border">
             <div className="flex items-center gap-2">
               <Shield className="w-5 h-5 text-indigo-400" />
               <div>
                 <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
                   Active Sessions
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-muted-foreground">
                   Devices currently authenticated with your DeployX access credentials.
                 </p>
               </div>
@@ -239,22 +239,22 @@ export default function Security() {
               return (
                 <div
                   key={sess.id}
-                  className="flex items-center justify-between p-4 rounded-xl bg-slate-50/40 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800/80"
+                  className="flex items-center justify-between p-4 rounded-xl bg-slate-50/40 dark:bg-slate-950/40 border border-border"
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 shrink-0">
+                    <div className="p-2.5 rounded-xl bg-card border border-border text-muted-foreground shrink-0">
                       <DeviceIcon className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                     </div>
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">
+                        <span className="text-xs font-bold text-foreground truncate">
                           {sess.device}
                         </span>
                         {sess.isCurrent && (
                           <Badge variant="success">Current Session</Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 font-mono">
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground font-mono">
                         <span className="flex items-center gap-1">
                           <Globe className="w-3 h-3 text-slate-400" />
                           {sess.location}
@@ -279,11 +279,11 @@ export default function Security() {
         maxWidth="460px"
       >
         <div className="space-y-4 pt-1">
-          <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+          <p className="text-sm text-foreground leading-relaxed">
             Are you sure you want to log out of all other active browser sessions and devices? You will remain signed in on this current browser.
           </p>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
             <Button
               variant="secondary"
               size="sm"

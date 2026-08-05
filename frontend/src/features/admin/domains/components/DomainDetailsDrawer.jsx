@@ -80,12 +80,12 @@ export default function DomainDetailsDrawer({
         <div className="p-6 space-y-8 animate-in fade-in duration-300">
           {/* Overview */}
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+            <div className="w-16 h-16 rounded-xl bg-muted border border-border flex items-center justify-center shrink-0">
               <Globe className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
             </div>
             <div className="flex-1">
               <div className="flex items-center justify-between mb-1">
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">{domain.name}</h2>
+                <h2 className="text-xl font-bold text-foreground">{domain.name}</h2>
                 <VerificationBadge status={domain.verificationStatus} />
               </div>
               <a
@@ -100,35 +100,35 @@ export default function DomainDetailsDrawer({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-border flex flex-col gap-2">
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 Project
               </span>
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1.5 truncate">
+              <span className="text-sm font-medium text-foreground flex items-center gap-1.5 truncate">
                 <FolderGit2 className="w-3.5 h-3.5" /> {domain.project}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-border flex flex-col gap-2">
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 Environment
               </span>
               <div>
                 <EnvironmentBadge environment={domain.environment} />
               </div>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-border flex flex-col gap-2">
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 Provider
               </span>
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1.5 truncate">
+              <span className="text-sm font-medium text-foreground flex items-center gap-1.5 truncate">
                 <Shield className="w-3.5 h-3.5" /> {domain.provider}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-border flex flex-col gap-2">
+              <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 Owner
               </span>
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1.5 truncate">
+              <span className="text-sm font-medium text-foreground flex items-center gap-1.5 truncate">
                 <User className="w-3.5 h-3.5" /> {domain.owner}
               </span>
             </div>
@@ -145,19 +145,19 @@ export default function DomainDetailsDrawer({
 
           {/* Connected Resources */}
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider flex items-center gap-1.5">
               <Link className="w-4 h-4 text-indigo-500 dark:text-indigo-400" /> Connected Resources
             </h3>
-            <div className="bg-white dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800/80 p-4 space-y-3 shadow-sm dark:shadow-none">
+            <div className="bg-card rounded-xl border border-border p-4 space-y-3 shadow-sm dark:shadow-none">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500 dark:text-slate-400">Created Date</span>
-                <span className="text-slate-700 dark:text-slate-200">
+                <span className="text-muted-foreground">Created Date</span>
+                <span className="text-foreground">
                   {new Date(domain.createdAt).toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500 dark:text-slate-400">Last Verified</span>
-                <span className="text-slate-700 dark:text-slate-200">
+                <span className="text-muted-foreground">Last Verified</span>
+                <span className="text-foreground">
                   {domain.lastVerified
                     ? new Date(domain.lastVerified).toLocaleString()
                     : "-"}
@@ -167,7 +167,7 @@ export default function DomainDetailsDrawer({
           </div>
 
           {/* Actions */}
-          <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <div className="pt-6 border-t border-border grid grid-cols-1 sm:grid-cols-4 gap-3">
             <Button
               variant="secondary"
               iconLeft={<FolderGit2 className="w-4 h-4" />}

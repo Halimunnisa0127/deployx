@@ -30,7 +30,7 @@ export default function BuildLogToolbar({
   const isBuilding = status === 'building' || isStreaming;
 
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 border-b border-slate-800 bg-[#0b0d12] gap-3 select-none">
+    <div className="flex flex-col md:flex-row md:items-center justify-between px-4 py-3 border-b border-border bg-muted gap-3 select-none">
       {/* Left Side: Mac Traffic Lights & Terminal Title */}
       <div className="flex items-center gap-3 shrink-0">
         <div className="flex items-center gap-1.5 shrink-0">
@@ -39,8 +39,8 @@ export default function BuildLogToolbar({
           <span className="w-3 h-3 rounded-full bg-green-500/80 inline-block" />
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-          <Terminal className="w-4 h-4 text-indigo-400 shrink-0" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
+          <Terminal className="w-4 h-4 text-indigo-500 shrink-0" />
           <span>{title}</span>
         </div>
 
@@ -74,10 +74,10 @@ export default function BuildLogToolbar({
         <button
           type="button"
           onClick={onDownloadLogs}
-          className="p-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white transition-colors text-xs flex items-center gap-1.5 border border-slate-700/60"
+          className="p-1.5 px-2.5 rounded-lg bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs flex items-center gap-1.5 border border-border"
           title="Download build logs (.log)"
         >
-          <Download className="w-3.5 h-3.5 text-sky-400" />
+          <Download className="w-3.5 h-3.5 text-sky-500" />
           <span className="hidden lg:inline">Download</span>
         </button>
 
@@ -85,10 +85,10 @@ export default function BuildLogToolbar({
         <button
           type="button"
           onClick={onCopyLogs}
-          className="p-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 text-slate-300 hover:text-white transition-colors text-xs flex items-center gap-1.5 border border-slate-700/60"
+          className="p-1.5 px-2.5 rounded-lg bg-background hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs flex items-center gap-1.5 border border-border"
           title="Copy logs to clipboard"
         >
-          {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
           <span className="hidden lg:inline">{copied ? 'Copied' : 'Copy'}</span>
         </button>
 
@@ -98,8 +98,8 @@ export default function BuildLogToolbar({
           onClick={onToggleWordWrap}
           className={`p-1.5 px-2.5 rounded-lg text-xs flex items-center gap-1.5 border transition-colors ${
             isWordWrap
-              ? 'bg-indigo-600/20 text-indigo-300 border-indigo-500/40 font-medium'
-              : 'bg-slate-800/80 text-slate-400 border-slate-700/60 hover:text-slate-200'
+              ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/30 font-medium'
+              : 'bg-background text-muted-foreground border-border hover:text-foreground'
           }`}
           title={isWordWrap ? 'Disable Word Wrap' : 'Enable Word Wrap'}
         >
@@ -111,10 +111,10 @@ export default function BuildLogToolbar({
         <button
           type="button"
           onClick={onClearLogs}
-          className="p-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-rose-500/20 hover:text-rose-300 text-slate-400 border border-slate-700/60 transition-colors text-xs flex items-center gap-1.5"
+          className="p-1.5 px-2.5 rounded-lg bg-background hover:bg-rose-500/10 hover:text-rose-600 text-muted-foreground border border-border transition-colors text-xs flex items-center gap-1.5"
           title="Clear terminal view"
         >
-          <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+          <Trash2 className="w-3.5 h-3.5 text-rose-500" />
           <span className="hidden lg:inline">Clear</span>
         </button>
 
@@ -124,15 +124,15 @@ export default function BuildLogToolbar({
           onClick={onToggleFullscreen}
           className={`p-1.5 px-2.5 rounded-lg text-xs flex items-center gap-1.5 border transition-colors ${
             isFullscreen
-              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-              : 'bg-slate-800/80 text-slate-300 border-slate-700/60 hover:text-white'
+              ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+              : 'bg-background text-muted-foreground border-border hover:text-foreground'
           }`}
           title={isFullscreen ? 'Exit Fullscreen Mode' : 'Enter Fullscreen Mode'}
         >
           {isFullscreen ? (
-            <Minimize2 className="w-3.5 h-3.5 text-amber-400" />
+            <Minimize2 className="w-3.5 h-3.5 text-amber-500" />
           ) : (
-            <Maximize2 className="w-3.5 h-3.5 text-slate-300" />
+            <Maximize2 className="w-3.5 h-3.5 text-muted-foreground" />
           )}
           <span className="hidden lg:inline">{isFullscreen ? 'Exit' : 'Full'}</span>
         </button>

@@ -11,13 +11,13 @@ import {
 
 function MetricChart({ title, data, color, current, unit }) {
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-lg h-[250px] flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-5 shadow-lg h-[250px] flex flex-col">
       <div className="flex justify-between items-start mb-2">
         <div>
-          <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-300">{title}</h3>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <h3 className="text-sm font-semibold text-muted-foreground">{title}</h3>
+          <div className="text-2xl font-bold text-foreground mt-1">
             {current}
-            <span className="text-sm text-slate-400 dark:text-slate-500 font-normal ml-1">
+            <span className="text-sm text-muted-foreground font-normal ml-1">
               {unit}
             </span>
           </div>
@@ -85,7 +85,7 @@ export default function PerformanceMetrics({ metrics }) {
 
   return (
     <div className="mb-8">
-      <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Performance Metrics</h2>
+      <h2 className="text-lg font-bold text-foreground mb-4">Performance Metrics</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <MetricChart
           title="CPU Usage"

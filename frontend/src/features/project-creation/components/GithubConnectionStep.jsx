@@ -23,10 +23,10 @@ export default function GithubConnectionStep({
           <GitBranch className="w-3.5 h-3.5" />
           Step 2 of 6
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
           Connect GitHub Repository
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           Select a repository from your connected GitHub account to deploy continuous builds.
         </p>
       </div>
@@ -37,7 +37,7 @@ export default function GithubConnectionStep({
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
             <div className="relative">
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300 dark:from-slate-900 dark:to-slate-950 dark:border-slate-700/80 flex items-center justify-center shadow-xl text-slate-900 dark:text-slate-100 group-hover:scale-105 transition-transform duration-300">
-                <GithubIcon className="w-10 h-10 text-slate-800 dark:text-white" />
+                <GithubIcon className="w-10 h-10 text-foreground" />
               </div>
               <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-blue-600 border-2 border-white dark:border-slate-900 flex items-center justify-center text-white shadow-md">
                 <ShieldCheck className="w-4 h-4" />
@@ -48,7 +48,7 @@ export default function GithubConnectionStep({
               <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 Connect your GitHub Account
               </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 DeployX requires authorization to import repositories and set up automatic deployment webhooks.
               </p>
             </div>
@@ -67,25 +67,25 @@ export default function GithubConnectionStep({
           </div>
 
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950/40 dark:border-slate-800/80 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <div className="flex items-center gap-2 text-xs font-semibold text-foreground">
               <ShieldCheck className="w-4 h-4 text-blue-400" />
               <span>Permissions requested by DeployX:</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-500 dark:text-slate-400">
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900/50 p-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-2 bg-card p-2 rounded-lg border border-border">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 <span>Read access to code & repos</span>
               </div>
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900/50 p-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+              <div className="flex items-center gap-2 bg-card p-2 rounded-lg border border-border">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 <span>Webhook creation for builds</span>
               </div>
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900/50 p-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+              <div className="flex items-center gap-2 bg-card p-2 rounded-lg border border-border">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 <span>Commit status notifications</span>
               </div>
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900/50 p-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
+              <div className="flex items-center gap-2 bg-card p-2 rounded-lg border border-border">
                 <Lock className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
                 <span>OAuth token encrypted</span>
               </div>
@@ -96,7 +96,7 @@ export default function GithubConnectionStep({
         <div className="space-y-4 pt-1">
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950/60 dark:border-slate-800/80 flex items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2.5">
-              <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-200">
+              <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-foreground">
                 <GithubIcon className="w-3.5 h-3.5" />
               </div>
               <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ export default function GithubConnectionStep({
             <button
               type="button"
               onClick={handleDisconnectGithub}
-              className="text-xs text-slate-500 dark:text-slate-400 hover:text-red-400 transition-colors font-medium"
+              className="text-xs text-muted-foreground hover:text-red-400 transition-colors font-medium"
             >
               Disconnect
             </button>
@@ -138,7 +138,7 @@ export default function GithubConnectionStep({
           <div className="space-y-2.5 max-h-[260px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-slate-800">
             {filteredRepositories.length === 0 ? (
               <div className="p-8 text-center bg-slate-50 border border-slate-200 dark:bg-slate-950/40 dark:border-slate-800/80 rounded-xl space-y-2">
-                <p className="text-xs text-slate-500 dark:text-slate-400">No repositories found matching "{repoSearchQuery}"</p>
+                <p className="text-xs text-muted-foreground">No repositories found matching "{repoSearchQuery}"</p>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -197,14 +197,14 @@ export default function GithubConnectionStep({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 pt-0.5 flex-wrap">
+                    <div className="flex items-center gap-3 text-sm text-muted-foreground pt-0.5 flex-wrap">
                       <span className="flex items-center gap-1 font-mono text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800">
                         <GitBranch className="w-3 h-3 text-blue-400" />
                         Default: {repo.defaultBranch}
                       </span>
                       <span>{repo.lastUpdated}</span>
                       <span className="text-slate-500">•</span>
-                      <span className="text-slate-500 dark:text-slate-400 font-medium">{repo.language}</span>
+                      <span className="text-muted-foreground font-medium">{repo.language}</span>
                     </div>
                   </div>
                 );
@@ -219,7 +219,7 @@ export default function GithubConnectionStep({
                   <GitBranch className="w-3.5 h-3.5 text-blue-400" />
                   <span>Selected Branch to Deploy:</span>
                 </label>
-                <span className="text-sm text-slate-500 dark:text-slate-400 font-mono">
+                <span className="text-sm text-muted-foreground font-mono">
                   Repo: {selectedRepo.name}
                 </span>
               </div>

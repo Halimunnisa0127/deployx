@@ -51,7 +51,7 @@ export default function DashboardHero() {
 
 
   return (
-    <div className="relative overflow-hidden rounded-[18px] bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-white/5 p-5 md:p-6 shadow-sm dark:shadow-xl backdrop-blur-xl transition-all duration-300 group hover:border-slate-300 dark:hover:border-white/10">
+    <div className="relative overflow-hidden rounded-[18px] bg-card border border-border p-5 md:p-6 shadow-sm dark:shadow-xl backdrop-blur-xl transition-all duration-300 group">
       {/* Light Mode: Very soft blue gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-sky-50/60 via-blue-50/30 to-indigo-50/40 dark:opacity-0 pointer-events-none" />
 
@@ -81,11 +81,11 @@ export default function DashboardHero() {
                 {greeting}
               </span>
               <div className="flex items-center gap-2.5 text-[11px] sm:text-xs font-mono">
-                <span className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 px-3 py-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 font-semibold shadow-sm">
+                <span className="flex items-center gap-1.5 bg-muted px-3 py-1 rounded-lg border border-border text-foreground font-semibold shadow-sm">
                   <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                   {formattedDate}
                 </span>
-                <span className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 px-3 py-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 text-slate-900 dark:text-white font-extrabold shadow-sm">
+                <span className="flex items-center gap-1.5 bg-muted px-3 py-1 rounded-lg border border-border text-foreground font-extrabold shadow-sm">
                   <Clock className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
                   {formattedTime}
                 </span>
@@ -93,7 +93,7 @@ export default function DashboardHero() {
             </div>
 
             {/* Welcome Heading with Display Name */}
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-50 tracking-tight leading-tight">
+            <h1 className="text-2xl font-bold text-foreground tracking-tight leading-tight">
               Welcome back,<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 dark:from-blue-400 dark:via-indigo-400 dark:to-sky-400">
                 {displayName}
@@ -101,7 +101,7 @@ export default function DashboardHero() {
             </h1>
             
             {/* Subtitle */}
-            <p className="text-sm md:text-base text-slate-700 dark:text-slate-400 font-normal leading-relaxed">
+            <p className="text-sm md:text-base text-muted-foreground font-normal leading-relaxed">
               Monitor your projects, deployments and infrastructure from one place.
             </p>
 
@@ -112,12 +112,12 @@ export default function DashboardHero() {
                 <span>Pro Plan</span>
               </Badge>
 
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 transition-colors">
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border text-foreground transition-colors">
                 <Globe className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
                 <span>Region: Singapore</span>
               </div>
 
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-slate-300 transition-colors">
+              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border text-foreground transition-colors">
                 <Users className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
                 <span>Team Members: 5</span>
               </div>
@@ -150,13 +150,13 @@ export default function DashboardHero() {
             </div>
 
             {/* Sync Metadata Details Below Buttons */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-2.5 text-xs text-slate-600 dark:text-slate-400 font-mono">
-              <div className="flex items-center gap-2 bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 px-3 py-1 rounded-lg">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-2.5 text-xs text-muted-foreground font-mono">
+              <div className="flex items-center gap-2 bg-muted border border-border px-3 py-1 rounded-lg">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <span>Last deployment: <span className="font-semibold text-slate-800 dark:text-slate-200">deployx-frontend</span> (2m ago)</span>
+                <span>Last deployment: <span className="font-semibold text-foreground">deployx-frontend</span> (2m ago)</span>
               </div>
 
-              <div className="flex items-center gap-1.5 bg-slate-100/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400">
+              <div className="flex items-center gap-1.5 bg-muted border border-border px-3 py-1 rounded-lg text-muted-foreground">
                 <RefreshCw className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0" />
                 <span>Synced 1 min ago</span>
               </div>

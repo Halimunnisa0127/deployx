@@ -62,12 +62,12 @@ export default function EmptyState({
         {/* Title & Description */}
         <div className="space-y-1.5">
           {title && (
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+            <h3 className="text-base font-bold text-foreground tracking-tight">
               {title}
             </h3>
           )}
           {description && (
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm mx-auto">
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-sm mx-auto">
               {description}
             </p>
           )}

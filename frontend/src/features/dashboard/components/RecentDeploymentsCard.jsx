@@ -33,7 +33,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+              <h2 className="text-lg font-semibold text-foreground tracking-tight">
                 Recent Deployments
               </h2>
             </div>
@@ -50,7 +50,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
 
       {/* Deployment List */}
       {deployments.length === 0 ? (
-        <div className="py-8 text-center text-slate-500 dark:text-slate-400 text-sm">
+        <div className="py-8 text-center text-muted-foreground text-sm">
           No deployments found.
         </div>
       ) : (
@@ -67,7 +67,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
               >
                 {/* Left: Repository Icon, Project Info & Badges */}
                 <div className="flex items-start gap-3 min-w-0">
-                  <div className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 flex-shrink-0 group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 group-hover:text-indigo-400 transition-colors">
+                  <div className="p-2.5 rounded-xl bg-muted border border-border text-foreground flex-shrink-0 group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 group-hover:text-indigo-400 transition-colors">
                     <GithubIcon className="w-4 h-4" />
                   </div>
 
@@ -90,17 +90,17 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
                       )}
                     </div>
 
-                    <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
-                      <span className="inline-flex items-center gap-1 text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 px-2 py-0.5 rounded-md font-mono">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
+                      <span className="inline-flex items-center gap-1 text-foreground bg-muted border border-border px-2 py-0.5 rounded-md font-mono">
                         <GitBranch className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                         {item.branch}
                       </span>
 
-                      <span className="font-mono text-slate-600 dark:text-slate-400">
+                      <span className="font-mono text-muted-foreground">
                         #{item.commitHash}
                       </span>
 
-                      <span className="text-slate-600 dark:text-slate-400 max-w-[180px] line-clamp-1">
+                      <span className="text-muted-foreground max-w-[180px] line-clamp-1">
                         {item.commitMessage}
                       </span>
                     </div>
@@ -108,17 +108,17 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
                 </div>
 
                 {/* Right: Build Duration, Time & View Deployment Button */}
-                <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 flex-shrink-0 justify-between md:justify-end">
-                  <div className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+                <div className="flex items-center gap-3 text-xs text-muted-foreground flex-shrink-0 justify-between md:justify-end">
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
                     {item.duration && (
-                      <span className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/80 px-2 py-0.5 rounded text-slate-700 dark:text-slate-300">
+                      <span className="flex items-center gap-1 bg-muted border border-border px-2 py-0.5 rounded text-foreground">
                         <Timer className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
                         {item.duration}
                       </span>
                     )}
 
-                    <span className="flex items-center gap-1 text-slate-600 dark:text-slate-400">
-                      <Clock className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                    <span className="flex items-center gap-1 text-muted-foreground">
+                      <Clock className="w-4 h-4 text-muted-foreground" />
                       {item.timeAgo}
                     </span>
                   </div>

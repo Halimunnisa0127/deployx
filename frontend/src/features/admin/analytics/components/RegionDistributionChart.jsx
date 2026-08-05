@@ -13,11 +13,11 @@ export default function RegionDistributionChart({ data }) {
   if (!data || !data.length) return null;
 
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col">
+    <div className="bg-card rounded-2xl border border-border p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col">
 
       <div className="mb-4">
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white">Region Distribution</h3>
-        <p className="text-sm text-slate-500 dark:text-slate-400">By deployment origin</p>
+        <h3 className="text-lg font-bold text-foreground">Region Distribution</h3>
+        <p className="text-sm text-muted-foreground">By deployment origin</p>
       </div>
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">

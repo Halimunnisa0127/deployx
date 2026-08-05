@@ -85,7 +85,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+              <h2 className="text-lg font-semibold text-foreground tracking-tight">
                 Deployment Trends
               </h2>
               <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-extrabold">
@@ -106,7 +106,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
               visibleSeries.success
                 ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 font-bold'
-                : 'bg-slate-100 dark:bg-slate-800/40 text-slate-400 border-slate-200 dark:border-slate-800 line-through opacity-60'
+                : 'bg-muted text-slate-400 border-border line-through opacity-60'
             }`}
           >
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
@@ -119,7 +119,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
             className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
               visibleSeries.failed
                 ? 'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30 font-bold'
-                : 'bg-slate-100 dark:bg-slate-800/40 text-slate-400 border-slate-200 dark:border-slate-800 line-through opacity-60'
+                : 'bg-muted text-slate-400 border-border line-through opacity-60'
             }`}
           >
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
@@ -324,14 +324,14 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 5, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="absolute -top-14 z-30 px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-md pointer-events-none text-xs"
+              className="absolute -top-14 z-30 px-3 py-2 rounded-xl bg-card border border-border shadow-2xl backdrop-blur-md pointer-events-none text-xs"
               style={{
                 left: `${(successPoints[hoveredIndex].x / svgWidth) * 100}%`,
                 transform: 'translateX(-50%)',
               }}
             >
-              <div className="flex items-center justify-between gap-3 pb-1 border-b border-slate-200 dark:border-slate-800 mb-1.5 font-mono">
-                <span className="font-bold text-slate-900 dark:text-white">
+              <div className="flex items-center justify-between gap-3 pb-1 border-b border-border mb-1.5 font-mono">
+                <span className="font-bold text-foreground">
                   {data[hoveredIndex].day}
                 </span>
                 <span className="text-xs text-slate-400">

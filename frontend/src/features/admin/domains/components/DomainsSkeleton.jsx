@@ -5,14 +5,14 @@ import Skeleton from "../../../../components/ui/Skeleton";
 export function DomainsTableSkeleton({ rows = 5 }) {
   return (
     <Card className="overflow-hidden p-0 animate-in fade-in duration-300">
-      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
+      <div className="p-5 border-b border-border">
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">
         {[...Array(rows)].map((_, i) => (
           <div
             key={i}
-            className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-800/30 last:border-0"
+            className="flex justify-between items-center py-3 border-b border-border last:border-0"
           >
             <div className="flex items-center gap-3 w-1/4">
               <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
@@ -72,7 +72,7 @@ export function DrawerSkeleton() {
       {/* Grid Cards Skeleton */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+          <div key={i} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-border flex flex-col gap-2">
             <Skeleton className="h-3 w-20" />
             <Skeleton className="h-5 w-24" />
           </div>
@@ -91,7 +91,7 @@ export function DrawerSkeleton() {
       </div>
 
       {/* Actions Skeleton */}
-      <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 grid grid-cols-1 sm:grid-cols-4 gap-3">
+      <div className="pt-6 border-t border-border grid grid-cols-1 sm:grid-cols-4 gap-3">
         {[1, 2, 3, 4].map((i) => (
           <Skeleton key={i} className="h-10 w-full rounded-lg" />
         ))}

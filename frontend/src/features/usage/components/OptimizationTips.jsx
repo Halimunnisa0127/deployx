@@ -27,7 +27,7 @@ const DIFFICULTY_STYLES = {
 const IMPACT_STYLES = {
   'High Impact':   'text-indigo-600 dark:text-indigo-400',
   'Medium Impact': 'text-amber-600  dark:text-amber-400',
-  'Low Impact':    'text-slate-500  dark:text-slate-400',
+  'Low Impact':    'text-muted-foreground',
 };
 
 export default function OptimizationTips({ tips = [] }) {
@@ -46,10 +46,10 @@ export default function OptimizationTips({ tips = [] }) {
             <Lightbulb className="w-3.5 h-3.5" />
           </div>
           <div>
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
+            <h2 className="text-sm font-extrabold text-foreground leading-none">
               Quota Optimization
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Actionable savings recommendations sorted by impact
             </p>
           </div>
@@ -80,8 +80,8 @@ export default function OptimizationTips({ tips = [] }) {
             <Card
               key={tip.id}
               style={{ maxWidth: '100%', padding: '12px' }}
-              className="border border-slate-200/80 dark:border-white/10 rounded-2xl
-                         backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
+              className="border border-border/80 rounded-2xl
+                         backdrop-blur-xl bg-card/80
                          shadow-sm dark:shadow-xl flex flex-col gap-2.5
                          hover:-translate-y-1 hover:shadow-lg
                          hover:border-indigo-400/40 dark:hover:border-indigo-400/30
@@ -104,23 +104,23 @@ export default function OptimizationTips({ tips = [] }) {
 
               {/* ── Title + Description ──────────────────────── */}
               <div>
-                <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100
+                <h3 className="text-sm font-extrabold text-foreground
                                group-hover:text-indigo-600 dark:group-hover:text-indigo-400
                                transition-colors leading-snug line-clamp-1">
                   {tip.title}
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed line-clamp-2">
+                <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed line-clamp-2">
                   {tip.description}
                 </p>
               </div>
 
               {/* ── Savings block ────────────────────────────── */}
-              <div className="rounded-xl bg-slate-50 dark:bg-slate-800/60
-                              border border-slate-200/80 dark:border-slate-700/60
+              <div className="rounded-xl bg-muted
+                              border border-border/80
                               px-3 py-2.5 flex items-center justify-between gap-2 mt-auto">
                 <div>
                   <span className="block text-xs font-bold uppercase tracking-wider
-                                   text-slate-400 dark:text-slate-500 mb-0.5">
+                                   text-muted-foreground mb-0.5">
                     Est. Savings
                   </span>
                   <div className="flex items-baseline gap-1.5">
@@ -138,10 +138,10 @@ export default function OptimizationTips({ tips = [] }) {
               </div>
 
               {/* ── Metadata row: Difficulty | Time | Impact ─── */}
-              <div className="grid grid-cols-3 gap-1 pt-1.5 border-t border-slate-100 dark:border-white/5">
+              <div className="grid grid-cols-3 gap-1 pt-1.5 border-t border-border/50">
                 {/* Difficulty */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-muted-foreground">
                     Difficulty
                   </span>
                   <span className={`inline-flex items-center gap-1.5 self-start px-2 py-0.5 rounded text-sm font-bold border ${diffStyle.pill}`}>
@@ -152,17 +152,17 @@ export default function OptimizationTips({ tips = [] }) {
 
                 {/* Time */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-muted-foreground">
                     Time
                   </span>
-                  <span className="text-xs font-bold font-mono text-slate-700 dark:text-slate-300 pt-0.5">
+                  <span className="text-xs font-bold font-mono text-foreground pt-0.5">
                     {timeRequired}
                   </span>
                 </div>
 
                 {/* Impact */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-xs uppercase font-semibold tracking-wider text-slate-400 dark:text-slate-500">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-muted-foreground">
                     Impact
                   </span>
                   <span className={`text-xs font-extrabold leading-tight pt-0.5 ${impactStyle}`}>

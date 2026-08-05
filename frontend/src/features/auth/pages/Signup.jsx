@@ -24,12 +24,12 @@ export default function Signup() {
 
   return (
     <Card animated size="sm">
-      <div style={headerStyle}>
-        <h2 className="text-slate-900 dark:text-slate-100" style={headingStyle}>⚡Create your account</h2>
-        <p className="text-slate-500 dark:text-slate-400" style={subtitleStyle}>GitHub • Docker • CI/CD • Instant Deployments</p>
+      <div className="flex flex-col items-center text-center mb-9">
+        <h2 className="m-0 mb-2 text-lg font-bold text-foreground font-sans">⚡Create your account</h2>
+        <p className="m-0 text-sm text-muted-foreground font-sans tracking-wide">GitHub • Docker • CI/CD • Instant Deployments</p>
       </div>
 
-      <div style={oauthContainer}>
+      <div className="flex flex-col gap-3 mb-2">
         <Button
           type="button"
           variant="oauth"
@@ -54,62 +54,13 @@ export default function Signup() {
 
       <SignupForm onSubmit={handleEmailSignup} isLoading={false} />
 
-      <div style={footerStyle}>
-        <p className="text-slate-500 dark:text-slate-400" style={switchText}>
-          Already have an account? <Link to="/login" className="auth-link-highlight text-blue-600 hover:text-blue-700 dark:text-slate-200 dark:hover:text-white" style={linkHighlight}>Sign In</Link>
+      <div className="mt-7 flex flex-col items-center gap-4">
+        <p className="m-0 text-sm text-muted-foreground font-sans">
+          Already have an account? <Link to="/login" className="text-primary hover:text-primary/90 font-semibold transition-colors decoration-none">Sign In</Link>
         </p>
       </div>
     </Card>
   );
 }
 
-/* ── Styles ──────────────────────────────────────────────────────── */
-
-const headerStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  textAlign: 'center',
-  marginBottom: '36px',
-};
-
-const headingStyle = {
-  margin: '0 0 8px 0',
-  fontSize: '18px',
-  fontWeight: 600,
-  fontFamily: "'Inter', sans-serif",
-};
-
-const subtitleStyle = {
-  margin: 0,
-  fontSize: '13px',
-  fontFamily: "'Inter', sans-serif",
-  letterSpacing: '0.2px',
-};
-
-const oauthContainer = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  marginBottom: '8px',
-};
-
-const footerStyle = {
-  marginTop: '28px',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '16px',
-};
-
-const switchText = {
-  margin: 0,
-  fontSize: '14px',
-  fontFamily: "'Inter', sans-serif",
-};
-
-const linkHighlight = {
-  textDecoration: 'none',
-  fontWeight: 600,
-  transition: 'color 0.2s',
-};
+/* ── Styles removed in favor of Tailwind CSS ── */

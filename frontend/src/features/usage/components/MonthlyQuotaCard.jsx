@@ -77,8 +77,8 @@ function QuotaRow({ item }) {
   return (
     <div
       className={`relative group p-3.5 rounded-xl
-                  bg-slate-50/80 dark:bg-slate-800/40
-                  border border-slate-200/80 dark:border-slate-700/60
+                  bg-muted/50
+                  border border-border
                   transition-all duration-200 ${theme.ring}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -89,7 +89,7 @@ function QuotaRow({ item }) {
           <div className={`p-1.5 rounded-lg border shrink-0 ${theme.badgeBg}`}>
             <ResourceIcon className={`w-3.5 h-3.5 ${theme.iconColor}`} />
           </div>
-          <span className="text-base font-bold text-slate-800 dark:text-slate-100 truncate">
+          <span className="text-base font-bold text-foreground truncate">
             {item.name}
           </span>
         </div>
@@ -103,10 +103,10 @@ function QuotaRow({ item }) {
 
       {/* ── Remaining capacity (primary stat) ────────────────── */}
       <div className="flex items-baseline justify-between gap-2 mb-2">
-        <span className="text-xl font-black text-slate-900 dark:text-white leading-none">
+        <span className="text-xl font-black text-foreground leading-none">
           {item.remaining}
         </span>
-        <span className="text-sm font-mono font-bold text-slate-500 dark:text-slate-400 shrink-0">
+        <span className="text-sm font-mono font-bold text-muted-foreground shrink-0">
           {item.percent}%
         </span>
       </div>
@@ -129,34 +129,34 @@ function QuotaRow({ item }) {
         }`}
       >
         <div className="mx-0.5 mt-1 rounded-xl
-                        bg-white/98 dark:bg-slate-900/98
-                        border border-slate-200 dark:border-slate-700
+                        bg-card/98
+                        border border-border
                         backdrop-blur-md shadow-xl px-4 py-3">
           <div className="grid grid-cols-3 gap-3 text-xs">
             <div className="flex flex-col gap-0.5">
               <span className="text-xs uppercase font-semibold tracking-wider
-                               text-slate-400 dark:text-slate-500">
+                               text-muted-foreground">
                 Used
               </span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
+              <span className="font-bold text-foreground">
                 {item.used}
               </span>
             </div>
             <div className="flex flex-col gap-0.5">
               <span className="text-xs uppercase font-semibold tracking-wider
-                               text-slate-400 dark:text-slate-500">
+                               text-muted-foreground">
                 Limit
               </span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
+              <span className="font-bold text-foreground">
                 {item.limit}
               </span>
             </div>
             <div className="flex flex-col gap-0.5 items-end">
               <span className="text-xs uppercase font-semibold tracking-wider
-                               text-slate-400 dark:text-slate-500">
+                               text-muted-foreground">
                 Consumed
               </span>
-              <span className="font-black text-slate-900 dark:text-white">
+              <span className="font-black text-foreground">
                 {item.percent}%
               </span>
             </div>
@@ -172,10 +172,10 @@ export default function MonthlyQuotaCard({ quotas = [] }) {
   return (
     <Card
       style={{ maxWidth: '100%', padding: '14px 16px 16px' }}
-      className="border border-slate-200/80 dark:border-white/10 rounded-2xl
-                 backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
+      className="border border-border/80 rounded-2xl
+                 backdrop-blur-xl bg-card/80
                  shadow-sm dark:shadow-xl transition-colors duration-300
-                 hover:border-slate-300 dark:hover:border-white/20"
+                 hover:border-border"
     >
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-3">
@@ -185,10 +185,10 @@ export default function MonthlyQuotaCard({ quotas = [] }) {
             <ShieldCheck className="w-3.5 h-3.5" />
           </div>
           <div>
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
+            <h2 className="text-sm font-extrabold text-foreground leading-none">
               Monthly Quotas
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Plan limits &amp; remaining capacity
             </p>
           </div>

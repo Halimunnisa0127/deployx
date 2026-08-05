@@ -56,7 +56,7 @@ export default function FaqSection() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             FAQ
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-4">
             Frequently Asked Questions
           </h2>
           <p className="text-lg text-slate-600 dark:text-gray-400">
@@ -88,7 +88,7 @@ export default function FaqSection() {
                   className="w-full px-6 py-4 flex items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
                   aria-expanded={isOpen}
                 >
-                  <span className="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">
+                  <span className="text-base sm:text-lg font-semibold text-foreground">
                     {faq.question}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-blue-400 shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />

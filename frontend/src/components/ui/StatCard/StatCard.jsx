@@ -23,7 +23,7 @@ export default function StatCard({
   const trendClasses = {
     up: 'text-emerald-600 dark:text-emerald-400',
     down: 'text-red-600 dark:text-red-400',
-    neutral: 'text-slate-500 dark:text-slate-400',
+    neutral: 'text-muted-foreground',
   };
 
   return (
@@ -40,7 +40,7 @@ export default function StatCard({
         <Typography variant="muted" className="font-medium">
           {title}
         </Typography>
-        {Icon && <Icon className="w-5 h-5 text-slate-400 dark:text-slate-500" aria-hidden="true" />}
+        {Icon && <Icon className="w-5 h-5 text-muted-foreground" aria-hidden="true" />}
       </div>
       
       <div className="flex items-baseline gap-2">
@@ -58,7 +58,7 @@ export default function StatCard({
             </Typography>
           )}
           {description && (
-            <Typography variant="caption" className="text-slate-500 dark:text-slate-400">
+            <Typography variant="caption" className="text-muted-foreground">
               {description}
             </Typography>
           )}

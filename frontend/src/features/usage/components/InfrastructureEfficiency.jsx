@@ -36,8 +36,8 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
   return (
-    <Card className="h-full border border-slate-200/80 dark:border-white/10 rounded-2xl
-                     backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
+    <Card className="h-full border border-border/80 rounded-2xl
+                     backdrop-blur-xl bg-card/80
                      shadow-sm dark:shadow-xl p-5 sm:p-6 flex flex-col gap-6">
       
       {/* Header */}
@@ -46,10 +46,10 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
           <Zap className="w-4 h-4" />
         </div>
         <div>
-          <h3 className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
+          <h3 className="text-sm font-extrabold text-foreground">
             Infrastructure Efficiency
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">
+          <p className="text-xs text-muted-foreground font-medium mt-0.5">
             Overall resource utilization and health score
           </p>
         </div>
@@ -60,7 +60,7 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
         <div className="relative flex items-center justify-center w-36 h-36">
           <svg className="w-36 h-36 transform -rotate-90" viewBox="0 0 96 96">
             <circle
-              className="stroke-slate-100 dark:stroke-slate-800/80"
+              className="stroke-muted"
               strokeWidth="8"
               fill="transparent"
               r={radius}
@@ -80,10 +80,10 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-5xl font-black text-slate-900 dark:text-white leading-none tracking-tighter">
+            <span className="text-5xl font-black text-foreground leading-none tracking-tighter">
               {score}
             </span>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest mt-1">
               Score
             </span>
           </div>
@@ -91,29 +91,29 @@ export default function InfrastructureEfficiency({ score = 88, tipsCount = 2 }) 
       </div>
 
       {/* Grid of Stats */}
-      <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-white/5">
+      <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/50">
         <div className="text-center flex flex-col gap-1">
-          <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+          <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">
             Grade
           </div>
           <div className={`text-xl leading-none font-black ${colorClass}`}>
             {grade}
           </div>
         </div>
-        <div className="text-center border-l border-slate-100 dark:border-white/5 flex flex-col gap-1">
-          <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+        <div className="text-center border-l border-border/50 flex flex-col gap-1">
+          <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">
             Health
           </div>
-          <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
+          <div className="text-sm font-bold text-foreground">
             {health}
           </div>
         </div>
-        <div className="text-center border-l border-slate-100 dark:border-white/5 flex flex-col gap-1">
-          <div className="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+        <div className="text-center border-l border-border/50 flex flex-col gap-1">
+          <div className="text-[10px] uppercase font-bold tracking-wider text-muted-foreground">
             Pending
           </div>
-          <div className="text-sm font-bold text-slate-700 dark:text-slate-300">
-            {tipsCount} <span className="font-semibold text-slate-400 dark:text-slate-500 text-xs">tips</span>
+          <div className="text-sm font-bold text-foreground">
+            {tipsCount} <span className="font-semibold text-muted-foreground text-xs">tips</span>
           </div>
         </div>
       </div>

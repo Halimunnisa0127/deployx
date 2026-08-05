@@ -38,7 +38,7 @@ export default function UserRow({ user, onRowClick, ...actionProps }) {
         <Badge status={user.status} type="user" />
       </td>
       <td className="px-5 py-4">
-        <div className="inline-flex items-center gap-1.5 text-theme-secondary bg-slate-100 dark:bg-slate-800/60 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700/40 font-mono text-[11px]">
+        <div className="inline-flex items-center gap-1.5 text-theme-secondary bg-muted px-2.5 py-1 rounded border border-border font-mono text-[11px]">
           <FolderGit2 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
           {user.projectsCount}{" "}
           {user.projectsCount === 1 ? "Project" : "Projects"}

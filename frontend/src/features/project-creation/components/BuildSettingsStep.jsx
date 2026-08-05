@@ -33,10 +33,10 @@ export default function BuildSettingsStep({
             Reset to Framework Defaults
           </button>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
           Build & Output Settings
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           Defaults are automatically filled based on your selected framework (
           <span className="text-blue-300 font-semibold">
             {selectedFramework === 'auto' ? detectedFrameworkName : selectedFramework}
@@ -47,9 +47,9 @@ export default function BuildSettingsStep({
 
       <div className="space-y-5 pt-1">
         <div className="w-full space-y-2">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+          <label className="block text-xs font-semibold text-foreground flex items-center justify-between">
             <span>Package Manager</span>
-            <span className="text-xs text-slate-400 dark:text-slate-500 font-normal">
+            <span className="text-xs text-muted-foreground font-normal">
               Used to resolve & install dependencies
             </span>
           </label>
@@ -76,9 +76,9 @@ export default function BuildSettingsStep({
         </div>
 
         <div className="w-full space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+          <label className="block text-xs font-semibold text-foreground flex items-center justify-between">
             <span>Install Command</span>
-            <span className="text-xs text-slate-400 dark:text-slate-500 font-mono">
+            <span className="text-xs text-muted-foreground font-mono">
               Example: {packageManager} install
             </span>
           </label>
@@ -92,9 +92,9 @@ export default function BuildSettingsStep({
         </div>
 
         <div className="w-full space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+          <label className="block text-xs font-semibold text-foreground flex items-center justify-between">
             <span>Build Command</span>
-            <span className="text-xs text-slate-400 dark:text-slate-500 font-mono">
+            <span className="text-xs text-muted-foreground font-mono">
               Example: npm run build
             </span>
           </label>
@@ -109,9 +109,9 @@ export default function BuildSettingsStep({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="w-full space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+            <label className="block text-xs font-semibold text-foreground flex items-center justify-between">
               <span>Output Directory</span>
-              <span className="text-xs text-slate-400 dark:text-slate-500 font-mono">
+              <span className="text-xs text-muted-foreground font-mono">
                 {selectedFramework === 'nextjs' ? '.next' : 'dist'}
               </span>
             </label>
@@ -125,7 +125,7 @@ export default function BuildSettingsStep({
           </div>
 
           <div className="w-full space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <label className="block text-xs font-semibold text-foreground">
               Node.js Version
             </label>
             <div className="relative">
@@ -140,7 +140,7 @@ export default function BuildSettingsStep({
                   </option>
                 ))}
               </select>
-              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 dark:text-slate-400 text-xs">
+              <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground text-xs">
                 ▼
               </div>
             </div>

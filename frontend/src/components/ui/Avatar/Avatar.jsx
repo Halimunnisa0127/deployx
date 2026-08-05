@@ -21,7 +21,7 @@ export default function Avatar({
   return (
     <div
       className={cn(
-        'relative inline-flex items-center justify-center overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700 font-medium text-slate-700 dark:text-slate-200 shrink-0',
+        'relative inline-flex items-center justify-center overflow-hidden rounded-full bg-muted font-medium text-foreground shrink-0',
         sizeClasses[size],
         className
       )}

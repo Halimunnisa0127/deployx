@@ -94,7 +94,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
   const sidebarContent = (
     <div className="flex flex-col h-full bg-card text-card-foreground border-r border-border shadow-2xl relative select-none transition-colors duration-300">
       {/* Top Section */}
-      <div className="p-4 flex flex-col gap-3.5 border-b border-slate-200 dark:border-slate-800/60 transition-colors duration-300">
+      <div className="p-4 flex flex-col gap-3.5 border-b border-border transition-colors duration-300">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-indigo-600 flex items-center justify-center shadow-lg flex-shrink-0">
@@ -103,7 +103,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
 
             {!isCollapsed && (
               <div className="flex flex-col min-w-0">
-                <span className="font-extrabold text-base tracking-tight text-slate-900 dark:text-white truncate">
+                <span className="font-extrabold text-base tracking-tight text-foreground truncate">
                   DeployX
                 </span>
                 <span className="text-[10px] font-bold tracking-wider uppercase text-rose-400">
@@ -144,7 +144,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
       <div className="flex-1 p-3 min-h-0 overflow-hidden">
         <ScrollArea className="h-full space-y-1">
           {!isCollapsed && (
-            <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 transition-colors">
+            <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground transition-colors">
               Management
             </div>
           )}
@@ -162,7 +162,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
               />
             ))
           ) : (
-            <div className="px-3 py-6 text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
+            <div className="px-3 py-6 text-center text-xs text-muted-foreground font-medium">
               No modules found
             </div>
           )}
@@ -206,7 +206,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
                       <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                         {user?.name || "Administrator"}
                       </span>
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 truncate transition-colors">
+                      <span className="text-[10px] text-muted-foreground truncate transition-colors">
                         admin@deployx.dev
                       </span>
                     </div>

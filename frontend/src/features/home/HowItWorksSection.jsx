@@ -92,7 +92,7 @@ export default function HowItWorksSection() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             WORKFLOW
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-4">
             How DeployX Works
           </h2>
           <p className="text-lg text-slate-600 dark:text-gray-400">
@@ -135,7 +135,7 @@ export default function HowItWorksSection() {
                     <div className="text-xs font-semibold uppercase tracking-wider text-blue-400 mb-1">
                       {step.step}
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                    <h3 className="text-xl font-bold text-foreground mb-2">
                       {step.title}
                     </h3>
                     <p className="text-slate-600 dark:text-gray-400 text-sm leading-relaxed max-w-xl">

@@ -186,7 +186,7 @@ export default function DeploymentProgressScreen({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 animate-fade-in font-sans selection:bg-blue-500 selection:text-white">
       {/* Header Info Banner */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5 flex-wrap">
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
@@ -220,12 +220,12 @@ export default function DeploymentProgressScreen({
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
-            <span className="flex items-center gap-1 font-mono text-slate-600 dark:text-slate-300">
+          <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
+            <span className="flex items-center gap-1 font-mono text-muted-foreground">
               <Folder className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
               {repository}
             </span>
-            <span className="flex items-center gap-1 font-mono text-slate-600 dark:text-slate-300">
+            <span className="flex items-center gap-1 font-mono text-muted-foreground">
               <GitBranch className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
               {branch}
             </span>
@@ -282,10 +282,10 @@ export default function DeploymentProgressScreen({
       </div>
 
       {/* Progress Bar & Steps Tracker */}
-      <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-xl backdrop-blur-xl space-y-5">
+      <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl space-y-5">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Deployment Progress
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
@@ -303,7 +303,7 @@ export default function DeploymentProgressScreen({
         </div>
 
         {/* Animated Progress Bar */}
-        <div className="w-full h-3 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800 p-0.5 relative">
+        <div className="w-full h-3 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden border border-border p-0.5 relative">
           <div
             className={`h-full rounded-full transition-all duration-500 ease-out ${
               status === 'completed'
@@ -333,7 +333,7 @@ export default function DeploymentProgressScreen({
                     ? 'bg-blue-500/15 border-blue-500 text-blue-600 dark:text-blue-300 font-semibold ring-1 ring-blue-500/30'
                     : isFailed
                     ? 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400'
-                    : 'bg-slate-50 dark:bg-slate-950/40 border-slate-200 dark:border-slate-800/80 text-slate-400 dark:text-slate-500 opacity-60'
+                    : 'bg-slate-50 dark:bg-slate-950/40 border-border text-muted-foreground opacity-60'
                 }`}
               >
                 <div
@@ -344,7 +344,7 @@ export default function DeploymentProgressScreen({
                       ? 'bg-blue-500 text-white shadow-sm'
                       : isFailed
                       ? 'bg-red-500 text-white'
-                      : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500'
+                      : 'bg-slate-200 dark:bg-slate-800 text-muted-foreground'
                   }`}
                 >
                   {isFinished ? (

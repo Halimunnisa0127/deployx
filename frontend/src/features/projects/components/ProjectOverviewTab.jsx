@@ -115,7 +115,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
     <div className="space-y-6 font-sans">
       {/* SECTION 1 — Project Information */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-5">
+        <div className="flex items-center justify-between pb-3 border-b border-border mb-5">
           <h3 className="text-xs font-bold uppercase tracking-wider text-theme-muted flex items-center gap-2">
 
             <Server className="w-4 h-4 text-indigo-400" />
@@ -198,7 +198,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
             </a>
           </div>
 
-          <div className="space-y-1 md:col-span-2 pt-2 border-t border-slate-200 dark:border-slate-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <div className="space-y-1 md:col-span-2 pt-2 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <span className="text-theme-muted text-sm font-medium uppercase tracking-wider inline-flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-theme-muted" />
 
@@ -255,7 +255,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           boxShadow: '0 20px 30px -10px rgba(99, 102, 241, 0.12)',
         }}
       >
-        <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800/80 mb-4">
+        <div className="flex items-center justify-between pb-3 border-b border-border mb-4">
           <div className="flex items-center gap-2">
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -314,7 +314,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
           </div>
         </div>
 
-        <div className="pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between">
+        <div className="pt-3 border-t border-border flex items-center justify-between">
           <span className="text-sm text-theme-muted font-mono">
 
             Deployment ID: {latestDeployment.id || 'dep-101'}
@@ -332,7 +332,7 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
 
       {/* SECTION 4 — Recent Activity Timeline */}
       <Card style={{ padding: '24px', maxWidth: '100%' }}>
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800/80 mb-5">
+        <div className="flex items-center justify-between pb-4 border-b border-border mb-5">
           <div className="flex items-center gap-2">
             <Activity className="w-4 h-4 text-sky-400" />
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300">

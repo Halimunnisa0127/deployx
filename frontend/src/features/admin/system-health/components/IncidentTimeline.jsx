@@ -60,12 +60,12 @@ export function TimelineEvent({ event, isLast }) {
       </div>
 
       <div className="flex-1 pb-8">
-        <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800/60 p-4">
+        <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-border p-4">
           <div className="flex justify-between items-start mb-2">
-            <h4 className="text-slate-900 dark:text-white font-medium">{event.service}</h4>
+            <h4 className="text-foreground font-medium">{event.service}</h4>
             <Badge status={event.status} />
           </div>
-          <p className="text-sm text-slate-700 dark:text-slate-300">{event.description}</p>
+          <p className="text-sm text-foreground">{event.description}</p>
           {event.duration && (
             <div className="mt-3 text-xs text-slate-500 flex items-center gap-1">
               <Activity className="w-3.5 h-3.5" /> Recovery duration:{" "}
@@ -83,8 +83,8 @@ export default function IncidentTimeline({ events = [] }) {
 
   return (
     <div className="mb-8">
-      <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Incident Timeline</h2>
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-lg">
+      <h2 className="text-lg font-bold text-foreground mb-6">Incident Timeline</h2>
+      <div className="bg-card rounded-2xl border border-border p-6 shadow-lg">
         {events.map((event, idx) => (
           <TimelineEvent
             key={event.id}

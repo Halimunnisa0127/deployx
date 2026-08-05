@@ -22,22 +22,22 @@ export default function MaintenanceSettingsCard({ register, watch, setValue }) {
   return (
     <div
       id="maintenance"
-      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg"
+      className="bg-card rounded-2xl border border-border p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Maintenance Mode</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+      <div className="mb-6 border-b border-border pb-4">
+        <h2 className="text-lg font-bold text-foreground">Maintenance Mode</h2>
+        <p className="text-sm text-muted-foreground">
           Lock the platform for users during upgrades.
         </p>
       </div>
 
       <div className="space-y-6 max-w-2xl">
-        <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700/80 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/80 border border-border rounded-xl">
           <div>
             <div className="font-semibold text-slate-900 dark:text-slate-200">
               Enable Maintenance Mode
             </div>
-            <div className="text-sm text-slate-500 dark:text-slate-400">
+            <div className="text-sm text-muted-foreground">
               Non-admin users will be redirected to the maintenance page.
             </div>
           </div>
@@ -60,23 +60,23 @@ export default function MaintenanceSettingsCard({ register, watch, setValue }) {
           className={`space-y-6 transition-opacity duration-300 ${isEnabled ? "opacity-100" : "opacity-50 pointer-events-none"}`}
         >
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-foreground mb-1.5">
               Maintenance Message
             </label>
             <textarea
               {...register("maintenance.message")}
               rows={3}
-              className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none"
+              className="w-full px-3 py-2 bg-card border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-foreground mb-1.5">
               Allowed IP Addresses
             </label>
             <Input
               {...register("maintenance.allowedIps")}
               placeholder="192.168.1.1, 10.0.0.1"
-              className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700"
+              className="w-full bg-card border-border"
             />
 
             <p className="mt-1.5 text-xs text-slate-500">

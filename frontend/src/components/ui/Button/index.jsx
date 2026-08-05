@@ -7,10 +7,10 @@ import { Link, NavLink } from 'react-router-dom';
 
 const VARIANTS = {
   primary: 'bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 hover:from-blue-500 hover:via-indigo-500 hover:to-sky-500 text-white shadow-md shadow-blue-500/25 border border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/35',
-  secondary: 'bg-white dark:bg-slate-900/70 backdrop-blur-xl border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800/90 shadow-sm hover:shadow-md hover:border-slate-400 dark:hover:border-white/20',
-  ghost: 'bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white',
+  secondary: 'bg-card backdrop-blur-xl border border-border text-foreground hover:bg-muted shadow-sm hover:shadow-md hover:border-border',
+  ghost: 'bg-transparent hover:bg-muted text-muted-foreground hover:text-foreground',
   danger: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-md shadow-rose-500/25 border border-rose-500/30 hover:shadow-lg hover:shadow-rose-500/35',
-  oauth: 'bg-white dark:bg-slate-900/90 backdrop-blur-md border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-800/90',
+  oauth: 'bg-card backdrop-blur-md border border-border text-foreground shadow-sm hover:bg-muted',
 };
 
 const SIZES = {

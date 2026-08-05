@@ -10,7 +10,7 @@ export default function BranchesTable({ branches, onDeploy }) {
       case 'success': return <CheckCircle2 className="w-4 h-4 text-emerald-400" />;
       case 'failed': return <XCircle className="w-4 h-4 text-rose-400" />;
       case 'building': return <Clock className="w-4 h-4 text-amber-400" />;
-      default: return <div className="w-4 h-4 rounded-full bg-slate-700" />;
+      default: return <div className="w-4 h-4 rounded-full bg-muted-foreground" />;
     }
   };
 
@@ -35,8 +35,8 @@ export default function BranchesTable({ branches, onDeploy }) {
           <TableRow key={branch.id} hover={true}>
             <TableCell>
               <div className="flex items-center gap-2">
-                <GitBranch className="w-4 h-4 text-slate-400" />
-                <span className="font-medium text-slate-200">{branch.name}</span>
+                <GitBranch className="w-4 h-4 text-muted-foreground" />
+                <span className="font-medium text-foreground">{branch.name}</span>
                 {branch.isDefault && (
                   <Badge variant="neutral" className="uppercase text-xs px-1.5 py-0">Default</Badge>
                 )}
@@ -48,15 +48,15 @@ export default function BranchesTable({ branches, onDeploy }) {
               </span>
             </TableCell>
             <TableCell>
-              <span className="text-slate-300 text-sm">{branch.author}</span>
+              <span className="text-foreground text-sm">{branch.author}</span>
             </TableCell>
             <TableCell>
-              <span className="text-slate-400 text-sm">{formatDate(branch.lastUpdated)}</span>
+              <span className="text-muted-foreground text-sm">{formatDate(branch.lastUpdated)}</span>
             </TableCell>
             <TableCell>
               <div className="flex items-center gap-2">
                 {getStatusIcon(branch.deploymentStatus)}
-                <span className="text-xs text-slate-400 capitalize">{branch.deploymentStatus}</span>
+                <span className="text-xs text-muted-foreground capitalize">{branch.deploymentStatus}</span>
               </div>
             </TableCell>
             <TableCell className="text-right">
