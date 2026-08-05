@@ -5,8 +5,8 @@ import RecentDeploymentsTable from "../components/RecentDeploymentsTable";
 import RecentUsersTable from "../components/RecentUsersTable";
 import PlatformHealthCard from "../components/PlatformHealthCard";
 import QuickActions from "../components/QuickActions";
-import DeploymentTrendChart from "../components/DeploymentTrendChart";
-import UserGrowthChart from "../components/UserGrowthChart";
+import DeploymentTrendChart from "../components/charts/DeploymentTrendChart";
+import UserGrowthChart from "../components/charts/UserGrowthChart";
 import { useAdminDashboard } from "../hooks/useAdminDashboard";
 import { AlertCircle, RefreshCw } from "lucide-react";
 

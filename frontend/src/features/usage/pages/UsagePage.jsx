@@ -3,7 +3,7 @@ import { useUsage } from '../hooks/useUsage';
 import UsageHeader          from '../components/UsageHeader';
 import UsageSummaryCards    from '../components/UsageSummaryCards';
 import InfrastructureEfficiency from '../components/InfrastructureEfficiency';
-import UsageTrendChart      from '../components/UsageTrendChart';
+import UsageTrendChart      from '../components/charts/UsageTrendChart';
 import UsageBreakdown       from '../components/UsageBreakdown';
 
 import UsageHistoryTable    from '../components/UsageHistoryTable';

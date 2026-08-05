@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Card from "../../../../components/ui/Card";
+import Card from "../../../../../components/ui/Card";
 import {
   BarChart,
   Bar,
@@ -68,4 +68,3 @@ export default function ProjectGrowthChart({ data }) {
     </Card>
   );
 }
-

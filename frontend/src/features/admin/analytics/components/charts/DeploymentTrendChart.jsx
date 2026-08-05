@@ -1,4 +1,6 @@
 import React from "react";
+import { motion } from "framer-motion";
+import Card from "../../../../../components/ui/Card";
 import {
   AreaChart,
   Area,
@@ -8,34 +10,32 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import Card from "../../../components/ui/Card";
 
-export default function UserGrowthChart({ data = [] }) {
-  if (!data.length) return null;
+export default function DeploymentTrendChart({ data }) {
+  if (!data || !data.length) return null;
 
   return (
-    <Card className="p-5 sm:p-6 shadow-lg">
-      <div className="mb-6">
-        <h3 className="text-lg font-bold text-theme-heading tracking-tight">
-          User Growth
-        </h3>
-        <p className="text-sm text-slate-400">Past 30 days</p>
+    <Card className="h-[350px] flex flex-col" style={{ padding: '1.25rem' }}>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-theme-heading">Deployments Trend</h3>
+        <p className="text-sm text-theme-muted">Daily deployment volume</p>
+
       </div>
-      <div className="h-[250px] w-full">
+      <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
-            margin={{ top: 5, right: 0, left: -20, bottom: 0 }}
+            margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
           >
             <defs>
-              <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+              <linearGradient id="colorDeployments" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="#334155"
+              stroke="#1e293b"
               vertical={false}
             />
             <XAxis
@@ -54,20 +54,20 @@ export default function UserGrowthChart({ data = [] }) {
             <Tooltip
               contentStyle={{
                 backgroundColor: "#0f172a",
-                borderColor: "#334155",
-                borderRadius: "0.5rem",
+                borderColor: "#1e293b",
+                borderRadius: "0.75rem",
                 color: "#f8fafc",
               }}
-              itemStyle={{ color: "#38bdf8" }}
+              itemStyle={{ color: "#818cf8" }}
             />
 
             <Area
               type="monotone"
-              dataKey="users"
-              stroke="#38bdf8"
+              dataKey="deployments"
+              stroke="#6366f1"
               strokeWidth={3}
               fillOpacity={1}
-              fill="url(#colorUsers)"
+              fill="url(#colorDeployments)"
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -75,4 +75,3 @@ export default function UserGrowthChart({ data = [] }) {
     </Card>
   );
 }
-
