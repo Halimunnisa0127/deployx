@@ -1,6 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockDomains } from '../data/mockDomains';
 import Button from '../../../components/ui/Button';
 import { 
   ArrowLeft, CheckCircle2, RotateCcw, AlertTriangle, 
@@ -8,46 +7,22 @@ import {
   Server, Lock, Activity, ShieldCheck
 } from 'lucide-react';
 import Badge from '../../../components/ui/Badge';
+import { useDomainDetails } from '../hooks/useDomainDetails';
 
 export default function DomainDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [notification, setNotification] = useState(null);
-
-  // Find target domain record from mock dataset
-  const domain = useMemo(() => {
-    return mockDomains.find((d) => d.id === id) || mockDomains[0];
-  }, [id]);
-
-  const handleRefresh = () => {
-    setNotification({
-      type: 'success',
-      message: `Refreshing DNS and SSL status for ${domain.name}`,
-    });
-    setTimeout(() => setNotification(null), 4000);
-  };
-
-  const handleCopy = (text) => {
-    if (text) navigator.clipboard.writeText(text);
-    setNotification({
-      type: 'success',
-      message: 'Copied to clipboard!',
-    });
-    setTimeout(() => setNotification(null), 3000);
-  };
-
-  const handleOpenDomain = () => {
-    if (domain.url) window.open(domain.url, '_blank', 'noopener,noreferrer');
-  };
-
-  const handleRemove = () => {
-    setNotification({
-      type: 'warning',
-      message: `Initiated removal for domain ${domain.name}`,
-    });
-    setTimeout(() => setNotification(null), 4000);
-  };
+  const {
+    domain,
+    isLoading,
+    notification,
+    setNotification,
+    handleRefresh,
+    handleCopy,
+    handleOpenDomain,
+    handleRemove
+  } = useDomainDetails(id);
 
   if (!domain) {
     return (

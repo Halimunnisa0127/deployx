@@ -82,11 +82,11 @@ export default function DeploymentDetailsHeader({
   };
 
   return (
-    <div className="space-y-4 pb-6 border-b border-slate-800/60 font-sans text-left">
+    <div className="space-y-4 pb-6 border-b border-slate-200 dark:border-slate-800/60 font-sans text-left">
       {/* Back Navigation Button */}
       <button
         onClick={() => navigate('/dashboard/deployments')}
-        className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-md"
+        className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-md"
         aria-label="Back to deployments list"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -97,19 +97,19 @@ export default function DeploymentDetailsHeader({
       <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
         {/* Title, Badges & Metadata */}
         <div className="flex items-center gap-3.5 flex-wrap">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 font-bold text-lg shrink-0 shadow-lg shadow-indigo-500/10">
-            <Layers className="w-6 h-6 text-indigo-400" />
+          <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-500 dark:text-indigo-400 font-bold text-lg shrink-0 shadow-lg shadow-indigo-500/10">
+            <Layers className="w-6 h-6 text-indigo-500 dark:text-indigo-400" />
           </div>
 
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {projectName}
               </h1>
-              <span className="text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-500/20 font-medium">
+              <span className="text-xs font-mono text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-500/20 font-medium">
                 {id}
               </span>
-              <span className="text-xs font-mono text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-md border border-slate-700/60">
+              <span className="text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-md border border-slate-200 dark:border-slate-700/60">
                 #{deploymentNumber}
               </span>
               <Badge variant={envVariant} dot={false}>
@@ -119,13 +119,13 @@ export default function DeploymentDetailsHeader({
                 {status.charAt(0).toUpperCase() + status.slice(1)}
               </Badge>
               {isLive && (
-                <span className="text-xs font-medium text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
                   Live Production
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Deployment details, real-time build logs, and environment metadata.
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function DeploymentDetailsHeader({
             variant="secondary"
             size="sm"
             disabled={isFailed}
-            iconLeft={<ExternalLink className="w-3.5 h-3.5 text-sky-400" />}
+            iconLeft={<ExternalLink className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />}
             onClick={handleOpenApp}
             title={isFailed ? 'App unavailable due to build failure' : 'Open deployed application'}
             aria-label="Open App"
@@ -150,7 +150,7 @@ export default function DeploymentDetailsHeader({
           <Button
             variant="secondary"
             size="sm"
-            iconLeft={copiedUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-300" />}
+            iconLeft={copiedUrl ? <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-500 dark:text-slate-300" />}
             onClick={handleCopyUrlClick}
             aria-label="Copy URL"
           >
@@ -161,7 +161,7 @@ export default function DeploymentDetailsHeader({
           <Button
             variant="secondary"
             size="sm"
-            iconLeft={<Download className="w-3.5 h-3.5 text-indigo-400" />}
+            iconLeft={<Download className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />}
             onClick={onDownloadLogs}
             aria-label="Download Logs"
           >
@@ -172,7 +172,7 @@ export default function DeploymentDetailsHeader({
           <Button
             variant="secondary"
             size="sm"
-            iconLeft={shared ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-slate-300" />}
+            iconLeft={shared ? <Check className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-slate-500 dark:text-slate-300" />}
             onClick={handleShareClick}
             aria-label="Share deployment link"
           >

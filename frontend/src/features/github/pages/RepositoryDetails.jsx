@@ -1,34 +1,27 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockRepositories, mockBranches, mockCommits } from '../data/mockGithub';
 import Button from '../../../components/ui/Button';
 import { ArrowLeft, CheckCircle2, RotateCcw, AlertTriangle, RefreshCw, GitBranch, Clock, GitCommit } from 'lucide-react';
 import Github from '../../../components/ui/GithubIcon';
 import Badge from '../../../components/ui/Badge';
 import BranchesTable from '../components/BranchesTable';
 import CommitsList from '../components/CommitsList';
+import { useRepositoryDetails } from '../hooks/useRepositoryDetails';
 
 export default function RepositoryDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [notification, setNotification] = useState(null);
-
-  // Find target repo from mock dataset
-  const repo = useMemo(() => {
-    return mockRepositories.find((r) => r.id === id) || mockRepositories[0];
-  }, [id]);
-
-  const branches = useMemo(() => mockBranches.filter(b => b.repoId === repo.id), [repo.id]);
-  const commits = useMemo(() => mockCommits.filter(c => c.repoId === repo.id), [repo.id]);
-
-  const handleRefresh = () => {
-    setNotification({
-      type: 'success',
-      message: `Syncing repository ${repo.name}...`,
-    });
-    setTimeout(() => setNotification(null), 4000);
-  };
+  const {
+    repository: repo,
+    branches,
+    commits,
+    isLoading,
+    notification,
+    setNotification,
+    handleSync: handleRefresh,
+    handleOpenGithub
+  } = useRepositoryDetails(id);
 
   const handleDeploy = (branch) => {
     setNotification({
@@ -110,7 +103,7 @@ export default function RepositoryDetails() {
           <Button variant="secondary" size="sm" iconLeft={<RefreshCw className="w-4 h-4" />} onClick={handleRefresh}>
             Sync Repository
           </Button>
-          <Button variant="primary" size="sm" onClick={() => window.open(repo.url, '_blank')}>
+          <Button variant="primary" size="sm" onClick={handleOpenGithub}>
             Open in GitHub
           </Button>
         </div>

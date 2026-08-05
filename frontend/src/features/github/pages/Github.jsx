@@ -1,52 +1,29 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../../components/common/SearchBar';
 import RepositoryCard from '../components/RepositoryCard';
 import RepositoryCardSkeleton from '../components/RepositoryCardSkeleton';
 import GithubEmptyState from '../components/GithubEmptyState';
-import { mockRepositories } from '../data/mockGithub';
 import { Plus, BookOpen, RefreshCw } from 'lucide-react';
 import GithubIcon from '../../../components/ui/GithubIcon';
 import Button from '../../../components/ui/Button';
+import { useGithub } from '../hooks/useGithub';
 
 export default function Github() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [notification, setNotification] = useState(null);
-
-  // Filter repos by search query
-  const filteredRepos = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-
-    return mockRepositories.filter((repo) => {
-      if (query) {
-        return repo.name.toLowerCase().includes(query) || repo.owner.toLowerCase().includes(query);
-      }
-      return true;
-    });
-  }, [searchQuery]);
+  const {
+    repositories: filteredRepos,
+    totalRepositories,
+    searchQuery,
+    setSearchQuery,
+    isLoading,
+    notification,
+    setNotification,
+    handleAction
+  } = useGithub();
 
   const handleCardClick = (repo) => {
     navigate(`/dashboard/github/${repo.id}`);
-  };
-
-  const handleAction = (action, repo) => {
-    if (action === 'open') {
-      window.open(repo.url, '_blank', 'noopener,noreferrer');
-    } else if (action === 'sync') {
-      setNotification({
-        type: 'success',
-        message: `Syncing repository ${repo.owner}/${repo.name}...`,
-      });
-      setTimeout(() => setNotification(null), 4000);
-    } else {
-      setNotification({
-        type: 'info',
-        message: `Opened options for ${repo.name}`,
-      });
-      setTimeout(() => setNotification(null), 3000);
-    }
   };
 
   const hasActiveFilter = searchQuery.trim().length > 0;
@@ -84,7 +61,7 @@ export default function Github() {
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <div className="px-3.5 py-2 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-300 flex items-center gap-2">
             <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Connected Repositories: <strong className="text-white font-semibold">{mockRepositories.length}</strong></span>
+            <span>Connected Repositories: <strong className="text-white font-semibold">{totalRepositories}</strong></span>
           </div>
           
           <Button

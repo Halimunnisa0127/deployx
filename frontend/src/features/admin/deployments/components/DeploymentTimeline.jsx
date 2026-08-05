@@ -14,10 +14,10 @@ export default function DeploymentTimeline({ timeline = [] }) {
         return (
           <div key={idx} className="relative">
             <div
-              className={`absolute -left-[35px] top-0 w-6 h-6 rounded-full flex items-center justify-center border-2 bg-slate-900
-                ${isCompleted ? "border-emerald-500 text-emerald-400" : ""}
-                ${isRunning ? "border-blue-500 text-blue-400" : ""}
-                ${isPending ? "border-slate-700 text-slate-600" : ""}
+              className={`absolute -left-[35px] top-0 w-6 h-6 rounded-full flex items-center justify-center border-2 bg-white dark:bg-slate-950
+                ${isCompleted ? "border-emerald-500 text-emerald-600 dark:text-emerald-400" : ""}
+                ${isRunning ? "border-blue-500 text-blue-600 dark:text-blue-400" : ""}
+                ${isPending ? "border-slate-300 dark:border-slate-700 text-slate-400 dark:text-slate-600" : ""}
               `}
             >
               {isCompleted && <Check className="w-3.5 h-3.5" />}
@@ -28,12 +28,12 @@ export default function DeploymentTimeline({ timeline = [] }) {
             <div className="flex justify-between items-start">
               <div>
                 <p
-                  className={`text-sm font-semibold ${isCompleted || isRunning ? "text-slate-200" : "text-slate-500"}`}
+                  className={`text-sm font-semibold ${isCompleted || isRunning ? "text-slate-900 dark:text-slate-200" : "text-slate-500"}`}
                 >
                   {item.step}
                 </p>
                 {item.time && (
-                  <p className="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-1">
                     <Clock className="w-3 h-3" /> {item.time}
                   </p>
                 )}

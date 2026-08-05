@@ -173,16 +173,16 @@ export default function DashboardHeader({ onToggleMobile }) {
 
           {/* Global Search Interactive Results Dropdown */}
           {isSearchFocused && searchQuery.trim() !== '' && (
-            <div className="absolute right-0 top-12 w-80 lg:w-96 rounded-2xl bg-slate-900/95 border border-slate-800 shadow-2xl backdrop-blur-xl p-3 z-50 max-h-96 overflow-y-auto space-y-3">
+            <div className="absolute right-0 top-12 w-80 lg:w-96 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 shadow-2xl backdrop-blur-xl p-3 z-50 max-h-96 overflow-y-auto space-y-3">
               {Object.keys(groupedResults).length === 0 ? (
-                <div className="py-6 text-center text-xs text-slate-400 flex flex-col items-center gap-2">
+                <div className="py-6 text-center text-xs text-slate-500 dark:text-slate-400 flex flex-col items-center gap-2">
                   <Search className="w-5 h-5 text-slate-400" />
                   <span>No results matching "{searchQuery}"</span>
                 </div>
               ) : (
                 Object.entries(groupedResults).map(([category, items]) => (
                   <div key={category} className="space-y-1">
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                       {CATEGORY_ICON_MAP[category] || <Search className="w-3.5 h-3.5 text-slate-400" />}
                       <span>{category}</span>
                     </div>
@@ -193,10 +193,10 @@ export default function DashboardHeader({ onToggleMobile }) {
                           key={item.id}
                           type="button"
                           onClick={() => handleSelectSearchItem(item.link)}
-                          className="w-full flex items-center justify-between p-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800/80 transition-colors text-left group"
+                          className="w-full flex items-center justify-between p-2 rounded-xl text-xs text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors text-left group"
                         >
                           <span className="font-semibold truncate">{item.name}</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
+                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
                         </button>
                       ))}
                     </div>
