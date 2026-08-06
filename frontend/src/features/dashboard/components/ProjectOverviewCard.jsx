@@ -1,6 +1,7 @@
 import { LayoutGrid, Layers, CheckCircle2, PlayCircle, AlertTriangle, Archive } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
+import { Progress } from '../../../components/ui';
 import { Link } from 'react-router-dom';
 import { MOCK_PROJECT_OVERVIEW } from '../data/mockDashboardData';
 
@@ -117,12 +118,11 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
             </div>
 
             {/* Horizontal Progress Bar */}
-            <div className="h-2 w-full bg-slate-200/80 dark:bg-slate-800/80 rounded-full overflow-hidden">
-              <div
-                className={`h-full ${cat.color} rounded-full transition-all duration-500 ease-out`}
-                style={{ width: `${cat.percent}%` }}
-              />
-            </div>
+            <Progress 
+              percent={cat.percent} 
+              color={cat.color} 
+              height="h-2" 
+            />
           </Link>
         ))}
       </div>

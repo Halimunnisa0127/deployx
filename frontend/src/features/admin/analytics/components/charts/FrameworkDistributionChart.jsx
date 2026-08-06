@@ -1,14 +1,6 @@
 import React from "react";
-import { motion } from "framer-motion";
 import Card from "../../../../../components/ui/Card";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
+import { PieChart } from "../../../../../components/charts";
 
 const COLORS = ["#6366f1", "#10b981", "#f59e0b", "#0ea5e9", "#ec4899"];
 
@@ -20,46 +12,18 @@ export default function FrameworkDistributionChart({ data }) {
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-bold text-theme-heading">Framework Distribution</h3>
         <p className="text-sm text-theme-muted">By active projects</p>
-
       </div>
       <div className="flex-1 min-h-0 relative">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={90}
-              paddingAngle={5}
-              dataKey="value"
-              stroke="none"
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#0f172a",
-                borderColor: "#1e293b",
-                borderRadius: "0.75rem",
-                color: "#f8fafc",
-              }}
-              itemStyle={{ color: "#e2e8f0" }}
-            />
-
-            <Legend
-              verticalAlign="bottom"
-              height={36}
-              iconType="circle"
-              wrapperStyle={{ fontSize: "12px", color: "#94a3b8" }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
+        <PieChart
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          colors={COLORS}
+          innerRadius={60}
+          outerRadius={90}
+          showLegend={true}
+          height="100%"
+        />
       </div>
     </Card>
   );

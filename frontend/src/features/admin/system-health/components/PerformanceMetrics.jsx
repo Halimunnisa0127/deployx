@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { AreaChart } from "../../../../components/charts";
 
 function MetricChart({ title, data, color, current, unit }) {
   return (
@@ -24,57 +16,13 @@ function MetricChart({ title, data, color, current, unit }) {
         </div>
       </div>
       <div className="flex-1 min-h-0 mt-4">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={data}
-            margin={{ top: 5, right: 0, left: -20, bottom: 0 }}
-          >
-            <defs>
-              <linearGradient id={`color-${title.replace(/ /g, '')}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={color} stopOpacity={0.3} />
-                <stop offset="95%" stopColor={color} stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#1e293b"
-              vertical={false}
-            />
-            <XAxis
-              dataKey="time"
-              stroke="#64748b"
-              fontSize={10}
-              tickLine={false}
-              axisLine={false}
-              minTickGap={20}
-            />
-            <YAxis
-              stroke="#64748b"
-              fontSize={10}
-              tickLine={false}
-              axisLine={false}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#0f172a",
-                borderColor: "#1e293b",
-                borderRadius: "0.75rem",
-                color: "#f8fafc",
-                fontSize: "12px",
-              }}
-              itemStyle={{ color }}
-            />
-
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke={color}
-              strokeWidth={2}
-              fillOpacity={1}
-              fill={`url(#color-${title.replace(/ /g, '')})`}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <AreaChart
+          data={data}
+          xKey="time"
+          yKey="value"
+          color={color}
+          height="100%"
+        />
       </div>
     </div>
   );

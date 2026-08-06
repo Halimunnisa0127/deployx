@@ -1,5 +1,6 @@
 import { Gauge, Wifi, HardDrive, Clock, ArrowRight, Zap } from 'lucide-react';
 import Card from '../../../components/ui/Card';
+import { Progress } from '../../../components/ui';
 import { Link } from 'react-router-dom';
 import { MOCK_USAGE_SUMMARY } from '../data/mockDashboardData';
 
@@ -104,12 +105,11 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-1.5 w-full bg-slate-200/70 dark:bg-slate-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${isHigh ? 'bg-red-500' : colors.bar} rounded-full transition-all duration-700 ease-out`}
-                    style={{ width: `${percent}%` }}
-                  />
-                </div>
+                <Progress 
+                  percent={percent} 
+                  color={isHigh ? 'bg-red-500' : colors.bar} 
+                  height="h-1.5" 
+                />
               </div>
             </div>
           );

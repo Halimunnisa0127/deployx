@@ -10,6 +10,7 @@ import {
 import Card from '../../../components/ui/Card';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
+import { Progress } from '../../../components/ui';
 
 /* ─── resource icon map ─────────────────────────────────────── */
 const RESOURCE_ICONS = {
@@ -76,8 +77,8 @@ function SortTh({ field, label, alignRight = false, sortField, sortOrder, onSort
 function MiniBar({ pct }) {
   const color = pct >= 85 ? 'bg-rose-500' : pct >= 70 ? 'bg-amber-500' : 'bg-indigo-500';
   return (
-    <div className="w-10 h-1 bg-secondary rounded-full overflow-hidden hidden sm:block shrink-0">
-      <div className={`h-full rounded-full ${color}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+    <div className="w-10 hidden sm:block shrink-0">
+      <Progress percent={pct} color={color} height="h-1" />
     </div>
   );
 }

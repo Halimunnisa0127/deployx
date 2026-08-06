@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-} from "recharts";
 import Card from "../../../../components/ui/Card";
+import { LineChart } from "../../../../components/charts";
 
 export default function DeploymentTrendChart({ data = [] }) {
   if (!data.length) return null;
@@ -22,49 +14,13 @@ export default function DeploymentTrendChart({ data = [] }) {
         <p className="text-sm text-slate-400">Past 7 days</p>
       </div>
       <div className="h-[250px] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={data}
-            margin={{ top: 5, right: 0, left: -20, bottom: 0 }}
-          >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#334155"
-              vertical={false}
-            />
-            <XAxis
-              dataKey="date"
-              stroke="#64748b"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis
-              stroke="#64748b"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: "#0f172a",
-                borderColor: "#334155",
-                borderRadius: "0.5rem",
-                color: "#f8fafc",
-              }}
-              itemStyle={{ color: "#818cf8" }}
-            />
-
-            <Line
-              type="monotone"
-              dataKey="deployments"
-              stroke="#818cf8"
-              strokeWidth={3}
-              dot={{ fill: "#818cf8", strokeWidth: 2, r: 4 }}
-              activeDot={{ r: 6 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <LineChart
+          data={data}
+          xKey="date"
+          yKey="deployments"
+          color="#818cf8"
+          height="100%"
+        />
       </div>
     </Card>
   );

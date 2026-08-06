@@ -1,6 +1,7 @@
 import { FolderGit2, Layers, Cpu, Radio, ArrowUpRight } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
+import { Progress } from '../../../components/ui';
 
 const CONSUMER_ICONS = {
   Frontend: FolderGit2,
@@ -72,13 +73,11 @@ export default function TopResourceConsumers({ consumers = [] }) {
                 </div>
               </div>
 
-              {/* Progress bar representing share */}
-              <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                <div
-                  className={`h-full ${item.color || 'bg-indigo-500'} rounded-full transition-all duration-500`}
-                  style={{ width: `${item.sharePercent}%` }}
-                />
-              </div>
+              <Progress 
+                percent={item.sharePercent} 
+                color={item.color || 'bg-indigo-500'} 
+                height="h-2" 
+              />
             </div>
           );
         })}

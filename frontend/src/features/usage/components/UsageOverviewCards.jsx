@@ -1,5 +1,6 @@
 import { Wifi, HardDrive, Clock, Cpu, TrendingUp, TrendingDown } from 'lucide-react';
 import Card from '../../../components/ui/Card';
+import { Progress } from '../../../components/ui';
 
 const METRIC_ICONS = {
   bandwidth: Wifi,
@@ -79,12 +80,11 @@ export default function UsageOverviewCards({ summary = {} }) {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-2.5 w-full bg-secondary rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${colors.barColor} rounded-full transition-all duration-500 ease-out`}
-                    style={{ width: `${Math.min(item.percent, 100)}%` }}
-                  />
-                </div>
+                <Progress 
+                  percent={item.percent} 
+                  color={colors.barColor} 
+                  height="h-2.5" 
+                />
 
                 {/* Footer: Trend */}
                 <div className="flex items-center pt-2 border-t border-border text-xs">

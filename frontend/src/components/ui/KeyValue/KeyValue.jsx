@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '../../../lib/utils';
 import { Typography } from '../Typography';
-import { Badge } from '../Badge';
+import Badge from '../Badge';
 
 export default function KeyValue({
   label,

@@ -1,3 +1,5 @@
+import { Progress } from '../../../components/ui';
+
 export default function ResourceProgressBar({
   percent = 0,
   color = 'bg-indigo-500',
@@ -18,12 +20,8 @@ export default function ResourceProgressBar({
         </div>
       )}
 
-      <div className={`${height} w-full bg-muted rounded-full overflow-hidden`}>
-        <div
-          className={`h-full ${color} rounded-full transition-all duration-[250ms] ease-out`}
-          style={{ width: `${safePercent}%` }}
-        />
-      </div>
+      <Progress percent={safePercent} color={color} height={height} />
     </div>
   );
 }
+
