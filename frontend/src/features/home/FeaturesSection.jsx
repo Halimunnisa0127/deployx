@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import {
   Zap,
@@ -46,7 +45,7 @@ export default function FeaturesSection() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             FEATURES
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-6">
             Everything you need to ship <br className="hidden sm:inline" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">
               without friction
@@ -74,7 +73,7 @@ export default function FeaturesSection() {
                 <GithubIcon className="w-6 h-6" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
                 GitHub Integration & Automatic Deployments
               </h3>
 
@@ -116,7 +115,7 @@ export default function FeaturesSection() {
                 <div className="p-4 rounded-xl bg-slate-100 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 space-y-3">
                   <div className="flex items-center justify-between text-slate-600 dark:text-gray-400">
                     <span>Repository</span>
-                    <span className="text-slate-900 dark:text-white font-semibold">github.com/my-team/fullstack-app</span>
+                    <span className="text-foreground font-semibold">github.com/my-team/fullstack-app</span>
                   </div>
                   <div className="flex items-center justify-between text-slate-600 dark:text-gray-400">
                     <span>Trigger Branch</span>
@@ -131,7 +130,7 @@ export default function FeaturesSection() {
                 <div className="p-3.5 rounded-lg bg-blue-100 dark:bg-blue-950/60 border border-blue-300 dark:border-blue-500/30 flex items-center justify-between font-sans shadow-sm">
                   <div className="flex items-center gap-3">
                     <Zap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                    <span className="text-xs text-slate-900 dark:text-white">Push to main detected &bull; Deploying commit <code className="bg-white/50 dark:bg-black/20 px-1 rounded">#a4b9c1</code></span>
+                    <span className="text-xs text-foreground">Push to main detected &bull; Deploying commit <code className="bg-white/50 dark:bg-black/20 px-1 rounded">#a4b9c1</code></span>
                   </div>
                   <span className="text-sm font-medium text-blue-700 dark:text-blue-300">In Progress (14s)</span>
                 </div>
@@ -173,11 +172,11 @@ export default function FeaturesSection() {
                 <div className="grid grid-cols-2 gap-3 font-sans">
                   <div className="p-3 rounded-lg bg-slate-100 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
                     <div className="text-sm text-slate-600 dark:text-gray-400">DATABASE_URL</div>
-                    <div className="text-xs text-slate-900 dark:text-white font-mono mt-0.5">postgresql://user:••••••••@db.deployx.app</div>
+                    <div className="text-xs text-foreground font-mono mt-0.5">postgresql://user:••••••••@db.deployx.app</div>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-100 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5">
                     <div className="text-sm text-slate-600 dark:text-gray-400">JWT_SECRET</div>
-                    <div className="text-xs text-slate-900 dark:text-white font-mono mt-0.5">
+                    <div className="text-xs text-foreground font-mono mt-0.5">
                       YOUR_STRIPE_KEY
                     </div>
                   </div>
@@ -191,7 +190,7 @@ export default function FeaturesSection() {
                 <Terminal className="w-6 h-6" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
                 Deployment Logs & Environment Variables
               </h3>
 
@@ -230,7 +229,7 @@ export default function FeaturesSection() {
                 <Globe className="w-6 h-6" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
                 Custom Domains & One-Click Rollbacks
               </h3>
 
@@ -269,7 +268,7 @@ export default function FeaturesSection() {
 
                 <div className="p-4 rounded-xl bg-slate-100 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 flex items-center justify-between">
                   <div>
-                    <div className="text-sm font-semibold text-slate-900 dark:text-white">app.yourcompany.com</div>
+                    <div className="text-sm font-semibold text-foreground">app.yourcompany.com</div>
                     <div className="text-xs text-slate-600 dark:text-gray-400 mt-0.5">CNAME cname.deployx.app &bull; Valid SSL</div>
                   </div>
                   <span className="text-xs text-blue-300 bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20 font-medium">
@@ -286,7 +285,7 @@ export default function FeaturesSection() {
 
                   <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-200 dark:bg-white/[0.03]">
                     <div className="text-xs">
-                      <span className="text-slate-900 dark:text-white font-medium">v1.4.2 (Current Active)</span>
+                      <span className="text-foreground font-medium">v1.4.2 (Current Active)</span>
                       <span className="text-slate-500 dark:text-gray-500 block text-sm">Deployed 30m ago</span>
                     </div>
                     <span className="text-xs text-emerald-400">Live</span>

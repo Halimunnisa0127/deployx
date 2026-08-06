@@ -1,11 +1,10 @@
-import React from 'react';
 import { cn } from '../../../lib/utils';
 import { Skeleton } from '../Skeleton';
 
 const variantClasses = {
-  default: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800',
-  panel: 'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50',
-  settings: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 divide-y divide-slate-200 dark:divide-slate-800',
+  default: 'bg-card border border-border',
+  panel: 'bg-muted border border-border',
+  settings: 'bg-card border border-border divide-y divide-border',
 };
 
 const paddingClasses = {
@@ -46,7 +45,6 @@ export default function Card({
   loading = false,
   borderless = false,
   elevated = false,
-  animated,
   className,
   children,
   ...props

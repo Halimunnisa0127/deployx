@@ -1,4 +1,3 @@
-import React from "react";
 import { Clock, Rocket, User } from "lucide-react";
 import Badge from "../../../../components/ui/Badge";
 import EnvironmentBadge from "./EnvironmentBadge";
@@ -26,7 +25,7 @@ export default function DeploymentRow({
     >
       <td className="px-5 py-4 min-w-[200px]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-muted border border-border flex items-center justify-center shrink-0">
             <Rocket className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors" />
           </div>
           <div>

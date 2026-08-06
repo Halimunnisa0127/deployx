@@ -1,34 +1,25 @@
-import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockRepositories, mockBranches, mockCommits } from '../data/mockGithub';
 import Button from '../../../components/ui/Button';
-import { ArrowLeft, CheckCircle2, RotateCcw, AlertTriangle, RefreshCw, GitBranch, Clock, GitCommit } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, AlertTriangle, RefreshCw, GitBranch, GitCommit } from 'lucide-react';
 import Github from '../../../components/ui/GithubIcon';
 import Badge from '../../../components/ui/Badge';
 import BranchesTable from '../components/BranchesTable';
 import CommitsList from '../components/CommitsList';
+import { useRepositoryDetails } from '../hooks/useRepositoryDetails';
 
 export default function RepositoryDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [notification, setNotification] = useState(null);
-
-  // Find target repo from mock dataset
-  const repo = useMemo(() => {
-    return mockRepositories.find((r) => r.id === id) || mockRepositories[0];
-  }, [id]);
-
-  const branches = useMemo(() => mockBranches.filter(b => b.repoId === repo.id), [repo.id]);
-  const commits = useMemo(() => mockCommits.filter(c => c.repoId === repo.id), [repo.id]);
-
-  const handleRefresh = () => {
-    setNotification({
-      type: 'success',
-      message: `Syncing repository ${repo.name}...`,
-    });
-    setTimeout(() => setNotification(null), 4000);
-  };
+  const {
+    repository: repo,
+    branches,
+    commits,
+    notification,
+    setNotification,
+    handleSync: handleRefresh,
+    handleOpenGithub
+  } = useRepositoryDetails(id);
 
   const handleDeploy = (branch) => {
     setNotification({
@@ -41,8 +32,8 @@ export default function RepositoryDetails() {
   if (!repo) {
     return (
       <div className="py-20 text-center space-y-4 font-sans">
-        <div className="text-lg font-bold text-white">Repository Not Found</div>
-        <p className="text-sm text-slate-400">The requested repository ID "{id}" does not exist.</p>
+        <div className="text-lg font-bold text-foreground transition-colors">Repository Not Found</div>
+        <p className="text-sm text-muted-foreground transition-colors">The requested repository ID "{id}" does not exist.</p>
         <Button
           variant="secondary"
           size="sm"
@@ -78,7 +69,7 @@ export default function RepositoryDetails() {
       )}
 
       {/* 1. Header Section */}
-      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 border-b border-slate-800/60">
+      <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pb-6 border-b border-border transition-colors">
         <div className="flex items-start gap-4">
           <Button
             variant="ghost"
@@ -92,16 +83,16 @@ export default function RepositoryDetails() {
           
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <div className="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center shrink-0 border border-slate-700/50 text-slate-300 shadow-inner">
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center shrink-0 border border-border text-muted-foreground shadow-inner transition-colors">
                 <Github className="w-4 h-4" />
               </div>
-              <h1 className="text-2xl font-extrabold text-white tracking-tight">{repo.name}</h1>
+              <h1 className="text-2xl font-bold text-foreground tracking-tight transition-colors">{repo.name}</h1>
               <Badge variant={repo.status === 'connected' ? 'success' : 'warning'}>
                 {repo.status}
               </Badge>
             </div>
-            <p className="text-sm text-slate-400 ml-11">
-              Owned by <strong className="text-slate-300">{repo.owner}</strong> • {repo.visibility} • {repo.language}
+            <p className="text-sm text-muted-foreground ml-11 transition-colors">
+              Owned by <strong className="text-foreground">{repo.owner}</strong> • {repo.visibility} • {repo.language}
             </p>
           </div>
         </div>
@@ -110,20 +101,20 @@ export default function RepositoryDetails() {
           <Button variant="secondary" size="sm" iconLeft={<RefreshCw className="w-4 h-4" />} onClick={handleRefresh}>
             Sync Repository
           </Button>
-          <Button variant="primary" size="sm" onClick={() => window.open(repo.url, '_blank')}>
+          <Button variant="primary" size="sm" onClick={handleOpenGithub}>
             Open in GitHub
           </Button>
         </div>
       </div>
 
       {/* 2. Branches Table Section */}
-      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800/70 bg-slate-50 dark:bg-slate-800/30 flex items-center justify-between">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-border bg-muted flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
+            <h3 className="text-base font-bold text-foreground flex items-center gap-2">
               <GitBranch className="w-4 h-4 text-indigo-400" /> Repository Branches
             </h3>
-            <p className="text-xs text-slate-400 mt-1">Manage and deploy specific branches.</p>
+            <p className="text-xs text-muted-foreground mt-1">Manage and deploy specific branches.</p>
           </div>
         </div>
         
@@ -133,12 +124,12 @@ export default function RepositoryDetails() {
       </div>
 
       {/* 3. Recent Commits Section */}
-      <div className="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800/70 bg-slate-50 dark:bg-slate-800/30">
-          <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2">
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-border bg-muted">
+          <h3 className="text-base font-bold text-foreground flex items-center gap-2">
             <GitCommit className="w-4 h-4 text-indigo-400" /> Recent Commits
           </h3>
-          <p className="text-xs text-slate-400 mt-1">Timeline of the latest code changes pushed to this repository.</p>
+          <p className="text-xs text-muted-foreground mt-1">Timeline of the latest code changes pushed to this repository.</p>
         </div>
         
         <div className="p-4">

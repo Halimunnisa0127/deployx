@@ -1,7 +1,6 @@
 import RouteErrorBoundary from "./RouteErrorBoundary";
-import React, { Suspense, lazy } from "react";
+
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home";
 import AuthLayout from "../layouts/AuthLayout";
@@ -17,27 +16,10 @@ import { Logs } from "../features/logs";
 import { Github, RepositoryDetails } from "../features/github";
 import { UsagePage } from "../features/usage";
 import PrivateRoute from "../routes/PrivateRoute";
-import PageLoader from "../components/ui/PageLoader";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminRoute from "../routes/AdminRoute";
 
-// Lazy-loaded Admin Modules
-const AdminDashboardPage = lazy(() => import("../features/admin/pages/AdminDashboardPage"));
-const UsersPage = lazy(() => import("../features/admin/users/pages/UsersPage"));
-const ProjectsPage = lazy(() => import("../features/admin/projects/pages/ProjectsPage"));
-const AdminDeploymentsPage = lazy(() => import("../features/admin/deployments/pages/DeploymentsPage"));
-const AdminDomainsPage = lazy(() => import("../features/admin/domains/pages/DomainsPage"));
-const AdminPlatformLogsPage = lazy(() => import("../features/admin/logs/pages/PlatformLogsPage"));
-const AnalyticsDashboardPage = lazy(() => import("../features/admin/analytics/pages/AnalyticsDashboardPage"));
-const SystemHealthPage = lazy(() => import("../features/admin/system-health/pages/SystemHealthPage"));
-const PlatformSettingsPage = lazy(() => import("../features/admin/platform-settings/pages/PlatformSettingsPage"));
-
-// Suspense Wrapper Helper
-const LazyElement = ({ children }) => (
-  <Suspense fallback={<PageLoader />}>
-    {children}
-  </Suspense>
-);
+import { AdminDashboardPage, UsersPage, ProjectsPage, AdminDeploymentsPage, AdminDomainsPage, AdminPlatformLogsPage, AnalyticsDashboardPage, SystemHealthPage, PlatformSettingsPage, LazyElement } from "./lazyAdmin";
 
 const router = createBrowserRouter([
   {

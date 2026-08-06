@@ -1,5 +1,6 @@
 import { Gauge, Wifi, HardDrive, Clock, ArrowRight, Zap } from 'lucide-react';
 import Card from '../../../components/ui/Card';
+import { Progress } from '../../../components/ui';
 import { Link } from 'react-router-dom';
 import { MOCK_USAGE_SUMMARY } from '../data/mockDashboardData';
 
@@ -48,20 +49,20 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
   return (
     <Link to="/dashboard/usage" className="block group focus:outline-none focus:ring-2 focus:ring-indigo-500/80 rounded-[18px] transition-all">
       <Card
-        style={{ maxWidth: '100%', padding: '20px 24px' }}
+        className="max-w-full py-5 px-6"
         className="group-hover:-translate-y-[3px] group-hover:border-indigo-500/40 dark:group-hover:border-indigo-500/30"
       >
       {/* Header */}
       <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-white/5 mb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200/60 dark:from-slate-800/80 dark:to-slate-800/40 text-slate-500 dark:text-slate-400 ring-1 ring-slate-200/50 dark:ring-white/5">
+          <div className="p-2 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200/60 dark:from-slate-800/80 dark:to-slate-800/40 text-muted-foreground ring-1 ring-slate-200/50 dark:ring-white/5">
             <Gauge className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+            <h2 className="text-lg font-semibold text-foreground tracking-tight">
               Infrastructure Usage
             </h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-muted-foreground">
               Monthly resource consumption
             </p>
           </div>
@@ -91,7 +92,7 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
               {/* Label + Progress */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 truncate">
+                  <span className="text-xs font-semibold text-foreground truncate">
                     {label}
                   </span>
                   <span className={`text-xs font-bold font-mono tabular-nums ${
@@ -104,12 +105,11 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
                 </div>
 
                 {/* Progress Bar */}
-                <div className="h-1.5 w-full bg-slate-200/70 dark:bg-slate-800 rounded-full overflow-hidden">
-                  <div
-                    className={`h-full ${isHigh ? 'bg-red-500' : colors.bar} rounded-full transition-all duration-700 ease-out`}
-                    style={{ width: `${percent}%` }}
-                  />
-                </div>
+                <Progress 
+                  percent={percent} 
+                  color={isHigh ? 'bg-red-500' : colors.bar} 
+                  height="h-1.5" 
+                />
               </div>
             </div>
           );
@@ -119,7 +119,7 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
       {/* Footer Link */}
       <div className="mt-4 pt-3 border-t border-slate-200/60 dark:border-white/5">
         <div
-          className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200"
+          className="flex items-center justify-between text-xs font-semibold text-muted-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200"
         >
           <span>View Full Usage</span>
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />

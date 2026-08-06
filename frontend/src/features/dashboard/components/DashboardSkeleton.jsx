@@ -5,7 +5,7 @@ export function StatCardsSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
       {[1, 2, 3, 4].map((idx) => (
-        <Card key={idx} style={{ maxWidth: '100%', padding: '20px 24px' }}>
+        <Card key={idx} className="max-w-full py-5 px-6">
           <div className="flex items-center justify-between gap-4">
             <div className="space-y-2 flex-1">
               <Skeleton width="60%" height="14px" />
@@ -22,7 +22,7 @@ export function StatCardsSkeleton() {
 
 export function RecentDeploymentsSkeleton() {
   return (
-    <Card style={{ maxWidth: '100%', padding: '24px' }}>
+    <Card className="max-w-full p-6">
       <div className="flex items-center justify-between pb-4 border-b border-slate-800/80 mb-4">
         <Skeleton width="180px" height="20px" />
         <Skeleton width="60px" height="14px" />
@@ -48,7 +48,7 @@ export function RecentDeploymentsSkeleton() {
 
 export function SystemStatusSkeleton() {
   return (
-    <Card style={{ maxWidth: '100%', padding: '24px' }}>
+    <Card className="max-w-full p-6">
       <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800/80 mb-4">
         <Skeleton width="140px" height="20px" />
         <Skeleton width="100px" height="18px" borderRadius="999px" />
@@ -74,7 +74,7 @@ export function SystemStatusSkeleton() {
 
 export function ActivityTimelineSkeleton() {
   return (
-    <Card style={{ maxWidth: '100%', padding: '24px' }}>
+    <Card className="max-w-full p-6">
       <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800/80 mb-4">
         <Skeleton width="150px" height="20px" />
         <Skeleton width="50px" height="14px" />
@@ -97,7 +97,7 @@ export function ActivityTimelineSkeleton() {
 
 export function UsageSummarySkeleton() {
   return (
-    <Card style={{ maxWidth: '100%', padding: '24px' }}>
+    <Card className="max-w-full p-6">
       <div className="flex items-center justify-between pb-4 border-b border-slate-200/80 dark:border-slate-800/80 mb-4">
         <Skeleton width="160px" height="20px" />
         <Skeleton width="80px" height="14px" />

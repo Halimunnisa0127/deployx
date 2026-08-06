@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import UsersHeader from "../components/UsersHeader";
 import UsersStatisticsCards from "../components/UsersStatisticsCards";
 import UsersFilters from "../components/UsersFilters";
@@ -16,40 +16,17 @@ import {
   NoSuspendedUsersEmptyState,
 } from "../components/UsersEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
-import {
-  getUsers,
-  deleteUser,
-  suspendUser,
-  activateUser,
-  resetPassword,
-  changeRole,
-} from "../services/users.service";
+import { useUsers } from "../hooks/useUsers";
 
 export default function UsersPage() {
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const { users, loading, actions, table } = useUsers();
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const data = await getUsers();
-      setUsers(data);
-    } catch (error) {
-      console.error("Failed to load users:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const activeFilter = table.filters.state.status || "all";
+  const setActiveFilter = (val) => table.filters.update("status", val === "all" ? "" : val);
 
   const counts = useMemo(() => {
     const res = {
@@ -67,25 +44,6 @@ export default function UsersPage() {
     return res;
   }, [users]);
 
-  const filteredUsers = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    return users.filter((u) => {
-      if (activeFilter === "active" && u.status !== "active") return false;
-      if (activeFilter === "suspended" && u.status !== "suspended")
-        return false;
-      if (activeFilter === "admin" && u.role !== "admin") return false;
-      if (activeFilter === "developer" && u.role !== "developer") return false;
-      if (activeFilter === "viewer" && u.role !== "viewer") return false;
-      if (query) {
-        return (
-          u.name.toLowerCase().includes(query) ||
-          u.email.toLowerCase().includes(query)
-        );
-      }
-      return true;
-    });
-  }, [users, activeFilter, searchQuery]);
-
   const handleAddUser = () => {
     console.log("Add User Triggered");
   };
@@ -101,21 +59,19 @@ export default function UsersPage() {
 
   const handleChangeRole = async (user) => {
     const newRole = user.role === "admin" ? "developer" : "admin";
-    await changeRole(user.id, newRole);
-    fetchData(); // Simplistic re-fetch
+    await actions.changeRole(user.id, newRole);
   };
 
   const handleToggleStatus = async (user) => {
     if (user.status === "suspended") {
-      await activateUser(user.id);
+      await actions.activateUser(user.id);
     } else {
-      await suspendUser(user.id);
+      await actions.suspendUser(user.id);
     }
-    fetchData();
   };
 
   const handleResetPassword = async (user) => {
-    await resetPassword(user.id);
+    await actions.resetPassword(user.id);
     alert(`Password reset link sent to ${user.email}`);
   };
 
@@ -126,18 +82,14 @@ export default function UsersPage() {
 
   const handleConfirmDelete = async () => {
     if (userToDelete) {
-      await deleteUser(userToDelete.id);
+      await actions.deleteUser(userToDelete.id);
       setIsDeleteModalOpen(false);
       setUserToDelete(null);
       if (selectedUser?.id === userToDelete.id) {
         setIsDrawerOpen(false);
       }
-      fetchData();
     }
   };
-
-  const hasActiveFilter =
-    searchQuery.trim().length > 0 || activeFilter !== "all";
 
   const actionHandlers = {
     onView: handleRowClick,
@@ -168,9 +120,9 @@ export default function UsersPage() {
         />
 
         <SearchBar
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onClear={() => setSearchQuery("")}
+          value={table.search.query}
+          onChange={(e) => table.search.setQuery(e.target.value)}
+          onClear={() => table.search.setQuery("")}
           placeholder="Search by name or email..."
           shortcut="⌘K"
           size="md"
@@ -183,7 +135,7 @@ export default function UsersPage() {
         <UsersTableSkeleton />
       ) : users.length === 0 ? (
         <NoUsersEmptyState onAddUser={handleAddUser} />
-      ) : filteredUsers.length === 0 ? (
+      ) : table.tableData.length === 0 ? (
         activeFilter === "active" ? (
           <NoActiveUsersEmptyState onClear={() => setActiveFilter("all")} />
         ) : activeFilter === "suspended" ? (
@@ -191,14 +143,14 @@ export default function UsersPage() {
         ) : (
           <NoSearchResultsEmptyState
             onClear={() => {
-              setSearchQuery("");
+              table.search.setQuery("");
               setActiveFilter("all");
             }}
           />
         )
       ) : (
         <UsersTable
-          users={filteredUsers}
+          users={table.tableData}
           onRowClick={handleRowClick}
           actionHandlers={actionHandlers}
         />

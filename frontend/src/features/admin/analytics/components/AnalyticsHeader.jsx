@@ -1,5 +1,4 @@
-import React from "react";
-import { BarChart3, Download, RefreshCw } from "lucide-react";
+import { BarChart3, Download, RefreshCw, Filter } from "lucide-react";
 import Button from "../../../../components/ui/Button";
 import DateRangePicker from "./DateRangePicker";
 
@@ -28,7 +27,7 @@ export default function AnalyticsHeader({
           <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
             <BarChart3 className="w-5 h-5 text-indigo-400" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-theme-heading tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Platform Analytics
           </h1>
         </div>
@@ -39,15 +38,39 @@ export default function AnalyticsHeader({
       </div>
 
       <div className="flex flex-wrap items-center gap-3 mt-2 md:mt-0">
-        <DateRangePicker value={dateRange} onChange={setDateRange} />
+        <div className="flex items-center gap-2 mr-2">
+          <input type="checkbox" id="comparePeriod" className="rounded border-slate-300 text-indigo-500 focus:ring-indigo-500 bg-transparent" />
+          <label htmlFor="comparePeriod" className="text-sm text-theme-muted font-medium cursor-pointer">Compare</label>
+        </div>
 
+        <DateRangePicker value={dateRange} onChange={setDateRange} />
+        
+        <Button
+          variant="secondary"
+          iconLeft={<Filter className="w-4 h-4" />}
+          onClick={() => alert("Open Filters Panel")}
+          title="Filters"
+        >
+          Filters
+        </Button>
+        
         <Button
           variant="secondary"
           iconLeft={<Download className="w-4 h-4" />}
-          onClick={onExport}
+          onClick={() => onExport("csv")}
+          title="Export CSV"
         >
-          Export Report
+          CSV
         </Button>
+        <Button
+          variant="secondary"
+          iconLeft={<Download className="w-4 h-4" />}
+          onClick={() => onExport("pdf")}
+          title="Export PDF"
+        >
+          PDF
+        </Button>
+        
         <Button
           variant="primary"
           iconLeft={

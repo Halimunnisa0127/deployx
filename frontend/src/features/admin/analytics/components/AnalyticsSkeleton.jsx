@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "../../../../components/common/Card";
 import Skeleton from "../../../../components/ui/Skeleton";
 
@@ -27,7 +26,7 @@ export function KPISkeleton() {
 
 export function ChartSkeleton() {
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col animate-pulse">
+    <div className="bg-card rounded-2xl border border-border p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col animate-pulse">
 
       <div className="mb-4">
         <Skeleton className="h-6 w-32 mb-2" />
@@ -48,7 +47,7 @@ export function ChartSkeleton() {
 
 export function ListSkeleton() {
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col animate-pulse">
+    <div className="bg-card rounded-2xl border border-border p-5 shadow-sm dark:shadow-lg h-[350px] flex flex-col animate-pulse">
 
       <div className="mb-4">
         <Skeleton className="h-6 w-32 mb-2" />

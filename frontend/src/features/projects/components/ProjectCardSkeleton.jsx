@@ -3,7 +3,7 @@ import Skeleton from '../../../components/ui/Skeleton';
 
 export default function ProjectCardSkeleton() {
   return (
-    <Card className="flex flex-col gap-4 p-6 bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)]">
+    <Card className="flex flex-col gap-4 p-6 bg-card border border-slate-200 dark:border-white/10 rounded-xl shadow-sm dark:shadow-[0_4px_12px_0_rgba(0,0,0,0.3)]">
       {/* Top row */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">

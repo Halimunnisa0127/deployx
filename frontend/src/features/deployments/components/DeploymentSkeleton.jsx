@@ -1,4 +1,3 @@
-import React from 'react';
 import DeploymentCardSkeleton from './DeploymentCardSkeleton';
 
 export default function DeploymentSkeleton({ count = 4 }) {

@@ -20,10 +20,10 @@ export default function EnvironmentVariablesStep({
             <Key className="w-3.5 h-3.5" />
             Step 5 of 6
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
             Environment Variables
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
             Set up key-value pairs for secret tokens, API endpoints, and database connection strings across environments.
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function EnvironmentVariablesStep({
         )}
       </div>
 
-      <div className="border border-slate-200 dark:border-slate-800/90 rounded-2xl bg-slate-50 dark:bg-slate-950/50 overflow-hidden shadow-inner">
+      <div className="border border-border rounded-2xl bg-slate-50 dark:bg-slate-950/50 overflow-hidden shadow-inner">
         {filteredEnvVars.length === 0 ? (
           <div className="p-8 text-center flex flex-col items-center justify-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 text-slate-500 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 flex items-center justify-center">
@@ -69,7 +69,7 @@ export default function EnvironmentVariablesStep({
               <h4 className="text-sm font-bold text-slate-900 dark:text-slate-200">
                 {envSearchQuery ? 'No matching variables found' : 'No Environment Variables'}
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 {envSearchQuery
                   ? `No variables match "${envSearchQuery}". Try clearing search query.`
                   : 'Add environment secrets to configure your build or runtime environment.'}
@@ -89,14 +89,14 @@ export default function EnvironmentVariablesStep({
           <div className="overflow-x-auto max-h-[300px] scrollbar-thin scrollbar-thumb-slate-800">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800/80 bg-slate-100 dark:bg-slate-900/80 text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-border bg-muted text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                   <th className="py-3 px-4 w-5/12">Key</th>
                   <th className="py-3 px-4 w-4/12">Value</th>
                   <th className="py-3 px-4 w-3/12">Environment Target</th>
                   <th className="py-3 px-3 text-right w-12">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200 dark:divide-slate-800/60 text-xs">
+              <tbody className="divide-y divide-border text-xs">
                 {filteredEnvVars.map((env) => (
                   <tr key={env.id} className="hover:bg-slate-100 dark:hover:bg-slate-900/40 transition-colors group">
                     <td className="py-2.5 px-4 align-top">

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import BuildLogToolbar from './BuildLogToolbar';
 import BuildLogLine from './BuildLogLine';
 import BuildLogsEmptyState from './BuildLogsEmptyState';
 import BuildLogsSkeleton from './BuildLogsSkeleton';
-import { CheckCircle2, AlertTriangle, XCircle, Clock, RotateCcw } from 'lucide-react';
+import { AlertTriangle, XCircle, Clock, RotateCcw } from 'lucide-react';
 
 const DEFAULT_DUMMY_LOGS = [
   { id: 1, type: 'info', time: '00:00:01', text: 'Initializing DeployX Build Environment (v20.11.0 node)' },
@@ -94,43 +94,43 @@ function BuildLogsTerminal({
       {/* SECTION 5 Summary Badges Above Terminal (Ready, Errors, Warnings, Duration) */}
       <div className="flex items-center justify-between gap-3 px-1 select-none flex-wrap">
         <div className="flex items-center gap-2 font-mono text-xs">
-          <span className="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
             Ready
           </span>
 
           <span
             className={`px-2.5 py-1 rounded-md border text-xs font-semibold flex items-center gap-1.5 ${
               errorCount > 0
-                ? 'bg-rose-500/15 text-rose-300 border-rose-500/30'
-                : 'bg-slate-900 text-slate-400 border-slate-800'
+                ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
+                : 'bg-muted text-muted-foreground border-border'
             }`}
           >
-            <XCircle className={`w-3.5 h-3.5 ${errorCount > 0 ? 'text-rose-400' : 'text-slate-500'}`} />
+            <XCircle className={`w-3.5 h-3.5 ${errorCount > 0 ? 'text-rose-500' : 'text-muted-foreground'}`} />
             {errorCount} {errorCount === 1 ? 'Error' : 'Errors'}
           </span>
 
           <span
             className={`px-2.5 py-1 rounded-md border text-xs font-semibold flex items-center gap-1.5 ${
               warningCount > 0
-                ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                : 'bg-slate-900 text-slate-400 border-slate-800'
+                ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                : 'bg-muted text-muted-foreground border-border'
             }`}
           >
-            <AlertTriangle className={`w-3.5 h-3.5 ${warningCount > 0 ? 'text-amber-400' : 'text-slate-500'}`} />
+            <AlertTriangle className={`w-3.5 h-3.5 ${warningCount > 0 ? 'text-amber-500' : 'text-muted-foreground'}`} />
             {warningCount} {warningCount === 1 ? 'Warning' : 'Warnings'}
           </span>
         </div>
 
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 text-xs font-mono font-medium">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-muted text-foreground border border-border text-xs font-mono font-medium">
           <Clock className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
-          Duration: <strong className="text-slate-900 dark:text-white">{duration}</strong>
+          Duration: <strong className="text-foreground">{duration}</strong>
         </span>
       </div>
 
       {/* Terminal Container */}
       <div
-        className={`rounded-2xl border border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#050608] shadow-sm dark:shadow-2xl overflow-hidden font-mono transition-all duration-200 ${
+        className={`rounded-2xl border border-border bg-card shadow-sm dark:shadow-2xl overflow-hidden font-mono transition-all duration-200 ${
           isFullscreen
             ? 'fixed inset-4 z-50 flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.9)] max-h-none border-indigo-500/50'
             : `relative ${className}`
@@ -158,7 +158,7 @@ function BuildLogsTerminal({
         <div 
           ref={scrollRef}
           style={{ maxHeight: isFullscreen ? 'calc(100vh - 120px)' : maxHeight }}
-          className="p-5 overflow-y-auto overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 text-xs leading-relaxed space-y-1 text-slate-300 flex-1"
+          className="p-5 overflow-y-auto overflow-x-auto scrollbar-thin scrollbar-thumb-slate-800 text-xs leading-relaxed space-y-1 text-foreground flex-1"
         >
           {isLoading ? (
             <BuildLogsSkeleton count={6} />
@@ -196,20 +196,20 @@ function BuildLogsTerminal({
         </div>
 
         {/* Terminal Footer */}
-        <div className="px-5 py-3 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#08090d] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 font-sans select-none">
+        <div className="px-5 py-3 border-t border-border bg-muted flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted-foreground font-sans select-none">
           <div className="flex items-center gap-3">
-            <span className="text-emerald-500 dark:text-emerald-400 flex items-center gap-1.5 font-semibold text-xs">
+            <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold text-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
               Ready
             </span>
-            <span className="text-slate-400 dark:text-slate-700">•</span>
-            <span>Env: <strong className="text-slate-700 dark:text-slate-300">{environment}</strong></span>
-            {deploymentId && <span>• ID: <strong className="text-slate-600 dark:text-slate-400 font-mono">{deploymentId}</strong></span>}
+            <span className="text-muted-foreground">•</span>
+            <span>Env: <strong className="text-foreground">{environment}</strong></span>
+            {deploymentId && <span>• ID: <strong className="text-muted-foreground font-mono">{deploymentId}</strong></span>}
           </div>
           
-          <div className="flex items-center gap-3 text-xs font-mono text-slate-500">
-            <span>Terminal: <strong className="text-slate-400">bash / zsh</strong></span>
-            <span>Encoding: <strong className="text-slate-400">UTF-8</strong></span>
+          <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
+            <span>Terminal: <strong className="text-foreground">bash / zsh</strong></span>
+            <span>Encoding: <strong className="text-foreground">UTF-8</strong></span>
           </div>
         </div>
       </div>

@@ -158,7 +158,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   {domains.length} Total
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Configure production system URLs and custom subdomains for your application.
               </p>
             </div>
@@ -210,10 +210,10 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
             >
               <div className="space-y-4">
                 {/* Row 1: Domain Name, Badges & Link */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-slate-200 dark:border-slate-800/60">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3 border-b border-border">
                   <div className="space-y-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                         {domain.type}
                       </span>
                       {domain.isPrimary && (
@@ -230,7 +230,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                       className="text-base font-bold text-slate-900 hover:text-indigo-600 dark:text-slate-100 dark:hover:text-indigo-400 transition-colors inline-flex items-center gap-2 truncate"
                     >
                       <span className="truncate">{domain.name}</span>
-                      <ExternalLink className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
+                      <ExternalLink className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
                     </a>
                   </div>
 
@@ -238,7 +238,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                   <div className="flex items-center gap-2.5 flex-wrap flex-shrink-0">
                     {/* SSL Status Badge */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">SSL:</span>
+                      <span className="text-sm text-muted-foreground font-medium">SSL:</span>
                       <Badge variant={sslVariant} dot={true}>
                         SSL {domain.sslStatus}
                       </Badge>
@@ -246,7 +246,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
 
                     {/* DNS Verification Badge */}
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm text-slate-500 dark:text-slate-400 font-medium">DNS:</span>
+                      <span className="text-sm text-muted-foreground font-medium">DNS:</span>
                       <Badge variant={dnsVariant} dot={true}>
                         DNS {domain.dnsStatus}
                       </Badge>
@@ -256,34 +256,34 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                   <div className="space-y-1">
-                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
-                      <Calendar className="w-3 h-3 text-slate-400 dark:text-slate-500" /> Created Date
+                    <span className="text-muted-foreground block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                      <Calendar className="w-3 h-3 text-muted-foreground" /> Created Date
                     </span>
-                    <span className="text-slate-700 dark:text-slate-200 font-medium block">
+                    <span className="text-foreground font-medium block">
                       {domain.createdDate}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-slate-400 dark:text-slate-500" /> Last Checked
+                    <span className="text-muted-foreground block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-muted-foreground" /> Last Checked
                     </span>
-                    <span className="text-slate-700 dark:text-slate-200 font-medium block">
+                    <span className="text-foreground font-medium block">
                       {domain.lastChecked}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
-                      <ArrowRightLeft className="w-3 h-3 text-slate-400 dark:text-slate-500" /> Redirect Status
+                    <span className="text-muted-foreground block text-sm uppercase tracking-wider font-medium inline-flex items-center gap-1">
+                      <ArrowRightLeft className="w-3 h-3 text-muted-foreground" /> Redirect Status
                     </span>
-                    <span className="text-slate-700 dark:text-slate-200 font-medium block truncate">
+                    <span className="text-foreground font-medium block truncate">
                       {domain.redirectStatus}
                     </span>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-slate-500 dark:text-slate-400 block text-sm uppercase tracking-wider font-medium">
+                    <span className="text-muted-foreground block text-sm uppercase tracking-wider font-medium">
                       CNAME Record Target
                     </span>
                     <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block truncate">
@@ -293,8 +293,8 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
                 </div>
 
                 {/* Row 3: Action Buttons Footer */}
-                <div className="pt-3 border-t border-slate-200 dark:border-slate-800/60 flex flex-wrap items-center justify-between gap-3">
-                  <span className="text-sm text-slate-500 dark:text-slate-400">
+                <div className="pt-3 border-t border-border flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-sm text-muted-foreground">
                     Point CNAME to <code className="text-slate-900 dark:text-slate-200 font-mono">{domain.cnameTarget}</code> to complete routing.
                   </span>
 
@@ -370,7 +370,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
           />
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">
+            <label className="block text-xs font-semibold text-foreground mb-2">
               Routing / Redirect Behavior
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -401,14 +401,14 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
           </div>
 
           <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-sm text-slate-600 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-400 space-y-1">
-            <span className="font-semibold text-slate-700 dark:text-slate-300 block">DNS Setup Instructions:</span>
+            <span className="font-semibold text-foreground block">DNS Setup Instructions:</span>
             <p>Create a CNAME record with your DNS provider pointing your domain to:</p>
             <code className="text-indigo-600 dark:text-indigo-400 font-mono block bg-slate-100 border-slate-200 dark:bg-slate-950 p-1.5 rounded border dark:border-slate-800">
               cname.deployx.app
             </code>
           </div>
 
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-border flex items-center justify-end gap-3">
             <Button
               type="button"
               variant="secondary"

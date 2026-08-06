@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bell, Check, Trash2, Settings } from 'lucide-react';
 import Button from '../../../components/ui/Button';
 
@@ -10,7 +9,7 @@ export default function NotificationHeader({
   onSettingsClick,
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/60 dark:bg-slate-900/60 p-6 rounded-2xl border border-slate-200 dark:border-slate-800/80 shadow-xl backdrop-blur-xl transition-all">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white/60 dark:bg-slate-900/60 p-6 rounded-2xl border border-border shadow-xl backdrop-blur-xl transition-all">
       <div className="flex items-center gap-4">
         <div className="relative w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/10">
           <Bell className="w-6 h-6 text-indigo-400" />
@@ -21,10 +20,10 @@ export default function NotificationHeader({
           )}
         </div>
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             Notifications
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
             You have <span className="font-semibold text-indigo-500 dark:text-indigo-400 font-mono">{unreadCount} unread</span> notification{unreadCount === 1 ? '' : 's'}
           </p>
         </div>
@@ -62,7 +61,7 @@ export default function NotificationHeader({
           iconOnly
           onClick={onSettingsClick}
           aria-label="Notification Preferences"
-          className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/60"
+          className="text-muted-foreground hover:text-slate-900 dark:hover:text-slate-200 border border-border bg-white/60 dark:bg-slate-900/60"
         >
           <Settings className="w-4 h-4" />
         </Button>

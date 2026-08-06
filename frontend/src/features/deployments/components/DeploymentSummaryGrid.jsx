@@ -1,9 +1,7 @@
-import React from 'react';
 import Badge from '../../../components/ui/Badge';
 import { 
   GitBranch, 
   Clock, 
-  ExternalLink, 
   User, 
   Cpu, 
   Globe, 
@@ -54,8 +52,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
   const statusIcon = STATUS_ICON_MAP[status] || STATUS_ICON_MAP.queued;
 
   return (
-    <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 shadow-sm space-y-6">
-      <h3 className="text-base font-bold text-slate-800 dark:text-white flex items-center gap-2 border-b border-slate-200 dark:border-slate-800/60 pb-3">
+    <div className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-6">
+      <h3 className="text-base font-bold text-foreground flex items-center gap-2 border-b border-border pb-3">
         Deployment Overview
       </h3>
 
@@ -64,7 +62,7 @@ export default function DeploymentSummaryGrid({ deployment }) {
         
         {/* Item 1: Status */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Status</span>
+          <span className="text-xs font-medium text-muted-foreground">Status</span>
           <div className="flex items-center gap-2 pt-0.5">
             {statusIcon}
             <Badge variant={statusVariant}>
@@ -75,13 +73,13 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 2: Git Branch & Commit Hash */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Git Branch & Commit</span>
+          <span className="text-xs font-medium text-muted-foreground">Git Branch & Commit</span>
           <div className="flex items-center gap-2 pt-0.5 font-mono text-xs">
-            <span className="text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 flex items-center gap-1">
+            <span className="text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 flex items-center gap-1">
               <GitBranch className="w-3 h-3" />
               {branch}
             </span>
-            <span className="text-slate-300 bg-slate-800 px-2 py-0.5 rounded border border-slate-700/60">
+            <span className="text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border">
               {commitHash}
             </span>
           </div>
@@ -89,13 +87,13 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 3: Environment & Framework */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Environment & Framework</span>
+          <span className="text-xs font-medium text-muted-foreground">Environment & Framework</span>
           <div className="flex items-center gap-2 pt-0.5">
             <Badge variant={envVariant} dot={false}>
               {environment}
             </Badge>
-            <span className="text-xs font-medium text-slate-300 bg-slate-800/60 px-2 py-0.5 rounded border border-slate-700/50 flex items-center gap-1">
-              <Cpu className="w-3 h-3 text-indigo-400" />
+            <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border flex items-center gap-1">
+              <Cpu className="w-3 h-3 text-indigo-500 dark:text-indigo-400" />
               {framework}
             </span>
           </div>
@@ -103,8 +101,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 4: Build Duration */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Build Duration</span>
-          <div className="text-sm font-semibold text-white flex items-center gap-1.5 pt-0.5">
+          <span className="text-xs font-medium text-muted-foreground">Build Duration</span>
+          <div className="text-sm font-semibold text-foreground flex items-center gap-1.5 pt-0.5">
             <Clock className="w-3.5 h-3.5 text-slate-400" />
             {duration}
           </div>
@@ -112,13 +110,13 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 5: Deployment URL */}
         <div className="space-y-1 sm:col-span-2">
-          <span className="text-xs font-medium text-slate-400">Deployment URL</span>
+          <span className="text-xs font-medium text-muted-foreground">Deployment URL</span>
           <div className="pt-0.5">
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-400 hover:text-indigo-300 hover:underline"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline"
             >
               <Globe className="w-4 h-4" />
               <span>{url}</span>
@@ -129,8 +127,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 6: Triggered By */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Triggered By</span>
-          <div className="text-sm font-medium text-slate-200 flex items-center gap-1.5 pt-0.5">
+          <span className="text-xs font-medium text-muted-foreground">Triggered By</span>
+          <div className="text-sm font-medium text-foreground flex items-center gap-1.5 pt-0.5">
             <User className="w-3.5 h-3.5 text-slate-400" />
             {triggeredBy}
           </div>
@@ -138,8 +136,8 @@ export default function DeploymentSummaryGrid({ deployment }) {
 
         {/* Item 7: Deployed At */}
         <div className="space-y-1">
-          <span className="text-xs font-medium text-slate-400">Deployment Time</span>
-          <div className="text-sm font-medium text-slate-200 pt-0.5">
+          <span className="text-xs font-medium text-muted-foreground">Deployment Time</span>
+          <div className="text-sm font-medium text-foreground pt-0.5">
             {deployedAt}
           </div>
         </div>
@@ -147,9 +145,9 @@ export default function DeploymentSummaryGrid({ deployment }) {
       </div>
 
       {/* Commit Message Box */}
-      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/60 text-left space-y-1">
-        <span className="text-sm font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Commit Message</span>
-        <p className="text-sm font-mono text-slate-700 dark:text-slate-200 leading-relaxed">
+      <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-border text-left space-y-1">
+        <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Commit Message</span>
+        <p className="text-sm font-mono text-foreground leading-relaxed">
           {commitMessage}
         </p>
       </div>

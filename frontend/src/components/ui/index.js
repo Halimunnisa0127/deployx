@@ -11,6 +11,8 @@ export * from './Skeleton';
 export * from './Stack';
 export * from './StatCard';
 export * from './Typography';
+export { default as Progress } from './Progress';
+export * from './Timeline';
 
 // Re-export other existing components here as needed
 export { default as Button } from './Button';

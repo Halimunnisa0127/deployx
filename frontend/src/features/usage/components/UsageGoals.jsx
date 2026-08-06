@@ -55,8 +55,8 @@ function GoalCard({ resource }) {
   return (
     <Card
       style={{ maxWidth: '100%', padding: '16px' }}
-      className={`border border-slate-200/80 dark:border-white/10 rounded-2xl
-                  backdrop-blur-xl bg-white/80 dark:bg-slate-900/70
+      className={`border border-border rounded-2xl
+                  backdrop-blur-xl bg-card
                   shadow-sm dark:shadow-xl flex flex-col gap-3
                   hover:-translate-y-1 hover:shadow-lg
                   transition-all duration-300 group`}
@@ -67,7 +67,7 @@ function GoalCard({ resource }) {
           <div className={`p-1.5 rounded-lg border shrink-0 ${cfg.iconBg} transition-transform duration-300 group-hover:scale-110`}>
             <Icon className="w-4 h-4" />
           </div>
-          <span className="text-base font-extrabold tracking-wide text-slate-700 dark:text-slate-300 uppercase">
+          <span className="text-base font-extrabold tracking-wide text-foreground uppercase">
             {cfg.label}
           </span>
         </div>
@@ -79,31 +79,31 @@ function GoalCard({ resource }) {
       </div>
 
       {/* ── Goal Tracker ───────────────────────────────────────── */}
-      <div className="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/60 mt-1">
-        <div className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5 flex items-center gap-1">
+      <div className="p-2.5 bg-muted rounded-xl border border-border mt-1">
+        <div className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-0.5 flex items-center gap-1">
           <Target className="w-3 h-3" />
           Goal
         </div>
-        <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
+        <div className="text-sm font-bold text-foreground">
           Stay below {goalLimit} {resource.unit}
         </div>
       </div>
 
       {/* ── Current & Forecast grid ────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-3 pt-1 border-t border-slate-100 dark:border-white/5">
+      <div className="grid grid-cols-2 gap-3 pt-1 border-t border-border">
         <div>
-          <div className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5">
+          <div className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-0.5">
             Current
           </div>
-          <div className="text-xl font-black text-slate-900 dark:text-white tracking-tight flex items-baseline gap-1">
-            {currentVal} <span className="text-sm font-semibold text-slate-500">{resource.unit}</span>
+          <div className="text-xl font-black text-foreground tracking-tight flex items-baseline gap-1">
+            {currentVal} <span className="text-sm font-semibold text-muted-foreground">{resource.unit}</span>
           </div>
         </div>
         <div className="relative">
-          <div className="absolute -left-2 top-1/2 -translate-y-1/2 text-slate-300 dark:text-slate-600 hidden sm:block">
+          <div className="absolute -left-2 top-1/2 -translate-y-1/2 text-muted-foreground hidden sm:block">
             <ArrowRight className="w-3 h-3" />
           </div>
-          <div className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold tracking-wider mb-0.5 sm:pl-2">
+          <div className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-0.5 sm:pl-2">
             Forecast
           </div>
           <div className="text-xl font-black text-indigo-600 dark:text-indigo-400 tracking-tight flex items-baseline gap-1 sm:pl-2">
@@ -129,10 +129,10 @@ export default function UsageGoals({ goals = [] }) {
             <Target className="w-3.5 h-3.5" />
           </div>
           <div>
-            <h2 className="text-sm font-extrabold text-slate-900 dark:text-slate-100 leading-none">
+            <h2 className="text-sm font-extrabold text-foreground leading-none">
               Goal Tracking
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               Monitor current usage and EOM forecast against personalized targets
             </p>
           </div>

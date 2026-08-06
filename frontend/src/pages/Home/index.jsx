@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Rocket, Menu, X, Sun, Moon } from 'lucide-react';
 import RocketBackground from '../../components/ui/RocketBackground';
@@ -48,7 +48,7 @@ export default function Home() {
               <div className="w-9 h-9 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400">
                 <Rocket className="w-5 h-5 text-blue-500" />
               </div>
-              <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">DeployX</span>
+              <span className="text-xl font-bold tracking-tight text-foreground">DeployX</span>
             </Link>
 
             {/* Desktop Navigation Links */}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Eye, Clock, Calendar } from "lucide-react";
 import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
@@ -17,8 +17,8 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
   }
 
   return (
-    <div className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden shadow-lg">
-      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
+    <div className="bg-card rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden shadow-lg">
+      <div className="p-5 border-b border-border flex items-center justify-between">
         <h3 className="text-lg font-bold text-theme-heading tracking-tight">
           Recent Deployments
         </h3>
@@ -26,7 +26,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
 
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm whitespace-nowrap">
-          <thead className="bg-slate-50/90 dark:bg-slate-900/90 text-theme-muted border-b border-slate-200 dark:border-slate-800/80 sticky top-0">
+          <thead className="bg-slate-50/90 dark:bg-slate-900/90 text-theme-muted border-b border-border sticky top-0">
             <tr>
               <th className="px-4 py-3 font-medium whitespace-nowrap">Project</th>
               <th className="px-4 py-3 font-medium whitespace-nowrap">Status</th>
@@ -36,7 +36,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
               <th className="px-4 py-3 font-medium text-right whitespace-nowrap">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 dark:divide-slate-800/50">
+          <tbody className="divide-y divide-border">
             {paginatedData.map((dep) => (
                 <tr
                   key={dep.id}
@@ -59,7 +59,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                   <span className="text-theme-secondary">{dep.region}</span>
                 </td>
                 <td className="px-5 py-4">
-                  <span className="inline-flex items-center gap-1.5 text-theme-secondary bg-slate-100 dark:bg-slate-800/60 px-2.5 py-1 rounded border border-slate-200 dark:border-slate-700/40 font-mono text-[11px]">
+                  <span className="inline-flex items-center gap-1.5 text-theme-secondary bg-muted px-2.5 py-1 rounded border border-border font-mono text-[11px]">
                     <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
                     {dep.duration}
                   </span>
@@ -74,8 +74,8 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    iconLeft={<Eye className="w-4 h-4 text-indigo-400" />}
-                    className="text-slate-300 hover:text-white"
+                    iconLeft={<Eye className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />}
+                    className="text-theme-secondary hover:text-indigo-600 dark:hover:text-indigo-400"
                   >
                     View
                   </Button>
@@ -88,7 +88,7 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="px-5 py-4 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-sm">
+        <div className="px-5 py-4 border-t border-border flex items-center justify-between text-sm">
           <span className="text-theme-muted">
             Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
             {Math.min(currentPage * itemsPerPage, deployments.length)} of{" "}

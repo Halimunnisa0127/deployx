@@ -207,7 +207,7 @@ export default function CreateProjectWizard() {
     const trimmedName = projectName.trim();
     if (!trimmedName) return;
 
-    let finalFramework = 'React';
+    let finalFramework;
     if (selectedFramework === 'auto') {
       finalFramework = detectedFrameworkName;
     } else {
@@ -323,7 +323,7 @@ export default function CreateProjectWizard() {
         {!isDeployingProgress && (
           <div className="flex items-center gap-4">
             <div className="flex flex-col items-end sm:items-center">
-              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+              <span className="text-xs font-semibold text-muted-foreground">
                 Step <span className="text-blue-600 dark:text-blue-400 font-bold">{currentStep}</span> of 6
               </span>
               <div className="w-32 sm:w-48 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
@@ -460,7 +460,7 @@ export default function CreateProjectWizard() {
             )}
 
             {/* Footer Action Buttons */}
-            <div className="pt-8 mt-6 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between gap-4">
+            <div className="pt-8 mt-6 border-t border-border flex items-center justify-between gap-4">
               {currentStep > 1 ? (
                 <Button
                   type="button"

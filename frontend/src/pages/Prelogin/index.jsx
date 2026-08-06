@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card } from '../../components/common/Card';
 import { Image } from '../../components/common/Image';
 import { Footer } from '../../components/layout/Footer';

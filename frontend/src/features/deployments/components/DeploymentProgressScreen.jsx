@@ -1,20 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Terminal,
   Check,
   Loader2,
   XCircle,
-  Globe,
   ExternalLink,
   Copy,
   CheckCircle2,
   GitBranch,
   Folder,
-  ArrowRight,
   RotateCcw,
-  Sparkles,
-  ShieldCheck,
 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import Button from '../../../components/ui/Button';
@@ -186,19 +182,19 @@ export default function DeploymentProgressScreen({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 animate-fade-in font-sans selection:bg-blue-500 selection:text-white">
       {/* Header Info Banner */}
-      <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-100 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
               {projectName}
             </h2>
             <span
               className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 ${
                 status === 'completed'
-                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
                   : status === 'cancelled'
-                  ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                  : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
+                  ? 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400'
+                  : 'bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400'
               }`}
             >
               {status === 'completed' ? (
@@ -220,13 +216,13 @@ export default function DeploymentProgressScreen({
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-xs text-slate-400 flex-wrap">
-            <span className="flex items-center gap-1 font-mono text-slate-300">
-              <Folder className="w-3.5 h-3.5 text-blue-400" />
+          <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
+            <span className="flex items-center gap-1 font-mono text-muted-foreground">
+              <Folder className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
               {repository}
             </span>
-            <span className="flex items-center gap-1 font-mono text-slate-300">
-              <GitBranch className="w-3.5 h-3.5 text-blue-400" />
+            <span className="flex items-center gap-1 font-mono text-muted-foreground">
+              <GitBranch className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
               {branch}
             </span>
           </div>
@@ -282,13 +278,13 @@ export default function DeploymentProgressScreen({
       </div>
 
       {/* Progress Bar & Steps Tracker */}
-      <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 shadow-xl backdrop-blur-xl space-y-5">
+      <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl space-y-5">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
-            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Deployment Progress
             </span>
-            <h3 className="text-base font-bold text-slate-100">
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
               {status === 'completed'
                 ? 'Deployment Complete'
                 : status === 'cancelled'
@@ -297,13 +293,13 @@ export default function DeploymentProgressScreen({
             </h3>
           </div>
 
-          <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+          <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
             {status === 'completed' ? '100%' : `${progressPercent}%`}
           </span>
         </div>
 
         {/* Animated Progress Bar */}
-        <div className="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5 relative">
+        <div className="w-full h-3 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden border border-border p-0.5 relative">
           <div
             className={`h-full rounded-full transition-all duration-500 ease-out ${
               status === 'completed'
@@ -328,12 +324,12 @@ export default function DeploymentProgressScreen({
                 key={step.id}
                 className={`p-2.5 rounded-xl border text-xs flex items-center gap-2 transition-all ${
                   isFinished
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-300'
                     : isCurrent
-                    ? 'bg-blue-500/15 border-blue-500 text-blue-300 font-semibold ring-1 ring-blue-500/30'
+                    ? 'bg-blue-500/15 border-blue-500 text-blue-600 dark:text-blue-300 font-semibold ring-1 ring-blue-500/30'
                     : isFailed
-                    ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                    : 'bg-slate-950/40 border-slate-800/80 text-slate-500 opacity-60'
+                    ? 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400'
+                    : 'bg-slate-50 dark:bg-slate-950/40 border-border text-muted-foreground opacity-60'
                 }`}
               >
                 <div
@@ -344,7 +340,7 @@ export default function DeploymentProgressScreen({
                       ? 'bg-blue-500 text-white shadow-sm'
                       : isFailed
                       ? 'bg-red-500 text-white'
-                      : 'bg-slate-800 text-slate-500'
+                      : 'bg-slate-200 dark:bg-slate-800 text-muted-foreground'
                   }`}
                 >
                   {isFinished ? (

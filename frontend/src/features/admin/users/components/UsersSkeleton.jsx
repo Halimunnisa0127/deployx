@@ -1,11 +1,10 @@
-import React from "react";
 import { Card } from "../../../../components/common/Card";
 import Skeleton from "../../../../components/ui/Skeleton";
 
 export function UsersTableSkeleton({ rows = 5 }) {
   return (
     <Card className="overflow-hidden p-0 animate-in fade-in duration-300">
-      <div className="p-5 border-b border-slate-200 dark:border-slate-800/80">
+      <div className="p-5 border-b border-border">
         <Skeleton className="h-6 w-48" />
       </div>
       <div className="p-5 space-y-4">

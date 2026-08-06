@@ -1,11 +1,10 @@
-import React from "react";
 
 function ToggleRow({ title, description, isEnabled, onClick }) {
   return (
-    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800/80 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors">
+    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/40 border border-border rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors">
       <div>
         <div className="font-semibold text-slate-900 dark:text-slate-200">{title}</div>
-        <div className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{description}</div>
+        <div className="text-sm text-muted-foreground mt-0.5">{description}</div>
       </div>
       <button
         type="button"
@@ -34,11 +33,11 @@ export default function FeatureFlagsCard({ watch, setValue }) {
   return (
     <div
       id="features"
-      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg"
+      className="bg-card rounded-2xl border border-border p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Feature Flags</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+      <div className="mb-6 border-b border-border pb-4">
+        <h2 className="text-lg font-bold text-foreground">Feature Flags</h2>
+        <p className="text-sm text-muted-foreground">
           Enable or disable specific functionality across the platform.
         </p>
       </div>

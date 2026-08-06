@@ -1,4 +1,3 @@
-import React from 'react';
 import { Terminal, SearchX } from 'lucide-react';
 import EmptyState from '../../../components/common/EmptyState';
 

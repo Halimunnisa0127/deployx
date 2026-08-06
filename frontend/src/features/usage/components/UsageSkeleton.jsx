@@ -5,7 +5,7 @@ export default function UsageSkeleton() {
   return (
     <div className="space-y-6 md:space-y-8 pb-8 animate-pulse">
       {/* 1. Header Skeleton */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200/80 dark:border-white/10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div className="space-y-2">
           <Skeleton height="32px" width="180px" borderRadius="10px" />
           <Skeleton height="16px" width="380px" borderRadius="6px" />
@@ -28,7 +28,7 @@ export default function UsageSkeleton() {
           {[1, 2, 3, 4].map((i) => (
             <Card
               key={i}
-              className="p-5 border border-slate-200/80 dark:border-white/10 rounded-2xl bg-white/70 dark:bg-slate-900/60 space-y-4"
+              className="p-5 border border-border rounded-2xl bg-card/60 space-y-4"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
@@ -54,7 +54,7 @@ export default function UsageSkeleton() {
       </div>
 
       {/* 3. Usage Trends Chart Skeleton */}
-      <Card className="p-6 border border-slate-200/80 dark:border-white/10 rounded-2xl bg-white/70 dark:bg-slate-900/60 space-y-5">
+      <Card className="p-6 border border-border rounded-2xl bg-card/60 space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Skeleton height="36px" width="36px" borderRadius="10px" />
@@ -80,14 +80,14 @@ export default function UsageSkeleton() {
       {/* 4. Quotas Breakdown Skeleton */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {[1, 2].map((i) => (
-          <Card key={i} className="p-6 border border-slate-200/80 dark:border-white/10 rounded-2xl bg-white/70 dark:bg-slate-900/60 space-y-4">
+          <Card key={i} className="p-6 border border-border rounded-2xl bg-card/60 space-y-4">
             <div className="flex items-center justify-between">
               <Skeleton height="24px" width="180px" borderRadius="6px" />
               <Skeleton height="20px" width="80px" borderRadius="9999px" />
             </div>
             <div className="space-y-3 pt-2">
               {[1, 2, 3, 4].map((j) => (
-                <div key={j} className="p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800 space-y-2">
+                <div key={j} className="p-3.5 rounded-xl border border-border space-y-2">
                   <div className="flex justify-between">
                     <Skeleton height="16px" width="110px" borderRadius="4px" />
                     <Skeleton height="16px" width="70px" borderRadius="4px" />
@@ -101,7 +101,7 @@ export default function UsageSkeleton() {
       </div>
 
       {/* 5. Table Skeleton */}
-      <Card className="p-6 border border-slate-200/80 dark:border-white/10 rounded-2xl bg-white/70 dark:bg-slate-900/60 space-y-4">
+      <Card className="p-6 border border-border rounded-2xl bg-card/60 space-y-4">
         <div className="flex justify-between items-center pb-2">
           <Skeleton height="24px" width="140px" borderRadius="6px" />
           <div className="flex gap-2">

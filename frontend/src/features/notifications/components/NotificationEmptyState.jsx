@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bell } from 'lucide-react';
 import EmptyState from '../../../components/common/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';

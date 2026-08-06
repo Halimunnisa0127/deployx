@@ -1,4 +1,3 @@
-import React from "react";
 import { Calendar, FolderGit2, User, Globe } from "lucide-react";
 import Badge from "../../../../components/ui/Badge";
 import FrameworkBadge from "./FrameworkBadge";
@@ -21,7 +20,7 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
     >
       <td className="px-5 py-4 min-w-[200px]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-muted border border-border flex items-center justify-center shrink-0">
             <FolderGit2 className="w-5 h-5 text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors" />
           </div>
           <div>
@@ -44,7 +43,7 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
         <FrameworkBadge framework={project.framework} />
       </td>
       <td className="px-5 py-4 whitespace-nowrap">
-        <span className="text-xs text-theme-muted capitalize bg-slate-100 dark:bg-slate-800/60 px-2 py-1 rounded border border-slate-200 dark:border-slate-700/50 font-mono">
+        <span className="text-xs text-theme-muted capitalize bg-muted px-2 py-1 rounded border border-border font-mono">
           {project.environment}
         </span>
       </td>

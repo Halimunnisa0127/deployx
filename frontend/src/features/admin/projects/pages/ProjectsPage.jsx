@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useMemo } from "react";
 import ProjectsHeader from "../components/ProjectsHeader";
 import ProjectsStatisticsCards from "../components/ProjectsStatisticsCards";
 import ProjectsFilters from "../components/ProjectsFilters";
@@ -16,126 +15,26 @@ import {
   NoArchivedProjectsEmptyState,
 } from "../components/ProjectsEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
-import {
-  getProjects,
-  archiveProject,
-  deleteProject,
-  exportProjects,
-} from "../services/projects.service";
+import { useProjects } from "../hooks/useProjects";
 
 export default function ProjectsPage() {
-  const [loading, setLoading] = useState(true);
-  const [projects, setProjects] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [projectToDelete, setProjectToDelete] = useState(null);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const data = await getProjects();
-      setProjects(data);
-    } catch (error) {
-      console.error("Failed to load projects:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const counts = useMemo(() => {
-    const res = {
-      all: projects.length,
-      active: 0,
-      archived: 0,
-      failed: 0,
-      React: 0,
-      "Next.js": 0,
-      "Node.js": 0,
-    };
-    projects.forEach((p) => {
-      if (res[p.status] !== undefined) res[p.status]++;
-      if (res[p.framework] !== undefined) res[p.framework]++;
-    });
-    return res;
-  }, [projects]);
-
-  const filteredProjects = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    return projects.filter((p) => {
-      if (activeFilter === "active" && p.status !== "active") return false;
-      if (activeFilter === "archived" && p.status !== "archived") return false;
-      if (activeFilter === "failed" && p.status !== "failed") return false;
-      if (activeFilter === "React" && p.framework !== "React") return false;
-      if (activeFilter === "Next.js" && p.framework !== "Next.js") return false;
-      if (activeFilter === "Node.js" && p.framework !== "Node.js") return false;
-      if (query) {
-        return (
-          p.name.toLowerCase().includes(query) ||
-          p.owner.toLowerCase().includes(query)
-        );
-      }
-      return true;
-    });
-  }, [projects, activeFilter, searchQuery]);
-
-  const handleExport = async () => {
-    try {
-      await exportProjects();
-      alert("Projects exported successfully!");
-    } catch (error) {
-      console.error("Failed to export projects", error);
-    }
-  };
-
-  const handleRowClick = (project) => {
-    setSelectedProject(project);
-    setIsDrawerOpen(true);
-  };
-
-  const handleOpenDeployments = (project) => {
-    console.log("Open Deployments for", project.name);
-  };
-
-  const handleOpenDomains = (project) => {
-    console.log("Open Domains for", project.name);
-  };
-
-  const handleArchiveProject = async (project) => {
-    await archiveProject(project.id);
-    fetchData(); // Simplistic re-fetch
-  };
-
-  const handleDeleteClick = (project) => {
-    setProjectToDelete(project);
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (projectToDelete) {
-      await deleteProject(projectToDelete.id);
-      setIsDeleteModalOpen(false);
-      setProjectToDelete(null);
-      if (selectedProject?.id === projectToDelete.id) {
-        setIsDrawerOpen(false);
-      }
-      fetchData();
-    }
-  };
-
-  const actionHandlers = {
-    onView: handleRowClick,
-    onOpenDeployments: handleOpenDeployments,
-    onOpenDomains: handleOpenDomains,
-    onArchive: handleArchiveProject,
-    onDelete: handleDeleteClick,
-  };
+  const {
+    projects,
+    loading,
+    activeFilter,
+    setActiveFilter,
+    counts,
+    handleExport,
+    tableParams,
+    selectedProject,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
+    projectToDelete,
+    handleConfirmDelete,
+    actionHandlers,
+  } = useProjects();
 
   return (
     <div className="space-y-6 md:space-y-8 pb-10 text-left animate-in fade-in duration-300">
@@ -157,9 +56,9 @@ export default function ProjectsPage() {
         />
 
         <SearchBar
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onClear={() => setSearchQuery("")}
+          value={tableParams.search.query}
+          onChange={(e) => tableParams.search.setQuery(e.target.value)}
+          onClear={() => tableParams.search.setQuery("")}
           placeholder="Search projects or owners..."
           shortcut="⌘K"
           size="md"
@@ -172,7 +71,7 @@ export default function ProjectsPage() {
         <ProjectsTableSkeleton />
       ) : projects.length === 0 ? (
         <NoProjectsEmptyState />
-      ) : filteredProjects.length === 0 ? (
+      ) : tableParams.tableData.length === 0 ? (
         activeFilter === "active" ? (
           <NoActiveProjectsEmptyState onClear={() => setActiveFilter("all")} />
         ) : activeFilter === "archived" ? (
@@ -182,15 +81,15 @@ export default function ProjectsPage() {
         ) : (
           <NoSearchResultsEmptyState
             onClear={() => {
-              setSearchQuery("");
+              tableParams.search.setQuery("");
               setActiveFilter("all");
             }}
           />
         )
       ) : (
         <ProjectsTable
-          projects={filteredProjects}
-          onRowClick={handleRowClick}
+          projects={tableParams.search.searchedData}
+          onRowClick={actionHandlers.onView}
           actionHandlers={actionHandlers}
         />
       )}

@@ -62,7 +62,7 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
       </Link>
 
       {/* Main Header Container */}
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-5 pb-2 border-b border-slate-200 dark:border-slate-800/60">
+      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-5 pb-2 border-b border-border">
         {/* Left Column: Title, Badges & Metadata */}
         <div className="space-y-2.5 min-w-0 flex-1">
           {/* Title & Badges Row */}

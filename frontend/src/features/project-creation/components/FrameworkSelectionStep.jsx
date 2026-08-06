@@ -19,10 +19,10 @@ export default function FrameworkSelectionStep({
           <Layers className="w-3.5 h-3.5" />
           Step 3 of 6
         </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
           Configure Project
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           Configure your project's framework preset, root directory, and deployment region.
         </p>
       </div>
@@ -34,7 +34,7 @@ export default function FrameworkSelectionStep({
               <Sparkles className="w-3.5 h-3.5 text-blue-400" />
               <span>Auto Detect Framework</span>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-normal">
+            <p className="text-sm text-muted-foreground leading-normal">
               Scan project files in the repository root to automatically assign framework presets.
             </p>
           </div>
@@ -61,9 +61,9 @@ export default function FrameworkSelectionStep({
             <div className="flex items-center gap-2.5 text-xs text-slate-900 dark:text-slate-200">
               <Cpu className="w-4 h-4 text-blue-400 flex-shrink-0" />
               <div>
-                <span className="text-slate-500 dark:text-slate-400">Detected Framework: </span>
+                <span className="text-muted-foreground">Detected Framework: </span>
                 <span className="font-bold text-blue-300">{detectedFrameworkName}</span>
-                <span className="text-xs text-slate-500 dark:text-slate-400 block sm:inline sm:ml-2">
+                <span className="text-xs text-muted-foreground block sm:inline sm:ml-2">
                   (via root package.json)
                 </span>
               </div>
@@ -75,7 +75,7 @@ export default function FrameworkSelectionStep({
         )}
 
         <div className="w-full space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
+          <label className="block text-xs font-semibold text-foreground">
             Framework Preset
           </label>
           <div className="relative">
@@ -90,16 +90,16 @@ export default function FrameworkSelectionStep({
                 </option>
               ))}
             </select>
-            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 dark:text-slate-400 text-xs">
+            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground text-xs">
               ▼
             </div>
           </div>
         </div>
 
         <div className="w-full space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center justify-between">
+          <label className="block text-xs font-semibold text-foreground flex items-center justify-between">
             <span>Root Directory</span>
-            <span className="text-xs text-slate-400 dark:text-slate-500 font-normal">
+            <span className="text-xs text-muted-foreground font-normal">
               Directory containing your application code
             </span>
           </label>
@@ -112,7 +112,7 @@ export default function FrameworkSelectionStep({
           />
 
           <div className="flex items-center gap-2 pt-1 flex-wrap">
-            <span className="text-sm text-slate-400 dark:text-slate-500">Quick Examples:</span>
+            <span className="text-sm text-muted-foreground">Quick Examples:</span>
             {ROOT_DIR_EXAMPLES.map((ex) => (
               <button
                 key={ex}
@@ -131,7 +131,7 @@ export default function FrameworkSelectionStep({
         </div>
 
         <div className="w-full space-y-1.5">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+          <label className="block text-xs font-semibold text-foreground flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5 text-blue-400" />
             <span>Deployment Region</span>
           </label>
@@ -147,7 +147,7 @@ export default function FrameworkSelectionStep({
                 </option>
               ))}
             </select>
-            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 dark:text-slate-400 text-xs">
+            <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground text-xs">
               ▼
             </div>
           </div>

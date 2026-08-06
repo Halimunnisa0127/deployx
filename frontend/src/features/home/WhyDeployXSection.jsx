@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, X, Sparkles } from 'lucide-react';
 
@@ -51,7 +50,7 @@ export default function WhyDeployXSection() {
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-400 mb-3">
             COMPARISON
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-4">
             Manual Deployment vs DeployX
           </h2>
           <p className="text-lg text-slate-600 dark:text-gray-400">
@@ -91,7 +90,7 @@ export default function WhyDeployXSection() {
           <div className="p-8 sm:p-10 rounded-2xl bg-blue-50 dark:bg-blue-950/25 border border-blue-200 dark:border-blue-500/40 relative space-y-7 shadow-[0_0_50px_rgba(37,99,235,0.2)]">
             <div className="flex items-center justify-between pb-5 border-b border-blue-200 dark:border-blue-500/20">
               <div className="flex items-center gap-2">
-                <h3 className="text-xl font-bold text-slate-900 dark:text-white">DeployX</h3>
+                <h3 className="text-xl font-bold text-foreground">DeployX</h3>
                 <Sparkles className="w-4 h-4 text-blue-400" />
               </div>
               <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold bg-emerald-100 dark:bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-500/20">
@@ -103,7 +102,7 @@ export default function WhyDeployXSection() {
               {comparisonItems.map((item, index) => (
                 <div key={index} className="space-y-1.5">
                   <div className="text-xs font-semibold text-blue-600 dark:text-blue-300 uppercase tracking-wider">{item.topic}</div>
-                  <div className="flex items-start gap-2.5 text-sm font-medium text-slate-900 dark:text-white">
+                  <div className="flex items-start gap-2.5 text-sm font-medium text-foreground">
                     <Check className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0 mt-0.5" />
                     <span>{item.deployx}</span>
                   </div>

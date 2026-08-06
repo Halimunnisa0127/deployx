@@ -85,9 +85,6 @@ export default function DashboardHeader({ onToggleMobile }) {
     .split('/')
     .filter(Boolean);
 
-  const currentPageTitle = pathSegments.length > 1
-    ? formatBreadcrumbLabel(pathSegments[pathSegments.length - 1])
-    : 'Dashboard';
 
   const handleSelectSearchItem = (link) => {
     setIsSearchFocused(false);
@@ -96,7 +93,7 @@ export default function DashboardHeader({ onToggleMobile }) {
   };
 
   return (
-    <header className="sticky top-0 z-20 h-16 w-full bg-white/85 dark:bg-[#0a0a0a]/85 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/80 px-4 md:px-8 flex items-center justify-between gap-4 select-none transition-colors duration-300">
+    <header className="sticky top-0 z-20 h-16 w-full bg-card backdrop-blur-xl border-b border-border px-4 md:px-8 flex items-center justify-between gap-4 select-none transition-colors duration-300">
       {/* ── Left: Mobile Toggle, Breadcrumbs & Page Title ──────────────── */}
       <div className="flex items-center gap-3 min-w-0">
         {/* Mobile Sidebar Toggle Button */}
@@ -109,7 +106,7 @@ export default function DashboardHeader({ onToggleMobile }) {
               onClick={onToggleMobile}
               aria-label="Toggle Navigation Menu"
             >
-              <Menu className="w-5 h-5 text-slate-700 dark:text-slate-300 transition-colors" />
+              <Menu className="w-5 h-5 text-foreground transition-colors" />
             </Button>
           </div>
         )}
@@ -118,8 +115,8 @@ export default function DashboardHeader({ onToggleMobile }) {
           {/* Breadcrumb Navigation */}
           <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-slate-400">
             <Link
-              to="/dashboard"
-              className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors"
+              to={location.pathname.startsWith('/admin') ? '/admin' : '/dashboard'}
+              className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
             >
               <Home className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Home</span>
@@ -134,13 +131,13 @@ export default function DashboardHeader({ onToggleMobile }) {
                 <div key={url} className="flex items-center gap-1.5 min-w-0">
                   <ChevronRight className="w-3 h-3 text-slate-400 flex-shrink-0" />
                   {isLast ? (
-                    <span className="font-semibold text-slate-800 dark:text-slate-200 truncate transition-colors" aria-current="page">
+                    <span className="font-semibold text-foreground truncate transition-colors" aria-current="page">
                       {label}
                     </span>
                   ) : (
                     <Link
                       to={url}
-                      className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-colors truncate"
+                      className="text-muted-foreground hover:text-foreground transition-colors truncate"
                     >
                       {label}
                     </Link>
@@ -173,16 +170,16 @@ export default function DashboardHeader({ onToggleMobile }) {
 
           {/* Global Search Interactive Results Dropdown */}
           {isSearchFocused && searchQuery.trim() !== '' && (
-            <div className="absolute right-0 top-12 w-80 lg:w-96 rounded-2xl bg-slate-900/95 border border-slate-800 shadow-2xl backdrop-blur-xl p-3 z-50 max-h-96 overflow-y-auto space-y-3">
+            <div className="absolute right-0 top-12 w-80 lg:w-96 rounded-2xl bg-card border border-border shadow-2xl backdrop-blur-xl p-3 z-50 max-h-96 overflow-y-auto space-y-3">
               {Object.keys(groupedResults).length === 0 ? (
-                <div className="py-6 text-center text-xs text-slate-400 flex flex-col items-center gap-2">
+                <div className="py-6 text-center text-xs text-muted-foreground flex flex-col items-center gap-2">
                   <Search className="w-5 h-5 text-slate-400" />
                   <span>No results matching "{searchQuery}"</span>
                 </div>
               ) : (
                 Object.entries(groupedResults).map(([category, items]) => (
                   <div key={category} className="space-y-1">
-                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-xs font-bold uppercase tracking-wider text-muted-foreground">
                       {CATEGORY_ICON_MAP[category] || <Search className="w-3.5 h-3.5 text-slate-400" />}
                       <span>{category}</span>
                     </div>
@@ -193,10 +190,10 @@ export default function DashboardHeader({ onToggleMobile }) {
                           key={item.id}
                           type="button"
                           onClick={() => handleSelectSearchItem(item.link)}
-                          className="w-full flex items-center justify-between p-2 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-slate-800/80 transition-colors text-left group"
+                          className="w-full flex items-center justify-between p-2 rounded-xl text-xs text-foreground hover:text-foreground hover:bg-muted transition-colors text-left group"
                         >
                           <span className="font-semibold truncate">{item.name}</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
+                          <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
                         </button>
                       ))}
                     </div>
@@ -209,12 +206,12 @@ export default function DashboardHeader({ onToggleMobile }) {
 
         {/* Notifications Button with Unread Counter */}
         <Link
-          to="/dashboard/notifications"
-          className="relative p-2 rounded-xl bg-slate-100 dark:bg-slate-900/60 hover:bg-slate-200 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          to={location.pathname.startsWith('/admin') ? '/admin/notifications' : '/dashboard/notifications'}
+          className="relative p-2 rounded-xl bg-muted hover:bg-muted border border-border hover:border-border text-foreground hover:text-foreground transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           aria-label="View notifications (2 unread)"
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold font-mono ring-2 ring-white dark:ring-[#0a0a0a] shadow-sm">
+          <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold font-mono ring-2 ring-background shadow-sm">
             2
           </span>
         </Link>

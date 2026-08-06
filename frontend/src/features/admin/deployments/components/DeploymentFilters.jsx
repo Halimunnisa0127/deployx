@@ -1,4 +1,3 @@
-import React from "react";
 
 const TABS = [
   { id: "all", label: "All Deployments" },
@@ -15,7 +14,7 @@ export default function DeploymentFilters({
   counts = {},
 }) {
   return (
-    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-slate-200 dark:border-slate-800/60">
+    <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none border-b border-border">
       {TABS.map((tab) => {
         const isActive = activeFilter === tab.id;
         const count = counts[tab.id] ?? 0;

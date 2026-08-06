@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import { useState } from "react";
 import DeploymentsHeader from "../components/DeploymentsHeader";
 import AnalyticsCards from "../components/AnalyticsCards";
 import DeploymentFilters from "../components/DeploymentFilters";
@@ -16,82 +16,30 @@ import {
   NoFailedDeploymentsEmptyState,
 } from "../components/DeploymentsEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
-import {
-  getDeployments,
-  redeployDeployment,
-  cancelDeployment,
-  deleteDeployment,
-  exportDeployments,
-} from "../services/deployments.service";
+import { useDeployments } from "../hooks/useDeployments";
 
 export default function DeploymentsPage() {
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [deployments, setDeployments] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const {
+    loading,
+    refreshing,
+    deployments,
+    filteredDeployments,
+    counts,
+    activeFilter,
+    setActiveFilter,
+    searchQuery,
+    setSearchQuery,
+    fetchData,
+    handleExport,
+    handleRedeploy: hookHandleRedeploy,
+    cancelDeployment,
+    deleteDeployment,
+  } = useDeployments();
+
   const [selectedDeployment, setSelectedDeployment] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState(null); // { type, deployment }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      const data = await getDeployments();
-      setDeployments(data);
-    } catch (error) {
-      console.error("Failed to load deployments:", error);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  const counts = useMemo(() => {
-    const res = {
-      all: deployments.length,
-      running: 0,
-      queued: 0,
-      success: 0,
-      failed: 0,
-      cancelled: 0,
-    };
-    deployments.forEach((d) => {
-      if (res[d.status] !== undefined) res[d.status]++;
-    });
-    return res;
-  }, [deployments]);
-
-  const filteredDeployments = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
-    return deployments.filter((d) => {
-      if (activeFilter !== "all" && d.status !== activeFilter) return false;
-      if (query) {
-        return (
-          d.project.toLowerCase().includes(query) ||
-          d.owner.toLowerCase().includes(query) ||
-          d.id.toLowerCase().includes(query) ||
-          d.latestCommit.toLowerCase().includes(query)
-        );
-      }
-      return true;
-    });
-  }, [deployments, activeFilter, searchQuery]);
-
-  const handleExport = async () => {
-    try {
-      await exportDeployments();
-      alert("Deployments exported successfully!");
-    } catch (error) {
-      console.error("Failed to export deployments", error);
-    }
-  };
 
   const handleRowClick = (deployment) => {
     setSelectedDeployment(deployment);
@@ -103,8 +51,7 @@ export default function DeploymentsPage() {
   };
 
   const handleRedeploy = async (deployment) => {
-    await redeployDeployment(deployment.id);
-    fetchData(true);
+    await hookHandleRedeploy(deployment.id);
   };
 
   const confirmAction = (type, deployment) => {
@@ -123,7 +70,6 @@ export default function DeploymentsPage() {
     }
     setIsModalOpen(false);
     setModalConfig(null);
-    fetchData(true);
   };
 
   const actionHandlers = {

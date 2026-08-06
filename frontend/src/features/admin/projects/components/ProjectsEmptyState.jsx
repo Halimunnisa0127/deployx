@@ -1,4 +1,3 @@
-import React from "react";
 import { FolderGit2, Search, Archive, CheckCircle } from "lucide-react";
 import EmptyState from "../../../../components/ui/EmptyState";
 

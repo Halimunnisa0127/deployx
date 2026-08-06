@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,12 +17,7 @@ import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SettingsEmptyState } from "../components/SettingsEmptyState";
 // Reuse existing generic confirmation if needed
 
-import {
-  getSettings,
-  saveSettings,
-  sendTestEmail,
-  exportSettings,
-} from "../services/platformSettings.service";
+import { usePlatformSettings } from "../hooks/usePlatformSettings";
 
 const settingsSchema = z.object({
   general: z.object({
@@ -68,9 +63,16 @@ const settingsSchema = z.object({
 });
 
 export default function PlatformSettingsPage() {
-  const [loading, setLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(false);
+  const {
+    loading,
+    error,
+    isSaving,
+    fetchSettings,
+    saveSettings,
+    sendTestEmail,
+    exportSettings,
+  } = usePlatformSettings();
+
   const [activeSection, setActiveSection] = useState("general");
 
   const {
@@ -87,35 +89,19 @@ export default function PlatformSettingsPage() {
 
   const formData = watch();
 
-  const fetchSettings = async () => {
-    try {
-      setLoading(true);
-      const data = await getSettings();
-      reset(data); // Set default values
-      setError(false);
-    } catch (err) {
-      console.error(err);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchSettings();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    fetchSettings().then((data) => {
+      if (data) reset(data);
+    });
+     
+  }, [fetchSettings, reset]);
 
   const onSubmit = async (data) => {
     try {
-      setIsSaving(true);
       await saveSettings(data);
       reset(data); // Reset form state to new values so isDirty becomes false
     } catch (err) {
-      console.error("Failed to save settings:", err);
       alert("Failed to save settings");
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -123,8 +109,8 @@ export default function PlatformSettingsPage() {
     if (
       window.confirm("Are you sure you want to discard all unsaved changes?")
     ) {
-      const data = await getSettings(); // Or just use reset() if you stored original copy
-      reset(data);
+      const data = await fetchSettings();
+      if (data) reset(data);
     }
   };
 
