@@ -1,11 +1,10 @@
-import React from 'react';
 
 /** Helper to syntax-highlight log text tokens */
 function renderHighlightedText(text, logType) {
   if (!text) return null;
 
   // Split line into tokens using regex for file sizes, checkmarks, file paths, URLs, and keywords
-  const regex = /(✓|DONE|SUCCESS|ERROR|FATAL|WARN|Warning|https?:\/\/[^\s]+|[a-zA-Z0-9_\-\/]+\.[a-zA-Z0-9]+|\d+(?:\.\d+)?\s*(?:kB|MB|B|GB|ms|s))/g;
+  const regex = new RegExp("(✓|DONE|SUCCESS|ERROR|FATAL|WARN|Warning|https?://[^\\s]+|[a-zA-Z0-9_/-]+\\.[a-zA-Z0-9]+|\\d+(?:\\.\\d+)?\\s*(?:kB|MB|B|GB|ms|s))", "g");
   const parts = [];
   let lastIndex = 0;
   let match;
@@ -58,7 +57,7 @@ function renderHighlightedText(text, logType) {
 }
 
 export default function BuildLogLine({ log, isWordWrap = true }) {
-  const { id, time, type, text } = log;
+  const { time, type, text } = log;
 
   return (
     <div className={`flex items-start gap-3 hover:bg-muted py-1 px-2 rounded font-mono text-xs leading-relaxed transition-colors ${isWordWrap ? 'whitespace-pre-wrap break-all' : 'whitespace-pre overflow-x-auto'}`}>

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import { useState, useEffect, useRef, memo } from 'react';
 import BuildLogToolbar from './BuildLogToolbar';
 import BuildLogLine from './BuildLogLine';
 import BuildLogsEmptyState from './BuildLogsEmptyState';
 import BuildLogsSkeleton from './BuildLogsSkeleton';
-import { CheckCircle2, AlertTriangle, XCircle, Clock, RotateCcw } from 'lucide-react';
+import { AlertTriangle, XCircle, Clock, RotateCcw } from 'lucide-react';
 
 const DEFAULT_DUMMY_LOGS = [
   { id: 1, type: 'info', time: '00:00:01', text: 'Initializing DeployX Build Environment (v20.11.0 node)' },

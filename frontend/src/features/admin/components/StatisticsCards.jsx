@@ -1,9 +1,7 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Users,
   FolderGit2,
-  Rocket,
   Globe,
   Server,
   Activity,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DomainsHeader from "../components/DomainsHeader";
 import AnalyticsCards from "../components/AnalyticsCards";
 import DomainsFilters from "../components/DomainsFilters";

@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { GitBranch, Clock, ArrowUpRight, Rocket, Timer, ExternalLink } from 'lucide-react';
+import { GitBranch, Clock, ArrowUpRight, Rocket, Timer } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
-import Button from '../../../components/ui/Button';
 import GithubIcon from '../../../components/ui/GithubIcon';
 import { MOCK_RECENT_DEPLOYMENTS } from '../data/mockDashboardData';
 

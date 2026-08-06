@@ -1,10 +1,8 @@
-import React from "react";
 import {
   Rocket,
   ShieldCheck,
   Users,
   FolderGit2,
-  HardDrive,
   Activity,
 } from "lucide-react";
 import OverviewCard from "../../components/OverviewCard";

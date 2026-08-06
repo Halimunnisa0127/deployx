@@ -1,4 +1,3 @@
-import React from "react";
 
 const TABS = [
   { id: "all", label: "All Deployments" },

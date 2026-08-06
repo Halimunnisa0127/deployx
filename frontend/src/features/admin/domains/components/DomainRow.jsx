@@ -1,4 +1,3 @@
-import React from "react";
 import { Globe, Clock, User, Shield } from "lucide-react";
 import VerificationBadge from "./VerificationBadge";
 import EnvironmentBadge from "./EnvironmentBadge";

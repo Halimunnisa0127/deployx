@@ -1,4 +1,3 @@
-import React from "react";
 import ProjectsHeader from "../components/ProjectsHeader";
 import ProjectsStatisticsCards from "../components/ProjectsStatisticsCards";
 import ProjectsFilters from "../components/ProjectsFilters";

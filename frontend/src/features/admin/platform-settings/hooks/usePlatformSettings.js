@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { platformSettingsService } from "../services/platformSettingsService";
 
 export const usePlatformSettings = () => {

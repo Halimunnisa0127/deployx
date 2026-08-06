@@ -1,4 +1,3 @@
-import React from 'react';
 import { ShieldCheck, Globe, GitBranch, Mail } from 'lucide-react';
 import Modal from '../../../components/ui/Modal/index';
 import Button from '../../../components/ui/Button';

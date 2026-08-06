@@ -1,4 +1,3 @@
-import React from "react";
 import { Check, X, Clock, History } from "lucide-react";
 
 export default function VerificationTimeline({ history = [] }) {

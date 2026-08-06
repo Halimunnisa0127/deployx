@@ -1,4 +1,3 @@
-import React from "react";
 import { Layers, Users, Activity } from "lucide-react";
 import EmptyState from "../../../components/ui/EmptyState";
 

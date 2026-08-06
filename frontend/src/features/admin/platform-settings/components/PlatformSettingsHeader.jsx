@@ -1,4 +1,3 @@
-import React from "react";
 import { Settings, Download, Upload } from "lucide-react";
 import Button from "../../../../components/ui/Button";
 

@@ -1,7 +1,6 @@
 import RouteErrorBoundary from "./RouteErrorBoundary";
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import MainLayout from "../layouts/MainLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home";
 import AuthLayout from "../layouts/AuthLayout";

@@ -1,4 +1,3 @@
-import React from "react";
 import { ArrowUpRight, ArrowDownRight, ArrowRight } from "lucide-react";
 import Card from "../../../components/ui/Card";
 

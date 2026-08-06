@@ -1,4 +1,3 @@
-import React from "react";
 import { FileText, Download, Printer, Share2 } from "lucide-react";
 
 export default function ReportsCard({

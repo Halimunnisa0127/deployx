@@ -1,4 +1,3 @@
-import React from "react";
 import { Layers, Bell, User as UserIcon, Search } from "lucide-react";
 
 export default function DashboardHeader({ stats, dateRange, setDateRange, refreshData, refreshing }) {

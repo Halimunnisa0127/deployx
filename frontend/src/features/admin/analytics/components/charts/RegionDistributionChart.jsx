@@ -1,4 +1,3 @@
-import React from "react";
 import { BarChart } from "../../../../../components/charts";
 
 export default function RegionDistributionChart({ data }) {

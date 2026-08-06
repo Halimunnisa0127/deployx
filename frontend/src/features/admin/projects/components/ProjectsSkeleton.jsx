@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "../../../../components/common/Card";
 import Skeleton from "../../../../components/ui/Skeleton";
 

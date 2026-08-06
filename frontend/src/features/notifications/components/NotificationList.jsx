@@ -1,4 +1,3 @@
-import React from 'react';
 import NotificationGroup from './NotificationGroup';
 import NotificationEmptyState from './NotificationEmptyState';
 

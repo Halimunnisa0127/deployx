@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bell, Clock, Layers, MailOpen, Mail, Eye, Trash2 } from 'lucide-react';
 import Badge from '../../../components/ui/Badge';
 import { NOTIFICATION_ICONS, BADGE_VARIANTS } from '../utils/constants';

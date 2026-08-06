@@ -1,4 +1,3 @@
-import React from 'react';
 import { Trash2 } from 'lucide-react';
 import Modal from '../../../components/ui/Modal/index';
 import Button from '../../../components/ui/Button';

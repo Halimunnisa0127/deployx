@@ -1,4 +1,3 @@
-import React from "react";
 import { AreaChart } from "../../../../components/charts";
 
 function MetricChart({ title, data, color, current, unit }) {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockDeployments } from '../data/mockDeployments';
 import DeploymentDetailsHeader from '../components/DeploymentDetailsHeader';
@@ -9,7 +9,7 @@ import BuildArtifactsCard from '../components/BuildArtifactsCard';
 import DeploymentTimeline from '../components/DeploymentTimeline';
 import BuildLogsTerminal from '../components/BuildLogsTerminal';
 import Button from '../../../components/ui/Button';
-import { ArrowLeft, CheckCircle2, RotateCcw, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, AlertTriangle } from 'lucide-react';
 
 export default function DeploymentDetails() {
   const { id } = useParams();

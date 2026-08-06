@@ -207,7 +207,7 @@ export default function CreateProjectWizard() {
     const trimmedName = projectName.trim();
     if (!trimmedName) return;
 
-    let finalFramework = 'React';
+    let finalFramework;
     if (selectedFramework === 'auto') {
       finalFramework = detectedFrameworkName;
     } else {

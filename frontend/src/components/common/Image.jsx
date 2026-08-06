@@ -1,4 +1,3 @@
-import React from 'react';
 
 export const Image = ({ src, alt, className = '' }) => {
   return (

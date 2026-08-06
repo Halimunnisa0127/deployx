@@ -1,4 +1,3 @@
-import React from 'react';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../../../components/ui/Table';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';

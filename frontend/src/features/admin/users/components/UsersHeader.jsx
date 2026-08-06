@@ -1,5 +1,4 @@
-import React from "react";
-import { Users, Search, Filter, UserPlus, Download } from "lucide-react";
+import { Users, Filter, UserPlus, Download } from "lucide-react";
 import Button from "../../../../components/ui/Button";
 
 export default function UsersHeader({ onAddUser }) {

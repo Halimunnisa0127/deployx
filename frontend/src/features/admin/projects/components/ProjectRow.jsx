@@ -1,4 +1,3 @@
-import React from "react";
 import { Calendar, FolderGit2, User, Globe } from "lucide-react";
 import Badge from "../../../../components/ui/Badge";
 import FrameworkBadge from "./FrameworkBadge";

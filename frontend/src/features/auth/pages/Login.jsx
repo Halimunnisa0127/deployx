@@ -7,7 +7,6 @@ import Button from '../../../components/ui/Button';
 import Divider from '../../../components/ui/Divider';
 import LoginForm from '../components/LoginForm';
 import { setCredentials } from '../slice/authSlice';
-import deployxLogo from '../../../assets/logos/deployx-logo.jpg';
 
 export default function Login() {
   const dispatch = useDispatch();

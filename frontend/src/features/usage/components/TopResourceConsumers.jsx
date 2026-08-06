@@ -1,6 +1,5 @@
-import { FolderGit2, Layers, Cpu, Radio, ArrowUpRight } from 'lucide-react';
+import { FolderGit2, Layers, Cpu, Radio } from 'lucide-react';
 import Card from '../../../components/ui/Card';
-import Badge from '../../../components/ui/Badge';
 import { Progress } from '../../../components/ui';
 
 const CONSUMER_ICONS = {

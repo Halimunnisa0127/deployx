@@ -1,4 +1,3 @@
-import React from "react";
 import { Activity, Download, RefreshCw, TerminalSquare } from "lucide-react";
 import Button from "../../../../components/ui/Button";
 import { useNavigate } from "react-router-dom";

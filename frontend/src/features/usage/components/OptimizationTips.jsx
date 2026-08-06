@@ -1,7 +1,6 @@
 import {
   Lightbulb, Rocket, Terminal, Zap, Archive,
-  ArrowUpRight, Clock, TrendingUp, Gauge, Sliders,
-  DollarSign,
+  ArrowUpRight, Sliders,
 } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';

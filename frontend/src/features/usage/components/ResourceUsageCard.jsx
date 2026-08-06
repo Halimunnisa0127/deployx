@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Wifi, HardDrive, Clock, Cpu, TrendingUp, TrendingDown, ShieldCheck, AlertTriangle, AlertCircle } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import ResourceProgressBar from './ResourceProgressBar';

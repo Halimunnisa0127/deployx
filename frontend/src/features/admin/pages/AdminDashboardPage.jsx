@@ -1,4 +1,3 @@
-import React from "react";
 import DashboardHeader from "../components/DashboardHeader";
 import StatisticsCards from "../components/StatisticsCards";
 import RecentDeploymentsTable from "../components/RecentDeploymentsTable";

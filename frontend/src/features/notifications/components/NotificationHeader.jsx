@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bell, Check, Trash2, Settings } from 'lucide-react';
 import Button from '../../../components/ui/Button';
 

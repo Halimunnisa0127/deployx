@@ -1,10 +1,8 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../../components/ui/Button';
 import { 
-  ArrowLeft, CheckCircle2, RotateCcw, AlertTriangle, 
-  Globe, ExternalLink, RefreshCw, Trash2, Copy,
-  Server, Lock, Activity, ShieldCheck
+  ArrowLeft, CheckCircle2, AlertTriangle, ExternalLink, RefreshCw, Trash2, Copy,
+  Server, Lock, ShieldCheck
 } from 'lucide-react';
 import Badge from '../../../components/ui/Badge';
 import { useDomainDetails } from '../hooks/useDomainDetails';

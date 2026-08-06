@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Button from '../../../components/ui/Button';
 import { 
   CheckCircle2, 
-  AlertTriangle, 
   XCircle, 
   ExternalLink, 
   Copy, 

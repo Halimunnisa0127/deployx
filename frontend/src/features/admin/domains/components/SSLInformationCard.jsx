@@ -1,4 +1,3 @@
-import React from "react";
 import { ShieldCheck, ShieldAlert, Shield, AlertTriangle } from "lucide-react";
 
 export default function SSLInformationCard({ sslInfo }) {
@@ -7,7 +6,6 @@ export default function SSLInformationCard({ sslInfo }) {
   const isActive = sslInfo.status === "Active";
   const isExpiring = sslInfo.status === "Expiring Soon";
   const isExpired = sslInfo.status === "Expired";
-  const isPending = sslInfo.status === "Pending Issuance";
 
   const StatusIcon = isExpired
     ? ShieldAlert

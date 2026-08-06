@@ -1,4 +1,3 @@
-import React from 'react';
 import { GitCommit } from 'lucide-react';
 
 export default function CommitsList({ commits }) {

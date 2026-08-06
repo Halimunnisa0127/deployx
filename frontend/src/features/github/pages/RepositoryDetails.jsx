@@ -1,7 +1,6 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../../components/ui/Button';
-import { ArrowLeft, CheckCircle2, RotateCcw, AlertTriangle, RefreshCw, GitBranch, Clock, GitCommit } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, AlertTriangle, RefreshCw, GitBranch, GitCommit } from 'lucide-react';
 import Github from '../../../components/ui/GithubIcon';
 import Badge from '../../../components/ui/Badge';
 import BranchesTable from '../components/BranchesTable';

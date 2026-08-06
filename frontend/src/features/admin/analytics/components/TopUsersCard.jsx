@@ -1,4 +1,3 @@
-import React from "react";
 import { User, Activity, FolderGit2 } from "lucide-react";
 
 export default function TopUsersCard({ users = [] }) {

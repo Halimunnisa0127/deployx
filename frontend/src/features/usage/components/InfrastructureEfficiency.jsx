@@ -1,4 +1,3 @@
-import React from 'react';
 import Card from '../../../components/ui/Card';
 import { Zap } from 'lucide-react';
 

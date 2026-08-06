@@ -1,4 +1,3 @@
-import React from "react";
 import { Clock, Rocket, User } from "lucide-react";
 import Badge from "../../../../components/ui/Badge";
 import EnvironmentBadge from "./EnvironmentBadge";

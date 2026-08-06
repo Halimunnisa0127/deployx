@@ -1,4 +1,3 @@
-import React from "react";
 
 function ToggleRow({ title, description, isEnabled, onClick }) {
   return (

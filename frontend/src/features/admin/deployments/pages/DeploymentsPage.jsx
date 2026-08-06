@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DeploymentsHeader from "../components/DeploymentsHeader";
 import AnalyticsCards from "../components/AnalyticsCards";
 import DeploymentFilters from "../components/DeploymentFilters";

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Globe, RotateCcw, Search, Plus } from 'lucide-react';
 import EmptyState from '../../../components/common/EmptyState';
 import { useNavigate } from 'react-router-dom';

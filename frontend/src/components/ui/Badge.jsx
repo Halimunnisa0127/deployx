@@ -1,8 +1,7 @@
-import React from "react";
 
 export default function Badge({ status, className = "", children }) {
   const safeStatus = typeof status === "string" && status ? status : "unknown";
-  let colorClass = "";
+  let colorClass;
   let label = safeStatus.charAt(0).toUpperCase() + safeStatus.slice(1);
 
   const normalizedStatus = safeStatus.toLowerCase();

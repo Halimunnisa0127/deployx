@@ -1,4 +1,3 @@
-import React from "react";
 import { FolderGit2, ShieldCheck, User } from "lucide-react";
 
 export default function TopProjectsCard({ projects = [] }) {

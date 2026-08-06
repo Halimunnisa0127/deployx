@@ -1,4 +1,3 @@
-import React from "react";
 import { Upload } from "lucide-react";
 import Input from "../../../../components/ui/Input";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Globe, Server } from "lucide-react";
 
 export default function TopRegionsCard({ regions = [] }) {

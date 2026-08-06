@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import UsersHeader from "../components/UsersHeader";
 import UsersStatisticsCards from "../components/UsersStatisticsCards";
 import UsersFilters from "../components/UsersFilters";
@@ -19,7 +19,7 @@ import SearchBar from "../../../../components/common/SearchBar";
 import { useUsers } from "../hooks/useUsers";
 
 export default function UsersPage() {
-  const { users, loading, error, actions, table } = useUsers();
+  const { users, loading, actions, table } = useUsers();
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);

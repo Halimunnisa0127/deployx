@@ -1,12 +1,9 @@
-import { Link } from 'react-router-dom';
 import { 
   CreditCard, 
   Zap, 
   CheckCircle2, 
   Download, 
-  ArrowUpRight, 
-  Calendar, 
-  ShieldCheck,
+  ArrowUpRight,
   FileText
 } from 'lucide-react';
 import Button from '../../../components/ui/Button';

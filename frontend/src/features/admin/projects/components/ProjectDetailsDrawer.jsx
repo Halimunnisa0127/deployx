@@ -1,4 +1,3 @@
-import React from "react";
 import Drawer from "../../../../components/ui/Drawer";
 import {
   User,

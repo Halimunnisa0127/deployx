@@ -6,7 +6,6 @@ import ProjectCardSkeleton from '../components/ProjectCardSkeleton';
 import ProjectsHeaderStats from '../components/ProjectsHeaderStats';
 import ProjectsEmptyState from '../components/ProjectsEmptyState';
 import Button from '../../../components/ui/Button';
-import Input from '../../../components/ui/Input';
 import Dropdown from '../../../components/ui/Dropdown';
 import SearchBar from '../../../components/common/SearchBar';
 

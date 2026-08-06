@@ -1,4 +1,3 @@
-import React from 'react';
 import { ResponsiveContainer } from 'recharts';
 import { BarChart3, AlertCircle, Loader2 } from 'lucide-react';
 

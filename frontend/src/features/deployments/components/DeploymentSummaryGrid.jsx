@@ -1,9 +1,7 @@
-import React from 'react';
 import Badge from '../../../components/ui/Badge';
 import { 
   GitBranch, 
   Clock, 
-  ExternalLink, 
   User, 
   Cpu, 
   Globe, 

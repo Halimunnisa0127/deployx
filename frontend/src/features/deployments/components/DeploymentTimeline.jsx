@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import Badge from '../../../components/ui/Badge';
 import EmptyState from '../../../components/common/EmptyState';
 import { 

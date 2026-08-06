@@ -1,4 +1,3 @@
-import React from "react";
 import { AlertOctagon, RefreshCw, ExternalLink } from "lucide-react";
 import Button from "./Button";
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Check, Loader2, Circle, Clock } from "lucide-react";
 
 export default function DeploymentTimeline({ timeline = [] }) {

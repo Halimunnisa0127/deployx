@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Reusable Badge component with STAGE 8 micro animations

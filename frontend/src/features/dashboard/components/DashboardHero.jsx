@@ -5,7 +5,6 @@ import {
   ShieldCheck,
   Globe,
   Users,
-  FolderGit2,
   RefreshCw,
   Clock,
   Calendar,

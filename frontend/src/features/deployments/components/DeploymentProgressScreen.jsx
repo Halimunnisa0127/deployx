@@ -1,20 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Terminal,
   Check,
   Loader2,
   XCircle,
-  Globe,
   ExternalLink,
   Copy,
   CheckCircle2,
   GitBranch,
   Folder,
-  ArrowRight,
   RotateCcw,
-  Sparkles,
-  ShieldCheck,
 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import Button from '../../../components/ui/Button';

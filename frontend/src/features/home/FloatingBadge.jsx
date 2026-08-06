@@ -1,4 +1,3 @@
-import React from 'react';
 
 export default function FloatingBadge({ icon: Icon, text, positionClasses, delay = "0s", duration = "6s" }) {
   return (

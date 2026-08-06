@@ -1,4 +1,3 @@
-import React from 'react';
 
 export function Timeline({ children, className = '' }) {
   return (

@@ -13,12 +13,7 @@ import {
   Plus,
   PanelLeftClose,
   PanelLeftOpen,
-  LogOut,
-  User,
-  Shield,
-  Search,
   Zap,
-  Menu,
   X,
   Gauge,
 } from 'lucide-react';
@@ -79,7 +74,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [workspaces, setWorkspaces] = useState(INITIAL_WORKSPACES);
+  const [workspaces] = useState(INITIAL_WORKSPACES);
   const [activeWorkspace, setActiveWorkspace] = useState(INITIAL_WORKSPACES[1]);
   const [workspaceSearch, setWorkspaceSearch] = useState('');
   const [navSearchQuery, setNavSearchQuery] = useState('');

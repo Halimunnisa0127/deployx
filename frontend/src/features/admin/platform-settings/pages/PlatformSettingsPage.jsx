@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -93,7 +93,7 @@ export default function PlatformSettingsPage() {
     fetchSettings().then((data) => {
       if (data) reset(data);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [fetchSettings, reset]);
 
   const onSubmit = async (data) => {

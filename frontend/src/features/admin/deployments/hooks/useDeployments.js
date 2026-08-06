@@ -49,7 +49,7 @@ export function useDeployments() {
     idKey: 'id',
   });
 
-  const { search, filters, tableData } = tableParams;
+  const { search, filters } = tableParams;
 
   // Emulate the activeFilter logic from Page
   const activeFilter = filters.state.status || 'all';

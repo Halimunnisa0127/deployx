@@ -1,4 +1,3 @@
-import React from "react";
 import { Globe, Wrench, Shield, CheckCircle2, Clock } from "lucide-react";
 
 export default function SettingsSummaryCard({ data }) {

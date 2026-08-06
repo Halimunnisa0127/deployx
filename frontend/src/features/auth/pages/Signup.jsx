@@ -12,10 +12,6 @@ export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleOAuthSignup = () => {
-    // Placeholder for OAuth logic
-  };
-
   const handleEmailSignup = (data) => {
     // Dummy auth — replace with actual API call later
     dispatch(setCredentials({ user: { email: data.email, name: data.fullName }, token: 'dummy-token' }));

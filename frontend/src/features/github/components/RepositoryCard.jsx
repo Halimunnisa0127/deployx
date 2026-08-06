@@ -1,7 +1,6 @@
-import React from 'react';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
-import { RefreshCw, GitBranch, Shield, Clock, Code, ExternalLink, MoreVertical, Link as LinkIcon, AlertTriangle } from 'lucide-react';
+import { RefreshCw, GitBranch, Shield, Clock, Code, ExternalLink, MoreVertical } from 'lucide-react';
 import Github from '../../../components/ui/GithubIcon';
 
 export default function RepositoryCard({ repo, onClick, onAction }) {

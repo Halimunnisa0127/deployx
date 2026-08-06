@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import UserRow from "./UserRow";
 import Button from "../../../../components/ui/Button";
 

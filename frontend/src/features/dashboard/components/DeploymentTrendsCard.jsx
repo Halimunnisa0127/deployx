@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TrendingUp, CheckCircle2, XCircle, Activity, Info } from 'lucide-react';
+import { TrendingUp, CheckCircle2, XCircle } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import { MOCK_DEPLOYMENT_TRENDS } from '../data/mockDashboardData';
 

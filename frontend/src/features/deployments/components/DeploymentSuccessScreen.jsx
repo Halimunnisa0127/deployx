@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   CheckCircle2,
   Globe,
@@ -12,7 +12,6 @@ import {
   Folder,
   Plus,
   Rocket,
-  ArrowRight,
   ShieldCheck,
 } from 'lucide-react';
 import Button from '../../../components/ui/Button';

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DomainRow from "./DomainRow";
 import Button from "../../../../components/ui/Button";
 

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   ShieldCheck, HardDrive, Wifi, Clock, Cpu,
-  CheckCircle2, AlertTriangle, AlertCircle, CalendarClock,
+  CheckCircle2, AlertTriangle, AlertCircle,
 } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import ResourceProgressBar from './ResourceProgressBar';

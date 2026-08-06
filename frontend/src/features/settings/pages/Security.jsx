@@ -3,7 +3,6 @@ import {
   Lock, 
   Save, 
   Smartphone, 
-  ShieldCheck, 
   Laptop, 
   Globe, 
   LogOut, 
