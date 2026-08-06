@@ -1,4 +1,3 @@
-import React from "react";
 
 export default function EnvironmentBadge({ environment }) {
   const env = (environment || "").toLowerCase();

@@ -1,4 +1,3 @@
-import React from "react";
 
 export default function UserAvatar({ name, className = "w-8 h-8" }) {
   const initial = name ? name.charAt(0).toUpperCase() : "?";

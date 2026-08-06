@@ -53,7 +53,7 @@ export default function DangerZone() {
             <ShieldAlert className="w-4 h-4" />
             <span>{toast.message}</span>
           </div>
-          <button type="button" onClick={() => setToast(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+          <button type="button" onClick={() => setToast(null)} className="text-muted-foreground hover:text-slate-900 dark:hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -69,21 +69,21 @@ export default function DangerZone() {
             <h3 className="text-base font-bold text-rose-700 dark:text-rose-300">
               Danger Zone
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-muted-foreground">
               Irreversible and destructive account operations. Please proceed with caution.
             </p>
           </div>
         </div>
 
         {/* 1. Transfer Workspace Ownership (UI only) */}
-        <form onSubmit={handleTransfer} className="p-5 rounded-2xl bg-slate-50/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-4">
+        <form onSubmit={handleTransfer} className="p-5 rounded-2xl bg-slate-50/60 dark:bg-slate-950/60 border border-border space-y-4">
           <div className="flex items-start gap-3">
             <UserCheck className="w-5 h-5 text-indigo-500 dark:text-indigo-400 shrink-0 mt-0.5" />
             <div className="space-y-1">
               <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
                 Transfer Workspace Ownership
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Transfer full administrator rights and billing responsibility of this workspace to another team member.
               </p>
             </div>
@@ -121,7 +121,7 @@ export default function DangerZone() {
               <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
                 Delete DeployX Account & Workspace
               </h4>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Permanently delete your account, associated projects, active deployments, custom domains, and build history. This action <span className="font-bold text-rose-600 dark:text-rose-400">cannot be undone</span>.
               </p>
             </div>
@@ -162,7 +162,7 @@ export default function DangerZone() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs text-slate-700 dark:text-slate-300 font-medium">
+            <label className="text-xs text-foreground font-medium">
               To confirm, type <span className="font-mono font-bold text-rose-600 dark:text-rose-400">DELETE</span> below:
             </label>
             <Input
@@ -172,7 +172,7 @@ export default function DangerZone() {
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
             <Button
               variant="secondary"
               size="sm"

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 import Tooltip from '../../../components/ui/Tooltip';
@@ -82,24 +82,24 @@ function DomainCard({ domain, onClick, onOpenDomain }) {
       aria-label={`Domain ${name} ${status}`}
       onClick={handleCardClick}
       onKeyDown={handleKeyDown}
-      className="group relative p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-900/90 border border-slate-200 dark:border-slate-800/80 hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_12px_36px_rgba(79,70,229,0.18)] hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 space-y-4 overflow-hidden text-left"
+      className="group relative p-5 sm:p-6 rounded-2xl bg-card hover:bg-muted border border-border hover:border-indigo-400 dark:hover:border-indigo-500/50 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_12px_36px_rgba(79,70,229,0.18)] hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 space-y-4 overflow-hidden text-left"
     >
       {/* Top Row: Domain Icon, Domain Name, Project Badge, Environment Badge */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-slate-200 dark:border-slate-800/70">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3.5 border-b border-border">
         <div className="flex items-center gap-3 min-w-0 flex-wrap">
           {/* Domain Icon Avatar */}
-          <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-300 dark:group-hover:border-indigo-500/40 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-500/10 transition-colors">
+          <div className="w-10 h-10 rounded-xl bg-muted border border-border flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-300 dark:group-hover:border-indigo-500/40 group-hover:bg-indigo-50 dark:group-hover:bg-indigo-500/10 transition-colors">
             <Globe className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
           </div>
 
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-base font-bold text-slate-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
+              <h3 className="text-base font-bold text-foreground group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
                 {name}
               </h3>
 
               {/* Project Badge */}
-              <span className="text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700/50">
+              <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border">
                 {projectName}
               </span>
 
@@ -110,13 +110,13 @@ function DomainCard({ domain, onClick, onOpenDomain }) {
             </div>
             
             {/* Subtitle: Framework Name & Created Time */}
-            <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-1 flex-wrap">
-              <span className="inline-flex items-center gap-1.5 font-medium text-slate-700 dark:text-slate-300">
+            <div className="text-xs text-muted-foreground flex items-center gap-2 mt-1 flex-wrap">
+              <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
                 {framework}
               </span>
-              <span className="text-slate-300 dark:text-slate-600">&bull;</span>
-              <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
-                <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+              <span className="text-muted-foreground">&bull;</span>
+              <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                <Clock className="w-3.5 h-3.5 text-muted-foreground" />
                 Created {createdAt}
               </span>
             </div>
@@ -173,19 +173,19 @@ function DomainCard({ domain, onClick, onOpenDomain }) {
       </div>
 
       {/* Bottom Row: Connected Project, Created By, Last Updated & Hover Action Buttons */}
-      <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800/50">
+      <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted-foreground border-t border-border">
         <div className="flex items-center gap-4 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
-            Connected Project: <strong className="text-slate-800 dark:text-slate-300 font-medium">{projectName}</strong>
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            Connected Project: <strong className="text-foreground font-medium">{projectName}</strong>
           </span>
 
-          <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
-            <User className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
-            Created by: <strong className="text-slate-800 dark:text-slate-300 font-medium">{createdBy}</strong>
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            <User className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+            Created by: <strong className="text-foreground font-medium">{createdBy}</strong>
           </span>
 
-          <span className="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-400">
-            Last Updated: <strong className="text-slate-800 dark:text-slate-300 font-medium">{updatedAt}</strong>
+          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+            Last Updated: <strong className="text-foreground font-medium">{updatedAt}</strong>
           </span>
         </div>
 

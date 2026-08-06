@@ -1,4 +1,3 @@
-import React from 'react';
 import { Calendar } from 'lucide-react';
 import NotificationItem from './NotificationItem';
 
@@ -14,10 +13,10 @@ export default function NotificationGroup({
   return (
     <div className="p-4 sm:p-6 space-y-3">
       {/* Timeline Group Header */}
-      <div className="flex items-center gap-2 pb-2 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-mono">
+      <div className="flex items-center gap-2 pb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider font-mono">
         <Calendar className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
         <span>{groupTitle}</span>
-        <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-normal">
+        <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground font-normal">
           {items.length}
         </span>
       </div>

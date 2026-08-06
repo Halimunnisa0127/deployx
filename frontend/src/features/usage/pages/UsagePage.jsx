@@ -3,7 +3,7 @@ import { useUsage } from '../hooks/useUsage';
 import UsageHeader          from '../components/UsageHeader';
 import UsageSummaryCards    from '../components/UsageSummaryCards';
 import InfrastructureEfficiency from '../components/InfrastructureEfficiency';
-import UsageTrendChart      from '../components/UsageTrendChart';
+import UsageTrendChart      from '../components/charts/UsageTrendChart';
 import UsageBreakdown       from '../components/UsageBreakdown';
 
 import UsageHistoryTable    from '../components/UsageHistoryTable';
@@ -17,8 +17,8 @@ function SectionLabel({ children, muted = false }) {
   return (
     <p className={`text-xs font-bold uppercase tracking-widest mb-1 select-none ${
       muted
-        ? 'text-slate-300 dark:text-slate-600'
-        : 'text-slate-400 dark:text-slate-500'
+        ? 'text-muted-foreground'
+        : 'text-foreground'
     }`}>
       {children}
     </p>
@@ -84,7 +84,7 @@ export default function UsagePage() {
 
         {/* Usage Trends & History — Grouped tightly */}
         <div className="flex flex-col gap-3">
-          <div className="ring-1 ring-slate-200/80 dark:ring-white/10 rounded-2xl shadow-md dark:shadow-2xl">
+          <div className="ring-1 ring-border rounded-2xl shadow-md dark:shadow-2xl">
             <UsageTrendChart
               dailyData={data.dailyConsumption}
               weeklyData={data.weeklyConsumption}
@@ -95,13 +95,13 @@ export default function UsagePage() {
               setChartPeriod={setChartPeriod}
             />
           </div>
-          <div className="ring-1 ring-slate-200/80 dark:ring-white/10 rounded-2xl shadow-sm dark:shadow-xl">
+          <div className="ring-1 ring-border rounded-2xl shadow-sm dark:shadow-xl">
             <UsageHistoryTable history={data.history} activeTab={activeTab} />
           </div>
         </div>
 
         {/* Top Resource Consumers */}
-        <div className="ring-1 ring-slate-200/60 dark:ring-white/8 rounded-2xl
+        <div className="ring-1 ring-border rounded-2xl
                         shadow-sm dark:shadow-xl">
           <UsageBreakdown
             consumers={data.topConsumers}

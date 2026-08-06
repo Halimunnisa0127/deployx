@@ -1,4 +1,3 @@
-import React from 'react';
 import SearchBar from '../../../components/common/SearchBar';
 import { FILTER_TABS } from '../utils/constants';
 
@@ -9,7 +8,7 @@ export default function NotificationControls({
   setActiveFilter,
 }) {
   return (
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/40 dark:bg-slate-900/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-800/60 backdrop-blur-lg">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/40 dark:bg-slate-900/40 p-4 rounded-2xl border border-border backdrop-blur-lg">
       {/* Reusable Search Bar */}
       <SearchBar
         placeholder="Search notifications..."
@@ -31,7 +30,7 @@ export default function NotificationControls({
               className={`px-3 py-1.5 rounded-xl font-semibold transition-all flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
                 isActive
                   ? 'bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/40 shadow-sm'
-                  : 'bg-white/60 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                  : 'bg-white/60 dark:bg-slate-900/60 text-muted-foreground hover:text-slate-900 dark:hover:text-slate-200 border border-border hover:border-slate-300 dark:hover:border-slate-700'
               }`}
             >
               {tab.label}

@@ -47,7 +47,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
 
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="hover:-translate-y-[3px]"
     >
       {/* Header */}
@@ -56,7 +56,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
           <div className="p-2.5 rounded-xl bg-sky-500/10 dark:bg-sky-500/20 border border-sky-500/30 text-sky-500 dark:text-sky-400 shadow-sm shadow-sky-500/20">
             <Activity className="w-6 h-6" />
           </div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+          <h2 className="text-lg font-semibold text-foreground tracking-tight">
             Recent Activity
           </h2>
         </div>
@@ -83,7 +83,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
               className={`px-2.5 py-1 rounded-lg font-medium transition-all flex-shrink-0 ${
                 isActive
                   ? 'bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30 dark:border-indigo-500/40 font-semibold'
-                  : 'bg-slate-100 dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800'
+                  : 'bg-muted text-muted-foreground hover:text-slate-900 dark:hover:text-slate-200 border border-border'
               }`}
             >
               {tab.label}
@@ -94,7 +94,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
 
       {/* Timeline List */}
       {filteredActivities.length === 0 ? (
-        <div className="py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+        <div className="py-6 text-center text-xs text-muted-foreground">
           No activity found for this period.
         </div>
       ) : (
@@ -108,7 +108,7 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
               {/* Timeline Icon Node */}
               <div
                 className={`absolute -left-6 top-1.5 p-1 rounded-full border ${
-                  ACTIVITY_DOT_BG[act.type] || 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700'
+                  ACTIVITY_DOT_BG[act.type] || 'bg-muted border-border'
                 } flex-shrink-0 z-10 bg-white dark:bg-[#0c121e] group-hover:scale-110 transition-transform`}
               >
                 {ACTIVITY_ICON_MAP[act.type] || <Activity className="w-3.5 h-3.5 text-slate-400" />}
@@ -124,16 +124,16 @@ export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVI
                     {act.description}
                   </div>
                 )}
-                <div className="flex items-center justify-between gap-2 mt-1 text-sm text-slate-600 dark:text-slate-400">
+                <div className="flex items-center justify-between gap-2 mt-1 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="font-mono text-slate-700 dark:text-slate-300 truncate font-medium">
+                    <span className="font-mono text-foreground truncate font-medium">
                       {act.projectName}
                     </span>
-                    <span className="px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400">
+                    <span className="px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-muted text-muted-foreground">
                       {act.type}
                     </span>
                   </div>
-                  <span className="flex-shrink-0 text-slate-600 dark:text-slate-400">
+                  <span className="flex-shrink-0 text-muted-foreground">
                     {act.timeAgo}
                   </span>
                 </div>

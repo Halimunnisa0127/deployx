@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Drawer from "../../../../components/ui/Drawer";
 import {
   Server,
@@ -58,16 +58,16 @@ export default function ServiceDetailsDrawer({
         <div className="p-6 space-y-8 animate-in fade-in duration-300">
           {/* Header */}
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shrink-0">
+            <div className="w-16 h-16 rounded-xl bg-muted border border-border flex items-center justify-center shrink-0">
               <Server className="w-8 h-8 text-indigo-400" />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+              <h2 className="text-xl font-bold text-foreground mb-2">
                 {details.name}
               </h2>
               <div className="flex gap-2">
                 <Badge status={details.status} />
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-slate-100 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border bg-muted text-foreground border-border">
                   {details.version}
                 </span>
               </div>
@@ -76,7 +76,7 @@ export default function ServiceDetailsDrawer({
 
           {/* Overview Grid */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-border flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Environment
               </span>
@@ -84,7 +84,7 @@ export default function ServiceDetailsDrawer({
                 <Box className="w-4 h-4 text-slate-400" /> {details.environment}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-border flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Region
               </span>
@@ -92,7 +92,7 @@ export default function ServiceDetailsDrawer({
                 <MapPin className="w-4 h-4 text-slate-400" /> {details.region}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-border flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Host
               </span>
@@ -103,7 +103,7 @@ export default function ServiceDetailsDrawer({
                 {details.host}
               </span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-border flex flex-col gap-2">
               <span className="text-xs text-slate-500 font-semibold uppercase tracking-wider">
                 Uptime
               </span>
@@ -118,7 +118,7 @@ export default function ServiceDetailsDrawer({
             <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-300 uppercase tracking-wider mb-4 flex items-center gap-2">
               <Activity className="w-4 h-4 text-indigo-400" /> Live Metrics
             </h3>
-            <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800/80 p-5">
+            <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-border p-5">
               <div className="grid grid-cols-2 gap-y-6 gap-x-4">
                 <div>
                   <div className="text-xs text-slate-500 mb-1 flex items-center gap-1.5">
@@ -162,11 +162,11 @@ export default function ServiceDetailsDrawer({
               <TerminalSquare className="w-4 h-4 text-indigo-400" /> Recent
               Events
             </h3>
-            <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-slate-200 dark:border-slate-800/80 overflow-hidden">
+            <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-border overflow-hidden">
               {details.recentLogs.map((log, i) => (
                 <div
                   key={i}
-                  className="flex gap-3 p-3 border-b border-slate-200 dark:border-slate-800/50 last:border-0 text-sm"
+                  className="flex gap-3 p-3 border-b border-border last:border-0 text-sm"
                 >
                   {log.level === "warning" ? (
                     <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
@@ -174,7 +174,7 @@ export default function ServiceDetailsDrawer({
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   )}
                   <div>
-                    <div className="text-slate-700 dark:text-slate-300">{log.message}</div>
+                    <div className="text-foreground">{log.message}</div>
                     <div className="text-xs text-slate-500 mt-1">
                       {new Date(log.time).toLocaleTimeString()}
                     </div>
@@ -185,7 +185,7 @@ export default function ServiceDetailsDrawer({
           </div>
 
           {/* Actions */}
-          <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap gap-3">
+          <div className="pt-6 border-t border-border flex flex-wrap gap-3">
             <Button
               variant="secondary"
               iconLeft={<Activity className="w-4 h-4" />}

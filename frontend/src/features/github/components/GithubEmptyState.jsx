@@ -1,4 +1,3 @@
-import React from 'react';
 import { RotateCcw, Search, Plus } from 'lucide-react';
 import Github from '../../../components/ui/GithubIcon';
 import EmptyState from '../../../components/common/EmptyState';

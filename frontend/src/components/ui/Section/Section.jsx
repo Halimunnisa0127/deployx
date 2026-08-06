@@ -1,16 +1,12 @@
-import React from 'react';
 import { cn } from '../../../lib/utils';
 import { Typography } from '../Typography';
 import { Divider } from '../Divider';
-import { Stack } from '../Stack';
 
 export default function Section({
   title,
   subtitle,
   actions,
   divider = false,
-  variant = 'default',
-  size = 'md',
   padding = 'none',
   layout = 'stacked',
   className,

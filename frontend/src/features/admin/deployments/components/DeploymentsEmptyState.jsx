@@ -1,4 +1,3 @@
-import React from "react";
 import { Rocket, Search, AlertCircle, PlayCircle } from "lucide-react";
 import EmptyState from "../../../../components/ui/EmptyState";
 

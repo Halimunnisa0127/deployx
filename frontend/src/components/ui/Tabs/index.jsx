@@ -26,7 +26,7 @@ const Tabs = forwardRef(({
     <div
       ref={ref}
       className={`flex items-center gap-1 overflow-x-auto flex-nowrap whitespace-nowrap select-none scrollbar-none w-full max-w-full ${
-        variant === 'line' ? 'border-b border-slate-200 dark:border-slate-800' : 'p-1 rounded-xl bg-slate-100 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80'
+        variant === 'line' ? 'border-b border-border' : 'p-1 rounded-xl bg-muted border border-border'
       } ${className}`}
       style={extraStyle}
       role="tablist"
@@ -52,13 +52,13 @@ const Tabs = forwardRef(({
                   ? 'opacity-40 cursor-not-allowed text-slate-500'
                   : isActive
                   ? 'bg-indigo-500/10 dark:bg-indigo-600/20 text-indigo-700 dark:text-indigo-300 border border-indigo-500/30 shadow-[0_0_12px_rgba(99,102,241,0.15)] font-bold'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
+                  : 'text-muted-foreground hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
               }`}
             >
               {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
               <span>{tab.label}</span>
               {tab.badge !== undefined && (
-                <span className="px-1.5 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+                <span className="px-1.5 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-800 text-foreground font-mono">
                   {tab.badge}
                 </span>
               )}
@@ -82,13 +82,13 @@ const Tabs = forwardRef(({
                 ? 'opacity-40 cursor-not-allowed border-transparent text-slate-400 dark:text-slate-600'
                 : isActive
                 ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold'
-                : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
+                : 'border-transparent text-muted-foreground hover:text-slate-800 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-700'
             }`}
           >
             {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
             <span>{tab.label}</span>
             {tab.badge !== undefined && (
-              <span className="px-1.5 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium">
+              <span className="px-1.5 py-0.5 text-xs rounded bg-slate-200 dark:bg-slate-800 text-muted-foreground font-medium">
                 {tab.badge}
               </span>
             )}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, LayoutDashboard, Rocket } from 'lucide-react';
@@ -21,7 +20,7 @@ export default function CtaSection() {
           <Rocket className="w-7 h-7" />
         </div>
 
-        <h2 className="text-3xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+        <h2 className="text-3xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-tight">
           Ready to deploy your next project?
         </h2>
 
@@ -40,7 +39,7 @@ export default function CtaSection() {
 
           <Link 
             to="/dashboard" 
-            className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-slate-700 dark:text-gray-300 bg-slate-100 dark:bg-white/[0.03] hover:bg-slate-200 dark:hover:bg-white/[0.08] border border-slate-300 dark:border-white/10 hover:border-slate-400 dark:hover:border-white/20 rounded-full transition-all flex items-center justify-center gap-2 backdrop-blur-md"
+            className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-slate-700 dark:text-gray-300 bg-slate-100 dark:bg-white/[0.03] hover:bg-slate-200 dark:hover:bg-white/[0.08] border border-border hover:border-slate-400 dark:hover:border-white/20 rounded-full transition-all flex items-center justify-center gap-2 backdrop-blur-md"
           >
             <LayoutDashboard className="w-5 h-5 text-blue-400" />
             <span>View Dashboard</span>

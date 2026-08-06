@@ -1,4 +1,3 @@
-import React from "react";
 import { Upload } from "lucide-react";
 import Input from "../../../../components/ui/Input";
 
@@ -9,11 +8,11 @@ export default function BrandingSettingsCard({ register, watch }) {
   return (
     <div
       id="branding"
-      className="bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-lg"
+      className="bg-card rounded-2xl border border-border p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-slate-200 dark:border-slate-800/80 pb-4">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-white">Branding</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+      <div className="mb-6 border-b border-border pb-4">
+        <h2 className="text-lg font-bold text-foreground">Branding</h2>
+        <p className="text-sm text-muted-foreground">
           Customize the visual identity of the platform.
         </p>
       </div>
@@ -22,13 +21,13 @@ export default function BrandingSettingsCard({ register, watch }) {
         <div className="flex-1 space-y-6">
           {/* File inputs mock */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-foreground mb-1.5">
               Primary Logo
             </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-slate-200 dark:border-slate-700 border-dashed rounded-xl hover:border-indigo-500/50 transition-colors bg-slate-50 dark:bg-slate-900/50">
+            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-border border-dashed rounded-xl hover:border-indigo-500/50 transition-colors bg-slate-50 dark:bg-slate-900/50">
               <div className="space-y-1 text-center">
                 <Upload className="mx-auto h-8 w-8 text-slate-500" />
-                <div className="flex text-sm text-slate-500 dark:text-slate-400">
+                <div className="flex text-sm text-muted-foreground">
                   <span className="relative cursor-pointer rounded-md font-medium text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300">
                     <span>Upload a file</span>
                   </span>
@@ -42,12 +41,12 @@ export default function BrandingSettingsCard({ register, watch }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-sm font-medium text-foreground mb-1.5">
               Accent Color
             </label>
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-lg border border-slate-200 dark:border-slate-700 shadow-inner flex shrink-0"
+                className="w-10 h-10 rounded-lg border border-border shadow-inner flex shrink-0"
                 style={{ backgroundColor: accentColor }}
               >
                 <input
@@ -58,7 +57,7 @@ export default function BrandingSettingsCard({ register, watch }) {
               </div>
               <Input
                 {...register("branding.accentColor")}
-                className="w-32 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 font-mono"
+                className="w-32 bg-card border-border font-mono"
               />
             </div>
           </div>
@@ -66,12 +65,12 @@ export default function BrandingSettingsCard({ register, watch }) {
 
         {/* Live Preview */}
         <div className="w-full lg:w-72 shrink-0">
-          <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          <label className="block text-sm font-medium text-foreground mb-1.5">
             Live Preview
           </label>
-          <div className="border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-100 dark:bg-slate-950 p-4 h-48 flex flex-col items-center justify-center relative overflow-hidden">
-            <div className="w-full max-w-[180px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-xl dark:shadow-2xl p-4 flex flex-col gap-3 relative z-10">
-              <div className="text-center font-bold text-slate-900 dark:text-white text-sm truncate">
+          <div className="border border-border rounded-xl bg-slate-100 dark:bg-slate-950 p-4 h-48 flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="w-full max-w-[180px] bg-card border border-border rounded-lg shadow-xl dark:shadow-2xl p-4 flex flex-col gap-3 relative z-10">
+              <div className="text-center font-bold text-foreground text-sm truncate">
                 {platformName}
               </div>
               <div className="space-y-2">

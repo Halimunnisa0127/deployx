@@ -1,4 +1,3 @@
-import React from "react";
 
 export default function FrameworkBadge({ framework }) {
   const normalized = (framework || "").toLowerCase();

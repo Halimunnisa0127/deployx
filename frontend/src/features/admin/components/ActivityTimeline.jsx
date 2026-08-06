@@ -1,4 +1,3 @@
-import React from "react";
 import {
   UserPlus,
   FolderPlus,
@@ -12,31 +11,31 @@ import Card from "../../../components/ui/Card";
 const getIcon = (type) => {
   switch (type) {
     case "user_created":
-      return { icon: UserPlus, color: "text-sky-400", bg: "bg-sky-500/10" };
+      return { icon: UserPlus, color: "text-sky-500 dark:text-sky-400", bg: "bg-sky-500/10" };
     case "project_created":
       return {
         icon: FolderPlus,
-        color: "text-indigo-400",
+        color: "text-indigo-500 dark:text-indigo-400",
         bg: "bg-indigo-500/10",
       };
     case "deployment_started":
-      return { icon: Rocket, color: "text-amber-400", bg: "bg-amber-500/10" };
+      return { icon: Rocket, color: "text-amber-500 dark:text-amber-400", bg: "bg-amber-500/10" };
     case "deployment_failed":
       return {
         icon: AlertTriangle,
-        color: "text-rose-400",
+        color: "text-rose-500 dark:text-rose-400",
         bg: "bg-rose-500/10",
       };
     case "domain_verified":
       return {
         icon: CheckCircle,
-        color: "text-emerald-400",
+        color: "text-emerald-500 dark:text-emerald-400",
         bg: "bg-emerald-500/10",
       };
     default:
       return {
         icon: CheckCircle,
-        color: "text-slate-400",
+        color: "text-muted-foreground",
         bg: "bg-slate-500/10",
       };
   }
@@ -71,7 +70,7 @@ export default function ActivityTimeline({ activity = [] }) {
               {/* Timeline Dot */}
               <div className="absolute -left-3 top-1 flex items-center justify-center w-6 h-6 rounded-full bg-theme-card border border-theme-border group-hover:border-indigo-500/50 transition-colors">
                 <div
-                  className={`w-2 h-2 rounded-full ${color.replace("text-", "bg-")}`}
+                  className={`w-2 h-2 rounded-full ${color.replaceAll("text-", "bg-")}`}
                 />
               </div>
 

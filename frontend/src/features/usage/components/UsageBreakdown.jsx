@@ -4,10 +4,10 @@ export default function UsageBreakdown({ consumers = [] }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+        <h2 className="text-base sm:text-lg font-extrabold text-foreground tracking-tight">
           Top Resource Consumers
         </h2>
-        <span className="text-xs font-mono text-slate-600 dark:text-slate-400">
+        <span className="text-xs font-mono text-muted-foreground">
           Resource distribution
         </span>
       </div>

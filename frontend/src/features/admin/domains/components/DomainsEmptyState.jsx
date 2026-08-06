@@ -1,4 +1,3 @@
-import React from "react";
 import { Globe, Search, ShieldCheck, AlertCircle } from "lucide-react";
 import EmptyState from "../../../../components/ui/EmptyState";
 

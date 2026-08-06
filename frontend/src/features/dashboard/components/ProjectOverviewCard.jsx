@@ -1,6 +1,7 @@
 import { LayoutGrid, Layers, CheckCircle2, PlayCircle, AlertTriangle, Archive } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
+import { Progress } from '../../../components/ui';
 import { Link } from 'react-router-dom';
 import { MOCK_PROJECT_OVERVIEW } from '../data/mockDashboardData';
 
@@ -72,7 +73,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
 
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="relative overflow-hidden hover:-translate-y-[3px] hover:border-purple-500/40 dark:hover:border-purple-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-purple-500 before:to-indigo-500"
     >
       {/* Header */}
@@ -81,7 +82,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
           <div className="p-2.5 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 border border-purple-500/30 text-purple-500 dark:text-purple-400 shadow-sm shadow-purple-500/20">
             <LayoutGrid className="w-5 h-5" />
           </div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 tracking-tight">
+          <h2 className="text-lg font-semibold text-foreground tracking-tight">
             Project Health
           </h2>
         </div>
@@ -99,7 +100,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
             className="block space-y-1.5 group p-2 -mx-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
           >
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+              <span className="font-semibold text-foreground flex items-center gap-2 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                 <span className={`w-2 h-2 rounded-full ${cat.color}`} />
                 {cat.label}
               </span>
@@ -109,20 +110,19 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
                     {cat.badgeText}
                   </Badge>
                 )}
-                <span className="font-mono font-semibold text-slate-800 dark:text-slate-200 min-w-[60px] text-right">
+                <span className="font-mono font-semibold text-foreground min-w-[60px] text-right">
                   {cat.count}{' '}
-                  <span className="text-slate-600 dark:text-slate-400 font-normal">({cat.percent}%)</span>
+                  <span className="text-muted-foreground font-normal">({cat.percent}%)</span>
                 </span>
               </div>
             </div>
 
             {/* Horizontal Progress Bar */}
-            <div className="h-2 w-full bg-slate-200/80 dark:bg-slate-800/80 rounded-full overflow-hidden">
-              <div
-                className={`h-full ${cat.color} rounded-full transition-all duration-500 ease-out`}
-                style={{ width: `${cat.percent}%` }}
-              />
-            </div>
+            <Progress 
+              percent={cat.percent} 
+              color={cat.color} 
+              height="h-2" 
+            />
           </Link>
         ))}
       </div>

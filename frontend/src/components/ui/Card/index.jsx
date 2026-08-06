@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { motion } from 'framer-motion';
+import { twMerge } from 'tailwind-merge';
 
 /**
  * Reusable Card component
@@ -12,7 +13,7 @@ import { motion } from 'framer-motion';
  *  - ...rest — any native div attrs
  */
 
-const Card = forwardRef(({ children, style: extraStyle, onClick, animated = false, className = '', ...rest }, ref) => {
+const Card = forwardRef(({ children, style: extraStyle, onClick, animated = false, size = 'default', className = '', ...rest }, ref) => {
   const Component = animated ? motion.div : 'div';
   const animationProps = animated ? {
     initial: { opacity: 0, y: 15 },
@@ -24,11 +25,13 @@ const Card = forwardRef(({ children, style: extraStyle, onClick, animated = fals
     <Component
       ref={ref}
       onClick={onClick}
-      className={`bg-slate-900 dark:bg-slate-900 backdrop-blur-xl border border-slate-200 dark:border-slate-900 rounded-[18px] shadow-sm dark:shadow-xl text-white dark:text-slate-100 transition-all duration-[250ms] ease-out ${onClick ? 'cursor-pointer hover:bg-slate-800' : 'cursor-default'} w-full max-w-[460px] ${className}`}
-      style={{
-        padding: '48px 40px',
-        ...extraStyle,
-      }}
+      className={twMerge(
+        'bg-card backdrop-blur-xl border border-border rounded-[18px] shadow-sm text-card-foreground transition-all duration-[250ms] ease-out w-full',
+        onClick ? 'cursor-pointer hover:bg-muted' : 'cursor-default',
+        size === 'sm' ? 'max-w-[460px] p-10 md:p-12' : 'p-6',
+        className
+      )}
+      style={extraStyle}
       {...animationProps}
       {...rest}
     >

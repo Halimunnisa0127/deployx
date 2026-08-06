@@ -1,4 +1,3 @@
-import React from "react";
 import { ArrowUpRight, ArrowDownRight, ArrowRight } from "lucide-react";
 import Card from "../../../components/ui/Card";
 
@@ -18,7 +17,7 @@ export default function OverviewCard({
       style={{ padding: '16px' }}
     >
       <div className="flex justify-between items-center mb-1.5">
-        <div className="w-7 h-7 rounded-md bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 transition-colors">
+        <div className="w-7 h-7 rounded-md bg-muted border border-border flex items-center justify-center shrink-0 shadow-inner group-hover:border-indigo-500/40 group-hover:bg-indigo-500/10 transition-colors">
           <Icon className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
         </div>
         <div className="w-5 h-5 rounded flex items-center justify-center text-theme-muted group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:bg-indigo-500/10 transition-colors">

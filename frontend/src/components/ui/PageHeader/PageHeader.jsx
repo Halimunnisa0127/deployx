@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn } from '../../../lib/utils';
 import { Typography } from '../Typography';
 import { Stack } from '../Stack';
@@ -16,7 +15,7 @@ export default function PageHeader({
     <header className={cn('mb-6 sm:mb-8', className)} {...props}>
       <Stack spacing="sm">
         {breadcrumbs && (
-          <div className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+          <div className="mb-2 text-sm text-muted-foreground">
             {breadcrumbs}
           </div>
         )}

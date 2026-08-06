@@ -1,4 +1,3 @@
-import React from 'react';
 import { Rocket, BookOpen } from 'lucide-react';
 import GithubIcon from '../../../assets/icons/GithubIcon';
 import Badge from '../../ui/Badge';

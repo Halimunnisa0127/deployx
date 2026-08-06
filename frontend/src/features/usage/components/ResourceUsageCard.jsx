@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import { Wifi, HardDrive, Clock, Cpu, TrendingUp, TrendingDown, ShieldCheck, AlertTriangle, AlertCircle } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import ResourceProgressBar from './ResourceProgressBar';
-import SparklineChart from './SparklineChart';
+import SparklineChart from './charts/SparklineChart';
 
 const METRIC_ICONS = {
   bandwidth: Wifi,
@@ -81,7 +80,7 @@ export default function ResourceUsageCard({ item }) {
   return (
     <Card
       style={{ maxWidth: '100%', padding: '20px 24px' }}
-      className={`relative h-full flex flex-col overflow-hidden border border-slate-200/80 dark:border-white/10 rounded-2xl backdrop-blur-xl bg-white/80 dark:bg-slate-900/70 shadow-sm dark:shadow-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group ${config.glowBorder}`}
+      className={`relative h-full flex flex-col overflow-hidden border border-border/80 rounded-2xl backdrop-blur-xl bg-card/80 shadow-sm dark:shadow-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group ${config.glowBorder}`}
     >
       <div className="flex flex-col h-full gap-5">
         {/* Header: Icon + Name + Trend Badge */}
@@ -90,7 +89,7 @@ export default function ResourceUsageCard({ item }) {
             <div className={`shrink-0 p-2 rounded-xl border ${config.badgeBg} transition-transform duration-300 group-hover:scale-105`}>
               <Icon className={`w-4 h-4 ${config.iconColor}`} />
             </div>
-            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-tight whitespace-normal">
+            <span className="text-sm font-semibold text-foreground leading-tight whitespace-normal">
               {item.title}
             </span>
           </div>
@@ -109,13 +108,13 @@ export default function ResourceUsageCard({ item }) {
         {/* Large Usage Value + Sparkline */}
         <div className="flex items-end justify-between gap-2 flex-1">
           <div>
-            <div className="text-4xl font-bold text-slate-900 dark:text-white tracking-tight leading-none whitespace-nowrap">
+            <div className="text-4xl font-bold text-foreground tracking-tight leading-none whitespace-nowrap">
               {item.used}
-              <span className="text-base font-semibold text-slate-400 dark:text-slate-500 ml-1.5">
+              <span className="text-base font-semibold text-muted-foreground ml-1.5">
                 {item.unit}
               </span>
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400 mt-2 whitespace-nowrap">
+            <div className="text-xs text-muted-foreground mt-2 whitespace-nowrap">
               {item.percent}% of {item.limit} {item.unit} limit
             </div>
           </div>
@@ -142,17 +141,17 @@ export default function ResourceUsageCard({ item }) {
           />
 
           {/* Detailed Metrics Block */}
-          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-white/5">
+          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-border/50">
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-semibold tracking-wider text-slate-400 dark:text-slate-500">Remaining</span>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.remaining} {item.unit}</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">Remaining</span>
+              <span className="text-xs font-bold text-foreground">{item.remaining} {item.unit}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-semibold tracking-wider text-slate-400 dark:text-slate-500">Forecast</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">Forecast</span>
               <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">{item.forecastUsed} {item.unit}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-semibold tracking-wider text-slate-400 dark:text-slate-500">Status</span>
+              <span className="text-[10px] font-semibold tracking-wider text-muted-foreground">Status</span>
               <span className={`text-xs font-bold flex items-center gap-1 ${statusCss}`}>
                 <StatusIcon className="w-3 h-3 shrink-0" />
                 <span>{statusKey}</span>

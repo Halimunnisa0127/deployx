@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Reusable Badge component with STAGE 8 micro animations
@@ -12,39 +11,32 @@ import React from 'react';
 
 const VARIANTS = {
   success: {
-    dot: '#22c55e',
-    badge: 'rgba(34,197,94,0.15)',
-    text: '#4ade80',
+    dot: 'bg-emerald-500',
+    badge: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400',
   },
   warning: {
-    dot: '#f59e0b',
-    badge: 'rgba(245,158,11,0.15)',
-    text: '#fbbf24',
+    dot: 'bg-amber-500',
+    badge: 'bg-amber-500/15 text-amber-700 dark:text-amber-400',
   },
   danger: {
-    dot: '#ef4444',
-    badge: 'rgba(239,68,68,0.15)',
-    text: '#f87171',
+    dot: 'bg-rose-500',
+    badge: 'bg-rose-500/15 text-rose-700 dark:text-rose-400',
   },
   neutral: {
-    dot: '#6b7280',
-    badge: 'rgba(107,114,128,0.15)',
-    text: '#9ca3af',
+    dot: 'bg-muted-foreground',
+    badge: 'bg-muted text-muted-foreground border border-border',
   },
   info: {
-    dot: '#3b82f6',
-    badge: 'rgba(59,130,246,0.15)',
-    text: '#60a5fa',
+    dot: 'bg-sky-500',
+    badge: 'bg-sky-500/15 text-sky-700 dark:text-sky-400',
   },
   primary: {
-    dot: '#3b82f6', // Blue
-    badge: 'rgba(59,130,246,0.15)',
-    text: '#60a5fa',
+    dot: 'bg-indigo-500',
+    badge: 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400',
   },
   purple: {
-    dot: '#2563eb', // Blue fallback
-    badge: 'rgba(37,99,235,0.15)',
-    text: '#93c5fd',
+    dot: 'bg-purple-500',
+    badge: 'bg-purple-500/15 text-purple-700 dark:text-purple-400',
   },
 };
 
@@ -71,33 +63,12 @@ export default function Badge({
 
   return (
     <span
-      className={`${animClass} ${className}`}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '5px',
-        padding: '2px 8px',
-        borderRadius: '999px',
-        background: s.badge,
-        color: s.text,
-        fontSize: '10px',
-        fontWeight: 600,
-        fontFamily: "'Inter', sans-serif",
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-        ...extraStyle,
-      }}
+      className={`inline-flex items-center gap-[5px] px-[8px] py-[2px] rounded-full text-[10px] font-semibold whitespace-nowrap shrink-0 font-sans ${s.badge} ${animClass} ${className}`}
+      style={extraStyle}
     >
       {dot && (
         <span
-          className={isBuilding ? 'animate-ping' : undefined}
-          style={{
-            width: '5px',
-            height: '5px',
-            borderRadius: '50%',
-            background: s.dot,
-            flexShrink: 0,
-          }}
+          className={`w-[5px] h-[5px] rounded-full shrink-0 ${s.dot} ${isBuilding ? 'animate-ping' : ''}`}
         />
       )}
       {children}

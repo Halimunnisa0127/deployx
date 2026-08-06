@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Terminal, Search, Copy, Check, Filter, RefreshCw, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
+import { Terminal, Search, Copy, Check } from 'lucide-react';
 import Button from '../../../components/ui/Button';
 
 const MOCK_PROJECT_LOGS = [
