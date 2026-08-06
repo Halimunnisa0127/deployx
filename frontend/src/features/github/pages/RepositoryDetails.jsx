@@ -15,7 +15,6 @@ export default function RepositoryDetails() {
     repository: repo,
     branches,
     commits,
-    isLoading,
     notification,
     setNotification,
     handleSync: handleRefresh,

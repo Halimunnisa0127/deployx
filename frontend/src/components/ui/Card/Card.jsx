@@ -45,7 +45,6 @@ export default function Card({
   loading = false,
   borderless = false,
   elevated = false,
-  animated,
   className,
   children,
   ...props

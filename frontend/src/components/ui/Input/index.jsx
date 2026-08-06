@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 
 /**
  * Reusable Input component
@@ -24,15 +24,13 @@ const Input = forwardRef(({
   onBlur,
   ...rest
 }, ref) => {
-  const [isFocused, setIsFocused] = useState(false);
+
 
   const handleFocus = (e) => {
-    setIsFocused(true);
     if (onFocus) onFocus(e);
   };
 
   const handleBlur = (e) => {
-    setIsFocused(false);
     if (onBlur) onBlur(e);
   };
 

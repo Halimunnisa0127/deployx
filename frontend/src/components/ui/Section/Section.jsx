@@ -7,8 +7,6 @@ export default function Section({
   subtitle,
   actions,
   divider = false,
-  variant = 'default',
-  size = 'md',
   padding = 'none',
   layout = 'stacked',
   className,

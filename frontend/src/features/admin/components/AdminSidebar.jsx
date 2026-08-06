@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -66,8 +65,6 @@ const ADMIN_NAV_ITEMS = [
 ];
 
 export default function AdminSidebar({ onToggleMobileExternal }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
 

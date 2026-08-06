@@ -85,9 +85,6 @@ export default function DashboardHeader({ onToggleMobile }) {
     .split('/')
     .filter(Boolean);
 
-  const currentPageTitle = pathSegments.length > 1
-    ? formatBreadcrumbLabel(pathSegments[pathSegments.length - 1])
-    : 'Dashboard';
 
   const handleSelectSearchItem = (link) => {
     setIsSearchFocused(false);

@@ -1,9 +1,9 @@
 import { Globe, RotateCcw, Search, Plus } from 'lucide-react';
 import EmptyState from '../../../components/common/EmptyState';
-import { useNavigate } from 'react-router-dom';
+
 
 export default function DomainsEmptyState({ onResetFilter, hasFilter, onAddDomain }) {
-  const navigate = useNavigate();
+
 
   if (hasFilter) {
     return (

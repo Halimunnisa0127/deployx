@@ -13,7 +13,6 @@ export default function DomainDetails() {
 
   const {
     domain,
-    isLoading,
     notification,
     setNotification,
     handleRefresh,
