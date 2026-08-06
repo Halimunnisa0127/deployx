@@ -30,7 +30,7 @@ export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
 
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="hover:-translate-y-[3px]"
     >
       {/* Panel Header */}

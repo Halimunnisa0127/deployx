@@ -67,10 +67,8 @@ const Input = forwardRef(({
             border
             ${
               error 
-                ? 'border-red-500 focus:ring-[3px] focus:ring-red-500/15' 
-                : isFocused 
-                  ? 'border-indigo-500 focus:ring-[3px] focus:ring-indigo-500/20' 
-                  : 'border-border hover:border-slate-400 dark:hover:border-white/20'
+                ? 'border-red-500 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/30 focus-visible:ring-offset-1 focus-visible:ring-offset-card' 
+                : 'border-border hover:border-slate-400 dark:hover:border-white/20 focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-indigo-500/30 focus-visible:ring-offset-1 focus-visible:ring-offset-card'
             }
             ${className}
           `}

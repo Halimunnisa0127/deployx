@@ -78,7 +78,7 @@ const Button = forwardRef(({
       {...rest}
     >
       {isBtnLoading ? (
-        <svg className="animate-spin shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className="animate-spin shrink-0 w-[1.125em] h-[1.125em]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeDasharray="32" strokeLinecap="round" opacity="0.3" />
           <path d="M12 2A10 10 0 002 12" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
         </svg>

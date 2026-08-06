@@ -42,7 +42,7 @@ export function TableRow({ children, className = '', onClick, hover = true }) {
 
 export function TableHead({ children, className = '' }) {
   return (
-    <th className={`px-4 py-3 font-semibold ${className}`}>
+    <th className={`px-4 py-3 font-semibold align-middle ${className}`}>
       {children}
     </th>
   );
@@ -50,7 +50,7 @@ export function TableHead({ children, className = '' }) {
 
 export function TableCell({ children, className = '' }) {
   return (
-    <td className={`px-4 py-4 ${className}`}>
+    <td className={`px-4 py-3 align-middle ${className}`}>
       {children}
     </td>
   );

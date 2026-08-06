@@ -32,8 +32,7 @@ export default function StatCards({ metrics = MOCK_STAT_METRICS }) {
             aria-label={`${item.title}: ${item.value}, ${item.change} ${item.period}`}
           >
             <Card
-              style={{ maxWidth: '100%', padding: '16px 20px' }}
-              className="relative overflow-hidden group-hover:border-indigo-500/40 dark:group-hover:border-indigo-500/30 group-hover:shadow-lg dark:group-hover:shadow-indigo-500/20"
+              className="max-w-full p-4 md:p-5 relative overflow-hidden group-hover:border-indigo-500/40 dark:group-hover:border-indigo-500/30 group-hover:shadow-lg dark:group-hover:shadow-indigo-500/20"
             >
               {/* Subtle Ambient Hover Background Glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />

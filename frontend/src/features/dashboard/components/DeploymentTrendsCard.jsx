@@ -74,7 +74,7 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
 
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="hover:-translate-y-[3px]"
     >
       {/* Header */}
@@ -102,8 +102,9 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
         <div className="flex items-center gap-3 text-xs sm:text-sm font-semibold">
           <button
             type="button"
+            aria-label={`Toggle Successful Series (Current: ${visibleSeries.success ? 'Visible' : 'Hidden'})`}
             onClick={() => toggleSeries('success')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               visibleSeries.success
                 ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 font-bold'
                 : 'bg-muted text-slate-400 border-border line-through opacity-60'
@@ -115,8 +116,9 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
 
           <button
             type="button"
+            aria-label={`Toggle Failed Series (Current: ${visibleSeries.failed ? 'Visible' : 'Hidden'})`}
             onClick={() => toggleSeries('failed')}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
               visibleSeries.failed
                 ? 'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/30 font-bold'
                 : 'bg-muted text-slate-400 border-border line-through opacity-60'

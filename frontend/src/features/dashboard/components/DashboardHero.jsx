@@ -92,7 +92,7 @@ export default function DashboardHero() {
             </div>
 
             {/* Welcome Heading with Display Name */}
-            <h1 className="text-2xl font-bold text-foreground tracking-tight leading-tight">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight leading-tight">
               Welcome back,<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 dark:from-blue-400 dark:via-indigo-400 dark:to-sky-400">
                 {displayName}

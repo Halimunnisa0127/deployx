@@ -49,7 +49,7 @@ export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) 
   return (
     <Link to="/dashboard/usage" className="block group focus:outline-none focus:ring-2 focus:ring-indigo-500/80 rounded-[18px] transition-all">
       <Card
-        style={{ maxWidth: '100%', padding: '20px 24px' }}
+        className="max-w-full py-5 px-6"
         className="group-hover:-translate-y-[3px] group-hover:border-indigo-500/40 dark:group-hover:border-indigo-500/30"
       >
       {/* Header */}

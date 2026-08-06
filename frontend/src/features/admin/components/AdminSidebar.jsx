@@ -178,7 +178,13 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
             content={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             position="right"
           >
-            <Button variant="ghost" size="sm" iconOnly onClick={toggleCollapse}>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              iconOnly 
+              onClick={toggleCollapse}
+              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
               {isCollapsed ? (
                 <PanelLeftOpen className="w-4 h-4 text-slate-400" />
               ) : (

@@ -73,7 +73,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
 
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="relative overflow-hidden hover:-translate-y-[3px] hover:border-purple-500/40 dark:hover:border-purple-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-purple-500 before:to-indigo-500"
     >
       {/* Header */}

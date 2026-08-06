@@ -261,8 +261,9 @@ export default function ProjectEnvTab({ project, onAction }) {
 
                           <button
                             type="button"
+                            aria-label={isRevealed ? 'Mask secret' : 'Reveal secret'}
                             onClick={() => toggleReveal(item.id)}
-                            className="p-1 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                            className="p-1 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 outline-none"
                             title={isRevealed ? 'Mask secret' : 'Reveal secret'}
                           >
                             {isRevealed ? (
@@ -274,8 +275,9 @@ export default function ProjectEnvTab({ project, onAction }) {
 
                           <button
                             type="button"
+                            aria-label="Copy secret"
                             onClick={() => handleCopyValue(item.id, item.value)}
-                            className="p-1 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors"
+                            className="p-1 rounded hover:bg-slate-200 text-slate-500 hover:text-slate-700 dark:hover:bg-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors focus-visible:ring-2 focus-visible:ring-indigo-500 outline-none"
                             title="Copy secret"
                           >
                             {isCopied ? (
@@ -311,6 +313,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                             iconOnly={true}
                             onClick={() => handleOpenEditModal(item)}
                             title="Edit Variable"
+                            aria-label="Edit Variable"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </Button>
@@ -321,6 +324,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                             iconOnly={true}
                             onClick={() => handleDuplicate(item)}
                             title="Duplicate Variable"
+                            aria-label="Duplicate Variable"
                           >
                             <CopyPlus className="w-3.5 h-3.5" />
                           </Button>
@@ -331,6 +335,7 @@ export default function ProjectEnvTab({ project, onAction }) {
                             iconOnly={true}
                             onClick={() => handleDelete(item.id, item.key)}
                             title="Delete Variable"
+                            aria-label="Delete Variable"
                             style={{ color: '#f87171' }}
                           >
                             <Trash2 className="w-3.5 h-3.5" />

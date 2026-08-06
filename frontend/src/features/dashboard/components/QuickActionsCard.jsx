@@ -26,7 +26,7 @@ const ACCENT_BG = {
 export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="relative overflow-hidden hover:-translate-y-[3px] hover:border-amber-500/40 dark:hover:border-amber-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-amber-500 before:to-indigo-500"
     >
       {/* Card Header */}

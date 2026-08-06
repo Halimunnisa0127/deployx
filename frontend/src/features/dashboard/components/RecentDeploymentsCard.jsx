@@ -21,7 +21,7 @@ const ENV_VARIANT_MAP = {
 export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOYMENTS }) {
   return (
     <Card
-      style={{ maxWidth: '100%', padding: '24px' }}
+      className="max-w-full p-6"
       className="relative overflow-hidden flex flex-col h-full hover:-translate-y-[3px] hover:border-indigo-500/40 dark:hover:border-indigo-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1.5 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-sky-500"
     >
       {/* Card Header */}
@@ -99,7 +99,7 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
                         #{item.commitHash}
                       </span>
 
-                      <span className="text-muted-foreground max-w-[180px] line-clamp-1">
+                      <span className="text-muted-foreground max-w-[180px] sm:max-w-[250px] lg:max-w-[350px] line-clamp-1">
                         {item.commitMessage}
                       </span>
                     </div>

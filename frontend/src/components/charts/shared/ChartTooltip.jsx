@@ -7,8 +7,8 @@
 export default function ChartTooltip({ active, payload, label, formatter }) {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+      <div className="bg-card text-card-foreground border border-border rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium mb-1">
           {label}
         </p>
         <div className="space-y-1">
@@ -18,9 +18,9 @@ export default function ChartTooltip({ active, payload, label, formatter }) {
                 className="w-2 h-2 rounded-full" 
                 style={{ backgroundColor: entry.color }} 
               />
-              <span className="text-sm text-slate-500 dark:text-slate-400">
+              <span className="text-sm text-muted-foreground">
                 {entry.name}:{' '}
-                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                <span className="font-semibold text-foreground">
                   {formatter ? formatter(entry.value, entry.name, entry) : entry.value}
                 </span>
               </span>
