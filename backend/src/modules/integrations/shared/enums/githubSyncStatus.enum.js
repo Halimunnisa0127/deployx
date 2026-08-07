@@ -1,0 +1,10 @@
+const GITHUB_SYNC_STATUS = {
+  PENDING: 'PENDING',
+  SYNCING: 'SYNCING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+};
+
+module.exports = {
+  GITHUB_SYNC_STATUS,
+};

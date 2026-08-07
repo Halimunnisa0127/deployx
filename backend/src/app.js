@@ -13,6 +13,7 @@ const config = require('./config/env/env');
 const logger = require('./config/logger/logger');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
+const requestContext = require('./middleware/requestContext');
 const ApiResponse = require('./shared/responses/ApiResponse');
 
 const app = express();
@@ -48,6 +49,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // 6. Cookie Parser
 app.use(cookieParser());
+
+// 6.5 Request Context
+app.use(requestContext);
 
 // 7. Pino HTTP Logger
 app.use(
@@ -91,7 +95,14 @@ app.get('/health', (req, res) => {
 
 // 10. Feature Routes
 const authRoutes = require('./modules/auth/routes/auth.routes');
+const userRoutes = require('./modules/users/routes/user.routes');
+const githubIntegration = require('./modules/integrations/github');
+const googleIntegration = require('./modules/integrations/google');
+
 app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/integrations/github', githubIntegration.routes);
+app.use('/integrations/google', googleIntegration.routes);
 
 // 11. 404 Handler
 app.use(notFound);

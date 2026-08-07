@@ -1,20 +1,21 @@
 const User = require('../../users/models/User');
-const { generateAccessToken, generateRefreshToken, verifyRefreshToken } = require('../../../utils/helpers/jwt.helper');
+const { jwtHelper } = require('../../../utils');
+const ConflictError = require('../../../shared/errors/ConflictError');
+const UnauthorizedError = require('../../../shared/errors/UnauthorizedError');
+const NotFoundError = require('../../../shared/errors/NotFoundError');
 
 class AuthService {
-  async register({ name, email, password }) {
+  async register({ fullName, email, password }) {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      const err = new Error('Email already in use');
-      err.statusCode = 409;
-      throw err;
+      throw new ConflictError('Email already in use');
     }
 
-    const user = await User.create({ name, email, password });
+    const user = await User.create({ fullName, email, password });
     user.password = undefined;
     
-    const accessToken = generateAccessToken(user._id, user.role);
-    const refreshToken = generateRefreshToken(user._id, user.refreshTokenVersion);
+    const accessToken = jwtHelper.generateAccessToken(user._id, user.role);
+    const refreshToken = jwtHelper.generateRefreshToken(user._id, user.refreshTokenVersion);
 
     return { user, accessToken, refreshToken };
   }
@@ -22,53 +23,43 @@ class AuthService {
   async login({ email, password }) {
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      const err = new Error('Invalid credentials');
-      err.statusCode = 401;
-      throw err;
+      throw new UnauthorizedError('Invalid credentials');
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      const err = new Error('Invalid credentials');
-      err.statusCode = 401;
-      throw err;
+      throw new UnauthorizedError('Invalid credentials');
     }
 
     if (!user.isActive) {
-      const err = new Error('Account is disabled');
-      err.statusCode = 403;
-      throw err;
+      throw new UnauthorizedError('Account is disabled');
     }
 
     user.lastLogin = new Date();
     await user.save();
     user.password = undefined;
 
-    const accessToken = generateAccessToken(user._id, user.role);
-    const refreshToken = generateRefreshToken(user._id, user.refreshTokenVersion);
+    const accessToken = jwtHelper.generateAccessToken(user._id, user.role);
+    const refreshToken = jwtHelper.generateRefreshToken(user._id, user.refreshTokenVersion);
 
     return { user, accessToken, refreshToken };
   }
 
   async refreshTokens(token) {
     try {
-      const decoded = verifyRefreshToken(token);
+      const decoded = jwtHelper.verifyRefreshToken(token);
       const user = await User.findById(decoded.id);
 
       if (!user || user.refreshTokenVersion !== decoded.version || !user.isActive) {
-        const err = new Error('Invalid or expired refresh token');
-        err.statusCode = 401;
-        throw err;
+        throw new UnauthorizedError('Invalid or expired refresh token');
       }
 
-      const accessToken = generateAccessToken(user._id, user.role);
-      const refreshToken = generateRefreshToken(user._id, user.refreshTokenVersion);
+      const accessToken = jwtHelper.generateAccessToken(user._id, user.role);
+      const refreshToken = jwtHelper.generateRefreshToken(user._id, user.refreshTokenVersion);
 
       return { user, accessToken, refreshToken };
     } catch (error) {
-      const err = new Error('Invalid or expired refresh token');
-      err.statusCode = 401;
-      throw err;
+      throw new UnauthorizedError('Invalid or expired refresh token');
     }
   }
 
@@ -83,9 +74,7 @@ class AuthService {
   async getCurrentUser(userId) {
     const user = await User.findById(userId);
     if (!user) {
-      const err = new Error('User not found');
-      err.statusCode = 404;
-      throw err;
+      throw new NotFoundError('User not found');
     }
     return user;
   }

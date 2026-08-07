@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 import useAuth from '../../../hooks/useAuth';
-import { logout } from '../../auth/slice/authSlice';
+import { logoutUser } from '../../auth/slice/authSlice';
 
 import Avatar from '../../../components/common/Avatar';
 import SearchBar from '../../../components/common/SearchBar';
@@ -93,7 +93,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
   }, [navSearchQuery]);
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate('/login');
   };
 
@@ -310,13 +310,13 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                 <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white/90 dark:bg-slate-900/90 hover:bg-slate-100 dark:hover:bg-slate-800/90 border border-slate-200 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/10 transition-all duration-200 group shadow-sm cursor-pointer">
                   <div className="flex items-center gap-3 min-w-0">
                     <Avatar
-                      name={user?.name || user?.email || 'User'}
+                      name={user?.fullName || user?.name || user?.email || 'User'}
                       size="sm"
                       status="online"
                     />
                     <div className="flex flex-col text-left min-w-0 space-y-0.5">
                       <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
-                        {user?.name || 'Developer'}
+                        {user?.fullName || user?.name || 'Developer'}
                       </span>
                       <span className="text-sm text-muted-foreground truncate transition-colors">
                         {user?.email || 'user@deployx.dev'}
@@ -339,7 +339,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
               trigger={
                 <div className="flex justify-center py-1 cursor-pointer">
                   <Avatar
-                    name={user?.name || user?.email || 'User'}
+                    name={user?.fullName || user?.name || user?.email || 'User'}
                     size="sm"
                     status="online"
                   />

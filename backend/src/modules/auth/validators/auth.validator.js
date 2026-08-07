@@ -1,10 +1,11 @@
 const { z } = require('zod');
+const REGEX_PATTERNS = require('../../../shared/constants/regex.constants');
 
 const registerSchema = z.object({
   body: z.object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
+    fullName: z.string().min(2, 'Full name must be at least 2 characters'),
     email: z.string().email('Invalid email address'),
-    password: z.string().min(8, 'Password must be at least 8 characters'),
+    password: z.string().min(8, 'Password must be at least 8 characters').regex(REGEX_PATTERNS.PASSWORD_STRENGTH, 'Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character'),
   }),
 });
 
@@ -15,27 +16,7 @@ const loginSchema = z.object({
   }),
 });
 
-const validate = (schema) => (req, res, next) => {
-  try {
-    schema.parse({
-      body: req.body,
-      query: req.query,
-      params: req.params,
-    });
-    next();
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const err = new Error('Validation Error');
-      err.statusCode = 400;
-      err.error = error.errors;
-      return next(err);
-    }
-    next(error);
-  }
-};
-
 module.exports = {
   registerSchema,
   loginSchema,
-  validate,
 };

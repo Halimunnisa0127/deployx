@@ -1,1 +1,1 @@
-// routeConfig.js
+// File deprecated and removed.
