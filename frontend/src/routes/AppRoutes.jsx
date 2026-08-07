@@ -1,1 +1,1 @@
-// AppRoutes.jsx
+// File deprecated and removed.

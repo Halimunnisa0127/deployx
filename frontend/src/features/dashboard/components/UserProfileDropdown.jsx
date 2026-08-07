@@ -9,7 +9,7 @@ import {
   LifeBuoy,
   LogOut,
 } from 'lucide-react';
-import { logout } from '../../auth/slice/authSlice';
+import { logoutUser } from '../../auth/slice/authSlice';
 import { setTheme } from '../../../store/slices/uiSlice';
 import { useSelector } from 'react-redux';
 
@@ -24,7 +24,7 @@ export default function UserProfileDropdown({ user, close }) {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate('/login');
     if (close) close();
   };
@@ -39,10 +39,10 @@ export default function UserProfileDropdown({ user, close }) {
       {/* Header */}
       <div className="flex flex-col px-3.5 pt-2 pb-2.5 min-w-0">
         <span className="text-xs font-bold text-foreground tracking-wide truncate transition-colors">
-          {user?.name || 'GANAPATHI RAJESH GUMMALLLA'}
+          {user?.fullName || user?.name || 'User'}
         </span>
         <span className="text-sm text-muted-foreground truncate transition-colors mt-0.5 font-mono">
-          {user?.email || 'nanigummalla418@gmail.com'}
+          {user?.email || 'user@example.com'}
         </span>
       </div>
 

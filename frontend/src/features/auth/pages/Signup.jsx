@@ -1,21 +1,28 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GithubIcon from '../../../assets/icons/GithubIcon';
 import GoogleIcon from '../../../assets/icons/GoogleIcon';
 import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import Divider from '../../../components/ui/Divider';
 import SignupForm from '../components/SignupForm';
-import { setCredentials } from '../slice/authSlice';
+import { registerUser } from '../slice/authSlice';
+import { useState } from 'react';
 
 export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { status } = useSelector((state) => state.auth);
+  const [signupError, setSignupError] = useState(null);
 
-  const handleEmailSignup = (data) => {
-    // Dummy auth — replace with actual API call later
-    dispatch(setCredentials({ user: { email: data.email, name: data.fullName }, token: 'dummy-token' }));
-    navigate('/dashboard');
+  const handleEmailSignup = async (data) => {
+    setSignupError(null);
+    const resultAction = await dispatch(registerUser(data));
+    if (registerUser.fulfilled.match(resultAction)) {
+      navigate('/dashboard');
+    } else {
+      setSignupError(resultAction.payload || 'Registration failed');
+    }
   };
 
   return (
@@ -48,7 +55,13 @@ export default function Signup() {
 
       <Divider>OR</Divider>
 
-      <SignupForm onSubmit={handleEmailSignup} isLoading={false} />
+      {signupError && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-md w-full text-center">
+          {signupError}
+        </div>
+      )}
+
+      <SignupForm onSubmit={handleEmailSignup} isLoading={status === 'loading'} />
 
       <div className="mt-7 flex flex-col items-center gap-4">
         <p className="m-0 text-sm text-muted-foreground font-sans">

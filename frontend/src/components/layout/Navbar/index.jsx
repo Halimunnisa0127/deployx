@@ -1,6 +1,7 @@
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "../../../features/auth/slice/authSlice";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../features/auth/slice/authSlice";
+import { ThemeToggle } from "../../ui/ThemeToggle";
 import useAuth from "../../../hooks/useAuth";
 
 export default function Navbar() {
@@ -9,7 +10,7 @@ export default function Navbar() {
   const { isAuthenticated } = useAuth();
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate("/login");
   };
 

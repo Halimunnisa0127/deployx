@@ -1,31 +1,31 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import GithubIcon from '../../../assets/icons/GithubIcon';
 import GoogleIcon from '../../../assets/icons/GoogleIcon';
 import Card from '../../../components/ui/Card';
 import Button from '../../../components/ui/Button';
 import Divider from '../../../components/ui/Divider';
 import LoginForm from '../components/LoginForm';
-import { setCredentials } from '../slice/authSlice';
+import { loginUser } from '../slice/authSlice';
+import { useEffect, useState } from 'react';
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { status, error } = useSelector((state) => state.auth);
+  const [loginError, setLoginError] = useState(null);
 
   const handleOAuthLogin = () => {
     // Placeholder for OAuth logic
   };
 
-  const handleEmailLogin = (data) => {
-    // Dummy auth — replace with actual API call later
-    if (data.email === 'admin@deployx.dev' && data.password === 'hunter2') {
-      localStorage.setItem("role", "admin");
-      dispatch(setCredentials({ user: { email: data.email, role: 'admin' }, token: 'dummy-admin-token' }));
-      navigate('/admin');
-    } else {
-      localStorage.setItem("role", "user");
-      dispatch(setCredentials({ user: { email: data.email, role: 'user' }, token: 'dummy-token' }));
+  const handleEmailLogin = async (data) => {
+    setLoginError(null);
+    const resultAction = await dispatch(loginUser(data));
+    if (loginUser.fulfilled.match(resultAction)) {
       navigate('/dashboard');
+    } else {
+      setLoginError(resultAction.payload || 'Login failed');
     }
   };
 
@@ -59,7 +59,13 @@ export default function Login() {
 
       <Divider>OR</Divider>
 
-      <LoginForm onSubmit={handleEmailLogin} isLoading={false} />
+      {loginError && (
+        <div className="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-md w-full text-center">
+          {loginError}
+        </div>
+      )}
+
+      <LoginForm onSubmit={handleEmailLogin} isLoading={status === 'loading'} />
 
       <div className="mt-7 flex flex-col items-center gap-4">
         <div className="w-full flex justify-center">

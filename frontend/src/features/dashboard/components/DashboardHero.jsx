@@ -15,7 +15,7 @@ import Badge from '../../../components/ui/Badge';
 
 export default function DashboardHero() {
   const { user } = useAuth();
-  const displayName = user?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : 'Halimunnisa');
+  const displayName = user?.fullName || user?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : 'User');
 
   // Live Local Time & Today's Date State
   const [now, setNow] = useState(new Date());

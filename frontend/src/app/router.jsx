@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home";
 import AuthLayout from "../layouts/AuthLayout";
-import { Login, Signup, ForgotPassword } from "../features/auth";
+import { Login, Signup, ForgotPassword, OAuthSuccess } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import { ProjectsList, ProjectDetails } from "../features/projects";
 import { CreateProjectWizard } from "../features/project-creation";
@@ -46,6 +46,10 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
     ],
+  },
+  {
+    path: "/oauth/success",
+    element: <OAuthSuccess />,
   },
   
 
