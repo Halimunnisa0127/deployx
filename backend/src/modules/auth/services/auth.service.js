@@ -1,8 +1,11 @@
+const crypto = require('crypto');
 const User = require('../../users/models/User');
 const { jwtHelper } = require('../../../utils');
 const ConflictError = require('../../../shared/errors/ConflictError');
 const UnauthorizedError = require('../../../shared/errors/UnauthorizedError');
 const NotFoundError = require('../../../shared/errors/NotFoundError');
+const BadRequestError = require('../../../shared/errors/BadRequestError');
+const { sendEmail } = require('../../../utils/helpers/email.helper');
 
 class AuthService {
   async register({ fullName, email, password }) {
@@ -77,6 +80,57 @@ class AuthService {
       throw new NotFoundError('User not found');
     }
     return user;
+  }
+
+  async forgotPassword(email) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Don't leak whether user exists or not, just return true
+      return true;
+    }
+
+    // Generate a 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Set expiry to 10 minutes from now
+    const expiry = new Date();
+    expiry.setMinutes(expiry.getMinutes() + 10);
+
+    user.resetPasswordOtp = otp;
+    user.resetPasswordOtpExpiry = expiry;
+    await user.save();
+
+    // Send email
+    await sendEmail({
+      to: email,
+      subject: 'Password Reset OTP',
+      text: `Your password reset OTP is ${otp}. It will expire in 10 minutes.`,
+      html: `<p>Your password reset OTP is <strong>${otp}</strong>.</p><p>It will expire in 10 minutes.</p>`
+    });
+
+    return true;
+  }
+
+  async resetPassword(email, otp, newPassword) {
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new BadRequestError('Invalid OTP or Email');
+    }
+
+    if (!user.resetPasswordOtp || user.resetPasswordOtp !== otp) {
+      throw new BadRequestError('Invalid OTP');
+    }
+
+    if (new Date() > user.resetPasswordOtpExpiry) {
+      throw new BadRequestError('OTP has expired');
+    }
+
+    user.password = newPassword; // Will be hashed by pre-save hook
+    user.resetPasswordOtp = null;
+    user.resetPasswordOtpExpiry = null;
+    await user.save();
+
+    return true;
   }
 }
 

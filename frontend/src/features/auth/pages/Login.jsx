@@ -36,28 +36,7 @@ export default function Login() {
         <p className="m-0 text-sm text-muted-foreground font-sans tracking-wide">GitHub • Docker • CI/CD • Instant Deployments</p>
       </div>
 
-      <div className="flex flex-col gap-3 mb-2">
-        <Button
-          type="button"
-          variant="oauth"
-          fullWidth
-          iconLeft={<GithubIcon size={18} />}
-          onClick={() => { }}
-        >
-          Continue with GitHub
-        </Button>
-        <Button
-          type="button"
-          variant="oauth"
-          fullWidth
-          iconLeft={<GoogleIcon size={18} />}
-          onClick={() => { }}
-        >
-          Continue with Google
-        </Button>
-      </div>
 
-      <Divider>OR</Divider>
 
       {loginError && (
         <div className="mb-4 p-3 bg-red-100 text-red-700 text-sm rounded-md w-full text-center">
