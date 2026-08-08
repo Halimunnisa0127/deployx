@@ -1,27 +1,34 @@
-import { mockRepositories, mockBranches, mockCommits } from '../data/mockGithub';
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import api from '../../../lib/axios';
 
 export const githubApi = {
+  checkConnectionStatus: async () => {
+    try {
+      const response = await api.get('/integrations/github/status');
+      // response.data.data contains { status, lastSyncedAt, username }
+      return response.data?.data || null;
+    } catch (error) {
+      return null;
+    }
+  },
+
   getRepositories: async () => {
-    await wait(400); // Simulate network latency
-    return [...mockRepositories];
+    const response = await api.get('/integrations/github/repositories');
+    // The backend uses QueryBuilder which returns { data: [...], meta: {...} } inside the ApiResponse data field.
+    return response.data?.data?.data || []; 
   },
 
-  getRepositoryDetails: async (id) => {
-    await wait(300);
-    const repository = mockRepositories.find(r => String(r.id) === String(id));
-    if (!repository) throw new Error("Repository not found");
-    return { ...repository };
+  syncRepositories: async () => {
+    const response = await api.post('/integrations/github/repositories/sync');
+    return response.data?.data;
   },
 
-  getBranches: async (repoId) => {
-    await wait(300);
-    return [...mockBranches];
+  getBranches: async (owner, repo) => {
+    const response = await api.get(`/integrations/github/repositories/${owner}/${repo}/branches`);
+    return response.data?.data?.branches || [];
   },
 
-  getCommits: async (repoId) => {
-    await wait(300);
-    return [...mockCommits];
+  disconnect: async () => {
+    const response = await api.delete('/integrations/github/disconnect');
+    return response.data;
   }
 };

@@ -20,7 +20,13 @@ export default function OAuthSuccess() {
           const resultAction = await dispatch(getCurrentUser());
           
           if (getCurrentUser.fulfilled.match(resultAction)) {
-            // Success! Redirect to dashboard
+            // Success! If in a popup, send message to parent and close
+            if (window.opener) {
+              window.opener.postMessage('github_connected', '*');
+              window.close();
+              return;
+            }
+            // Otherwise, redirect to dashboard
             navigate('/dashboard');
           } else {
             // Failed to fetch user profile

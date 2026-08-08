@@ -21,6 +21,7 @@ const app = express();
 // 1. Helmet
 app.use(
   helmet({
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
@@ -96,11 +97,13 @@ app.get('/health', (req, res) => {
 // 10. Feature Routes
 const authRoutes = require('./modules/auth/routes/auth.routes');
 const userRoutes = require('./modules/users/routes/user.routes');
+const projectRoutes = require('./modules/projects/routes/project.routes');
 const githubIntegration = require('./modules/integrations/github');
 const googleIntegration = require('./modules/integrations/google');
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/projects', projectRoutes);
 app.use('/integrations/github', githubIntegration.routes);
 app.use('/integrations/google', googleIntegration.routes);
 

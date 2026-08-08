@@ -187,6 +187,7 @@ exports.getSyncStatus = async (userId) => {
   }
   return { 
     status: account.syncStatus || GITHUB_SYNC_STATUS.PENDING,
-    lastSyncedAt: account.lastSyncedAt 
+    lastSyncedAt: account.lastSyncedAt,
+    username: account.username,
   };
 };
