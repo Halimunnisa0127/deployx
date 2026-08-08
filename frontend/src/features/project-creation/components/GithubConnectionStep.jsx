@@ -177,7 +177,7 @@ export default function GithubConnectionStep({
               </div>
             ) : (
               filteredRepositories.map((repo) => {
-                const isSelected = selectedRepoId === repo.id;
+                const isSelected = String(selectedRepoId) === String(repo.id) || String(selectedRepoId) === String(repo.githubRepositoryId);
                 return (
                   <div
                     key={repo.id}
