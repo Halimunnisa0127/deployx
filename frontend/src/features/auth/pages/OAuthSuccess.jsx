@@ -26,8 +26,13 @@ export default function OAuthSuccess() {
               window.close();
               return;
             }
-            // Otherwise, redirect to dashboard
-            navigate('/dashboard');
+            // Otherwise, redirect to dashboard or back to wizard
+            const wizardStep = sessionStorage.getItem('wizard_step');
+            if (wizardStep) {
+              navigate('/dashboard/projects/create');
+            } else {
+              navigate('/dashboard');
+            }
           } else {
             // Failed to fetch user profile
             throw new Error(resultAction.payload || 'Failed to fetch user profile');

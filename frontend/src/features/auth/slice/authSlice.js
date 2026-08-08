@@ -71,10 +71,17 @@ export const refreshAccessToken = createAsyncThunk(
   }
 );
 
+const savedUser = localStorage.getItem('user');
+const savedToken = localStorage.getItem('token');
+
+if (savedToken) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${savedToken}`;
+}
+
 const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  user: savedUser ? JSON.parse(savedUser) : null,
+  token: savedToken ? savedToken : null,
+  isAuthenticated: !!savedToken,
   status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
 };
@@ -100,6 +107,8 @@ const authSlice = createSlice({
       state.status = 'idle';
       state.error = null;
       delete api.defaults.headers.common['Authorization'];
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     },
   },
   extraReducers: (builder) => {
@@ -117,6 +126,8 @@ const authSlice = createSlice({
         state.token = payload.token || payload.accessToken;
         if (state.token) {
           api.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+          localStorage.setItem('token', state.token);
+          if (state.user) localStorage.setItem('user', JSON.stringify(state.user));
         }
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -136,6 +147,8 @@ const authSlice = createSlice({
         state.token = payload.token || payload.accessToken;
         if (state.token) {
           api.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+          localStorage.setItem('token', state.token);
+          if (state.user) localStorage.setItem('user', JSON.stringify(state.user));
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -149,6 +162,8 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.status = 'idle';
         delete api.defaults.headers.common['Authorization'];
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
       })
       // Get Current User
       .addCase(getCurrentUser.pending, (state) => {
@@ -159,12 +174,16 @@ const authSlice = createSlice({
         state.status = 'succeeded';
         state.isAuthenticated = true;
         state.user = payload.user || payload;
+        localStorage.setItem('user', JSON.stringify(state.user));
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.status = 'failed';
         state.isAuthenticated = false;
         state.user = null;
         state.token = null;
+        delete api.defaults.headers.common['Authorization'];
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
       })
       // Refresh Token
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
@@ -172,6 +191,7 @@ const authSlice = createSlice({
         state.token = payload.accessToken || payload.token;
         if (state.token) {
           api.defaults.headers.common['Authorization'] = `Bearer ${state.token}`;
+          localStorage.setItem('token', state.token);
         }
       });
   },

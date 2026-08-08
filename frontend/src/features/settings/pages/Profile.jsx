@@ -21,19 +21,20 @@ import Avatar from '../../../components/common/Avatar';
 import Skeleton from '../../../components/ui/Skeleton';
 import EmptyState from '../../../components/common/EmptyState';
 import Modal from '../../../components/ui/Modal';
+import { useSelector } from 'react-redux';
 import { COUNTRY_CODES } from '../../../constants/countryCodes';
 
 const INITIAL_PROFILE = {
-  fullName: 'Jane Doe',
-  username: 'janedoe',
-  email: 'jane@deployx.dev',
+  fullName: '',
+  username: '',
+  email: '',
   countryCode: '+1',
-  phone: '(555) 234-5678',
-  companyName: 'DeployX Cloud Technologies',
-  jobTitle: 'Senior Infrastructure Engineer',
+  phone: '',
+  companyName: '',
+  jobTitle: '',
   timezone: 'Asia/Singapore (UTC+08:00)',
   language: 'English (US)',
-  avatarPreset: 'Jane Doe',
+  avatarPreset: 'User',
 };
 
 const AVATAR_PRESETS = [
@@ -62,17 +63,35 @@ const LANGUAGE_OPTIONS = [
 ];
 
 export default function Profile() {
+  const user = useSelector((state) => state.auth.user);
+
   const [profile, setProfile] = useState(INITIAL_PROFILE);
   const [formData, setFormData] = useState(INITIAL_PROFILE);
   const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState(null); // { type: 'success' | 'error', message: string }
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
-  // Simulate loading state
+  // Sync profile data when user is loaded
+  useEffect(() => {
+    if (user) {
+      const userData = {
+        ...INITIAL_PROFILE,
+        fullName: user.fullName || user.name || '',
+        email: user.email || '',
+        username: user.username || user.email?.split('@')[0] || '',
+        avatarPreset: user.fullName || user.name || 'User',
+      };
+      setProfile(userData);
+      setFormData(userData);
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  // Simulate loading fallback if user state takes too long
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 400);
+    }, 1000);
     return () => clearTimeout(timer);
   }, []);
 

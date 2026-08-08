@@ -118,6 +118,14 @@ export default function CreateProjectWizard() {
   };
 
   useEffect(() => {
+    const savedName = sessionStorage.getItem('wizard_project_name');
+    const savedStep = sessionStorage.getItem('wizard_step');
+    if (savedName) setProjectName(savedName);
+    if (savedStep) setCurrentStep(Number(savedStep));
+    
+    sessionStorage.removeItem('wizard_project_name');
+    sessionStorage.removeItem('wizard_step');
+
     fetchRepositories();
   }, []);
 
@@ -296,34 +304,18 @@ export default function CreateProjectWizard() {
   };
 
   // GitHub handlers
-  const handleConnectGithub = () => {
+  const handleConnectGithub = (options = {}) => {
     setIsConnectingGithub(true);
-    const width = 600;
-    const height = 700;
-    const left = window.screen.width / 2 - width / 2;
-    const top = window.screen.height / 2 - height / 2;
+    // Save current wizard state so we can restore it after oauth
+    sessionStorage.setItem('wizard_project_name', projectName);
+    sessionStorage.setItem('wizard_step', '2');
     
-    // Popup for GitHub OAuth
-    const popup = window.open(`${env.API_BASE_URL}/integrations/github/oauth/connect`, 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
-    
-    // Listen for message from popup
-    const messageListener = (event) => {
-      if (event.data === 'github_connected') {
-        window.removeEventListener('message', messageListener);
-        setIsConnectingGithub(false);
-        fetchRepositories(); // Re-fetch to get repos and update state
-      }
-    };
-    window.addEventListener('message', messageListener);
-    
-    // Fallback if popup closes without message
-    const timer = setInterval(() => {
-      if (popup?.closed) {
-        clearInterval(timer);
-        setIsConnectingGithub(false);
-        fetchRepositories();
-      }
-    }, 1000);
+    // Redirect in the same window instead of a popup
+    let url = `${env.API_BASE_URL}/integrations/github/oauth/connect`;
+    if (options.forceConsent) {
+      url += '?prompt=consent';
+    }
+    window.location.href = url;
   };
 
   const handleDisconnectGithub = async () => {
