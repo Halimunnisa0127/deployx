@@ -40,6 +40,17 @@ class AuthController {
     const user = await authService.getCurrentUser(req.user.id);
     res.status(StatusCodes.OK).json(ApiResponse.success('User retrieved successfully', { user }));
   }
+
+  async forgotPassword(req, res) {
+    await authService.forgotPassword(req.body.email);
+    res.status(StatusCodes.OK).json(ApiResponse.success('If an account with that email exists, an OTP has been sent.'));
+  }
+
+  async resetPassword(req, res) {
+    const { email, otp, newPassword } = req.body;
+    await authService.resetPassword(email, otp, newPassword);
+    res.status(StatusCodes.OK).json(ApiResponse.success('Password has been reset successfully.'));
+  }
 }
 
 module.exports = new AuthController();
