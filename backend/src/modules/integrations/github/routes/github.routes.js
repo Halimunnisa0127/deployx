@@ -11,9 +11,9 @@ const router = express.Router();
 router.get('/oauth/connect', optionalAuth, asyncHandler(githubController.connect));
 router.get('/oauth/callback', optionalAuth, validate(callbackSchema), asyncHandler(githubController.callback));
 
-// Apply authenticate middleware to all other github routes
 router.use(authenticate);
 
+router.get('/status', githubController.getStatus);
 router.get('/repositories', validate(getRepositoriesSchema), githubController.getRepositories);
 router.post('/repositories/sync', githubController.syncRepositories);
 router.get('/repositories/:owner/:repo/branches', validate(getBranchesSchema), githubController.getBranches);

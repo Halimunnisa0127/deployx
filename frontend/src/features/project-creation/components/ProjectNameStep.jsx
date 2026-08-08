@@ -1,7 +1,14 @@
-import { Folder, Globe } from 'lucide-react';
+import { Folder, Globe, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import Input from '../../../components/ui/Input';
 
-export default function ProjectNameStep({ projectName, setProjectName, previewUrl }) {
+export default function ProjectNameStep({
+  projectName,
+  setProjectName,
+  previewUrl,
+  isCheckingName = false,
+  isAvailable = null,
+  nameError = null,
+}) {
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="space-y-2">
@@ -18,17 +25,41 @@ export default function ProjectNameStep({ projectName, setProjectName, previewUr
       </div>
 
       <div className="space-y-4 pt-2">
-        <Input
-          id="wizard-project-name"
-          label="Project Name"
-          type="text"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-          placeholder="e.g. my-awesome-app"
-          autoFocus
-          autoComplete="off"
-          fullWidth
-        />
+        <div className="relative">
+          <Input
+            id="wizard-project-name"
+            label="Project Name"
+            type="text"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            placeholder="e.g. my-awesome-app"
+            autoFocus
+            autoComplete="off"
+            fullWidth
+            error={nameError}
+          />
+          {/* Status Indicator inside input row */}
+          {projectName.trim() && (
+            <div className="mt-1.5 flex items-center gap-2 text-xs">
+              {isCheckingName ? (
+                <span className="flex items-center gap-1.5 text-blue-500 font-medium">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  Checking availability with backend...
+                </span>
+              ) : isAvailable === true ? (
+                <span className="flex items-center gap-1.5 text-emerald-500 font-medium">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Project name is available
+                </span>
+              ) : isAvailable === false && nameError ? (
+                <span className="flex items-center gap-1.5 text-rose-500 font-medium">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  {nameError}
+                </span>
+              ) : null}
+            </div>
+          )}
+        </div>
 
         {/* Domain Preview Pill */}
         <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950/60 dark:border-slate-800/80 flex items-center justify-between gap-3 text-xs">
