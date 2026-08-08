@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft, ArrowRight, X, Rocket } from 'lucide-react';
 import Button from '../../../components/ui/Button';
-import { createProject } from '../../projects/slice/projectsSlice';
+import {
+  createProject,
+  checkProjectNameThunk,
+  createProjectThunk,
+} from '../../projects/slice/projectsSlice';
 import DeploymentProgressScreen from '../../deployments/components/DeploymentProgressScreen';
 
 import {
@@ -22,6 +26,8 @@ import {
   EnvironmentVariablesStep,
   ReviewConfigurationStep,
 } from '../components';
+import { githubApi } from '../../github/api/githubApi';
+import { env } from '../../../config/env';
 
 export default function CreateProjectWizard() {
   const navigate = useNavigate();
@@ -36,10 +42,13 @@ export default function CreateProjectWizard() {
 
   // Step 2 State
   const [isGithubConnected, setIsGithubConnected] = useState(false);
+  const [githubUsername, setGithubUsername] = useState('');
   const [isConnectingGithub, setIsConnectingGithub] = useState(false);
   const [repoSearchQuery, setRepoSearchQuery] = useState('');
   const [selectedRepoId, setSelectedRepoId] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
+  const [repositories, setRepositories] = useState([]);
+  const [repoBranches, setRepoBranches] = useState([]);
 
   // Step 3 State
   const [isAutoDetect, setIsAutoDetect] = useState(true);
@@ -73,16 +82,55 @@ export default function CreateProjectWizard() {
     },
   ]);
 
+  // Redux state
+  const { nameCheck } = useSelector((state) => state.projects || {});
+
+  // Debounced backend check for Step 1 Project Name
+  useEffect(() => {
+    const trimmed = projectName.trim();
+    if (!trimmed) return;
+
+    const timer = setTimeout(() => {
+      dispatch(checkProjectNameThunk(trimmed));
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [projectName, dispatch]);
+
+  const fetchRepositories = async () => {
+    try {
+      const statusObj = await githubApi.checkConnectionStatus();
+      const isConnected = !!statusObj;
+      setIsGithubConnected(isConnected);
+      if (isConnected) {
+        setGithubUsername(statusObj.username || '');
+        let repos = await githubApi.getRepositories();
+        if (!repos || repos.length === 0) {
+          // If empty, force a sync since the backend might have not synced yet
+          await githubApi.syncRepositories();
+          repos = await githubApi.getRepositories();
+        }
+        setRepositories(repos || []);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRepositories();
+  }, []);
+
   // Deployment Progress Mode
   const [isDeployingProgress, setIsDeployingProgress] = useState(false);
 
-  // Domain slug generator preview
+  // Domain slug generator preview from backend or client fallback
   const projectSlug = projectName.trim()
     ? projectName.toLowerCase().replace(/[^a-z0-9-]/g, '')
     : 'my-project';
-  const previewUrl = `https://${projectSlug}.deployx.app`;
+  const previewUrl = nameCheck?.previewUrl || `https://${projectSlug}.deployx.app`;
 
-  const selectedRepo = MOCK_REPOSITORIES.find((r) => r.id === selectedRepoId);
+  const selectedRepo = repositories.find((r) => String(r.id) === String(selectedRepoId) || String(r.githubRepositoryId) === String(selectedRepoId));
   const detectedFrameworkKey = (selectedRepo?.detectedFramework || 'React').toLowerCase();
   const detectedFrameworkName = selectedRepo?.detectedFramework || 'React';
 
@@ -215,13 +263,34 @@ export default function CreateProjectWizard() {
       finalFramework = match ? match.name : 'React';
     }
 
-    dispatch(
-      createProject({
-        name: trimmedName,
-        framework: finalFramework,
+    const payload = {
+      name: trimmedName,
+      framework: finalFramework,
+      gitRepository: {
+        url: gitRepository,
+        fullName: selectedRepo?.fullName || gitRepository,
         branch: selectedBranch || branch || 'main',
-      })
-    );
+        provider: 'github',
+      },
+      rootDirectory,
+      region: selectedRegion,
+      buildSettings: {
+        packageManager,
+        installCommand,
+        buildCommand,
+        outputDirectory,
+        nodeVersion,
+      },
+      environmentVariables: envVars.map((e) => ({
+        key: e.key,
+        value: e.value,
+        environments: e.environments,
+      })),
+    };
+
+    // Dispatch real backend creation thunk and local store fallback
+    dispatch(createProjectThunk(payload));
+    dispatch(createProject({ name: trimmedName, framework: finalFramework, branch: selectedBranch || branch || 'main' }));
 
     setIsDeployingProgress(true);
   };
@@ -229,23 +298,63 @@ export default function CreateProjectWizard() {
   // GitHub handlers
   const handleConnectGithub = () => {
     setIsConnectingGithub(true);
-    setTimeout(() => {
-      setIsConnectingGithub(false);
-      setIsGithubConnected(true);
-    }, 600);
+    const width = 600;
+    const height = 700;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+    
+    // Popup for GitHub OAuth
+    const popup = window.open(`${env.API_BASE_URL}/integrations/github/oauth/connect`, 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
+    
+    // Listen for message from popup
+    const messageListener = (event) => {
+      if (event.data === 'github_connected') {
+        window.removeEventListener('message', messageListener);
+        setIsConnectingGithub(false);
+        fetchRepositories(); // Re-fetch to get repos and update state
+      }
+    };
+    window.addEventListener('message', messageListener);
+    
+    // Fallback if popup closes without message
+    const timer = setInterval(() => {
+      if (popup?.closed) {
+        clearInterval(timer);
+        setIsConnectingGithub(false);
+        fetchRepositories();
+      }
+    }, 1000);
   };
 
-  const handleDisconnectGithub = () => {
+  const handleDisconnectGithub = async () => {
+    try {
+      await githubApi.disconnect();
+    } catch (e) {
+      console.error(e);
+    }
     setIsGithubConnected(false);
+    setGithubUsername('');
     setSelectedRepoId('');
     setSelectedBranch('');
   };
 
-  const handleSelectRepo = (repo) => {
-    setSelectedRepoId(repo.id);
+  const handleSelectRepo = async (repo) => {
+    const repoId = repo.id || repo.githubRepositoryId;
+    setSelectedRepoId(repoId);
     setSelectedBranch(repo.defaultBranch);
     setGitRepository(`https://github.com/${repo.fullName}`);
     setBranch(repo.defaultBranch);
+    
+    // Fetch branches for the selected repo
+    setRepoBranches([]);
+    try {
+      const branches = await githubApi.getBranches(repo.owner, repo.name);
+      setRepoBranches(branches);
+    } catch (error) {
+      console.error('Failed to fetch branches', error);
+      // Fallback to default branch
+      setRepoBranches([repo.defaultBranch]);
+    }
   };
 
   const handleSelectBranch = (branchName) => {
@@ -273,7 +382,7 @@ export default function CreateProjectWizard() {
   // Continue button validation logic per step
   const isContinueDisabled = () => {
     if (currentStep === 1) {
-      return !projectName.trim();
+      return !projectName.trim() || nameCheck?.isChecking || nameCheck?.available === false;
     }
     if (currentStep === 2) {
       return !isGithubConnected || !selectedRepoId;
@@ -282,9 +391,9 @@ export default function CreateProjectWizard() {
   };
 
   // Filtered repositories for Step 2
-  const filteredRepositories = MOCK_REPOSITORIES.filter((repo) =>
-    repo.fullName.toLowerCase().includes(repoSearchQuery.toLowerCase().trim()) ||
-    repo.name.toLowerCase().includes(repoSearchQuery.toLowerCase().trim())
+  const filteredRepositories = repositories.filter((repo) =>
+    (repo.fullName && repo.fullName.toLowerCase().includes(repoSearchQuery.toLowerCase().trim())) ||
+    (repo.name && repo.name.toLowerCase().includes(repoSearchQuery.toLowerCase().trim()))
   );
 
   // Filtered Environment Variables for Step 5
@@ -369,6 +478,9 @@ export default function CreateProjectWizard() {
                 projectName={projectName}
                 setProjectName={setProjectName}
                 previewUrl={previewUrl}
+                isCheckingName={nameCheck?.isChecking}
+                isAvailable={nameCheck?.available}
+                nameError={nameCheck?.error}
               />
             )}
 
@@ -376,6 +488,7 @@ export default function CreateProjectWizard() {
             {currentStep === 2 && (
               <GithubConnectionStep
                 isGithubConnected={isGithubConnected}
+                githubUsername={githubUsername}
                 isConnectingGithub={isConnectingGithub}
                 handleConnectGithub={handleConnectGithub}
                 handleDisconnectGithub={handleDisconnectGithub}
@@ -387,6 +500,7 @@ export default function CreateProjectWizard() {
                 selectedBranch={selectedBranch}
                 handleSelectRepo={handleSelectRepo}
                 handleSelectBranch={handleSelectBranch}
+                repoBranches={repoBranches}
               />
             )}
 

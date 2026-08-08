@@ -4,6 +4,7 @@ import GithubIcon from '../../../components/ui/GithubIcon';
 
 export default function GithubConnectionStep({
   isGithubConnected,
+  githubUsername,
   isConnectingGithub,
   handleConnectGithub,
   handleDisconnectGithub,
@@ -15,6 +16,7 @@ export default function GithubConnectionStep({
   selectedBranch,
   handleSelectRepo,
   handleSelectBranch,
+  repoBranches,
 }) {
   return (
     <div className="space-y-6 animate-fade-in">
@@ -100,20 +102,45 @@ export default function GithubConnectionStep({
                 <GithubIcon className="w-3.5 h-3.5" />
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-slate-900 dark:text-slate-200">@acme-developer</span>
+                <span className="font-semibold text-slate-900 dark:text-slate-200">@{githubUsername || 'connected-user'}</span>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                   Connected
                 </span>
               </div>
             </div>
+          <div className="relative group">
             <button
               type="button"
-              onClick={handleDisconnectGithub}
-              className="text-xs text-muted-foreground hover:text-red-400 transition-colors font-medium"
+              className="text-xs text-muted-foreground hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-medium flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-md"
             >
-              Disconnect
+              Manage
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
+            
+            <div className="absolute right-0 top-full mt-1 w-48 bg-white dark:bg-slate-900 rounded-lg shadow-lg border border-slate-200 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+              <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
+                <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-0.5">Connected as</p>
+                <p className="text-xs font-medium text-slate-900 dark:text-slate-100 truncate">@{githubUsername || 'connected-user'}</p>
+              </div>
+              <div className="p-1 flex flex-col">
+                <button
+                  type="button"
+                  onClick={handleConnectGithub}
+                  className="w-full text-left px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-md transition-colors"
+                >
+                  Add another account
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDisconnectGithub}
+                  className="w-full text-left px-3 py-2 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-md transition-colors"
+                >
+                  Disconnect account
+                </button>
+              </div>
+            </div>
+          </div>
           </div>
 
           <div className="relative">
@@ -225,20 +252,22 @@ export default function GithubConnectionStep({
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">
-                {selectedRepo.branches.map((b) => (
+                {repoBranches && repoBranches.length > 0 ? repoBranches.map((b) => (
                   <button
-                    key={b}
+                    key={b.name}
                     type="button"
-                    onClick={() => handleSelectBranch(b)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all border ${
-                      selectedBranch === b
-                        ? 'bg-blue-500 text-white border-blue-500 font-semibold shadow-sm'
-                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-800 dark:hover:border-slate-700'
+                    onClick={() => handleSelectBranch(b.name)}
+                    className={`px-3 py-1.5 rounded-md border text-sm font-medium transition-colors ${
+                      b.name === selectedBranch
+                        ? 'bg-primary/10 border-primary text-primary'
+                        : 'border-border text-slate-600 hover:border-primary/50'
                     }`}
                   >
-                    {b} {b === selectedRepo.defaultBranch && '(default)'}
+                    {b.name} {b.isDefault && '(default)'}
                   </button>
-                ))}
+                )) : (
+                  <span className="text-xs text-slate-500">Loading branches...</span>
+                )}
               </div>
             </div>
           )}

@@ -54,3 +54,9 @@ exports.disconnect = async (req, res) => {
   await githubAuthService.disconnect(userId);
   res.json(ApiResponse.success('GitHub account disconnected'));
 };
+
+exports.getStatus = async (req, res) => {
+  const userId = req.user.id;
+  const status = await repositorySyncService.getSyncStatus(userId);
+  res.json(ApiResponse.success('Connection status retrieved', status));
+};
