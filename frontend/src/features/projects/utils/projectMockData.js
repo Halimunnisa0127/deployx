@@ -146,36 +146,6 @@ export const getMockProjectActivities = (project) => [
   },
 ];
 
-export const getMockEnvVariables = (project) => [
-  {
-    id: 'env-101',
-    key: 'DATABASE_URL',
-    value: 'postgres://deployx_user:s3cr3t_p@ssw0rd@db.deployx.internal:5432/prod_db',
-    environment: 'Production',
-    updatedAt: '2 hours ago',
-  },
-  {
-    id: 'env-102',
-    key: 'NEXT_PUBLIC_API_URL',
-    value: 'https://api.deployx.app/v1',
-    environment: 'All',
-    updatedAt: '1 day ago',
-  },
-  {
-    id: 'env-103',
-    key: 'JWT_SECRET_KEY',
-    value: 'YOUR_STRIPE_SECRET_KEY',
-    environment: 'Production',
-    updatedAt: '3 days ago',
-  },
-  {
-    id: 'env-104',
-    key: 'REDIS_HOST',
-    value: 'redis-cluster.deployx.internal:6379',
-    environment: 'Production',
-    updatedAt: '5 days ago',
-  },
-];
 
 export const getMockDomains = (project) => {
   const defaultUrl =
@@ -223,24 +193,3 @@ export const getMockDomains = (project) => {
     },
   ];
 };
-
-export const getMockProjectSettings = (project) => {
-  const slug = (project?.name || 'app').toLowerCase().replace(/[^a-z0-9-]/g, '');
-
-  return {
-    name: project?.name || 'DeployX Application',
-    description: 'Production web application deployed on DeployX platform with automated CI/CD builds.',
-    framework: project?.framework || 'Vite / React',
-    repository: `github.com/deployx/${slug}`,
-    branch: project?.branch || 'main',
-    installCommand: 'npm install',
-    buildCommand: 'npm run build',
-    outputDirectory: 'dist',
-    rootDirectory: './',
-    nodeVersion: '20.x',
-  };
-};
-
-
-
-

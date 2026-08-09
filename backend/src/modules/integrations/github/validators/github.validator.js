@@ -25,3 +25,21 @@ exports.getBranchesSchema = z.object({
     repo: z.string().min(1, 'Repository is required'),
   }),
 });
+
+exports.analyzeRepositorySchema = z.object({
+  params: z.object({
+    owner: z.string().min(1, 'Owner is required'),
+    repo: z.string().min(1, 'Repository is required'),
+  }),
+  query: z.object({
+    branch: z.string().optional(),
+    rootDirectory: z.string().optional().refine(val => {
+      if (!val) return true;
+      // Reject absolute paths
+      if (val.startsWith('/')) return false;
+      // Reject paths navigating upwards
+      if (val.includes('..')) return false;
+      return true;
+    }, 'Invalid root directory'),
+  }),
+});

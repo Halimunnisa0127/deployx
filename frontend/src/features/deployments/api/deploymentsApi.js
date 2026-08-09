@@ -1,17 +1,38 @@
-import { mockDeployments } from '../data/mockDeployments';
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import api from '../../../lib/axios';
 
 export const deploymentsApi = {
+  createDeployment: async (deploymentData) => {
+    const response = await api.post('/deployments', deploymentData);
+    return response.data;
+  },
+
   getDeployments: async () => {
-    await wait(400); // Simulate network latency
-    return [...mockDeployments];
+    const response = await api.get('/deployments');
+    return response.data;
+  },
+
+  getProjectDeployments: async (projectId) => {
+    const response = await api.get(`/deployments/project/${projectId}`);
+    return response.data;
   },
 
   getDeploymentDetails: async (id) => {
-    await wait(300);
-    const deployment = mockDeployments.find(d => String(d.id) === String(id));
-    if (!deployment) throw new Error("Deployment not found");
-    return { ...deployment };
+    const response = await api.get(`/deployments/${id}`);
+    return response.data;
+  },
+
+  cancelDeployment: async (id) => {
+    const response = await api.post(`/deployments/${id}/cancel`);
+    return response.data;
+  },
+
+  promoteDeployment: async (id) => {
+    const response = await api.post(`/deployments/${id}/promote`);
+    return response.data;
+  },
+
+  rollbackDeployment: async (id) => {
+    const response = await api.post(`/deployments/${id}/rollback`);
+    return response.data;
   }
 };

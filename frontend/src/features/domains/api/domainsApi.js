@@ -1,17 +1,38 @@
-import { mockDomains } from '../data/mockDomains';
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import api from '../../../lib/axios';
 
 export const domainsApi = {
-  getDomains: async () => {
-    await wait(400); // Simulate network latency
-    return [...mockDomains];
+  createDomain: async (projectId, hostname) => {
+    const response = await api.post('/domains', { projectId, hostname });
+    return response.data;
   },
 
-  getDomainDetails: async (id) => {
-    await wait(300);
-    const domain = mockDomains.find(d => String(d.id) === String(id));
-    if (!domain) throw new Error("Domain not found");
-    return { ...domain };
+  getProjectDomains: async (projectId) => {
+    const response = await api.get(`/domains/project/${projectId}`);
+    return response.data;
+  },
+
+  getDomain: async (id) => {
+    const response = await api.get(`/domains/${id}`);
+    return response.data;
+  },
+
+  verifyDomain: async (id) => {
+    const response = await api.post(`/domains/${id}/verify`);
+    return response.data;
+  },
+
+  getDomainInstructions: async (id) => {
+    const response = await api.get(`/domains/${id}/instructions`);
+    return response.data;
+  },
+
+  updateDomainTarget: async (id, targetType, targetDeployment) => {
+    const response = await api.patch(`/domains/${id}/target`, { targetType, targetDeployment });
+    return response.data;
+  },
+
+  deleteDomain: async (id) => {
+    const response = await api.delete(`/domains/${id}`);
+    return response.data;
   }
 };

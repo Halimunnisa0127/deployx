@@ -42,8 +42,14 @@ app.use(
 // 3. Compression
 app.use(compression());
 
-// 4. Express JSON
-app.use(express.json());
+// 4. Express JSON with raw body capture for GitHub Webhooks
+app.use(express.json({
+  verify: (req, res, buf) => {
+    if (req.originalUrl && req.originalUrl.includes('/integrations/github/webhook')) {
+      req.rawBody = buf;
+    }
+  }
+}));
 
 // 5. URL Encoded Parser
 app.use(express.urlencoded({ extended: true }));
@@ -53,6 +59,10 @@ app.use(cookieParser());
 
 // 6.5 Request Context
 app.use(requestContext);
+
+// 6.6 Custom Domain Router
+const domainRouter = require('./middleware/domainRouter.middleware');
+app.use(domainRouter);
 
 // 7. Pino HTTP Logger
 app.use(
@@ -94,18 +104,47 @@ app.get('/health', (req, res) => {
   });
 });
 
+const telemetry = require('./shared/utils/telemetry');
+app.get('/health/ready', (req, res) => {
+  const mongoReady = telemetry.isMongoReady();
+  const redisReady = telemetry.isRedisReady();
+  const isHealthy = mongoReady && redisReady;
+
+  const responseBody = {
+    success: isHealthy,
+    status: isHealthy ? 'ready' : 'unavailable',
+    services: {
+      mongodb: mongoReady ? 'ready' : 'unavailable',
+      redis: redisReady ? 'ready' : 'unavailable',
+    },
+    timestamp: new Date().toISOString(),
+  };
+
+  if (!isHealthy) {
+    return res.status(503).json(responseBody);
+  }
+  return res.json(responseBody);
+});
+
+
 // 10. Feature Routes
 const authRoutes = require('./modules/auth/routes/auth.routes');
 const userRoutes = require('./modules/users/routes/user.routes');
 const projectRoutes = require('./modules/projects/routes/project.routes');
+const deploymentRoutes = require('./modules/deployments/routes/deployment.routes');
+const domainRoutes = require('./modules/domains/routes/domain.routes');
 const githubIntegration = require('./modules/integrations/github');
 const googleIntegration = require('./modules/integrations/google');
+const adminHealthRoutes = require('./modules/admin/routes/adminHealth.routes');
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/projects', projectRoutes);
+app.use('/deployments', deploymentRoutes);
+app.use('/domains', domainRoutes);
 app.use('/integrations/github', githubIntegration.routes);
 app.use('/integrations/google', googleIntegration.routes);
+app.use('/admin/health', adminHealthRoutes);
 
 // 11. 404 Handler
 app.use(notFound);

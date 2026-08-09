@@ -15,14 +15,14 @@ import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 import EmptyState from '../../../components/common/EmptyState';
-import { STATUS_VARIANT_MAP, getMockDeployments } from '../utils/projectMockData';
+import { STATUS_VARIANT_MAP } from '../utils/projectMockData';
 
 export default function ProjectDeploymentsTab({ project, deployments = [], onAction }) {
   const [filterEnv, setFilterEnv] = useState('All');
 
   // Fallback to mock data if empty
   const deploymentList = useMemo(() => {
-    const list = deployments.length > 0 ? deployments : getMockDeployments(project);
+    const list = deployments;
     if (filterEnv === 'All') return list;
     return list.filter(
       (dep) => (dep.environment || 'Production').toLowerCase() === filterEnv.toLowerCase()

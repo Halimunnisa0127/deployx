@@ -1,4 +1,5 @@
 import { mockDeployments } from '../data/deploymentsData';
+import api from '../../../../lib/axios';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -16,16 +17,20 @@ export const deploymentsApi = {
   },
 
   getDeploymentLogs: async (id) => {
-    await wait(500);
-    return `[10:00:00.000Z] Cloning repository github.com/user/repo...
-[10:00:02.124Z] Cloned successfully.
-[10:00:02.150Z] Installing dependencies using npm install...
-[10:00:15.340Z] Dependencies installed.
-[10:00:15.355Z] Running build command: npm run build
-[10:01:05.100Z] Build completed successfully.
-[10:01:06.000Z] Uploading build artifacts...
-[10:01:10.500Z] Upload complete (14 MB).
-[10:01:15.000Z] Deployment live at https://app.deployx.dev`;
+    try {
+      const response = await api.get(`/deployments/${id}/logs`);
+      const { logs } = response.data.data;
+      if (!logs || logs.length === 0) {
+        return 'No logs found for this deployment.';
+      }
+      return logs.map(log => {
+        const time = new Date(log.timestamp).toISOString();
+        return `[${time}] [${log.level.toUpperCase()}] ${log.message}`;
+      }).join('\n');
+    } catch (error) {
+      console.error("Failed to fetch logs", error);
+      return 'Error retrieving logs.';
+    }
   },
 
   getDeploymentTimeline: async (id) => {

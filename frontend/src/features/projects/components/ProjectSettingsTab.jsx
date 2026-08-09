@@ -19,28 +19,28 @@ import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Modal from '../../../components/ui/Modal';
 
-import { getMockProjectSettings } from '../utils/projectMockData';
+import { useProjectMutations } from '../hooks/useProjectMutations';
 
-export default function ProjectSettingsTab({ project, onAction }) {
-  const mockSettings = getMockProjectSettings(project);
+export default function ProjectSettingsTab({ project, onAction, onUpdate, onProjectDeleted }) {
+  const { updateProject, deleteProject } = useProjectMutations();
 
   // Form states
   const [generalForm, setGeneralForm] = useState({
-    name: mockSettings.name || project?.name || '',
-    framework: mockSettings.framework || 'Vite / React',
-    rootDirectory: mockSettings.rootDirectory || './',
+    name: project?.name || '',
+    framework: project?.framework || 'Vite / React',
+    rootDirectory: project?.rootDirectory || './',
   });
 
   const [gitForm, setGitForm] = useState({
-    repository: mockSettings.repository || 'github.com/org/repo',
-    branch: mockSettings.branch || 'main',
+    repository: project?.gitRepository?.fullName || 'github.com/org/repo',
+    branch: project?.gitRepository?.branch || 'main',
     autoDeploy: true,
   });
 
   const [buildForm, setBuildForm] = useState({
-    buildCommand: mockSettings.buildCommand || 'npm run build',
-    outputDirectory: mockSettings.outputDirectory || 'dist',
-    installCommand: mockSettings.installCommand || 'npm install',
+    buildCommand: project?.buildSettings?.buildCommand || 'npm run build',
+    outputDirectory: project?.buildSettings?.outputDirectory || 'dist',
+    installCommand: project?.buildSettings?.installCommand || 'npm install',
   });
 
   // Feedback states
@@ -50,11 +50,23 @@ export default function ProjectSettingsTab({ project, onAction }) {
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   // Handle General save
-  const handleSaveGeneral = (e) => {
+  const handleSaveGeneral = async (e) => {
     e.preventDefault();
-    setSavedGeneral(true);
-    if (onAction) onAction('Saved General Settings');
-    setTimeout(() => setSavedGeneral(false), 2000);
+    if (!project?._id && !project?.id) return;
+    
+    try {
+      await updateProject(project._id || project.id, {
+        name: generalForm.name,
+        framework: generalForm.framework,
+        rootDirectory: generalForm.rootDirectory,
+      });
+      setSavedGeneral(true);
+      if (onAction) onAction('Saved General Settings');
+      if (onUpdate) onUpdate();
+      setTimeout(() => setSavedGeneral(false), 2000);
+    } catch (err) {
+      if (onAction) onAction(`Failed to save: ${err.message}`);
+    }
   };
 
   // Handle Git Reconnect / Disconnect
@@ -67,18 +79,39 @@ export default function ProjectSettingsTab({ project, onAction }) {
   };
 
   // Handle Build save
-  const handleSaveBuild = (e) => {
+  const handleSaveBuild = async (e) => {
     e.preventDefault();
-    setSavedBuild(true);
-    if (onAction) onAction('Saved Build Settings');
-    setTimeout(() => setSavedBuild(false), 2000);
+    if (!project?._id && !project?.id) return;
+
+    try {
+      await updateProject(project._id || project.id, {
+        buildSettings: {
+          ...project.buildSettings,
+          buildCommand: buildForm.buildCommand,
+          outputDirectory: buildForm.outputDirectory,
+          installCommand: buildForm.installCommand,
+        }
+      });
+      setSavedBuild(true);
+      if (onAction) onAction('Saved Build Settings');
+      if (onUpdate) onUpdate();
+      setTimeout(() => setSavedBuild(false), 2000);
+    } catch (err) {
+      if (onAction) onAction(`Failed to save: ${err.message}`);
+    }
   };
 
   // Handle Delete Project
-  const handleDeleteProject = () => {
+  const handleDeleteProject = async () => {
     if (deleteConfirmText.trim().toLowerCase() === (project?.name || 'app').toLowerCase()) {
-      setIsDeleteModalOpen(false);
-      if (onAction) onAction(`Deleted project ${project?.name || 'App'}`);
+      try {
+        await deleteProject(project._id || project.id);
+        setIsDeleteModalOpen(false);
+        if (onAction) onAction(`Deleted project ${project?.name || 'App'}`);
+        if (onProjectDeleted) onProjectDeleted();
+      } catch (err) {
+        if (onAction) onAction(`Failed to delete: ${err.message}`);
+      }
     }
   };
 

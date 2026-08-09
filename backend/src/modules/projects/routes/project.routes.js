@@ -1,11 +1,20 @@
 const express = require('express');
 const projectController = require('../controllers/project.controller');
-const { checkProjectNameSchema, createProjectSchema } = require('../validators/project.validator');
+const { checkProjectNameSchema, createProjectSchema, updateProjectSchema } = require('../validators/project.validator');
 const validate = require('../../../shared/validators/validate');
 const { authenticate } = require('../../../middleware/auth.middleware');
 const { asyncHandler } = require('../../../utils');
 
 const router = express.Router();
+
+/**
+ * Get Framework Presets
+ * Endpoint: GET /projects/framework-presets
+ */
+router.get(
+  '/framework-presets',
+  asyncHandler(projectController.getFrameworkPresets)
+);
 
 /**
  * Step 1: Project Name availability check & slug preview generator
@@ -39,5 +48,17 @@ router.get('/', authenticate, asyncHandler(projectController.getProjects));
  * Endpoint: GET /projects/:id
  */
 router.get('/:id', authenticate, asyncHandler(projectController.getProject));
+
+/**
+ * Update Project
+ * Endpoint: PATCH /projects/:id
+ */
+router.patch('/:id', authenticate, validate(updateProjectSchema), asyncHandler(projectController.updateProject));
+
+/**
+ * Delete Project
+ * Endpoint: DELETE /projects/:id
+ */
+router.delete('/:id', authenticate, asyncHandler(projectController.deleteProject));
 
 module.exports = router;

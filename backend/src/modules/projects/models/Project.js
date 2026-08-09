@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const envVarSchema = new mongoose.Schema({
   key: { type: String, required: true, trim: true },
   value: { type: String, required: true },
+  isEncrypted: { type: Boolean, default: false },
+  iv: { type: String },
+  authTag: { type: String },
   environments: [{ type: String, enum: ['Production', 'Preview', 'Development'], default: ['Production', 'Preview', 'Development'] }]
 });
 
@@ -59,6 +62,11 @@ const projectSchema = new mongoose.Schema(
       nodeVersion: { type: String, default: '20.x' },
     },
     environmentVariables: [envVarSchema],
+    productionDeployment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Deployment',
+      default: null,
+    },
     status: {
       type: String,
       enum: ['draft', 'building', 'live', 'failed'],

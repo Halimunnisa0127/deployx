@@ -1,6 +1,5 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { mockDeployments } from '../data/mockDeployments';
 import DeploymentDetailsHeader from '../components/DeploymentDetailsHeader';
 import DeploymentStatusBanner from '../components/DeploymentStatusBanner';
 import DeploymentSummaryGrid from '../components/DeploymentSummaryGrid';
@@ -9,7 +8,9 @@ import BuildArtifactsCard from '../components/BuildArtifactsCard';
 import DeploymentTimeline from '../components/DeploymentTimeline';
 import BuildLogsTerminal from '../components/BuildLogsTerminal';
 import Button from '../../../components/ui/Button';
-import { ArrowLeft, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
+import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
+import { useDeploymentMutations } from '../hooks/useDeploymentMutations';
 
 export default function DeploymentDetails() {
   const { id } = useParams();
@@ -17,25 +18,65 @@ export default function DeploymentDetails() {
 
   const [notification, setNotification] = useState(null);
 
-  // Find target deployment record from mock dataset
-  const deployment = useMemo(() => {
-    return mockDeployments.find((d) => d.id === id) || mockDeployments[0];
-  }, [id]);
+  const { deployment: rawDeployment, isLoading, error, refetch } = useDeploymentDetails(id);
+  const { createDeployment, cancelDeployment, isCreating, isCancelling } = useDeploymentMutations();
 
-  const handleRedeploy = () => {
-    setNotification({
-      type: 'success',
-      message: `Triggered redeploy for #${deployment.deploymentNumber} (${deployment.projectName})`,
-    });
-    setTimeout(() => setNotification(null), 4000);
+  const deployment = rawDeployment ? { ...rawDeployment, id: rawDeployment._id || rawDeployment.id } : null;
+
+  const handleRedeploy = async () => {
+    try {
+      if (!deployment?.project) return;
+      const projectId = typeof deployment.project === 'object' ? deployment.project._id : deployment.project;
+      
+      const newDeployment = await createDeployment({
+        projectId,
+        environment: deployment.environment,
+        branch: deployment.branch,
+        commitHash: deployment.commitHash,
+      });
+      
+      setNotification({
+        type: 'success',
+        message: `Triggered redeploy. New deployment ID: ${newDeployment.deploymentNumber}`,
+      });
+      setTimeout(() => {
+        setNotification(null);
+        navigate(`/dashboard/deployments/${newDeployment._id}`);
+      }, 3000);
+    } catch (err) {
+      setNotification({
+        type: 'error',
+        message: 'Failed to trigger redeploy',
+      });
+      setTimeout(() => setNotification(null), 4000);
+    }
   };
 
   const handleRollback = () => {
+    // Rollback UI remains but functionality is out of scope for Phase 1
     setNotification({
       type: 'warning',
-      message: `Initiated rollback to build #${deployment.deploymentNumber}`,
+      message: `Rollback functionality is coming in a future CI/CD phase.`,
     });
     setTimeout(() => setNotification(null), 4000);
+  };
+  
+  const handleCancel = async () => {
+    try {
+      await cancelDeployment(id);
+      setNotification({
+        type: 'success',
+        message: 'Deployment cancelled successfully',
+      });
+      refetch();
+      setTimeout(() => setNotification(null), 3000);
+    } catch (err) {
+      setNotification({
+        type: 'error',
+        message: 'Failed to cancel deployment',
+      });
+      setTimeout(() => setNotification(null), 4000);
+    }
   };
 
   const handleCopyUrl = (url) => {
@@ -84,11 +125,20 @@ export default function DeploymentDetails() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  if (!deployment) {
+  if (isLoading) {
+    return (
+      <div className="py-20 flex flex-col items-center justify-center space-y-4 font-sans">
+        <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+        <div className="text-sm text-slate-400">Loading deployment details...</div>
+      </div>
+    );
+  }
+
+  if (!deployment || error) {
     return (
       <div className="py-20 text-center space-y-4 font-sans">
         <div className="text-lg font-bold text-white">Deployment Not Found</div>
-        <p className="text-sm text-slate-400">The requested deployment ID "{id}" does not exist.</p>
+        <p className="text-sm text-slate-400">{error || `The requested deployment ID "${id}" does not exist.`}</p>
         <Button
           variant="secondary"
           size="sm"

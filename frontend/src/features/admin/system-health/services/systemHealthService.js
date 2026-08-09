@@ -10,8 +10,8 @@ export const systemHealthService = {
   getPerformanceMetrics: async () => {
     return await systemHealthApi.getPerformance();
   },
-  getIncidentTimeline: async () => {
-    return await systemHealthApi.getIncidents();
+  getIncidentTimeline: async (page, limit) => {
+    return await systemHealthApi.getIncidents(page, limit);
   },
   getServiceDetails: async (serviceId) => {
     return await systemHealthApi.getServiceDetails(serviceId);

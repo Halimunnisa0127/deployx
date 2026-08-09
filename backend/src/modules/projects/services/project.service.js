@@ -1,4 +1,5 @@
 const Project = require('../models/Project');
+const EncryptionUtil = require('../../../shared/utils/encryption.util');
 
 class ProjectService {
   /**
@@ -11,6 +12,25 @@ class ProjectService {
       .replace(/[^a-z0-9-]/g, '-')
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
+  }
+
+  /**
+   * Helper to mask sensitive environment variables for safe client consumption
+   */
+  static maskEnvironmentVariables(project) {
+    if (!project) return project;
+    const projectObj = project.toObject ? project.toObject() : { ...project };
+    if (projectObj.environmentVariables && Array.isArray(projectObj.environmentVariables)) {
+      projectObj.environmentVariables = projectObj.environmentVariables.map((env) => {
+        // Strip out encryption metadata explicitly
+        const { iv, authTag, isEncrypted, ...safeEnv } = env.toObject ? env.toObject() : env;
+        return {
+          ...safeEnv,
+          value: '********',
+        };
+      });
+    }
+    return projectObj;
   }
 
   /**
@@ -54,6 +74,22 @@ class ProjectService {
 
     const domainUrl = `https://${slug}.deployx.app`;
 
+    let encryptedEnvVars = [];
+    if (data.environmentVariables) {
+      encryptedEnvVars = data.environmentVariables.map(env => {
+        if (!env.value) return env;
+        const encrypted = EncryptionUtil.encrypt(env.value);
+        return {
+          key: env.key,
+          value: encrypted.ciphertext,
+          isEncrypted: true,
+          iv: encrypted.iv,
+          authTag: encrypted.authTag,
+          environments: env.environments
+        };
+      });
+    }
+
     const project = await Project.create({
       name: data.name,
       slug,
@@ -64,19 +100,20 @@ class ProjectService {
       rootDirectory: data.rootDirectory || '/',
       region: data.region || 'auto',
       buildSettings: data.buildSettings || {},
-      environmentVariables: data.environmentVariables || [],
+      environmentVariables: encryptedEnvVars,
       status: 'building',
       stepCompleted: 6,
     });
 
-    return project;
+    return this.maskEnvironmentVariables(project);
   }
 
   /**
    * List all projects for a user
    */
   static async getUserProjects(userId) {
-    return Project.find({ owner: userId }).sort({ createdAt: -1 });
+    const projects = await Project.find({ owner: userId }).sort({ createdAt: -1 });
+    return projects.map((p) => this.maskEnvironmentVariables(p));
   }
 
   /**
@@ -87,7 +124,80 @@ class ProjectService {
     if (!project) {
       throw new Error('Project not found');
     }
-    return project;
+    return this.maskEnvironmentVariables(project);
+  }
+
+  /**
+   * Update project (Partial update via whitelist)
+   */
+  static async updateProject(userId, projectId, updateData) {
+    const project = await Project.findOne({ _id: projectId, owner: userId });
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    // Explicit Whitelist of editable fields
+    const whitelist = ['name', 'framework', 'rootDirectory', 'region', 'buildSettings', 'environmentVariables'];
+    
+    // For environment variables, if the value is '********', keep the old value
+    if (updateData.environmentVariables) {
+      updateData.environmentVariables = updateData.environmentVariables.map((incomingEnv) => {
+        if (incomingEnv.value === '********') {
+          // Find original value
+          const originalEnv = project.environmentVariables.find(e => e.key === incomingEnv.key);
+          if (originalEnv) {
+            incomingEnv.value = originalEnv.value;
+            incomingEnv.isEncrypted = originalEnv.isEncrypted;
+            incomingEnv.iv = originalEnv.iv;
+            incomingEnv.authTag = originalEnv.authTag;
+          }
+        } else {
+          // New plaintext value -> encrypt it
+          const encrypted = EncryptionUtil.encrypt(incomingEnv.value);
+          incomingEnv.value = encrypted.ciphertext;
+          incomingEnv.isEncrypted = true;
+          incomingEnv.iv = encrypted.iv;
+          incomingEnv.authTag = encrypted.authTag;
+        }
+        return incomingEnv;
+      });
+    }
+
+    // Apply updates based on whitelist
+    whitelist.forEach((field) => {
+      if (updateData[field] !== undefined) {
+        project[field] = updateData[field];
+      }
+    });
+
+    // If name changed, we update slug and domainUrl
+    if (updateData.name && updateData.name !== project.name) {
+      const newSlug = this.generateSlug(updateData.name);
+      
+      const existing = await Project.findOne({ slug: newSlug, _id: { $ne: projectId } });
+      if (existing) {
+        throw new Error(`Project with slug '${newSlug}' already exists. Please choose a different name.`);
+      }
+      
+      project.slug = newSlug;
+      project.domainUrl = `https://${newSlug}.deployx.app`;
+    }
+
+    await project.save();
+    return this.maskEnvironmentVariables(project);
+  }
+
+  /**
+   * Delete project
+   */
+  static async deleteProject(userId, projectId) {
+    const project = await Project.findOne({ _id: projectId, owner: userId });
+    if (!project) {
+      throw new Error('Project not found');
+    }
+
+    await Project.deleteOne({ _id: projectId });
+    return { id: projectId };
   }
 }
 

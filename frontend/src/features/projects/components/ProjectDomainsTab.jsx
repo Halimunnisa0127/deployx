@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Globe,
   Plus,
@@ -19,7 +19,7 @@ import Modal from '../../../components/ui/Modal';
 import Input from '../../../components/ui/Input';
 import EmptyState from '../../../components/common/EmptyState';
 
-import { getMockDomains } from '../utils/projectMockData';
+import { domainsApi } from '../../domains/api/domainsApi';
 
 const SSL_VARIANT_MAP = {
   Active: 'success',
@@ -35,7 +35,8 @@ const DNS_VARIANT_MAP = {
 };
 
 export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
-  const [domains, setDomains] = useState(() => getMockDomains(project));
+  const [domains, setDomains] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Modal states
@@ -47,29 +48,63 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
 
   const fallbackUrl = defaultUrl || `${(project?.name || 'app').toLowerCase().replace(/[^a-z0-9-]/g, '')}.deployx.app`;
 
-  // Global refresh status
-  const handleGlobalRefresh = () => {
-    setIsRefreshing(true);
-    setDomains((prev) =>
-      prev.map((d) => ({
-        ...d,
+  const fetchDomains = useCallback(async () => {
+    if (!project?._id && !project?.id) return;
+    try {
+      setIsLoading(true);
+      const projectId = project._id || project.id;
+      const response = await domainsApi.getProjectDomains(projectId);
+      const projectDomains = response.data?.domains || [];
+      const mapped = projectDomains.map((d) => ({
+        id: d._id,
+        name: d.hostname,
+        projectName: project.name,
+        type: d.targetType === 'production' ? 'Production' : 'Preview',
+        status: d.verificationStatus,
+        sslStatus: d.sslStatus === 'active' ? 'Active' : 'Pending',
+        dnsStatus: d.verificationStatus === 'verified' ? 'Verified' : 'Pending',
+        createdDate: new Date(d.createdAt).toLocaleDateString(),
         lastChecked: 'Just now',
-      }))
-    );
+        cnameTarget: 'cname.deployx.app',
+        isPrimary: d.targetType === 'production',
+        redirectStatus: d.targetType === 'production' ? 'Direct (No Redirect)' : 'Direct',
+      }));
+      setDomains(mapped);
+    } catch (err) {
+      console.error('Failed to fetch project domains:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [project]);
+
+  useEffect(() => {
+    fetchDomains();
+  }, [fetchDomains]);
+
+  // Global refresh status
+  const handleGlobalRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchDomains();
     if (onAction) onAction('Refreshed SSL & DNS status for all domains');
-    setTimeout(() => setIsRefreshing(false), 1200);
+    setIsRefreshing(false);
   };
 
   // Verify DNS action
-  const handleVerifyDNS = (domain) => {
-    setDomains((prev) =>
-      prev.map((d) =>
-        d.id === domain.id
-          ? { ...d, dnsStatus: 'Verified', sslStatus: 'Active', lastChecked: 'Just now' }
-          : d
-      )
-    );
-    if (onAction) onAction(`DNS verified successfully for ${domain.name}`);
+  const handleVerifyDNS = async (domain) => {
+    try {
+      if (onAction) onAction(`Triggering DNS verification for ${domain.name}...`);
+      const verifyResult = await domainsApi.verifyDomain(domain.id);
+      const resData = verifyResult.data;
+      if (resData?.verified) {
+        if (onAction) onAction(`DNS verified successfully for ${domain.name}`);
+      } else {
+        if (onAction) onAction(resData?.message || `DNS verification is pending for ${domain.name}`);
+      }
+      await fetchDomains();
+    } catch (err) {
+      console.error(err);
+      if (onAction) onAction(err.response?.data?.message || 'Verification check failed.');
+    }
   };
 
   // Open Add Domain modal
@@ -91,7 +126,7 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
   };
 
   // Save (Add or Edit) submit handler
-  const handleSaveDomain = (e) => {
+  const handleSaveDomain = async (e) => {
     e.preventDefault();
     const cleanDomain = domainInput.trim().toLowerCase().replace(/^https?:\/\//, '');
 
@@ -100,44 +135,35 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
       return;
     }
 
-    if (editingDomain) {
-      setDomains((prev) =>
-        prev.map((d) =>
-          d.id === editingDomain.id
-            ? {
-                ...d,
-                name: cleanDomain,
-                redirectStatus: redirectInput === 'Direct' ? 'Direct (No Redirect)' : `Redirects to ${fallbackUrl}`,
-                lastChecked: 'Just now',
-              }
-            : d
-        )
-      );
-      if (onAction) onAction(`Updated domain ${cleanDomain}`);
-    } else {
-      const newDomain = {
-        id: `dom-${Date.now()}`,
-        name: cleanDomain,
-        isPrimary: false,
-        type: 'Custom Domain',
-        sslStatus: 'Pending',
-        dnsStatus: 'Pending',
-        createdDate: 'Just now',
-        lastChecked: 'Just now',
-        redirectStatus: redirectInput === 'Direct' ? 'Direct (No Redirect)' : `Redirects to ${fallbackUrl}`,
-        cnameTarget: 'cname.deployx.app',
-      };
-      setDomains((prev) => [...prev, newDomain]);
-      if (onAction) onAction(`Added custom domain ${cleanDomain}`);
+    try {
+      setFormError('');
+      const projectId = project._id || project.id;
+      if (editingDomain) {
+        // Edit targeting targetType
+        await domainsApi.updateDomainTarget(editingDomain.id, redirectInput === 'Direct' ? 'production' : 'deployment', undefined);
+        if (onAction) onAction(`Updated domain ${cleanDomain}`);
+      } else {
+        await domainsApi.createDomain(projectId, cleanDomain);
+        if (onAction) onAction(`Added custom domain ${cleanDomain}`);
+      }
+      setIsModalOpen(false);
+      await fetchDomains();
+    } catch (err) {
+      console.error(err);
+      setFormError(err.response?.data?.message || 'Failed to save custom domain.');
     }
-
-    setIsModalOpen(false);
   };
 
   // Delete domain handler
-  const handleDeleteDomain = (id, name) => {
-    setDomains((prev) => prev.filter((d) => d.id !== id));
-    if (onAction) onAction(`Removed custom domain ${name}`);
+  const handleDeleteDomain = async (id, name) => {
+    try {
+      await domainsApi.deleteDomain(id);
+      if (onAction) onAction(`Removed custom domain ${name}`);
+      await fetchDomains();
+    } catch (err) {
+      console.error(err);
+      if (onAction) onAction('Failed to delete domain.');
+    }
   };
 
   return (
