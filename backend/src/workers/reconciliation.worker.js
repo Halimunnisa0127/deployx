@@ -11,15 +11,17 @@ const deploymentQueue = require('../infrastructure/queue/deployment.queue');
 const workerId = `reconciler-${os.hostname()}-${process.pid}-${crypto.randomBytes(4).toString('hex')}`;
 
 // MongoDB Connection
-mongoose.connect(config.mongoUri)
-  .then(() => {
-    logger.info({ event: 'reconciler.started', workerId }, '[Reconciler] Connected to MongoDB');
-    startReconciliationLoop();
-  })
-  .catch((err) => {
-    logger.fatal({ event: 'reconciler.error', workerId, err: err.message }, '[Reconciler] MongoDB connection error');
-    process.exit(1);
-  });
+if (require.main === module) {
+  mongoose.connect(config.mongoUri)
+    .then(() => {
+      logger.info({ event: 'reconciler.started', workerId }, '[Reconciler] Connected to MongoDB');
+      startReconciliationLoop();
+    })
+    .catch((err) => {
+      logger.fatal({ event: 'reconciler.error', workerId, err: err.message }, '[Reconciler] MongoDB connection error');
+      process.exit(1);
+    });
+}
 
 let intervalId;
 
@@ -109,7 +111,10 @@ async function reconcileStaleDeployments() {
     });
 
     for (const cInfo of containers) {
-      const depId = cInfo.Labels.deploymentId;
+      if (cInfo.Labels && cInfo.Labels.type === 'runtime') {
+        continue; // Do not prune active runtime containers
+      }
+      const depId = cInfo.Labels ? cInfo.Labels.deploymentId : null;
       if (depId) {
         const activeDep = await Deployment.findOne({ _id: depId, status: 'building' });
         if (!activeDep) {
@@ -152,3 +157,6 @@ const shutdown = async (signal) => {
 
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+module.exports = { reconcileStaleDeployments, startReconciliationLoop };
+

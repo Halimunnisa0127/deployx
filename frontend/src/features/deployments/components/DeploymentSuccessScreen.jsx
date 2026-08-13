@@ -95,15 +95,15 @@ function ConfettiCanvas() {
 }
 
 export default function DeploymentSuccessScreen({
-  projectName = 'my-awesome-app',
-  productionUrl = 'https://my-awesome-app.deployx.app',
-  previewUrl = 'https://my-awesome-app-git-main-acme.deployx.app',
-  repository = 'acme-corp/deployx-web-app',
-  branch = 'main',
-  deploymentId = 'dpl_9a8f7b6c5d4e',
-  commitHash = '8f7a9c2',
-  commitMessage = 'feat: initial production deployment setup',
-  deploymentDuration = '42s',
+  projectName = '',
+  productionUrl = '',
+  previewUrl = '',
+  repository = '',
+  branch = '',
+  deploymentId = '',
+  commitHash = '',
+  commitMessage = '',
+  deploymentDuration = '',
   onCreateAnother,
 }) {
   const navigate = useNavigate();

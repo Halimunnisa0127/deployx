@@ -8,7 +8,7 @@ const { mapBranches: branchMapper } = require('../mappers/branch.mapper'); // Fi
 const getGitHubClientForUser = async (userId) => {
   const account = await GitHubAccount.findOne({ userId });
   if (!account) {
-    throw new ApiError(404, 'GitHub account not connected');
+    throw new ApiError('GitHub account not connected', 404);
   }
 
   const accessToken = decrypt(account.encryptedAccessToken);
@@ -61,7 +61,7 @@ exports.getCommitByBranch = async (userId, owner, repo, branch) => {
       message: branchData.commit.commit.message,
     };
   } catch (error) {
-    throw new ApiError(400, 'Failed to resolve repository source. Please verify branch exists and GitHub integration is valid.');
+    throw new ApiError('Failed to resolve repository source. Please verify branch exists and GitHub integration is valid.', 400);
   }
 };
 

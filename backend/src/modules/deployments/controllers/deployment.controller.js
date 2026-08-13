@@ -104,12 +104,8 @@ class DeploymentController {
       return res.status(StatusCodes.FORBIDDEN).send('Artifact mismatch.');
     }
 
-    // Determine SPA fallback (Phase 2I explicitly asks to inspect Project/Deployment routing config, 
-    // but says "If there is already an explicit SPA/static routing config use it. If not DO NOT invent a new one... serve exact files, serve index.html for root, return 404 for missing").
-    // We will assume SPA is true only if framework is a known SPA framework, but since we don't want to invent new rules, 
-    // we'll just check if it's explicitly set. The prompt says: "Do NOT determine SPA behavior using: framework !== 'static'... Instead inspect the existing Project/Deployment data model... If no such configuration exists... serve exact files, serve index.html for root, return 404 for missing paths".
-    // So we'll set isSpaFallback = false.
-    const isSpaFallback = false; 
+    // Determine SPA fallback
+    const isSpaFallback = ['React', 'Vue', 'Angular', 'Svelte'].includes(deployment.buildSettings?.framework); 
 
     // The wildcard param
     const requestedPath = req.params[0] || 'index.html';

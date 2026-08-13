@@ -29,21 +29,15 @@ export const systemHealthApi = {
     return generateServiceDetails(serviceId);
   },
   restartService: async (serviceId) => {
-    await wait(1000);
-    return {
-      success: true,
-      message: `Service ${serviceId} restarted successfully.`,
-    };
+    await wait(400);
+    throw new Error("Service restart is unavailable in this environment.");
   },
   toggleMaintenanceMode: async (serviceId, enable) => {
-    await wait(800);
-    return {
-      success: true,
-      message: `Maintenance mode ${enable ? "enabled" : "disabled"} for ${serviceId}.`,
-    };
+    await wait(400);
+    throw new Error("Maintenance mode control is unsupported on this platform.");
   },
   exportHealthReport: async () => {
-    await wait(1000);
-    return { success: true, url: "/downloads/system_health_report.pdf" };
+    await wait(400);
+    throw new Error("System health report export is currently offline.");
   },
 };

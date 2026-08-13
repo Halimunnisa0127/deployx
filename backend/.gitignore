@@ -95,3 +95,20 @@ storage/
 *.tgz
 *.swp
 *.swo
+
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Local Env overrides
+.env.local

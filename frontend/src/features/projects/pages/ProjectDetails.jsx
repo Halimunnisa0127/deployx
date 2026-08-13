@@ -35,14 +35,14 @@ export default function ProjectDetails() {
 
   const { project, isLoading: projectsStatusLoading, refetch } = useProjectDetails(id);
   const { deployments, refetch: refetchDeployments } = useDeployments(id);
-  const { createDeployment, isCreating } = useDeploymentMutations();
+  const { createDeployment, rollbackDeployment, isCreating } = useDeploymentMutations();
 
   const handleAction = async (actionName) => {
     if (actionName.includes('Redeploy') || actionName === 'Trigger First Build') {
       try {
         const newDeployment = await createDeployment({
           projectId: id,
-          environment: 'production',
+          environment: 'Production',
           branch: project?.branch || 'main',
           commitHash: 'manual-redeploy', // Mock commit hash for manual redeploy
         });
@@ -50,6 +50,24 @@ export default function ProjectDetails() {
         refetchDeployments();
       } catch (err) {
         setActionFeedback(`Failed to trigger deployment.`);
+      }
+      setTimeout(() => setActionFeedback(''), 4000);
+      return;
+    }
+
+    if (actionName === 'Rollback') {
+      const rollbackTarget = deployments.find(d => d.status === 'success' || d.status === 'ready');
+      if (rollbackTarget) {
+        try {
+          await rollbackDeployment(rollbackTarget.id);
+          setActionFeedback(`Successfully rolled back to deployment #${rollbackTarget.deploymentNumber || rollbackTarget.id}`);
+          refetchDeployments();
+          refetch();
+        } catch (err) {
+          setActionFeedback(`Failed to rollback deployment.`);
+        }
+      } else {
+        setActionFeedback(`No historic successful deployment found to rollback to.`);
       }
       setTimeout(() => setActionFeedback(''), 4000);
       return;

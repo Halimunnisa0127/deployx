@@ -5,7 +5,7 @@ const ApiError = require('../../shared/errors/ApiError');
  */
 exports.mapGitHubError = (error) => {
   if (!error.response) {
-    return new ApiError(500, 'GitHub connection failed');
+    return new ApiError('GitHub connection failed', 500);
   }
 
   const { status, data } = error.response;
@@ -13,15 +13,15 @@ exports.mapGitHubError = (error) => {
 
   switch (status) {
     case 401:
-      return new ApiError(401, `GitHub Bad Credentials: ${message}`);
+      return new ApiError(`GitHub Bad Credentials: ${message}`, 401);
     case 403:
       if (message.toLowerCase().includes('rate limit')) {
-        return new ApiError(429, 'GitHub Rate Limit Exceeded');
+        return new ApiError('GitHub Rate Limit Exceeded', 429);
       }
-      return new ApiError(403, `GitHub Forbidden: ${message}`);
+      return new ApiError(`GitHub Forbidden: ${message}`, 403);
     case 404:
-      return new ApiError(404, `GitHub Resource Not Found: ${message}`);
+      return new ApiError(`GitHub Resource Not Found: ${message}`, 404);
     default:
-      return new ApiError(status, `GitHub API Error: ${message}`);
+      return new ApiError(`GitHub API Error: ${message}`, status);
   }
 };

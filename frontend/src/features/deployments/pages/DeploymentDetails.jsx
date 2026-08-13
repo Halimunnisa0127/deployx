@@ -11,6 +11,7 @@ import Button from '../../../components/ui/Button';
 import { ArrowLeft, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
 import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
 import { useDeploymentMutations } from '../hooks/useDeploymentMutations';
+import { useDeploymentLogs } from '../hooks/useDeploymentLogs';
 
 export default function DeploymentDetails() {
   const { id } = useParams();
@@ -20,8 +21,8 @@ export default function DeploymentDetails() {
 
   const { deployment: rawDeployment, isLoading, error, refetch } = useDeploymentDetails(id);
   const { createDeployment, cancelDeployment, isCreating, isCancelling } = useDeploymentMutations();
-
   const deployment = rawDeployment ? { ...rawDeployment, id: rawDeployment._id || rawDeployment.id } : null;
+  const { logs: deploymentLogs, isLoading: isLoadingLogs } = useDeploymentLogs(id, deployment?.status);
 
   const handleRedeploy = async () => {
     try {
@@ -89,14 +90,11 @@ export default function DeploymentDetails() {
   };
 
   const handleDownloadLogs = () => {
-    const defaultLogs = [
-      `[00:00:01] Initializing DeployX Build Environment (v20.11.0 node)`,
-      `[00:00:02] Cloning repository for ${deployment.projectName}`,
-      `[00:00:12] Running build command: ${deployment.buildCommand || 'npm run build'}`,
-      `[00:00:34] ✓ Deployment successful! Production URL live: ${deployment.url}`,
-    ].join('\n');
+    const logText = deploymentLogs && deploymentLogs.length > 0
+      ? deploymentLogs.map(l => `[${l.time}] [${l.type.toUpperCase()}] ${l.text}`).join('\n')
+      : 'No logs found for this deployment.';
 
-    const blob = new Blob([defaultLogs], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([logText], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `build-logs-${deployment.id || 'dep-001'}.log`;
@@ -207,7 +205,12 @@ export default function DeploymentDetails() {
       <DeploymentTimeline status={deployment.status} />
 
       {/* 7. Build Logs Terminal Window */}
-      <BuildLogsTerminal deploymentId={deployment.id} status={deployment.status} />
+      <BuildLogsTerminal 
+        deploymentId={deployment.id} 
+        status={deployment.status} 
+        logs={deploymentLogs} 
+        isLoading={isLoadingLogs}
+      />
     </div>
   );
 }

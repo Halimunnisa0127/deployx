@@ -132,7 +132,8 @@ class DockerClient {
     // We use http.extraHeader to avoid writing credentials to .git/config
     const script = `
 set -e
-apk add --no-cache git > /dev/null 2>&1
+echo "Installing git client dependency..."
+apk add --no-cache git
 mkdir -p /workspace
 cd /workspace
 git init > /dev/null
@@ -154,12 +155,14 @@ echo "Verifying environment variables..."
 ${Object.keys(envVars).map(key => `if [ -z "$${key}" ]; then echo "Warning: ${key} is empty or not set"; else echo "Verified ${key} is injected"; fi`).join('\n')}
 
 echo "Installing dependencies..."
+cd "/workspace/${deployment.buildSettings.rootDirectory || ''}"
 ${deployment.buildSettings.installCommand}
 
 echo "Building project..."
 ${deployment.buildSettings.buildCommand}
 
 echo "Build complete."
+exit 0
 `;
 
     // Map object to Docker Env array format (KEY=VALUE)
@@ -171,6 +174,7 @@ echo "Build complete."
       Cmd: ['sh'],
       OpenStdin: true,
       StdinOnce: true,
+      AttachStdin: true,
       Tty: false,
       NetworkDisabled: false, // Network required for npm install and git clone
       Env: dockerEnv,
@@ -192,12 +196,11 @@ echo "Build complete."
     try {
       console.log(`[DockerClient] Creating isolated container for deployment ${deployment._id}...`);
       container = await docker.createContainer(containerOptions);
-
-      console.log(`[DockerClient] Starting container ${container.id}...`);
-      await container.start();
+      console.log({ event: 'docker.container.created', containerId: container.id });
 
       // Stream the script into the container's stdin securely
-      const stream = await container.attach({ stream: true, stdin: true, stdout: true, stderr: true });
+      const stream = await container.attach({ stream: true, stdin: true, stdout: true, stderr: true, hijack: true });
+      console.log({ event: 'docker.container.attached', containerId: container.id });
       
       if (onLog) {
         // Demux stdout and stderr safely for incremental logging
@@ -208,10 +211,24 @@ echo "Build complete."
         );
       }
 
-      stream.write(script);
-      stream.end();
+      console.log(`[DockerClient] Starting container ${container.id}...`);
+      await container.start();
+      console.log({ event: 'docker.container.started', containerId: container.id });
+
+      // Small delay to ensure sh is fully spawned and reading from the stdin pipe
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      console.log({ event: 'docker.script.write.started', containerId: container.id });
+      await new Promise((resolve, reject) => {
+        stream.write(script, 'utf8', (err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+      console.log({ event: 'docker.script.write.completed', containerId: container.id });
 
       console.log(`[DockerClient] Waiting for container ${container.id} to finish (with 5 min timeout)...`);
+      console.log({ event: 'docker.wait.started', containerId: container.id });
       
       const timeoutMs = 5 * 60 * 1000;
       let timeoutHandle;
@@ -224,6 +241,7 @@ echo "Build complete."
       let data;
       try {
         data = await Promise.race([waitPromise, timeoutPromise]);
+        console.log({ event: 'docker.wait.completed', containerId: container.id });
       } catch (raceError) {
         if (raceError.message === 'BUILD_TIMEOUT') {
           console.error(`[DockerClient] Build timed out for container ${container.id}`);
@@ -321,6 +339,184 @@ echo "Build complete."
       }
     } catch (error) {
       // Ignore if already removed
+    }
+  }
+
+  /**
+   * Finds an available dynamic port.
+   */
+  static async findFreePort() {
+    const net = require('net');
+    return new Promise((resolve, reject) => {
+      const server = net.createServer();
+      server.unref();
+      server.listen(0, () => {
+        const { port } = server.address();
+        server.close(() => resolve(port));
+      });
+      server.on('error', (err) => reject(err));
+    });
+  }
+
+  /**
+   * Removes all existing runtime containers for a given project.
+   */
+  static async removePreviousRuntimeContainers(projectId) {
+    try {
+      const list = await docker.listContainers({
+        all: true,
+        filters: JSON.stringify({
+          label: [
+            `projectId=${projectId}`,
+            'type=runtime'
+          ]
+        })
+      });
+      for (const cInfo of list) {
+        try {
+          const container = docker.getContainer(cInfo.Id);
+          await container.stop().catch(() => {});
+          await container.remove({ force: true }).catch(() => {});
+        } catch (err) {
+          // Ignore
+        }
+      }
+    } catch (error) {
+      // Ignore
+    }
+  }
+
+  /**
+   * Starts a dedicated nginx:alpine container serving the deployment's artifact.
+   */
+  static async startRuntimeContainer(deployment, artifact) {
+    const net = require('net');
+    const http = require('http');
+    const tar = require('tar-stream');
+    const LocalArtifactStorageProvider = require('../../modules/storage/providers/LocalArtifactStorageProvider');
+    const storageProvider = new LocalArtifactStorageProvider();
+
+    const isAvailable = await this.ping();
+    if (!isAvailable) {
+      throw new Error('Docker daemon is unavailable. Cannot launch runtime.');
+    }
+
+    const imageName = 'nginx:alpine';
+
+    // Ensure Nginx image exists
+    try {
+      console.log(`[DockerClient] Pulling image ${imageName}...`);
+      await new Promise((resolve, reject) => {
+        docker.pull(imageName, (err, stream) => {
+          if (err) return reject(err);
+          docker.modem.followProgress(stream, (onFinishedErr, output) => {
+            if (onFinishedErr) return reject(onFinishedErr);
+            resolve(output);
+          });
+        });
+      });
+    } catch (pullError) {
+      console.error(`[DockerClient] Failed to pull image ${imageName}:`, pullError.message);
+      throw new Error(`Failed to initialize runtime container image.`);
+    }
+
+    // Allocate dynamic host port
+    const freePort = await this.findFreePort();
+    console.log(`[DockerClient] Allocated port ${freePort} for deployment ${deployment._id}`);
+
+    const containerOptions = {
+      name: `deployx-runtime-${deployment._id}`,
+      Image: imageName,
+      ExposedPorts: { '80/tcp': {} },
+      HostConfig: {
+        PortBindings: { '80/tcp': [{ HostPort: String(freePort) }] },
+        Memory: 128 * 1024 * 1024, // 128 MB limit
+        NanoCPUs: 0.5 * 1e9,       // 0.5 CPU Core
+        PidsLimit: 50
+      },
+      Labels: {
+        deployx: 'true',
+        deploymentId: String(deployment._id),
+        projectId: String(deployment.project),
+        type: 'runtime'
+      }
+    };
+
+    let container;
+    try {
+      console.log(`[DockerClient] Creating runtime container for deployment ${deployment._id}...`);
+      container = await docker.createContainer(containerOptions);
+
+      console.log(`[DockerClient] Starting runtime container ${container.id}...`);
+      await container.start();
+
+      // Configure default Nginx SPA rule
+      const outputDir = deployment.buildSettings.outputDirectory || 'dist';
+      const nginxConfig = `
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        root /usr/share/nginx/html/${outputDir};
+        index index.html index.htm;
+        try_files $uri $uri/ /index.html;
+    }
+}
+`;
+      const configPack = tar.pack();
+      configPack.entry({ name: 'default.conf' }, nginxConfig);
+      configPack.finalize();
+
+      console.log(`[DockerClient] Injecting SPA Nginx configuration...`);
+      await container.putArchive(configPack, { path: '/etc/nginx/conf.d' });
+
+      // Inject project artifacts
+      console.log(`[DockerClient] Injecting artifact files...`);
+      const artifactStream = await storageProvider.getArtifactStream(artifact.storageKey);
+      await container.putArchive(artifactStream, { path: '/usr/share/nginx/html' });
+
+      // Reload Nginx configuration
+      console.log(`[DockerClient] Reloading Nginx server...`);
+      const execInstance = await container.exec({
+        Cmd: ['nginx', '-s', 'reload'],
+        AttachStdout: false,
+        AttachStderr: false
+      });
+      await execInstance.start();
+
+      // Run health check with retries
+      console.log(`[DockerClient] Verifying container health on port ${freePort}...`);
+      let healthy = false;
+      for (let attempt = 1; attempt <= 10; attempt++) {
+        const up = await new Promise((resolve) => {
+          const req = http.get(`http://localhost:${freePort}/`, (res) => {
+            resolve(res.statusCode >= 200 && res.statusCode < 400);
+          });
+          req.on('error', () => resolve(false));
+          req.end();
+        });
+
+        if (up) {
+          healthy = true;
+          break;
+        }
+        await new Promise((r) => setTimeout(r, 500));
+      }
+
+      if (!healthy) {
+        throw new Error(`Runtime health check failed on port ${freePort}.`);
+      }
+
+      console.log(`[DockerClient] Runtime container is healthy and running on port ${freePort}.`);
+      return { containerId: container.id, port: freePort };
+
+    } catch (err) {
+      console.error(`[DockerClient] Failed to setup runtime container:`, err.message);
+      if (container) {
+        await container.remove({ force: true }).catch(() => {});
+      }
+      throw err;
     }
   }
 }

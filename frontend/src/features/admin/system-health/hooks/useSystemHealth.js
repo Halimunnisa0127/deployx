@@ -210,6 +210,7 @@ export const useSystemHealth = () => {
       alert(`Exporting system health report...`);
     } catch (err) {
       console.error(err);
+      alert(err.message || "System health report export is currently unavailable.");
     }
   };
 
@@ -219,6 +220,7 @@ export const useSystemHealth = () => {
       await fetchData(true, incidentPage);
     } catch (err) {
       console.error(err);
+      alert(err.message || "Restarting services is currently unavailable in this environment.");
     }
   };
 
@@ -229,6 +231,7 @@ export const useSystemHealth = () => {
       return true;
     } catch (err) {
       console.error(err);
+      alert(err.message || "Maintenance mode control is unsupported on this platform.");
       return false;
     }
   };

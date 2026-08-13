@@ -75,7 +75,7 @@ app.use(
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  skip: (req) => req.path === '/' || req.path === '/health',
+  skip: (req) => req.path === '/' || req.path === '/health' || req.path.startsWith('/deployments'),
   message: ApiResponse.error('Too many requests, please try again later.', {}, 429),
 });
 app.use(limiter);
@@ -136,6 +136,9 @@ const domainRoutes = require('./modules/domains/routes/domain.routes');
 const githubIntegration = require('./modules/integrations/github');
 const googleIntegration = require('./modules/integrations/google');
 const adminHealthRoutes = require('./modules/admin/routes/adminHealth.routes');
+const adminUserRoutes = require('./modules/admin/routes/adminUser.routes');
+const adminProjectRoutes = require('./modules/admin/routes/adminProject.routes');
+const adminDeploymentRoutes = require('./modules/admin/routes/adminDeployment.routes');
 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
@@ -145,6 +148,9 @@ app.use('/domains', domainRoutes);
 app.use('/integrations/github', githubIntegration.routes);
 app.use('/integrations/google', googleIntegration.routes);
 app.use('/admin/health', adminHealthRoutes);
+app.use('/admin/users', adminUserRoutes);
+app.use('/admin/projects', adminProjectRoutes);
+app.use('/admin/deployments', adminDeploymentRoutes);
 
 // 11. 404 Handler
 app.use(notFound);

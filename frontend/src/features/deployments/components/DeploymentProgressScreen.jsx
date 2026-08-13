@@ -10,207 +10,137 @@ import {
   CheckCircle2,
   GitBranch,
   Folder,
-  RotateCcw,
+  AlertCircle,
 } from 'lucide-react';
-import { useDispatch } from 'react-redux';
 import Button from '../../../components/ui/Button';
-import DeploymentSuccessScreen from './DeploymentSuccessScreen';
-import { completeDeployment } from '../../projects/slice/projectsSlice';
+import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
+import { useDeploymentLogs } from '../hooks/useDeploymentLogs';
 
 const DEPLOYMENT_STEPS = [
-  { id: 1, name: 'Initializing', duration: 1200 },
-  { id: 2, name: 'Cloning Repository', duration: 1500 },
-  { id: 3, name: 'Installing Dependencies', duration: 2000 },
-  { id: 4, name: 'Building Project', duration: 2500 },
-  { id: 5, name: 'Uploading Build', duration: 1500 },
-  { id: 6, name: 'Generating SSL', duration: 1200 },
-  { id: 7, name: 'Assigning Domain', duration: 1000 },
-  { id: 8, name: 'Deployment Complete', duration: 0 },
+  { id: 1, name: 'Queued', statusKey: 'queued' },
+  { id: 2, name: 'Building', statusKey: 'building' },
+  { id: 3, name: 'Ready', statusKey: 'ready' },
 ];
 
-const STEP_LOGS = {
-  1: [
-    { type: 'info', text: 'Initializing DeployX build container (v2.4.0-edge)...' },
-    { type: 'info', text: 'Allocating isolated micro-VM in region: us-east-1 (N. Virginia)' },
-    { type: 'info', text: 'Environment check passed. System ready.' },
-  ],
-  2: [
-    { type: 'git', text: 'Connecting to GitHub repository...' },
-    { type: 'git', text: 'Fetching branch ref...' },
-    { type: 'git', text: 'Cloned repository successfully (commit #8f7a9c2) in 0.45s' },
-  ],
-  3: [
-    { type: 'deps', text: 'Detecting package manager: npm' },
-    { type: 'deps', text: 'Running: npm install --frozen-lockfile' },
-    { type: 'deps', text: 'Fetched 482 packages from registry.npmjs.org' },
-    { type: 'deps', text: 'Dependencies installed successfully in 3.12s' },
-  ],
-  4: [
-    { type: 'build', text: 'Executing build script: npm run build' },
-    { type: 'build', text: 'vite v5.2.0 building for production...' },
-    { type: 'build', text: 'transforming (428/428) modules' },
-    { type: 'build', text: 'dist/index.html                     0.45 kB' },
-    { type: 'build', text: 'dist/assets/index-D7s8a9f.js       248.12 kB' },
-    { type: 'build', text: '✨ Build completed successfully in 4.85s' },
-  ],
-  5: [
-    { type: 'upload', text: 'Compressing static bundle artifacts...' },
-    { type: 'upload', text: 'Uploading 14 static assets to DeployX Edge Storage...' },
-    { type: 'upload', text: 'Synced to 120+ global CDN edge nodes.' },
-  ],
-  6: [
-    { type: 'ssl', text: 'Provisioning TLS/SSL certificate via Let\'s Encrypt...' },
-    { type: 'ssl', text: 'SNI certificate issued & validated for HTTPS traffic.' },
-  ],
-  7: [
-    { type: 'domain', text: 'Configuring edge routing tables...' },
-    { type: 'domain', text: 'Health checks passed (200 OK across 4 edge clusters).' },
-  ],
-  8: [
-    { type: 'success', text: '🎉 Deployment completed successfully!' },
-  ],
-};
-
 export default function DeploymentProgressScreen({
-  projectName = 'my-awesome-app',
-  repository = 'acme-corp/deployx-web-app',
-  branch = 'main',
-  url = 'https://my-awesome-app.deployx.app',
-  onComplete,
+  projectName = '',
+  repository = '',
+  branch = '',
+  url = '',
+  deploymentId,
+  creationError,
   onCancel,
 }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [logs, setLogs] = useState([]);
-  const [status, setStatus] = useState('in_progress'); // 'in_progress' | 'completed' | 'cancelled'
   const [copiedLogs, setCopiedLogs] = useState(false);
-
   const logsEndRef = useRef(null);
+
+  // Authoritative status and logs polling
+  const { deployment, isLoading: isLoadingDetails, error: detailsError } = useDeploymentDetails(deploymentId);
+  
+  const displayProjectName = deployment?.projectName || deployment?.project?.name || projectName || 'Loading project...';
+  const displayRepository = deployment?.source?.repositoryFullName || repository || 'Loading repository...';
+  const displayBranch = deployment?.source?.branch || branch || 'Loading branch...';
+
+  const currentStatus = creationError ? 'failed' : (deployment?.status || 'queued');
+  const { logs, isLoading: isLoadingLogs, error: logsError } = useDeploymentLogs(deploymentId, currentStatus);
 
   // Auto-scroll logs terminal
   useEffect(() => {
     logsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
 
-  // Simulate deployment progress
-  useEffect(() => {
-    if (status !== 'in_progress') return;
-
-    if (currentStepIndex >= DEPLOYMENT_STEPS.length - 1) {
-      setStatus('completed');
-      dispatch(completeDeployment(projectName));
-      if (onComplete) onComplete();
-
-      // Automatically navigate to Project Dashboard after deployment completes
-      const redirectTimer = setTimeout(() => {
-        navigate('/dashboard/projects');
-      }, 3500);
-
-      return () => clearTimeout(redirectTimer);
-    }
-
-    const currentStep = DEPLOYMENT_STEPS[currentStepIndex];
-    const newLogLines = (STEP_LOGS[currentStep.id] || []).map((log) => ({
-      ...log,
-      timestamp: new Date().toLocaleTimeString(),
-    }));
-
-    setLogs((prev) => [...prev, ...newLogLines]);
-
-    const timer = setTimeout(() => {
-      setCurrentStepIndex((prev) => prev + 1);
-    }, currentStep.duration);
-
-    return () => clearTimeout(timer);
-  }, [currentStepIndex, status, onComplete, dispatch, navigate, projectName]);
-
-  // Handle Cancel
-  const handleCancelDeployment = () => {
-    setStatus('cancelled');
-    setLogs((prev) => [
-      ...prev,
-      {
-        type: 'error',
-        text: '❌ Deployment cancelled by user.',
-        timestamp: new Date().toLocaleTimeString(),
-      },
-    ]);
-    if (onCancel) onCancel();
-  };
-
   // Handle Copy Logs
   const handleCopyLogs = () => {
-    const textToCopy = logs.map((l) => `[${l.timestamp}] [${l.type.toUpperCase()}] ${l.text}`).join('\n');
+    const textToCopy = logs.map((l) => `[${l.time || ''}] [${l.type.toUpperCase()}] ${l.text}`).join('\n');
     navigator.clipboard.writeText(textToCopy);
     setCopiedLogs(true);
     setTimeout(() => setCopiedLogs(false), 2000);
   };
 
-  // Handle Restart
-  const handleRestartDeployment = () => {
-    setCurrentStepIndex(0);
-    setLogs([]);
-    setStatus('in_progress');
+  // Progress percentage mapping
+  let progressPercent = 0;
+  if (currentStatus === 'queued') progressPercent = 33;
+  else if (currentStatus === 'building') progressPercent = 66;
+  else if (['ready', 'failed', 'cancelled'].includes(currentStatus)) progressPercent = 100;
+
+  // Status mappings
+  const statusLabels = {
+    queued: 'Queued',
+    building: 'Building & Deploying',
+    ready: 'Deployment Ready',
+    failed: 'Deployment Failed',
+    cancelled: 'Deployment Cancelled',
   };
 
-  // Progress percentage calculation
-  const progressPercent = Math.min(
-    100,
-    Math.round(((currentStepIndex + 1) / DEPLOYMENT_STEPS.length) * 100)
-  );
+  const currentStatusLabel = statusLabels[currentStatus] || 'Initializing...';
 
-  const currentStepObj = DEPLOYMENT_STEPS[currentStepIndex];
+  // Navigate back/projects
+  const handleGoToDashboard = () => {
+    navigate('/dashboard/projects');
+  };
 
-  if (status === 'completed') {
+  // Render initialization state when thunk hasn't resolved to a deployment ID yet
+  if (!deploymentId && !creationError) {
     return (
-      <DeploymentSuccessScreen
-        projectName={projectName}
-        repository={repository}
-        branch={branch}
-        productionUrl={url}
-        previewUrl={url.replace('https://', 'https://git-main-')}
-        deploymentId="dpl_9a8f7b6c5d4e"
-        commitHash="8f7a9c2"
-        deploymentDuration="42s"
-        onCreateAnother={() => navigate('/dashboard/projects/new')}
-      />
+      <div className="w-full max-w-4xl mx-auto py-20 text-center space-y-4 font-sans bg-card border border-border rounded-2xl shadow-xl">
+        <Loader2 className="w-8 h-8 text-blue-500 animate-spin mx-auto" />
+        <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Initializing project deployment...</h3>
+        <p className="text-xs text-muted-foreground">Setting up database records and preparing build pipeline.</p>
+      </div>
     );
   }
+
+  // Render creation error state
+  if (creationError) {
+    return (
+      <div className="w-full max-w-4xl mx-auto p-8 text-center space-y-6 font-sans bg-card border border-red-500/20 rounded-2xl shadow-xl">
+        <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
+        <div className="space-y-2">
+          <h3 className="text-lg font-bold text-red-500">Failed to trigger deployment</h3>
+          <p className="text-sm text-muted-foreground">{creationError}</p>
+        </div>
+        <Button variant="secondary" size="md" onClick={handleGoToDashboard}>
+          Back to Projects
+        </Button>
+      </div>
+    );
+  }
+
+  const realUrl = deployment?.url || url;
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 animate-fade-in font-sans selection:bg-blue-500 selection:text-white">
       {/* Header Info Banner */}
       <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="space-y-1">
+        <div className="space-y-1 text-left">
           <div className="flex items-center gap-2.5 flex-wrap">
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
-              {projectName}
+              {displayProjectName}
             </h2>
             <span
               className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border flex items-center gap-1.5 ${
-                status === 'completed'
+                currentStatus === 'ready'
                   ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
-                  : status === 'cancelled'
+                  : ['failed', 'cancelled'].includes(currentStatus)
                   ? 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400'
                   : 'bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400'
               }`}
             >
-              {status === 'completed' ? (
+              {currentStatus === 'ready' ? (
                 <>
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   Deployed
                 </>
-              ) : status === 'cancelled' ? (
+              ) : ['failed', 'cancelled'].includes(currentStatus) ? (
                 <>
                   <XCircle className="w-3.5 h-3.5" />
-                  Cancelled
+                  {currentStatus === 'failed' ? 'Failed' : 'Cancelled'}
                 </>
               ) : (
                 <>
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  Building & Deploying...
+                  {currentStatus === 'queued' ? 'Queued' : 'Building & Deploying...'}
                 </>
               )}
             </span>
@@ -219,82 +149,68 @@ export default function DeploymentProgressScreen({
           <div className="flex items-center gap-4 text-xs text-muted-foreground flex-wrap">
             <span className="flex items-center gap-1 font-mono text-muted-foreground">
               <Folder className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
-              {repository}
+              {displayRepository}
             </span>
             <span className="flex items-center gap-1 font-mono text-muted-foreground">
               <GitBranch className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
-              {branch}
+              {displayBranch}
             </span>
           </div>
         </div>
 
         {/* Action Controls */}
         <div className="flex items-center gap-3">
-          {status === 'in_progress' && (
+          {['queued', 'building'].includes(currentStatus) && (
             <Button
               type="button"
               variant="danger"
               size="sm"
-              onClick={handleCancelDeployment}
+              onClick={onCancel}
             >
               Cancel Deployment
             </Button>
           )}
 
-          {status === 'completed' && (
-            <>
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => navigate('/dashboard/projects')}
-              >
-                Dashboard
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                iconRight={<ExternalLink className="w-4 h-4" />}
-                className="shadow-lg shadow-blue-500/20"
-              >
-                Visit App
-              </Button>
-            </>
+          {['ready', 'failed', 'cancelled'].includes(currentStatus) && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={handleGoToDashboard}
+            >
+              Projects
+            </Button>
           )}
 
-          {status === 'cancelled' && (
+          {currentStatus === 'ready' && realUrl && (
             <Button
               variant="primary"
               size="sm"
-              onClick={handleRestartDeployment}
-              iconLeft={<RotateCcw className="w-4 h-4" />}
+              href={realUrl}
+              target="_blank"
+              rel="noreferrer"
+              iconRight={<ExternalLink className="w-4 h-4" />}
+              className="shadow-lg shadow-blue-500/20"
             >
-              Retry Deployment
+              Visit App
             </Button>
           )}
         </div>
       </div>
 
       {/* Progress Bar & Steps Tracker */}
-      <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl space-y-5">
+      <div className="p-6 rounded-2xl bg-card border border-border shadow-xl backdrop-blur-xl space-y-5 text-left">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Deployment Progress
             </span>
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              {status === 'completed'
-                ? 'Deployment Complete'
-                : status === 'cancelled'
-                ? 'Deployment Cancelled'
-                : currentStepObj?.name}
+              {currentStatusLabel}
             </h3>
           </div>
 
           <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-            {status === 'completed' ? '100%' : `${progressPercent}%`}
+            {progressPercent}%
           </span>
         </div>
 
@@ -302,22 +218,25 @@ export default function DeploymentProgressScreen({
         <div className="w-full h-3 bg-slate-100 dark:bg-slate-950 rounded-full overflow-hidden border border-border p-0.5 relative">
           <div
             className={`h-full rounded-full transition-all duration-500 ease-out ${
-              status === 'completed'
+              currentStatus === 'ready'
                 ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
-                : status === 'cancelled'
+                : ['failed', 'cancelled'].includes(currentStatus)
                 ? 'bg-gradient-to-r from-red-500 to-rose-600'
                 : 'bg-gradient-to-r from-blue-500 via-indigo-500 to-sky-400 animate-pulse'
             }`}
-            style={{ width: `${status === 'completed' ? 100 : progressPercent}%` }}
+            style={{ width: `${progressPercent}%` }}
           />
         </div>
 
-        {/* 8 Steps Grid List */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
-          {DEPLOYMENT_STEPS.map((step, idx) => {
-            const isFinished = idx < currentStepIndex || status === 'completed';
-            const isCurrent = idx === currentStepIndex && status === 'in_progress';
-            const isFailed = status === 'cancelled' && idx === currentStepIndex;
+        {/* 3 Steps Grid List */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+          {DEPLOYMENT_STEPS.map((step) => {
+            const stepOrder = { queued: 1, building: 2, ready: 3, failed: 3, cancelled: 3 };
+            const currentOrder = stepOrder[currentStatus] || 1;
+            
+            const isFinished = step.id < currentOrder || currentStatus === 'ready';
+            const isCurrent = step.id === currentOrder && ['queued', 'building'].includes(currentStatus);
+            const isFailed = ['failed', 'cancelled'].includes(currentStatus) && step.id === currentOrder;
 
             return (
               <div
@@ -397,7 +316,11 @@ export default function DeploymentProgressScreen({
 
         {/* Terminal Window Content */}
         <div className="p-4 font-mono text-xs text-slate-300 space-y-1.5 max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800 selection:bg-blue-500 selection:text-white">
-          {logs.length === 0 ? (
+          {isLoadingLogs && logs.length === 0 ? (
+            <div className="text-slate-600 italic py-4 text-center">
+              Loading deployment logs...
+            </div>
+          ) : logs.length === 0 ? (
             <div className="text-slate-600 italic py-4 text-center">
               Waiting for build runner to start...
             </div>
@@ -412,9 +335,9 @@ export default function DeploymentProgressScreen({
               if (log.type === 'error') tagColor = 'text-red-400 bg-red-500/10 border-red-500/20';
 
               return (
-                <div key={index} className="flex items-start gap-2.5 leading-relaxed hover:bg-slate-900/40 p-0.5 rounded">
+                <div key={index} className="flex items-start gap-2.5 leading-relaxed hover:bg-slate-900/40 p-0.5 rounded text-left">
                   <span className="text-slate-600 text-xs select-none flex-shrink-0 pt-0.5">
-                    [{log.timestamp}]
+                    [{log.time || log.timestamp || ''}]
                   </span>
                   <span
                     className={`px-1.5 py-0.2 rounded text-xs uppercase font-bold border flex-shrink-0 ${tagColor}`}

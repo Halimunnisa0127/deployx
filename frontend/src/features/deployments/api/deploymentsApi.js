@@ -34,5 +34,15 @@ export const deploymentsApi = {
   rollbackDeployment: async (id) => {
     const response = await api.post(`/deployments/${id}/rollback`);
     return response.data;
+  },
+
+  getDeploymentLogs: async (id, page = 1, limit = 100) => {
+    const response = await api.get(`/deployments/${id}/logs`, { params: { page, limit } });
+    return response.data;
+  },
+
+  getDeploymentHistory: async (projectId, page = 1, limit = 10) => {
+    const response = await api.get(`/deployments/project/${projectId}/history`, { params: { page, limit } });
+    return response.data;
   }
 };

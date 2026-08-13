@@ -31,9 +31,31 @@ export function useDeploymentMutations() {
     }
   };
 
+  const promoteDeployment = async (id) => {
+    try {
+      const response = await deploymentsApi.promoteDeployment(id);
+      return response.data?.deployment || response.deployment;
+    } catch (err) {
+      console.error("Failed to promote deployment", err);
+      throw err;
+    }
+  };
+
+  const rollbackDeployment = async (id) => {
+    try {
+      const response = await deploymentsApi.rollbackDeployment(id);
+      return response.data?.deployment || response.deployment;
+    } catch (err) {
+      console.error("Failed to rollback deployment", err);
+      throw err;
+    }
+  };
+
   return {
     createDeployment,
     cancelDeployment,
+    promoteDeployment,
+    rollbackDeployment,
     isCreating,
     isCancelling,
   };

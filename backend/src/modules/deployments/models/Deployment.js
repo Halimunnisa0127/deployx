@@ -86,6 +86,14 @@ const deploymentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Artifact',
       default: null,
+    },
+    runtimeContainerId: {
+      type: String,
+      default: null,
+    },
+    runtimePort: {
+      type: Number,
+      default: null,
     }
   },
   {

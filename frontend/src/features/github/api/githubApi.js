@@ -36,7 +36,14 @@ export const githubApi = {
     let url = `/integrations/github/repositories/${owner}/${repo}/analyze`;
     const params = new URLSearchParams();
     if (branch) params.append('branch', branch);
-    if (rootDirectory) params.append('rootDirectory', rootDirectory);
+    
+    let normalizedRootDir = rootDirectory || '';
+    if (normalizedRootDir === '/') {
+      normalizedRootDir = '';
+    } else if (normalizedRootDir.startsWith('/')) {
+      normalizedRootDir = normalizedRootDir.substring(1);
+    }
+    if (normalizedRootDir) params.append('rootDirectory', normalizedRootDir);
     
     if (params.toString()) {
       url += `?${params.toString()}`;

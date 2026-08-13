@@ -1,19 +1,14 @@
-import { mockDeployments } from '../data/deploymentsData';
 import api from '../../../../lib/axios';
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const deploymentsApi = {
   getDeployments: async () => {
-    await wait(600);
-    return [...mockDeployments];
+    const response = await api.get('/admin/deployments');
+    return response.data.data.deployments;
   },
 
   getDeployment: async (id) => {
-    await wait(400);
-    const deployment = mockDeployments.find((d) => d.id === id);
-    if (!deployment) throw new Error("Deployment not found");
-    return { ...deployment };
+    const response = await api.get(`/admin/deployments/${id}`);
+    return response.data.data.deployment;
   },
 
   getDeploymentLogs: async (id) => {
@@ -34,54 +29,53 @@ export const deploymentsApi = {
   },
 
   getDeploymentTimeline: async (id) => {
-    await wait(300);
-    return [
-      { step: "Queued", status: "completed", time: "10:00:00 AM" },
-      { step: "Building", status: "completed", time: "10:00:02 AM" },
-      { step: "Uploading", status: "completed", time: "10:01:06 AM" },
-      { step: "Deploying", status: "completed", time: "10:01:10 AM" },
-      { step: "Completed", status: "completed", time: "10:01:15 AM" },
-    ];
+    const deployment = await deploymentsApi.getDeployment(id);
+    const timeline = [];
+    if (deployment.createdAt) {
+      timeline.push({ step: "Queued", status: "completed", time: new Date(deployment.createdAt).toLocaleTimeString() });
+    }
+    if (deployment.status === 'running' || deployment.status === 'success' || deployment.status === 'failed') {
+      timeline.push({ step: "Building", status: "completed", time: "Active" });
+    }
+    if (deployment.status === 'success') {
+      timeline.push({ step: "Completed", status: "completed", time: new Date(deployment.updatedAt || deployment.createdAt).toLocaleTimeString() });
+    }
+    return timeline;
   },
 
   getDeploymentArtifacts: async (id) => {
-    await wait(300);
+    const deployment = await deploymentsApi.getDeployment(id);
     return {
       buildSize: "14.2 MB",
-      outputDirectory: ".next",
+      outputDirectory: deployment.framework === 'nextjs' ? '.next' : 'dist',
       staticAssets: "4.5 MB",
       serverBundle: "9.7 MB",
     };
   },
 
   redeployDeployment: async (id) => {
-    await wait(800);
-    return { success: true, message: "Redeployment triggered" };
+    const details = await deploymentsApi.getDeployment(id);
+    const response = await api.post('/deployments', {
+      projectId: details.projectId,
+      environment: details.environment,
+      branch: details.branch,
+      commitHash: details.commitHash,
+    });
+    return response.data;
   },
 
   cancelDeployment: async (id) => {
-    await wait(500);
-    const index = mockDeployments.findIndex((d) => d.id === id);
-    if (index !== -1) {
-      mockDeployments[index].status = "cancelled";
-    }
-    return { success: true };
+    const response = await api.post(`/admin/deployments/${id}/cancel`);
+    return response.data;
   },
 
   deleteDeployment: async (id) => {
-    await wait(800);
-    const index = mockDeployments.findIndex((d) => d.id === id);
-    if (index !== -1) {
-      mockDeployments.splice(index, 1);
-    }
-    return { success: true };
+    const response = await api.delete(`/admin/deployments/${id}`);
+    return response.data;
   },
 
   exportDeployments: async (format = "csv") => {
-    await wait(1000);
-    return {
-      success: true,
-      message: `Exported deployments.${format} successfully`,
-    };
+    const response = await api.post("/admin/deployments/export");
+    return response.data;
   }
 };

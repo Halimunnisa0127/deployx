@@ -1,5 +1,6 @@
 const domainRoutingService = require('../modules/domains/services/domainRouting.service');
 const ArtifactService = require('../modules/storage/services/artifact.service');
+const http = require('http');
 
 const domainRouter = async (req, res, next) => {
   const path = req.path;
@@ -45,8 +46,32 @@ const domainRouter = async (req, res, next) => {
       return next(); // Bypass if host does not match any registered, verified active domain
     }
 
-    // 4. Serve requested file directly from the deployment's artifact archive (without requiring JWT auth)
-    const isSpaFallback = false;
+    // 4. Route request to Nginx runtime container if dynamic port is set
+    if (deployment.runtimePort) {
+      const proxyReq = http.request({
+        host: 'localhost',
+        port: deployment.runtimePort,
+        path: req.originalUrl,
+        method: req.method,
+        headers: req.headers
+      }, (proxyRes) => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res);
+      });
+
+      proxyReq.on('error', (err) => {
+        console.error('[DomainRouter] Proxy connection failed:', err.message);
+        if (!res.headersSent) {
+          res.status(502).send('Bad Gateway');
+        }
+      });
+
+      req.pipe(proxyReq);
+      return;
+    }
+
+    // Fallback: Serve requested file directly from the deployment's artifact archive (without requiring JWT auth)
+    const isSpaFallback = ['React', 'Vue', 'Angular', 'Svelte'].includes(deployment.buildSettings?.framework);
     let requestedPath = req.path;
     if (requestedPath.startsWith('/')) {
       requestedPath = requestedPath.substring(1);

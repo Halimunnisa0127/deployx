@@ -16,9 +16,45 @@ import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
 import EmptyState from '../../../components/common/EmptyState';
 import { STATUS_VARIANT_MAP } from '../utils/projectMockData';
+import { useEffect } from 'react';
+import { deploymentsApi } from '../../deployments/api/deploymentsApi';
+import { useDeploymentMutations } from '../../deployments/hooks/useDeploymentMutations';
 
 export default function ProjectDeploymentsTab({ project, deployments = [], onAction }) {
   const [filterEnv, setFilterEnv] = useState('All');
+  const [history, setHistory] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+  const { promoteDeployment } = useDeploymentMutations();
+
+  // Load history
+  useEffect(() => {
+    const loadHistory = async () => {
+      if (!project?._id && !project?.id) return;
+      try {
+        setLoadingHistory(true);
+        const projectId = project._id || project.id;
+        const res = await deploymentsApi.getDeploymentHistory(projectId);
+        setHistory(res.data?.history || []);
+      } catch (err) {
+        console.error("Failed to load promotion history", err);
+      } finally {
+        setLoadingHistory(false);
+      }
+    };
+    loadHistory();
+  }, [project?._id, project?.id]);
+
+  const handlePromote = async (id) => {
+    try {
+      await promoteDeployment(id);
+      if (onAction) onAction(`Deployment promoted to production successfully.`);
+      const projectId = project._id || project.id;
+      const res = await deploymentsApi.getDeploymentHistory(projectId);
+      setHistory(res.data?.history || []);
+    } catch (err) {
+      console.error("Failed to promote deployment", err);
+    }
+  };
 
   // Fallback to mock data if empty
   const deploymentList = useMemo(() => {
@@ -167,6 +203,17 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
                   </div>
 
                   <div className="flex items-center gap-2 flex-wrap">
+                    {dep.status !== 'live' && dep.status === 'ready' && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        iconLeft={<CheckCircle2 className="w-3.5 h-3.5" />}
+                        onClick={() => handlePromote(dep.id)}
+                      >
+                        Promote
+                      </Button>
+                    )}
+
                     <Button
                       variant="secondary"
                       size="sm"
@@ -203,6 +250,55 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
         })}
       </div>
       )}
+      
+      {/* Promotion & Rollback History section */}
+      <Card style={{ padding: '24px', maxWidth: '100%' }}>
+        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">Promotion & Rollback History</h3>
+        <p className="text-xs text-muted-foreground mb-4">View past deployment promotions and rollback events for this project.</p>
+        
+        {loadingHistory ? (
+          <div className="text-xs text-muted-foreground py-4">Loading history...</div>
+        ) : history.length === 0 ? (
+          <div className="text-xs text-muted-foreground py-4">No history recorded yet.</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-border text-muted-foreground">
+                  <th className="py-2 font-semibold">Event</th>
+                  <th className="py-2 font-semibold">Previous Deployment</th>
+                  <th className="py-2 font-semibold">Target Deployment</th>
+                  <th className="py-2 font-semibold">Actor</th>
+                  <th className="py-2 font-semibold text-right">Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {history.map((h) => (
+                  <tr key={h._id || h.id} className="border-b border-border/50 hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                    <td className="py-2.5 font-medium text-foreground">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                        h.action === 'rollback' 
+                          ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' 
+                          : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
+                      }`}>
+                        {h.action ? h.action.toUpperCase() : 'PROMOTE'}
+                      </span>
+                    </td>
+                    <td className="py-2.5 font-mono text-muted-foreground">
+                      {h.previousDeployment ? (h.previousDeployment.deploymentNumber ? `#${h.previousDeployment.deploymentNumber}` : String(h.previousDeployment._id || h.previousDeployment).substring(0, 8)) : 'None'}
+                    </td>
+                    <td className="py-2.5 font-mono text-indigo-400">
+                      {h.deployment ? (h.deployment.deploymentNumber ? `#${h.deployment.deploymentNumber}` : String(h.deployment._id || h.deployment).substring(0, 8)) : 'Unknown'}
+                    </td>
+                    <td className="py-2.5 text-foreground">{h.actor?.fullName || h.actor?.name || h.actor?.email || 'System'}</td>
+                    <td className="py-2.5 text-muted-foreground text-right">{new Date(h.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }

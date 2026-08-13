@@ -8,6 +8,7 @@ import {
   checkProjectNameThunk,
   createProjectThunk,
 } from '../../projects/slice/projectsSlice';
+import { deploymentsApi } from '../../deployments/api/deploymentsApi';
 import DeploymentProgressScreen from '../../deployments/components/DeploymentProgressScreen';
 
 import { 
@@ -35,6 +36,8 @@ export default function CreateProjectWizard() {
   const dispatch = useDispatch();
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [activeDeploymentId, setActiveDeploymentId] = useState(null);
+  const [deploymentError, setDeploymentError] = useState(null);
 
   // Form State
   const [projectName, setProjectName] = useState('');
@@ -286,9 +289,12 @@ export default function CreateProjectWizard() {
     }
   };
 
-  const handleFinalDeploy = () => {
+  const handleFinalDeploy = async () => {
     const trimmedName = projectName.trim();
     if (!trimmedName) return;
+
+    setDeploymentError(null);
+    setIsDeployingProgress(true);
 
     let finalFramework;
     if (selectedFramework === 'auto') {
@@ -323,10 +329,29 @@ export default function CreateProjectWizard() {
       })),
     };
 
-    // Dispatch backend creation thunk
-    dispatch(createProjectThunk(payload));
-
-    setIsDeployingProgress(true);
+    try {
+      // 1. Dispatch backend creation thunk
+      const project = await dispatch(createProjectThunk(payload)).unwrap();
+      
+      // 2. Call deploymentsApi.createDeployment using the created project's ID
+      const deploymentRes = await deploymentsApi.createDeployment({
+        projectId: project._id || project.id,
+        environment: 'Production',
+        branch: project.gitRepository?.branch || selectedBranch || branch || 'main',
+        commitHash: 'initial-commit',
+        commitMessage: 'Initial build trigger'
+      });
+      
+      const deployment = deploymentRes.data?.deployment || deploymentRes.deployment;
+      if (!deployment) {
+        throw new Error('Failed to create deployment record: no deployment returned.');
+      }
+      
+      setActiveDeploymentId(deployment._id || deployment.id);
+    } catch (err) {
+      console.error('Failed to start deployment:', err);
+      setDeploymentError(err.message || 'An error occurred during project deployment setup.');
+    }
   };
 
   // GitHub handlers
@@ -517,10 +542,12 @@ export default function CreateProjectWizard() {
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-10 z-10">
         {isDeployingProgress ? (
           <DeploymentProgressScreen
-            projectName={projectName || 'my-awesome-app'}
-            repository={selectedRepo?.fullName || gitRepository || 'acme-corp/deployx-web-app'}
-            branch={selectedBranch || branch || 'main'}
+            projectName={projectName}
+            repository={selectedRepo?.fullName || gitRepository}
+            branch={selectedBranch || branch}
             url={previewUrl}
+            deploymentId={activeDeploymentId}
+            creationError={deploymentError}
             onCancel={() => setIsDeployingProgress(false)}
           />
         ) : (

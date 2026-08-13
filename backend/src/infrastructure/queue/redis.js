@@ -14,12 +14,20 @@ const redisConfig = {
 
 const redisConnection = new Redis(redisConfig);
 
+let lastLoggedErrorTime = 0;
+const ERROR_LOG_THROTTLE_MS = 10000;
+
 redisConnection.on('error', (err) => {
-  console.error('[Redis] Connection Error:', err.message);
+  const now = Date.now();
+  if (now - lastLoggedErrorTime > ERROR_LOG_THROTTLE_MS) {
+    console.error('[Redis] Connection Error:', err.message || 'Connection refused');
+    lastLoggedErrorTime = now;
+  }
 });
 
 redisConnection.on('ready', () => {
   console.log('[Redis] Connected successfully.');
+  lastLoggedErrorTime = 0;
 });
 
 module.exports = redisConnection;

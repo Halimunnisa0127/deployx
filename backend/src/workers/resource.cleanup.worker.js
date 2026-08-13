@@ -16,15 +16,17 @@ const storageProvider = new LocalArtifactStorageProvider();
 const docker = new Docker();
 
 // Connect to MongoDB
-mongoose.connect(config.mongoUri)
-  .then(() => {
-    logger.info({ event: 'cleaner.started', workerId }, '[Cleaner] Connected to MongoDB');
-    startCleanupLoop();
-  })
-  .catch((err) => {
-    logger.fatal({ event: 'cleaner.error', workerId, err: err.message }, '[Cleaner] MongoDB connection error');
-    process.exit(1);
-  });
+if (require.main === module) {
+  mongoose.connect(config.mongoUri)
+    .then(() => {
+      logger.info({ event: 'cleaner.started', workerId }, '[Cleaner] Connected to MongoDB');
+      startCleanupLoop();
+    })
+    .catch((err) => {
+      logger.fatal({ event: 'cleaner.error', workerId, err: err.message }, '[Cleaner] MongoDB connection error');
+      process.exit(1);
+    });
+}
 
 let intervalId;
 
@@ -119,7 +121,10 @@ async function runCleanup() {
       });
 
       for (const cInfo of containers) {
-        const depId = cInfo.Labels.deploymentId;
+        if (cInfo.Labels && cInfo.Labels.type === 'runtime') {
+          continue; // Do not prune active runtime containers
+        }
+        const depId = cInfo.Labels ? cInfo.Labels.deploymentId : null;
         if (depId) {
           const activeDep = await Deployment.findOne({ _id: depId, status: 'building' });
           if (!activeDep) {
@@ -163,3 +168,6 @@ const shutdown = async (signal) => {
 
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+module.exports = { runCleanup, startCleanupLoop };
+

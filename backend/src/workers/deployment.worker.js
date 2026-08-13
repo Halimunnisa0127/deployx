@@ -73,16 +73,34 @@ const worker = new Worker('deployments', async (job) => {
           await deploymentLogService.appendLog(deploymentId, deployment.project, level, msg);
         });
 
+        await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Cleaning up previous runtime containers...');
+        await DockerClient.removePreviousRuntimeContainers(deployment.project);
+
+        await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Spawning production Nginx runtime serving container...');
+        const updatedDep = await Deployment.findById(deploymentId).populate('artifact');
+        if (!updatedDep || !updatedDep.artifact) {
+          throw new Error('Deployment or associated artifact not found for runtime serving setup.');
+        }
+        const runtimeInfo = await DockerClient.startRuntimeContainer(updatedDep, updatedDep.artifact);
+
         const duration = Date.now() - startTime;
 
         const latestDeployment = await Deployment.findOneAndUpdate(
           { _id: deploymentId, status: 'building' },
-          { status: 'ready', completedAt: new Date(), stepCompleted: 6, duration },
+          {
+            status: 'ready',
+            completedAt: new Date(),
+            stepCompleted: 6,
+            duration,
+            runtimeContainerId: runtimeInfo.containerId,
+            runtimePort: runtimeInfo.port,
+            url: `http://localhost:${runtimeInfo.port}`
+          },
           { new: true }
         );
 
         if (latestDeployment) {
-          await deploymentLogService.appendLog(deploymentId, deployment.project, 'success', 'Deployment recovered and completed successfully.');
+          await deploymentLogService.appendLog(deploymentId, deployment.project, 'success', `Deployment recovered and completed successfully. serving on port ${runtimeInfo.port}`);
           logger.info({ deploymentId, jobId: job.id, workerId, duration, event: 'deployment.build.completed', status: 'ready' }, '[Worker] Re-attached deployment recovered successfully');
         }
         return;
@@ -184,22 +202,45 @@ const worker = new Worker('deployments', async (job) => {
       }
     );
     
+    // Spawning production Nginx serving runtime container
+    await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Cleaning up previous runtime containers...');
+    await DockerClient.removePreviousRuntimeContainers(deployment.project);
+
+    await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Spawning production Nginx runtime serving container...');
+    const updatedDep = await Deployment.findById(deploymentId).populate('artifact');
+    if (!updatedDep || !updatedDep.artifact) {
+      throw new Error('Deployment or associated artifact not found for runtime serving setup.');
+    }
+    const runtimeInfo = await DockerClient.startRuntimeContainer(updatedDep, updatedDep.artifact);
+
     const duration = Date.now() - startTime;
 
-    // Complete Transition atomically building -> ready
+    // Complete Transition atomically building -> ready with runtime metadata
     const latestDeployment = await Deployment.findOneAndUpdate(
       { _id: deploymentId, status: 'building' },
-      { status: 'ready', completedAt: new Date(), stepCompleted: 6, duration },
+      {
+        status: 'ready',
+        completedAt: new Date(),
+        stepCompleted: 6,
+        duration,
+        runtimeContainerId: runtimeInfo.containerId,
+        runtimePort: runtimeInfo.port,
+        url: `http://localhost:${runtimeInfo.port}`
+      },
       { new: true }
     );
 
     if (!latestDeployment) {
-      logger.info({ deploymentId, jobId: job.id, workerId, event: 'deployment.build.completed', status: 'cancelled' }, '[Worker] Deployment is no longer building (possibly cancelled). Skipping ready transition.');
+      logger.info({ deploymentId, jobId: job.id, workerId, event: 'deployment.build.completed', status: 'cancelled' }, '[Worker] Deployment is no longer building (possibly cancelled). Cleaning up created runtime container.');
+      try {
+        const tempContainer = require('dockerode')().getContainer(runtimeInfo.containerId);
+        await tempContainer.remove({ force: true });
+      } catch (err) {}
       return;
     }
 
-    await deploymentLogService.appendLog(deploymentId, deployment.project, 'success', `Deployment completed successfully in ${duration}ms!`);
-    logger.info({ deploymentId, jobId: job.id, workerId, duration, event: 'deployment.build.completed', status: 'ready' }, '[Worker] Deployment transitioned to ready');
+    await deploymentLogService.appendLog(deploymentId, deployment.project, 'success', `Deployment completed successfully in ${duration}ms! serving on port ${runtimeInfo.port}`);
+    logger.info({ deploymentId, jobId: job.id, workerId, duration, event: 'deployment.build.completed', status: 'ready' }, '[Worker] Deployment transitioned to ready with active runtime');
 
   } catch (error) {
     // Sanitize error message to prevent leaking secrets in logs or API
