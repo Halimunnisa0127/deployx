@@ -1,0 +1,31 @@
+export const INITIAL_LOGS = [
+  { id: 1, project: 'deployx-frontend', level: 'info', timestamp: '11:08:01', message: '[DeployX Engine] Initializing build environment v2.4.0 (Node.js v20.11.0)' },
+  { id: 2, project: 'deployx-frontend', level: 'info', timestamp: '11:08:03', message: 'Cloning repository: github.com/user/deployx-frontend @ main (commit #f8e12a)' },
+  { id: 3, project: 'deployx-frontend', level: 'info', timestamp: '11:08:05', message: 'Restoring dependency cache from previous build artifact...' },
+  { id: 4, project: 'deployx-frontend', level: 'success', timestamp: '11:08:07', message: '✓ Cache restored successfully (saved 14.2s in node_modules installation)' },
+  { id: 5, project: 'deployx-frontend', level: 'info', timestamp: '11:08:09', message: 'Injecting environment variables: VITE_API_URL, VITE_ENV, VITE_ENABLE_ANALYTICS' },
+  { id: 6, project: 'deployx-frontend', level: 'info', timestamp: '11:08:12', message: '$ vite build --mode production' },
+  { id: 7, project: 'deployx-frontend', level: 'info', timestamp: '11:08:15', message: 'transforming (184) modules...' },
+  { id: 8, project: 'deployx-frontend', level: 'warning', timestamp: '11:08:18', message: 'WARN: Chunk "index-B4x912.js" size after minification exceeds recommended budget (512 kB > 500 kB)' },
+  { id: 9, project: 'deployx-frontend', level: 'success', timestamp: '11:08:21', message: '✓ 184 modules transformed in 8.94s' },
+  { id: 10, project: 'deployx-frontend', level: 'info', timestamp: '11:08:22', message: 'dist/index.html                           0.48 kB │ gzip: 0.29 kB' },
+  { id: 11, project: 'deployx-frontend', level: 'info', timestamp: '11:08:22', message: 'dist/assets/index-B4x912.js             482.10 kB │ gzip: 138.40 kB' },
+  { id: 12, project: 'deployx-frontend', level: 'info', timestamp: '11:08:24', message: 'Uploading production assets to DeployX Edge CDN (FRA1, JFK1, SIN1)...' },
+  { id: 13, project: 'deployx-frontend', level: 'success', timestamp: '11:08:27', message: '✓ Edge deployment complete. SSL Certificate issued automatically via Let\'s Encrypt.' },
+  { id: 14, project: 'api-gateway', level: 'info', timestamp: '11:08:30', message: '[API Gateway] Health probe checked endpoints (12/12 online, average latency 18ms)' },
+  { id: 15, project: 'auth-service', level: 'info', timestamp: '11:08:35', message: '[Auth Service] Rotated JWT signing key. Invalidated expired refresh tokens.' },
+  { id: 16, project: 'payment-processor', level: 'warning', timestamp: '11:08:40', message: 'WARN [Stripe Webhook]: Rate limit warning (85% throughput threshold reached)' },
+  { id: 17, project: 'analytics-worker', level: 'error', timestamp: '11:08:45', message: 'ERROR [Worker #3]: Redis connection timeout after 5000ms. Retrying attempt 2/5...' },
+  { id: 18, project: 'analytics-worker', level: 'success', timestamp: '11:08:48', message: '✓ [Worker #3]: Redis cluster connection re-established.' },
+];
+
+export const STREAMING_POOL = [
+  { project: 'deployx-frontend', level: 'info', message: '[Edge Middleware] GET /dashboard/logs 200 OK - 14ms' },
+  { project: 'api-gateway', level: 'info', message: 'HTTP GET /api/v1/projects 200 (Cache: HIT, 4ms)' },
+  { project: 'auth-service', level: 'info', message: 'Session validation token refreshed for user_id: usr_89234' },
+  { project: 'payment-processor', level: 'info', message: 'Stripe event process_invoice.succeeded handled in 120ms' },
+  { project: 'analytics-worker', level: 'info', message: 'Aggregated 1,240 metric data points to PostgreSQL cluster' },
+  { project: 'deployx-frontend', level: 'warning', message: 'WARN [Client]: Slow network response detected on static asset fetch (340ms)' },
+  { project: 'api-gateway', level: 'error', message: 'ERROR [Rate Limiter]: IP 192.168.1.105 exceeded burst limit (100 req/s)' },
+  { project: 'deployx-frontend', level: 'success', message: '✓ Auto-scaling trigger checked: Node pool capacity operating nominal (34% load)' },
+];
