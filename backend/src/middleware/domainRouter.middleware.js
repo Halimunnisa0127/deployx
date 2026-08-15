@@ -39,28 +39,41 @@ const domainRouter = async (req, res, next) => {
     return next();
   }
 
+  console.log(`[DomainRouter] Incoming request for host: ${hostname}, path: ${req.path}`);
+
   try {
     // 3. Resolve target deployment mapping
     const deployment = await domainRoutingService.resolveDeploymentForHost(hostname);
     if (!deployment) {
-      return next(); // Bypass if host does not match any registered, verified active domain
+      console.log(`[DomainRouter] Lookup Failed | hostname: ${hostname} | Reason: No matching active deployment found`);
+      return res.status(404).json({
+        success: false,
+        error: 'Deployment Not Found',
+        message: `No active deployment found for domain: ${hostname}`
+      });
     }
+
+    console.log(`[DomainRouter] Lookup Success | hostname: ${hostname} | projectId: ${deployment._projectIdToMatch || deployment.project} | deploymentId: ${deployment._id} | status: ${deployment.status} | runtimePort: ${deployment.runtimePort}`);
 
     // 4. Route request to Nginx runtime container if dynamic port is set
     if (deployment.runtimePort) {
+      const proxyTarget = `http://127.0.0.1:${deployment.runtimePort}`;
+      console.log(`[DomainRouter] Proxying request to target: ${proxyTarget} (runtimePort: ${deployment.runtimePort})`);
+
       const proxyReq = http.request({
-        host: 'localhost',
+        host: '127.0.0.1',
         port: deployment.runtimePort,
         path: req.originalUrl,
         method: req.method,
         headers: req.headers
       }, (proxyRes) => {
+        console.log(`[DomainRouter] Proxy success for ${hostname} -> ${proxyTarget} (Status: ${proxyRes.statusCode})`);
         res.writeHead(proxyRes.statusCode, proxyRes.headers);
         proxyRes.pipe(res);
       });
 
       proxyReq.on('error', (err) => {
-        console.error('[DomainRouter] Proxy connection failed:', err.message);
+        console.error(`[DomainRouter] Proxy connection failed for ${hostname} -> ${proxyTarget}:`, err.message);
         if (!res.headersSent) {
           res.status(502).send('Bad Gateway');
         }
