@@ -112,3 +112,7 @@ desktop.ini
 
 # Local Env overrides
 .env.local
+
+# Local SSL certificates
+certs/*.pem
+Caddyfile

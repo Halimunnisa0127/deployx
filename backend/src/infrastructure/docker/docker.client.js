@@ -416,13 +416,19 @@ exit 0
         });
       });
     } catch (pullError) {
-      console.error(`[DockerClient] Failed to pull image ${imageName}:`, pullError.message);
+      console.error(`[DockerClient] Failed to pull image ${imageName}:`, pullError.stack || pullError.message);
       throw new Error(`Failed to initialize runtime container image.`);
     }
 
     // Allocate dynamic host port
-    const freePort = await this.findFreePort();
-    console.log(`[DockerClient] Allocated port ${freePort} for deployment ${deployment._id}`);
+    let freePort;
+    try {
+      freePort = await this.findFreePort();
+      console.log(`[DockerClient] Allocated port ${freePort} for deployment ${deployment._id}`);
+    } catch (portError) {
+      console.error(`[DockerClient] Failed to allocate free port:`, portError.stack || portError.message);
+      throw new Error(`Failed to allocate free port for runtime container.`);
+    }
 
     const containerOptions = {
       name: `deployx-runtime-${deployment._id}`,
@@ -446,10 +452,22 @@ exit 0
     try {
       console.log(`[DockerClient] Creating runtime container for deployment ${deployment._id}...`);
       container = await docker.createContainer(containerOptions);
+      console.log(`[DockerClient] Created runtime container ${container.id}...`);
+    } catch (createError) {
+      console.error(`[DockerClient] Failed to create runtime container:`, createError.stack || createError.message);
+      throw createError;
+    }
 
+    try {
       console.log(`[DockerClient] Starting runtime container ${container.id}...`);
       await container.start();
+    } catch (startError) {
+      console.error(`[DockerClient] Failed to start runtime container:`, startError.stack || startError.message);
+      await container.remove({ force: true }).catch(() => {});
+      throw startError;
+    }
 
+    try {
       // Configure default Nginx SPA rule
       const outputDir = deployment.buildSettings.outputDirectory || 'dist';
       const nginxConfig = `
@@ -470,12 +488,27 @@ server {
 
       console.log(`[DockerClient] Injecting SPA Nginx configuration...`);
       await container.putArchive(configPack, { path: '/etc/nginx/conf.d' });
+    } catch (configError) {
+      console.error(`[DockerClient] Failed to inject SPA configuration:`, configError.stack || configError.message);
+      await container.remove({ force: true }).catch(() => {});
+      throw configError;
+    }
 
+    try {
       // Inject project artifacts
       console.log(`[DockerClient] Injecting artifact files...`);
       const artifactStream = await storageProvider.getArtifactStream(artifact.storageKey);
+      if (!artifactStream) {
+        throw new Error('Artifact stream is null or undefined');
+      }
       await container.putArchive(artifactStream, { path: '/usr/share/nginx/html' });
+    } catch (artifactError) {
+      console.error(`[DockerClient] Failed to inject artifact files:`, artifactError.stack || artifactError.message);
+      await container.remove({ force: true }).catch(() => {});
+      throw artifactError;
+    }
 
+    try {
       // Reload Nginx configuration
       console.log(`[DockerClient] Reloading Nginx server...`);
       const execInstance = await container.exec({
@@ -484,17 +517,31 @@ server {
         AttachStderr: false
       });
       await execInstance.start();
+    } catch (execError) {
+      console.error(`[DockerClient] Failed to reload Nginx server:`, execError.stack || execError.message);
+      await container.remove({ force: true }).catch(() => {});
+      throw execError;
+    }
 
+    try {
       // Run health check with retries
       console.log(`[DockerClient] Verifying container health on port ${freePort}...`);
       let healthy = false;
       for (let attempt = 1; attempt <= 10; attempt++) {
         const up = await new Promise((resolve) => {
-          const req = http.get(`http://localhost:${freePort}/`, (res) => {
-            resolve(res.statusCode >= 200 && res.statusCode < 400);
-          });
-          req.on('error', () => resolve(false));
-          req.end();
+          try {
+            const req = http.get(`http://localhost:${freePort}/`, (res) => {
+              resolve(res.statusCode >= 200 && res.statusCode < 400);
+            });
+            req.on('error', (err) => {
+              console.error(`[DockerClient] Health check error on attempt ${attempt}:`, err.message);
+              resolve(false);
+            });
+            req.end();
+          } catch (reqErr) {
+            console.error(`[DockerClient] Health check sync error on attempt ${attempt}:`, reqErr.message);
+            resolve(false);
+          }
         });
 
         if (up) {
@@ -509,15 +556,18 @@ server {
       }
 
       console.log(`[DockerClient] Runtime container is healthy and running on port ${freePort}.`);
-      return { containerId: container.id, port: freePort };
-
-    } catch (err) {
-      console.error(`[DockerClient] Failed to setup runtime container:`, err.message);
-      if (container) {
-        await container.remove({ force: true }).catch(() => {});
-      }
-      throw err;
+    } catch (healthError) {
+      console.error(`[DockerClient] Health check failed:`, healthError.stack || healthError.message);
+      await container.remove({ force: true }).catch(() => {});
+      throw healthError;
     }
+
+    if (!container.id || !freePort) {
+      console.error(`[DockerClient] containerId or port missing. id: ${container.id}, port: ${freePort}`);
+      throw new Error('containerId or port missing from successful setup');
+    }
+
+    return { containerId: container.id, port: freePort };
   }
 }
 
