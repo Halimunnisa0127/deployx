@@ -1,118 +1,23 @@
-# =========================
-# Dependencies
-# =========================
 node_modules/
 
-# =========================
-# Environment Files
-# =========================
 .env
 .env.*
 !.env.example
 
-# =========================
-# Logs
-# =========================
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 
-# =========================
-# Runtime Files
-# =========================
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# =========================
-# Coverage
-# =========================
 coverage/
-.nyc_output/
 
-# =========================
-# Build Output
-# =========================
-dist/
-build/
-
-# =========================
-# Temporary Files
-# =========================
-tmp/
-temp/
-.cache/
-
-# =========================
-# OS Files
-# =========================
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# =========================
-# IDE
-# =========================
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-!.vscode/launch.json
-
-.idea/
-
-# =========================
-# Package Manager
-# =========================
-.pnpm-store/
-.npm/
-.yarn/
-
-# =========================
-# Testing
-# =========================
-playwright-report/
-test-results/
-
-# =========================
-# Local Database
-# =========================
-*.sqlite
-*.sqlite3
-
-# =========================
-# Uploads
-# =========================
 uploads/
 storage/
 
-# =========================
-# Misc
-# =========================
+tmp/
+temp/
+
+.cache/
+
+*.sqlite
+*.sqlite3
+
 *.tgz
-*.swp
-*.swo
-
-
-# OS Files
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# IDEs and Editors
-.vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-
-# Local Env overrides
-.env.local
-
-# Local SSL certificates
-certs/*.pem
-Caddyfile

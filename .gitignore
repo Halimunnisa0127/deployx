@@ -1,0 +1,54 @@
+# =========================
+# Environment
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Dependencies
+# =========================
+node_modules/
+
+# =========================
+# Build / temp
+# =========================
+dist/
+build/
+tmp/
+temp/
+.cache/
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# IDE
+# =========================
+.idea/
+.vscode/*
+
+# Keep selected VS Code files
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+
+# =========================
+# DeployX local-only
+# =========================
+Caddyfile
+certs/*.pem
