@@ -13,6 +13,10 @@ export default function DomainDetails() {
 
   const {
     domain,
+    instructions,
+    isLoading,
+    isVerifying,
+    isDeleting,
     notification,
     setNotification,
     handleRefresh,
@@ -20,6 +24,15 @@ export default function DomainDetails() {
     handleOpenDomain,
     handleRemove
   } = useDomainDetails(id);
+
+  if (isLoading) {
+    return (
+      <div className="py-20 text-center space-y-4 font-sans">
+        <RefreshCw className="w-8 h-8 animate-spin mx-auto text-indigo-500" />
+        <p className="text-sm text-slate-400">Loading domain details...</p>
+      </div>
+    );
+  }
 
   if (!domain) {
     return (
@@ -72,6 +85,7 @@ export default function DomainDetails() {
             iconOnly
             onClick={() => navigate('/dashboard/domains')}
             className="mt-1"
+            disabled={isDeleting}
           >
             <ArrowLeft className="w-4 h-4" />
           </Button>
@@ -90,17 +104,17 @@ export default function DomainDetails() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="secondary" size="sm" iconLeft={<RefreshCw className="w-4 h-4" />} onClick={handleRefresh}>
-            Refresh
+          <Button variant="secondary" size="sm" iconLeft={<RefreshCw className={`w-4 h-4 ${isVerifying ? 'animate-spin' : ''}`} />} onClick={handleRefresh} disabled={isVerifying || isDeleting}>
+            {isVerifying ? 'Verifying...' : 'Verify DNS'}
           </Button>
-          <Button variant="secondary" size="sm" iconLeft={<Copy className="w-4 h-4" />} onClick={() => handleCopy(domain.name)}>
+          <Button variant="secondary" size="sm" iconLeft={<Copy className="w-4 h-4" />} onClick={() => handleCopy(domain.name)} disabled={isDeleting}>
             Copy
           </Button>
-          <Button variant="secondary" size="sm" iconLeft={<ExternalLink className="w-4 h-4" />} onClick={handleOpenDomain}>
+          <Button variant="secondary" size="sm" iconLeft={<ExternalLink className="w-4 h-4" />} onClick={handleOpenDomain} disabled={isDeleting}>
             Open
           </Button>
-          <Button variant="danger" size="sm" iconLeft={<Trash2 className="w-4 h-4" />} onClick={handleRemove}>
-            Remove
+          <Button variant="danger" size="sm" iconLeft={<Trash2 className="w-4 h-4" />} onClick={() => handleRemove(() => navigate('/dashboard/domains'))} disabled={isDeleting}>
+            {isDeleting ? 'Removing...' : 'Remove'}
           </Button>
         </div>
       </div>
@@ -127,7 +141,7 @@ export default function DomainDetails() {
           </div>
           <div>
             <div className={`text-lg font-bold ${domain.sslStatus === 'active' ? 'text-blue-400' : 'text-amber-400'}`}>
-              {domain.sslStatus === 'active' ? 'Active' : 'Provisioning'}
+              {domain.sslStatus === 'active' ? 'Active' : 'Not Configured'}
             </div>
             <p className="text-xs text-slate-500 mt-1">Managed TLS certificate provided by Let's Encrypt.</p>
           </div>
@@ -169,6 +183,17 @@ export default function DomainDetails() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
+                {instructions && (
+                  <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors bg-indigo-500/5">
+                    <td className="px-4 py-4 font-mono text-indigo-600 dark:text-indigo-400 font-medium">{instructions.type}</td>
+                    <td className="px-4 py-4 font-mono text-foreground">{instructions.name}</td>
+                    <td className="px-4 py-4 font-mono text-foreground break-all">{instructions.value}</td>
+                    <td className="px-4 py-4 text-slate-600 dark:text-slate-500">3600</td>
+                    <td className="px-4 py-4 text-right">
+                      <Button variant="ghost" size="sm" onClick={() => handleCopy(instructions.value)}>Copy</Button>
+                    </td>
+                  </tr>
+                )}
                 <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                   <td className="px-4 py-4 font-mono text-indigo-600 dark:text-indigo-400 font-medium">A</td>
                   <td className="px-4 py-4 font-mono text-foreground">@</td>

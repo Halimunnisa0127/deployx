@@ -37,11 +37,12 @@ export default function ProjectDetailsHeader({ project, defaultUrl, onAction }) 
 
   const badgeVariant = STATUS_VARIANT_MAP[project?.status] ?? 'neutral';
 
-  const repoName = project?.name
-    ? project.name.toLowerCase().replace(/[^a-z0-9-]/g, '')
-    : 'app';
-  const repoPath = `github.com/deployx/${repoName}`;
-  const repoUrl = `https://${repoPath}`;
+  const repoPath = project?.gitRepository?.fullName
+    ? `github.com/${project.gitRepository.fullName}`
+    : 'github.com/org/repo';
+  const repoUrl = project?.gitRepository?.fullName
+    ? `https://github.com/${project.gitRepository.fullName}`
+    : '#';
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(`https://${defaultUrl}`);

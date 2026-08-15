@@ -1,36 +1,26 @@
-import { mockProjects } from "../data/projectsData";
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-let currentProjects = [...mockProjects];
+import api from "../../../../lib/axios";
 
 export const fetchProjects = async () => {
-  await wait(600);
-  return [...currentProjects];
+  const response = await api.get("/admin/projects");
+  return response.data.data.projects;
 };
 
 export const fetchProjectById = async (id) => {
-  await wait(400);
-  const project = currentProjects.find((p) => p.id === id);
-  if (!project) throw new Error("Project not found");
-  return { ...project };
+  const response = await api.get(`/admin/projects/${id}`);
+  return response.data.data.project;
 };
 
 export const archiveProjectApi = async (id) => {
-  await wait(700);
-  currentProjects = currentProjects.map((project) =>
-    project.id === id ? { ...project, status: "archived" } : project
-  );
-  return currentProjects.find((p) => p.id === id);
+  const response = await api.post(`/admin/projects/${id}/archive`);
+  return response.data.data;
 };
 
 export const deleteProjectApi = async (id) => {
-  await wait(800);
-  currentProjects = currentProjects.filter((project) => project.id !== id);
-  return { success: true };
+  const response = await api.delete(`/admin/projects/${id}`);
+  return response.data;
 };
 
 export const exportProjectsApi = async () => {
-  await wait(1000);
-  return { success: true, message: "Exported projects.csv successfully" };
+  const response = await api.post("/admin/projects/export");
+  return response.data;
 };

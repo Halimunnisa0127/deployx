@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { domainsApi } from '../api/domainsApi';
 import { domainsService } from '../services/domainsService';
+import { projectsService } from '../../projects/services/projects.service';
 
 export function useDomains() {
   const [domains, setDomains] = useState([]);
@@ -9,23 +10,45 @@ export function useDomains() {
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [projects, setProjects] = useState([]);
+
+  const fetchDomains = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const userProjects = await projectsService.fetchProjects();
+      setProjects(userProjects);
+      
+      const allDomains = [];
+      for (const proj of userProjects) {
+        const response = await domainsApi.getProjectDomains(proj._id);
+        const projectDomains = response.data?.domains || [];
+        projectDomains.forEach(d => {
+          allDomains.push({
+            id: d._id,
+            name: d.hostname,
+            projectName: proj.name,
+            framework: proj.framework || 'auto',
+            environment: d.targetType === 'production' ? 'Production' : 'Preview',
+            status: d.verificationStatus, // 'verified', 'pending', 'failed'
+            sslStatus: d.sslStatus === 'active' ? 'active' : 'pending',
+            dnsStatus: d.verificationStatus === 'verified' ? 'verified' : 'pending',
+            createdAt: new Date(d.createdAt).toLocaleDateString(),
+            url: `https://${d.hostname}`,
+            isLive: d.status === 'active',
+          });
+        });
+      }
+      setDomains(allDomains);
+    } catch (err) {
+      console.error("Failed to fetch domains", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    let mounted = true;
-    const fetchDomains = async () => {
-      try {
-        setIsLoading(true);
-        const data = await domainsApi.getDomains();
-        if (mounted) setDomains(data);
-      } catch (err) {
-        console.error("Failed to fetch domains", err);
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    };
     fetchDomains();
-    return () => { mounted = false; };
-  }, []);
+  }, [fetchDomains]);
 
   const statusCounts = useMemo(() => {
     return domainsService.getDomainCounts(domains);
@@ -41,11 +64,9 @@ export function useDomains() {
   }, []);
 
   const handleOpenDomain = useCallback((domain) => {
-    setNotification({
-      type: 'success',
-      message: `Opening ${domain.name} in a new tab...`,
-    });
-    setTimeout(() => setNotification(null), 4000);
+    if (domain.url) {
+      window.open(domain.url, '_blank', 'noopener,noreferrer');
+    }
   }, []);
 
   return {
@@ -62,6 +83,8 @@ export function useDomains() {
     setIsModalOpen,
     statusCounts,
     handleResetFilters,
-    handleOpenDomain
+    handleOpenDomain,
+    refetch: fetchDomains,
+    projects
   };
 }

@@ -7,7 +7,7 @@ const ApiError = require('../../shared/errors/ApiError');
 class GitHubClient {
   constructor(accessToken) {
     if (!accessToken) {
-      throw new ApiError(401, 'GitHub Access Token is required');
+      throw new ApiError('GitHub Access Token is required', 401);
     }
     this.accessToken = accessToken;
   }

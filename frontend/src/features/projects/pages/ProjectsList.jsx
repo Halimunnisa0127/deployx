@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useProjectsList } from '../hooks/useProjectsList';
 import ProjectCard from '../components/ProjectCard';
 import ProjectCardSkeleton from '../components/ProjectCardSkeleton';
 import ProjectsHeaderStats from '../components/ProjectsHeaderStats';
@@ -25,8 +26,21 @@ const SORT_OPTIONS = [
 
 export default function ProjectsList() {
   const navigate = useNavigate();
-  const items = useSelector((state) => state.projects.items);
-  const statusState = useSelector((state) => state.projects.status);
+  const { projects: rawProjects, isLoading } = useProjectsList();
+
+  // Normalize project structure for the list view
+  const items = useMemo(() => {
+    return rawProjects.map((p) => ({
+      id: p._id || p.id,
+      name: p.name,
+      status: p.status || 'live',
+      lastDeployed: p.updatedAt || p.createdAt,
+      framework: p.framework || 'React',
+      branch: p.gitRepository?.branch || 'main',
+      url: p.domainUrl ? p.domainUrl.replace(/^https?:\/\//, '') : `${p.name}.deployx.app`,
+      commitHash: '7a8f9c2', // Placeholder until deployments implemented
+    }));
+  }, [rawProjects]);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('all');
@@ -93,8 +107,6 @@ export default function ProjectsList() {
     setActiveFilter('all');
     setActiveSort('recent');
   };
-
-  const isLoading = statusState === 'loading';
 
   return (
     <div className="w-full font-inter">

@@ -8,13 +8,15 @@ import {
   checkProjectNameThunk,
   createProjectThunk,
 } from '../../projects/slice/projectsSlice';
+import { deploymentsApi } from '../../deployments/api/deploymentsApi';
 import DeploymentProgressScreen from '../../deployments/components/DeploymentProgressScreen';
 
-import {
-  STEPS,
-  FRAMEWORK_OPTIONS,
-  FRAMEWORK_PRESETS,
-  MOCK_REPOSITORIES,
+import { 
+  STEPS, 
+  FRAMEWORK_OPTIONS, 
+  PACKAGE_MANAGERS, 
+  NODE_VERSIONS, 
+  REGION_OPTIONS 
 } from '../constants/wizardConstants';
 
 import {
@@ -34,6 +36,8 @@ export default function CreateProjectWizard() {
   const dispatch = useDispatch();
 
   const [currentStep, setCurrentStep] = useState(1);
+  const [activeDeploymentId, setActiveDeploymentId] = useState(null);
+  const [deploymentError, setDeploymentError] = useState(null);
 
   // Form State
   const [projectName, setProjectName] = useState('');
@@ -63,27 +67,26 @@ export default function CreateProjectWizard() {
   const [outputDirectory, setOutputDirectory] = useState('dist');
   const [nodeVersion, setNodeVersion] = useState('20.x');
 
+  // Backend fetched framework presets
+  const [frameworkPresets, setFrameworkPresets] = useState({});
+
+  useEffect(() => {
+    import('../../project-creation/api/projectCreation.api').then((api) => {
+      api.getFrameworkPresetsApi().then((res) => {
+        if (res.success && res.data?.presets) {
+          setFrameworkPresets(res.data.presets);
+        }
+      }).catch(console.error);
+    });
+  }, []);
+
   // Step 5 Environment Variables State
   const [envSearchQuery, setEnvSearchQuery] = useState('');
-  const [envVars, setEnvVars] = useState([
-    {
-      id: 'env-1',
-      key: 'DATABASE_URL',
-      value: 'postgresql://admin:secretpass@db.deployx.app:5432/main',
-      environments: ['Production', 'Preview', 'Development'],
-      showValue: false,
-    },
-    {
-      id: 'env-2',
-      key: 'NEXT_PUBLIC_API_URL',
-      value: 'https://api.deployx.app/v1',
-      environments: ['Production', 'Preview', 'Development'],
-      showValue: true,
-    },
-  ]);
+  const [envVars, setEnvVars] = useState([]);
 
   // Redux state
   const { nameCheck } = useSelector((state) => state.projects || {});
+  const { token } = useSelector((state) => state.auth || {});
 
   // Debounced backend check for Step 1 Project Name
   useEffect(() => {
@@ -131,85 +134,120 @@ export default function CreateProjectWizard() {
   const previewUrl = nameCheck?.previewUrl || `https://${projectSlug}.deployx.app`;
 
   const selectedRepo = repositories.find((r) => String(r.id) === String(selectedRepoId) || String(r.githubRepositoryId) === String(selectedRepoId));
-  const detectedFrameworkKey = (selectedRepo?.detectedFramework || 'React').toLowerCase();
-  const detectedFrameworkName = selectedRepo?.detectedFramework || 'React';
+  
+  // Dynamic analysis state
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [dynamicDetectedFrameworkKey, setDynamicDetectedFrameworkKey] = useState('');
+  const [dynamicDetectedFrameworkName, setDynamicDetectedFrameworkName] = useState('');
 
-  // Auto-fill defaults when framework changes
+  const detectedFrameworkKey = dynamicDetectedFrameworkKey || (selectedRepo?.detectedFramework || 'React').toLowerCase();
+  const detectedFrameworkName = dynamicDetectedFrameworkName || selectedRepo?.detectedFramework || 'React';
+
+  // Trigger analysis when repo, branch, or rootDirectory changes
   useEffect(() => {
-    let key = selectedFramework;
-    if (selectedFramework === 'auto') {
-      if (detectedFrameworkKey.includes('next')) key = 'nextjs';
-      else if (detectedFrameworkKey.includes('react')) key = 'react';
-      else if (detectedFrameworkKey.includes('vite')) key = 'vite';
-      else key = 'react';
-    }
-
-    const preset = FRAMEWORK_PRESETS[key] || FRAMEWORK_PRESETS.react;
-    setPackageManager(preset.packageManager);
-    setInstallCommand(preset.installCommand);
-    setBuildCommand(preset.buildCommand);
-    setOutputDirectory(preset.outputDirectory);
-    setNodeVersion(preset.nodeVersion);
-  }, [selectedFramework, selectedRepoId]);
-
-  // Handle Package Manager Change
-  const handlePMChange = (pmId) => {
-    setPackageManager(pmId);
-
-    if (installCommand.includes('install') || installCommand === 'npm i') {
-      setInstallCommand(`${pmId} install`);
-    }
-
-    if (
-      buildCommand === 'npm run build' ||
-      buildCommand === 'pnpm build' ||
-      buildCommand === 'yarn build' ||
-      buildCommand === 'bun run build'
-    ) {
-      if (pmId === 'pnpm' || pmId === 'yarn') {
-        setBuildCommand(`${pmId} build`);
-      } else if (pmId === 'bun') {
-        setBuildCommand('bun run build');
-      } else {
-        setBuildCommand('npm run build');
+    if (!isAutoDetect || !selectedRepo) return;
+    
+    const analyze = async () => {
+      setIsAnalyzing(true);
+      try {
+        const owner = selectedRepo.fullName.split('/')[0];
+        const repo = selectedRepo.name;
+        const result = await githubApi.analyzeRepository(owner, repo, selectedBranch || branch, rootDirectory);
+        
+        if (result) {
+          setDynamicDetectedFrameworkKey(result.framework);
+          setDynamicDetectedFrameworkName(result.frameworkName);
+          setPackageManager(result.packageManager || 'npm');
+          setInstallCommand(result.buildSettings?.installCommand || 'npm install');
+          setBuildCommand(result.buildSettings?.buildCommand || '');
+          setOutputDirectory(result.buildSettings?.outputDirectory || 'dist');
+        }
+      } catch (err) {
+        console.error('Repository analysis failed:', err);
+      } finally {
+        setIsAnalyzing(false);
       }
+    };
+    
+    analyze();
+  }, [selectedRepo, selectedBranch, branch, rootDirectory, isAutoDetect]);
+
+  // Auto-fill defaults when framework changes (only if not relying on dynamic analysis right now)
+  useEffect(() => {
+    // If we just ran dynamic analysis and it set the values, don't override them with static presets.
+    // We only use static presets if the user manually selects a framework from the dropdown.
+    if (selectedFramework === 'auto' || isAnalyzing || Object.keys(frameworkPresets).length === 0) return;
+    
+    const preset = frameworkPresets[selectedFramework];
+    if (preset) {
+      setPackageManager(preset.packageManager);
+      setInstallCommand(preset.installCommand);
+      setBuildCommand(preset.buildCommand);
+      setOutputDirectory(preset.outputDirectory);
+      setNodeVersion(preset.nodeVersion);
     }
-  };
+  }, [selectedFramework, isAnalyzing, frameworkPresets]);
 
   // Reset to framework defaults
   const handleResetToDefaults = () => {
     let key = selectedFramework;
     if (selectedFramework === 'auto') {
-      if (detectedFrameworkKey.includes('next')) key = 'nextjs';
-      else key = 'react';
+      key = detectedFrameworkKey || 'react';
     }
-    const preset = FRAMEWORK_PRESETS[key] || FRAMEWORK_PRESETS.react;
-    setPackageManager(preset.packageManager);
-    setInstallCommand(preset.installCommand);
-    setBuildCommand(preset.buildCommand);
-    setOutputDirectory(preset.outputDirectory);
-    setNodeVersion(preset.nodeVersion);
+    const preset = frameworkPresets[key] || frameworkPresets.react;
+    if (preset) {
+      setPackageManager(preset.packageManager);
+      setInstallCommand(preset.installCommand);
+      setBuildCommand(preset.buildCommand);
+      setOutputDirectory(preset.outputDirectory);
+      setNodeVersion(preset.nodeVersion);
+    }
   };
 
-  // Step 5 Environment Variables Handlers
+  const handlePMChange = (pm) => {
+    setPackageManager(pm);
+    
+    if (pm === 'npm') {
+      if (installCommand.includes('yarn') || installCommand.includes('pnpm') || installCommand.includes('bun')) {
+        setInstallCommand('npm install');
+      }
+      if (buildCommand.includes('yarn') || buildCommand.includes('pnpm') || buildCommand.includes('bun')) {
+        setBuildCommand('npm run build');
+      }
+    } else if (pm === 'yarn') {
+      if (installCommand.includes('npm') || installCommand.includes('pnpm') || installCommand.includes('bun')) {
+        setInstallCommand('yarn install');
+      }
+      if (buildCommand.includes('npm') || buildCommand.includes('pnpm') || buildCommand.includes('bun')) {
+        setBuildCommand('yarn build');
+      }
+    } else if (pm === 'pnpm') {
+      if (installCommand.includes('npm') || installCommand.includes('yarn') || installCommand.includes('bun')) {
+        setInstallCommand('pnpm install');
+      }
+      if (buildCommand.includes('npm') || buildCommand.includes('yarn') || buildCommand.includes('bun')) {
+        setBuildCommand('pnpm run build');
+      }
+    } else if (pm === 'bun') {
+      if (installCommand.includes('npm') || installCommand.includes('yarn') || installCommand.includes('pnpm')) {
+        setInstallCommand('bun install');
+      }
+      if (buildCommand.includes('npm') || buildCommand.includes('yarn') || buildCommand.includes('pnpm')) {
+        setBuildCommand('bun run build');
+      }
+    }
+  };
+
   const handleAddEnvVar = () => {
-    setEnvVars((prev) => [
-      ...prev,
-      {
-        id: `env-${Date.now()}`,
-        key: '',
-        value: '',
-        environments: ['Production', 'Preview', 'Development'],
-        showValue: true,
-      },
-    ]);
+    const newId = `env-${Date.now()}`;
+    setEnvVars([...envVars, { id: newId, key: '', value: '', environments: ['Production', 'Preview', 'Development'], showValue: true }]);
   };
 
   const handleRemoveEnvVar = (id) => {
-    setEnvVars((prev) => prev.filter((env) => env.id !== id));
+    setEnvVars(envVars.filter((e) => e.id !== id));
   };
 
-  const handleEnvChange = (id, field, value) => {
+  const handleUpdateEnvVar = (id, field, value) => {
     setEnvVars((prev) =>
       prev.map((env) => (env.id === id ? { ...env, [field]: value } : env))
     );
@@ -251,9 +289,12 @@ export default function CreateProjectWizard() {
     }
   };
 
-  const handleFinalDeploy = () => {
+  const handleFinalDeploy = async () => {
     const trimmedName = projectName.trim();
     if (!trimmedName) return;
+
+    setDeploymentError(null);
+    setIsDeployingProgress(true);
 
     let finalFramework;
     if (selectedFramework === 'auto') {
@@ -288,11 +329,29 @@ export default function CreateProjectWizard() {
       })),
     };
 
-    // Dispatch real backend creation thunk and local store fallback
-    dispatch(createProjectThunk(payload));
-    dispatch(createProject({ name: trimmedName, framework: finalFramework, branch: selectedBranch || branch || 'main' }));
-
-    setIsDeployingProgress(true);
+    try {
+      // 1. Dispatch backend creation thunk
+      const project = await dispatch(createProjectThunk(payload)).unwrap();
+      
+      // 2. Call deploymentsApi.createDeployment using the created project's ID
+      const deploymentRes = await deploymentsApi.createDeployment({
+        projectId: project._id || project.id,
+        environment: 'Production',
+        branch: project.gitRepository?.branch || selectedBranch || branch || 'main',
+        commitHash: 'initial-commit',
+        commitMessage: 'Initial build trigger'
+      });
+      
+      const deployment = deploymentRes.data?.deployment || deploymentRes.deployment;
+      if (!deployment) {
+        throw new Error('Failed to create deployment record: no deployment returned.');
+      }
+      
+      setActiveDeploymentId(deployment._id || deployment.id);
+    } catch (err) {
+      console.error('Failed to start deployment:', err);
+      setDeploymentError(err.message || 'An error occurred during project deployment setup.');
+    }
   };
 
   // GitHub handlers
@@ -303,18 +362,38 @@ export default function CreateProjectWizard() {
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
     
-    // Popup for GitHub OAuth
-    const popup = window.open(`${env.API_BASE_URL}/integrations/github/oauth/connect`, 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
+    // Popup for GitHub OAuth, passing the token via query param
+    const authUrl = new URL(`${env.API_BASE_URL}/integrations/github/oauth/connect`);
+    if (token) {
+      authUrl.searchParams.append('token', token);
+    }
+    
+    const popup = window.open(authUrl.toString(), 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
+    
     
     // Listen for message from popup
     const messageListener = (event) => {
       if (event.data === 'github_connected') {
         window.removeEventListener('message', messageListener);
+        window.removeEventListener('storage', storageListener);
         setIsConnectingGithub(false);
         fetchRepositories(); // Re-fetch to get repos and update state
       }
     };
     window.addEventListener('message', messageListener);
+    
+    // Fallback listener for localStorage (when window.opener is lost)
+    const storageListener = (event) => {
+      if (event.key === 'github_connected' && event.newValue === 'true') {
+        window.removeEventListener('storage', storageListener);
+        window.removeEventListener('message', messageListener);
+        localStorage.removeItem('github_connected');
+        setIsConnectingGithub(false);
+        fetchRepositories();
+        if (popup && !popup.closed) popup.close();
+      }
+    };
+    window.addEventListener('storage', storageListener);
     
     // Fallback if popup closes without message
     const timer = setInterval(() => {
@@ -463,10 +542,12 @@ export default function CreateProjectWizard() {
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-10 z-10">
         {isDeployingProgress ? (
           <DeploymentProgressScreen
-            projectName={projectName || 'my-awesome-app'}
-            repository={selectedRepo?.fullName || gitRepository || 'acme-corp/deployx-web-app'}
-            branch={selectedBranch || branch || 'main'}
+            projectName={projectName}
+            repository={selectedRepo?.fullName || gitRepository}
+            branch={selectedBranch || branch}
             url={previewUrl}
+            deploymentId={activeDeploymentId}
+            creationError={deploymentError}
             onCancel={() => setIsDeployingProgress(false)}
           />
         ) : (
@@ -516,6 +597,8 @@ export default function CreateProjectWizard() {
                 setRootDirectory={setRootDirectory}
                 selectedRegion={selectedRegion}
                 setSelectedRegion={setSelectedRegion}
+                selectedRepo={selectedRepo}
+                isAnalyzing={isAnalyzing}
               />
             )}
 
@@ -545,7 +628,7 @@ export default function CreateProjectWizard() {
                 envSearchQuery={envSearchQuery}
                 setEnvSearchQuery={setEnvSearchQuery}
                 filteredEnvVars={filteredEnvVars}
-                handleEnvChange={handleEnvChange}
+                handleEnvChange={handleUpdateEnvVar}
                 handleToggleEnvVisibility={handleToggleEnvVisibility}
                 handleToggleEnvironmentTarget={handleToggleEnvironmentTarget}
                 handleRemoveEnvVar={handleRemoveEnvVar}

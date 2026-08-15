@@ -5,26 +5,46 @@ import BuildLogsEmptyState from './BuildLogsEmptyState';
 import BuildLogsSkeleton from './BuildLogsSkeleton';
 import { AlertTriangle, XCircle, Clock, RotateCcw } from 'lucide-react';
 
-const DEFAULT_DUMMY_LOGS = [
-  { id: 1, type: 'info', time: '00:00:01', text: 'Initializing DeployX Build Environment (v20.11.0 node)' },
-  { id: 2, type: 'info', time: '00:00:02', text: 'Cloning repository: github.com/my-team/deployx-app' },
-  { id: 3, type: 'info', time: '00:00:04', text: 'Checking out branch main @ commit #a4b9c1d' },
-  { id: 4, type: 'info', time: '00:00:06', text: 'Restoring build cache from previous successful build...' },
-  { id: 5, type: 'info', time: '00:00:08', text: 'Cache hit: node_modules (saved 18s)' },
-  { id: 6, type: 'info', time: '00:00:10', text: 'Injecting environment variables (DATABASE_URL, API_KEY)' },
-  { id: 7, type: 'info', time: '00:00:12', text: 'Running build command: npm run build' },
-  { id: 8, type: 'info', time: '00:00:15', text: 'Vite v5.2.0 building for production...' },
-  { id: 9, type: 'info', time: '00:00:22', text: 'transforming (142) modules...' },
-  { id: 10, type: 'warning', time: '00:00:26', text: 'WARN: Chunk size after minification is 520 kB (recommend <500 kB)' },
-  { id: 11, type: 'success', time: '00:00:28', text: '✓ 38 modules transformed.' },
-  { id: 12, type: 'success', time: '00:00:30', text: 'dist/index.html                     0.45 kB │ gzip:  0.28 kB' },
-  { id: 13, type: 'success', time: '00:00:31', text: 'dist/assets/index-D7a9b2c.js       142.10 kB │ gzip: 44.80 kB' },
-  { id: 14, type: 'info', time: '00:00:32', text: 'Uploading build artifacts to DeployX edge network' },
-  { id: 15, type: 'success', time: '00:00:34', text: '✓ Deployment successful! Production URL live.' },
-];
+const STATUS_STYLES = {
+  queued: {
+    label: 'Queued',
+    classes: 'bg-slate-500/10 border-slate-500/20 text-slate-600 dark:text-slate-400',
+    dotClasses: 'bg-slate-500 dark:bg-slate-400'
+  },
+  building: {
+    label: 'Building',
+    classes: 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400',
+    dotClasses: 'bg-blue-500 dark:bg-blue-400 animate-pulse'
+  },
+  in_progress: {
+    label: 'Building',
+    classes: 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400',
+    dotClasses: 'bg-blue-500 dark:bg-blue-400 animate-pulse'
+  },
+  ready: {
+    label: 'Ready',
+    classes: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400',
+    dotClasses: 'bg-emerald-500 dark:bg-emerald-400'
+  },
+  success: {
+    label: 'Ready',
+    classes: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400',
+    dotClasses: 'bg-emerald-500 dark:bg-emerald-400'
+  },
+  failed: {
+    label: 'Failed',
+    classes: 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400',
+    dotClasses: 'bg-rose-500 dark:bg-rose-400'
+  },
+  cancelled: {
+    label: 'Cancelled',
+    classes: 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400',
+    dotClasses: 'bg-red-500 dark:bg-red-400'
+  }
+};
 
 function BuildLogsTerminal({
-  logs: initialLogs = DEFAULT_DUMMY_LOGS,
+  logs: initialLogs = [],
   deploymentId,
   environment = 'Production',
   status = 'success',
@@ -43,6 +63,7 @@ function BuildLogsTerminal({
 
   const scrollRef = useRef(null);
   const isBuilding = status === 'building' || status === 'in_progress' || isStreaming;
+  const currentStatusStyle = STATUS_STYLES[status] || STATUS_STYLES.ready;
 
   // Sync initial logs
   useEffect(() => {
@@ -94,9 +115,9 @@ function BuildLogsTerminal({
       {/* SECTION 5 Summary Badges Above Terminal (Ready, Errors, Warnings, Duration) */}
       <div className="flex items-center justify-between gap-3 px-1 select-none flex-wrap">
         <div className="flex items-center gap-2 font-mono text-xs">
-          <span className="text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md flex items-center gap-1.5 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-            Ready
+          <span className={`px-2.5 py-1 rounded-md flex items-center gap-1.5 font-semibold border ${currentStatusStyle.classes}`}>
+            <span className={`w-2 h-2 rounded-full ${currentStatusStyle.dotClasses}`} />
+            {currentStatusStyle.label}
           </span>
 
           <span
@@ -198,9 +219,9 @@ function BuildLogsTerminal({
         {/* Terminal Footer */}
         <div className="px-5 py-3 border-t border-border bg-muted flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted-foreground font-sans select-none">
           <div className="flex items-center gap-3">
-            <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold text-xs">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-              Ready
+            <span className={`flex items-center gap-1.5 font-semibold text-xs border border-transparent rounded px-1.5 py-0.5 ${currentStatusStyle.classes}`}>
+              <span className={`w-2 h-2 rounded-full ${currentStatusStyle.dotClasses}`} />
+              {currentStatusStyle.label}
             </span>
             <span className="text-muted-foreground">•</span>
             <span>Env: <strong className="text-foreground">{environment}</strong></span>

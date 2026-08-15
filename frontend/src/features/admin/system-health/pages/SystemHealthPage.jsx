@@ -25,6 +25,9 @@ export default function SystemHealthPage() {
     infrastructure,
     metrics,
     incidents,
+    pagination,
+    incidentPage,
+    setIncidentPage,
     fetchData,
     handleExport,
     handleRestartService,
@@ -91,7 +94,30 @@ export default function SystemHealthPage() {
           {loading && !refreshing ? (
             <div className="h-48 bg-card rounded-2xl border border-border animate-pulse"></div>
           ) : (
-            <IncidentTimeline events={incidents} />
+            <>
+              <IncidentTimeline events={incidents} />
+              {pagination && pagination.pages > 1 && (
+                <div className="flex justify-end items-center gap-2 mt-4 text-sm">
+                  <button
+                    disabled={incidentPage === 1}
+                    onClick={() => setIncidentPage(prev => Math.max(1, prev - 1))}
+                    className="px-3 py-1.5 rounded-lg border border-border bg-card text-foreground disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-muted-foreground font-medium">
+                    Page {incidentPage} of {pagination.pages}
+                  </span>
+                  <button
+                    disabled={incidentPage === pagination.pages}
+                    onClick={() => setIncidentPage(prev => Math.min(pagination.pages, prev + 1))}
+                    className="px-3 py-1.5 rounded-lg border border-border bg-card text-foreground disabled:opacity-50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </>
       )}

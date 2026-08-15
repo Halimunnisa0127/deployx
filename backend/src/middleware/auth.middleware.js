@@ -25,8 +25,15 @@ const authenticate = (req, res, next) => {
 
 const optionalAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
+  let token = null;
+
   if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.split(' ')[1];
+    token = authHeader.split(' ')[1];
+  } else if (req.query.token) {
+    token = req.query.token;
+  }
+
+  if (token) {
     try {
       const decoded = verifyAccessToken(token);
       req.user = decoded;

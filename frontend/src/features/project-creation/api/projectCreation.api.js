@@ -25,3 +25,11 @@ export const fetchProjectsApi = async () => {
   const response = await api.get('/projects');
   return response.data;
 };
+
+/**
+ * Get Framework Presets
+ */
+export const getFrameworkPresetsApi = async () => {
+  const response = await api.get('/projects/framework-presets');
+  return response.data;
+};

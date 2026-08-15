@@ -1,5 +1,6 @@
 const githubAuthService = require('../services/githubAuth.service');
 const githubRepositoryService = require('../services/githubRepository.service');
+const GithubWebhookService = require('../services/githubWebhook.service');
 const ApiResponse = require('../../../../shared/responses/ApiResponse');
 const { setRefreshTokenCookie } = require('../../../../utils/helpers/cookie.helper');
 const config = require('../../../../config/env/env');
@@ -55,8 +56,41 @@ exports.disconnect = async (req, res) => {
   res.json(ApiResponse.success('GitHub account disconnected'));
 };
 
+exports.webhook = async (req, res) => {
+  try {
+    const result = await GithubWebhookService.processWebhook(
+      req.headers,
+      req.rawBody,
+      req.body
+    );
+
+    if (result.success) {
+      return res.status(200).json(result);
+    } else {
+      return res.status(400).json(result);
+    }
+  } catch (error) {
+    if (
+      error.message.includes('signature') ||
+      error.message.includes('secret')
+    ) {
+      return res.status(401).send('Unauthorized webhook');
+    }
+    console.error('[GitHub Webhook] Error:', error.message);
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
 exports.getStatus = async (req, res) => {
   const userId = req.user.id;
   const status = await repositorySyncService.getSyncStatus(userId);
   res.json(ApiResponse.success('Connection status retrieved', status));
+};
+
+exports.analyzeRepository = async (req, res) => {
+  const userId = req.user.id;
+  const { owner, repo } = req.params;
+  const { branch, rootDirectory } = req.query;
+  const analysis = await githubRepositoryService.analyzeRepository(userId, owner, repo, branch, rootDirectory);
+  res.json(ApiResponse.success('Repository analyzed successfully', analysis));
 };

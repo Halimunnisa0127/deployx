@@ -17,7 +17,10 @@ import {
   ProjectLogsTab,
 } from '../components';
 
-import { PROJECT_DETAILS_TABS, getMockDeployments } from '../utils/projectMockData';
+import { useProjectDetails } from '../hooks/useProjectDetails';
+import { PROJECT_DETAILS_TABS } from '../utils/projectMockData';
+import { useDeployments } from '../../deployments/hooks/useDeployments';
+import { useDeploymentMutations } from '../../deployments/hooks/useDeploymentMutations';
 
 /**
  * ProjectDetails
@@ -30,24 +33,52 @@ export default function ProjectDetails() {
   const [activeTab, setActiveTab] = useState('overview');
   const [actionFeedback, setActionFeedback] = useState('');
 
-  const projects = useSelector((state) => state.projects.items);
-  const projectsStatus = useSelector((state) => state.projects.status);
+  const { project, isLoading: projectsStatusLoading, refetch } = useProjectDetails(id);
+  const { deployments, refetch: refetchDeployments } = useDeployments(id);
+  const { createDeployment, rollbackDeployment, isCreating } = useDeploymentMutations();
 
-  const project = useMemo(() => {
-    return projects.find((p) => p.id === id);
-  }, [projects, id]);
+  const handleAction = async (actionName) => {
+    if (actionName.includes('Redeploy') || actionName === 'Trigger First Build') {
+      try {
+        const newDeployment = await createDeployment({
+          projectId: id,
+          environment: 'Production',
+          branch: project?.branch || 'main',
+          commitHash: 'manual-redeploy', // Mock commit hash for manual redeploy
+        });
+        setActionFeedback(`Successfully queued deployment #${newDeployment.deploymentNumber}`);
+        refetchDeployments();
+      } catch (err) {
+        setActionFeedback(`Failed to trigger deployment.`);
+      }
+      setTimeout(() => setActionFeedback(''), 4000);
+      return;
+    }
 
-  const mockDeployments = useMemo(() => {
-    return getMockDeployments(project);
-  }, [project]);
-
-  const handleAction = (actionName) => {
+    if (actionName === 'Rollback') {
+      const rollbackTarget = deployments.find(d => d.status === 'success' || d.status === 'ready');
+      if (rollbackTarget) {
+        try {
+          await rollbackDeployment(rollbackTarget.id);
+          setActionFeedback(`Successfully rolled back to deployment #${rollbackTarget.deploymentNumber || rollbackTarget.id}`);
+          refetchDeployments();
+          refetch();
+        } catch (err) {
+          setActionFeedback(`Failed to rollback deployment.`);
+        }
+      } else {
+        setActionFeedback(`No historic successful deployment found to rollback to.`);
+      }
+      setTimeout(() => setActionFeedback(''), 4000);
+      return;
+    }
+    
     setActionFeedback(`${actionName} triggered successfully.`);
     setTimeout(() => setActionFeedback(''), 4000);
   };
 
   // 1. Loading Skeleton State
-  if (projectsStatus === 'loading') {
+  if (projectsStatusLoading) {
     return (
       <div className="w-full space-y-6 select-none font-sans">
         <Skeleton width="140px" height="20px" />
@@ -131,6 +162,7 @@ export default function ProjectDetails() {
         project={project}
         defaultUrl={defaultUrl}
         onAction={handleAction}
+        onProjectDeleted={() => navigate('/dashboard/projects')}
       />
 
       {/* Reusable Navigation Tabs */}
@@ -146,7 +178,7 @@ export default function ProjectDetails() {
         {activeTab === 'overview' && (
           <ProjectOverviewTab
             project={project}
-            deployments={mockDeployments}
+            deployments={deployments}
             onAction={handleAction}
           />
         )}
@@ -154,13 +186,13 @@ export default function ProjectDetails() {
         {activeTab === 'deployments' && (
           <ProjectDeploymentsTab
             project={project}
-            deployments={mockDeployments}
+            deployments={deployments}
             onAction={handleAction}
           />
         )}
 
         {activeTab === 'env' && (
-          <ProjectEnvTab project={project} onAction={handleAction} />
+          <ProjectEnvTab project={project} onAction={handleAction} onUpdate={refetch} />
         )}
 
         {activeTab === 'domains' && (
@@ -168,7 +200,7 @@ export default function ProjectDetails() {
         )}
 
         {activeTab === 'settings' && (
-          <ProjectSettingsTab project={project} onAction={handleAction} />
+          <ProjectSettingsTab project={project} onAction={handleAction} onUpdate={refetch} onProjectDeleted={() => navigate('/dashboard/projects')} />
         )}
 
         {activeTab === 'logs' && (
