@@ -9,7 +9,7 @@ const { GITHUB_OAUTH_URL, GITHUB_TOKEN_URL, PROVIDERS, PROVIDER_TYPES } = requir
 const ApiError = require('../../../../shared/errors/ApiError');
 const { jwtHelper } = require('../../../../utils');
 
-exports.getConnectUrl = async (userId = null) => {
+exports.getConnectUrl = async (userId = null, prompt = null) => {
   const state = crypto.randomBytes(32).toString('hex');
   
   // Store state for 10 minutes
@@ -26,6 +26,10 @@ exports.getConnectUrl = async (userId = null) => {
     state,
     scope: 'repo read:user user:email',
   });
+  
+  if (prompt === 'consent') {
+    params.append('prompt', 'consent');
+  }
 
   return `${GITHUB_OAUTH_URL}?${params.toString()}`;
 };

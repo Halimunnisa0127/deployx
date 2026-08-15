@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AlertCircle, Lock } from 'lucide-react';
 
@@ -100,20 +100,7 @@ export default function ProjectDetails() {
 
   // 2. Project Not Found State
   if (!project) {
-    return (
-      <div className="w-full flex flex-col items-center justify-center py-20 text-center select-none font-sans">
-        <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 mb-4">
-          <AlertCircle className="w-7 h-7 text-indigo-400" />
-        </div>
-        <h2 className="text-xl font-bold text-slate-100 mb-2">Project Not Found</h2>
-        <p className="text-sm text-slate-400 max-w-sm mb-6">
-          The requested project does not exist or has been removed from this workspace.
-        </p>
-        <Button variant="primary" size="md" onClick={() => navigate('/dashboard/projects')}>
-          ← Return to Projects
-        </Button>
-      </div>
-    );
+    return <Navigate to="/dashboard/projects" replace />;
   }
 
   // 3. Deployment Incomplete Access Restriction Guard

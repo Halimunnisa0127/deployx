@@ -9,7 +9,8 @@ const repositorySyncService = require('../services/repositorySync.service');
 
 exports.connect = async (req, res) => {
   const userId = req.user?.id || null;
-  const url = await githubAuthService.getConnectUrl(userId);
+  const { prompt } = req.query;
+  const url = await githubAuthService.getConnectUrl(userId, prompt);
   res.redirect(url);
 };
 
