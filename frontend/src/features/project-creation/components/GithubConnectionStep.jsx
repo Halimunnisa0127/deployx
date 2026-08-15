@@ -126,7 +126,7 @@ export default function GithubConnectionStep({
               <div className="p-1 flex flex-col">
                 <button
                   type="button"
-                  onClick={handleConnectGithub}
+                  onClick={() => handleConnectGithub({ forceConsent: true })}
                   className="w-full text-left px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-md transition-colors"
                 >
                   Add another account

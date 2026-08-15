@@ -28,6 +28,13 @@ export default function OAuthSuccess() {
             if (window.opener) {
               window.opener.postMessage('github_connected', '*');
             }
+            // Otherwise, redirect to dashboard or back to wizard
+            const wizardStep = sessionStorage.getItem('wizard_step');
+            if (wizardStep) {
+              navigate('/dashboard/projects/create');
+            } else {
+              navigate('/dashboard');
+            }
             
             // Fallback via localStorage in case window.opener is lost across redirects
             localStorage.setItem('github_connected', 'true');

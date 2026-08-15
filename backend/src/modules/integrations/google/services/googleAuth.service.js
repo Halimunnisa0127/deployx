@@ -26,7 +26,7 @@ class GoogleAuthService {
       scope: 'openid email profile',
       state,
       access_type: 'offline', // Request refresh token
-      prompt: 'select_account consent',
+      prompt: 'select_account',
     });
 
     return `${GOOGLE_OAUTH_URL}?${params.toString()}`;
