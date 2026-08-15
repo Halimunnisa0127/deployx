@@ -52,7 +52,41 @@ const createProjectSchema = z.object({
   })
 });
 
+// Update Project Schema (Partial Updates)
+const updateProjectSchema = z.object({
+  body: z.object({
+    name: z
+      .string()
+      .min(2, 'Project name must be at least 2 characters')
+      .max(50, 'Project name cannot exceed 50 characters')
+      .regex(/^[a-zA-Z0-9-_]+$/, 'Project name can only contain letters, numbers, hyphens, and underscores')
+      .optional(),
+    framework: z.string().optional(),
+    rootDirectory: z.string().optional(),
+    region: z.string().optional(),
+    buildSettings: z
+      .object({
+        packageManager: z.string().optional(),
+        installCommand: z.string().optional(),
+        buildCommand: z.string().optional(),
+        outputDirectory: z.string().optional(),
+        nodeVersion: z.string().optional(),
+      })
+      .optional(),
+    environmentVariables: z
+      .array(
+        z.object({
+          key: z.string(),
+          value: z.string(),
+          environments: z.array(z.string()).optional(),
+        })
+      )
+      .optional(),
+  })
+});
+
 module.exports = {
   checkProjectNameSchema,
   createProjectSchema,
+  updateProjectSchema,
 };

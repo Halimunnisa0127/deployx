@@ -45,21 +45,21 @@ export default function ReviewConfigurationStep({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Project Name:</span>
-              <span className="font-semibold text-slate-900 dark:text-slate-100">{projectName || 'my-app'}</span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100">{projectName || ''}</span>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Repository:</span>
               <span className="font-mono text-blue-400 flex items-center gap-1">
                 <GithubIcon className="w-3 h-3 text-muted-foreground" />
-                {selectedRepo?.fullName || gitRepository || 'acme-corp/deployx-web-app'}
+                {selectedRepo?.fullName || gitRepository || ''}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Branch:</span>
               <span className="font-mono text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-200 dark:text-slate-300 dark:bg-slate-900 dark:border-slate-800">
-                {selectedBranch || branch || 'main'}
+                {selectedBranch || branch || ''}
               </span>
             </div>
 

@@ -83,11 +83,12 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
     project?.url ||
     `${(project?.name || 'app').toLowerCase().replace(/[^a-z0-9-]/g, '')}.deployx.app`;
 
-  const repoName = project?.name
-    ? project.name.toLowerCase().replace(/[^a-z0-9-]/g, '')
-    : 'app';
-  const repoPath = `github.com/deployx/${repoName}`;
-  const repoUrl = `https://${repoPath}`;
+  const repoPath = project?.gitRepository?.fullName
+    ? `github.com/${project.gitRepository.fullName}`
+    : 'github.com/org/repo';
+  const repoUrl = project?.gitRepository?.fullName
+    ? `https://github.com/${project.gitRepository.fullName}`
+    : '#';
 
   const stats = getMockProjectStats(project);
   const activities = getMockProjectActivities(project);

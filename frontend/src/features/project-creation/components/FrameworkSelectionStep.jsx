@@ -1,5 +1,6 @@
-import { Layers, Sparkles, Cpu, MapPin } from 'lucide-react';
+import { Layers, Sparkles, Cpu, MapPin, GitBranch } from 'lucide-react';
 import { FRAMEWORK_OPTIONS, ROOT_DIR_EXAMPLES, REGION_OPTIONS } from '../constants/wizardConstants';
+import GithubIcon from '../../../components/ui/GithubIcon';
 
 export default function FrameworkSelectionStep({
   isAutoDetect,
@@ -11,6 +12,8 @@ export default function FrameworkSelectionStep({
   setRootDirectory,
   selectedRegion,
   setSelectedRegion,
+  selectedRepo,
+  isAnalyzing,
 }) {
   return (
     <div className="space-y-6 animate-fade-in">
@@ -26,6 +29,26 @@ export default function FrameworkSelectionStep({
           Configure your project's framework preset, root directory, and deployment region.
         </p>
       </div>
+
+      {selectedRepo && (
+        <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950/60 dark:border-slate-800/80 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-foreground flex-shrink-0">
+              <GithubIcon className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-0.5">Selected Repository</p>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-sm text-slate-900 dark:text-slate-100">{selectedRepo.fullName}</span>
+                <span className="px-2 py-0.5 rounded-md text-[10px] font-semibold border bg-slate-100 border-slate-200 text-slate-500 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-400 flex items-center gap-1">
+                  <GitBranch className="w-3 h-3" />
+                  {selectedRepo.defaultBranch}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="space-y-5 pt-1">
         <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 dark:bg-slate-950/60 dark:border-slate-800/80 flex items-center justify-between gap-4">
@@ -59,18 +82,30 @@ export default function FrameworkSelectionStep({
         {isAutoDetect && (
           <div className="p-3.5 rounded-xl bg-gradient-to-r from-blue-500/15 to-indigo-500/10 border border-blue-500/30 flex items-center justify-between gap-3 animate-fade-in">
             <div className="flex items-center gap-2.5 text-xs text-slate-900 dark:text-slate-200">
-              <Cpu className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              {isAnalyzing ? (
+                <div className="w-4 h-4 rounded-full border-2 border-blue-400/30 border-t-blue-400 animate-spin flex-shrink-0" />
+              ) : (
+                <Cpu className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              )}
               <div>
                 <span className="text-muted-foreground">Detected Framework: </span>
-                <span className="font-bold text-blue-300">{detectedFrameworkName}</span>
-                <span className="text-xs text-muted-foreground block sm:inline sm:ml-2">
-                  (via root package.json)
-                </span>
+                {isAnalyzing ? (
+                  <span className="font-bold text-slate-500 ml-1">Analyzing...</span>
+                ) : (
+                  <>
+                    <span className="font-bold text-blue-300">{detectedFrameworkName}</span>
+                    <span className="text-xs text-muted-foreground block sm:inline sm:ml-2">
+                      (via root package.json)
+                    </span>
+                  </>
+                )}
               </div>
             </div>
-            <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30 flex-shrink-0">
-              Auto-preset
-            </span>
+            {!isAnalyzing && (
+              <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30 flex-shrink-0">
+                Auto-preset
+              </span>
+            )}
           </div>
         )}
 

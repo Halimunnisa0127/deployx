@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { refreshAccessToken, getCurrentUser } from '../slice/authSlice';
@@ -8,8 +8,12 @@ export default function OAuthSuccess() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
+  const hasRun = useRef(false);
 
   useEffect(() => {
+    if (hasRun.current) return;
+    hasRun.current = true;
+
     const processOAuth = async () => {
       try {
         // 1. Fetch access token via HttpOnly refresh token cookie
@@ -20,11 +24,9 @@ export default function OAuthSuccess() {
           const resultAction = await dispatch(getCurrentUser());
           
           if (getCurrentUser.fulfilled.match(resultAction)) {
-            // Success! If in a popup, send message to parent and close
+            // Success! 
             if (window.opener) {
               window.opener.postMessage('github_connected', '*');
-              window.close();
-              return;
             }
             // Otherwise, redirect to dashboard or back to wizard
             const wizardStep = sessionStorage.getItem('wizard_step');
@@ -33,6 +35,18 @@ export default function OAuthSuccess() {
             } else {
               navigate('/dashboard');
             }
+            
+            // Fallback via localStorage in case window.opener is lost across redirects
+            localStorage.setItem('github_connected', 'true');
+            
+            window.close();
+            
+            // If not a popup or unable to close, navigate after a short delay
+            setTimeout(() => {
+              if (!window.closed) navigate('/dashboard');
+            }, 500);
+            
+            return;
           } else {
             // Failed to fetch user profile
             throw new Error(resultAction.payload || 'Failed to fetch user profile');
@@ -48,7 +62,7 @@ export default function OAuthSuccess() {
     };
 
     processOAuth();
-  }, [dispatch, navigate, searchParams]);
+  }, [dispatch, navigate]);
 
   return (
     <div style={{

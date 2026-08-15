@@ -34,6 +34,7 @@ const Button = forwardRef(({
   isLoading = false,
   loading = false,
   iconLeft,
+  iconRight,
   to,
   href,
   as: ComponentProp,
@@ -86,6 +87,9 @@ const Button = forwardRef(({
         <span className="shrink-0">{iconLeft}</span>
       ) : null}
       {children}
+      {!isBtnLoading && iconRight ? (
+        <span className="shrink-0">{iconRight}</span>
+      ) : null}
     </Tag>
   );
 });

@@ -25,7 +25,9 @@ export default function Domains() {
     setIsModalOpen,
     statusCounts,
     handleResetFilters,
-    handleOpenDomain
+    handleOpenDomain,
+    refetch,
+    projects
   } = useDomains();
 
   const handleCardClick = (domain) => {
@@ -97,6 +99,7 @@ export default function Domains() {
             onClear={() => setSearchQuery('')}
             placeholder="Search domains..."
             shortcut="⌘K"
+            shortcut="ctrl+k"
             size="md"
             className="w-full sm:w-72 shrink-0"
           />
@@ -132,6 +135,8 @@ export default function Domains() {
       <AddDomainModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
+        projects={projects}
+        onSuccess={refetch}
       />
     </div>
   );

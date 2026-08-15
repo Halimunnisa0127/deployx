@@ -1,8 +1,6 @@
+import api from "../../../../lib/axios";
 import {
-  overviewData,
-  infrastructureData,
   generatePerformanceData,
-  generateIncidentTimeline,
   generateServiceDetails,
 } from "../data/systemHealthData";
 
@@ -10,41 +8,36 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const systemHealthApi = {
   getOverview: async () => {
-    await wait(500);
-    return overviewData;
+    const res = await api.get("/admin/health/overview");
+    return res.data.data;
   },
   getInfrastructure: async () => {
-    await wait(600);
-    return infrastructureData;
+    const res = await api.get("/admin/health/infrastructure");
+    return res.data.data;
   },
   getPerformance: async () => {
-    await wait(500);
+    // Keep mock performance data to feed trends charts until timeseries DB is established
+    await wait(300);
     return generatePerformanceData();
   },
-  getIncidents: async () => {
-    await wait(700);
-    return generateIncidentTimeline();
+  getIncidents: async (page = 1, limit = 20) => {
+    const res = await api.get(`/admin/health/incidents?page=${page}&limit=${limit}`);
+    return res.data.data;
   },
   getServiceDetails: async (serviceId) => {
-    await wait(800);
+    await wait(400);
     return generateServiceDetails(serviceId);
   },
   restartService: async (serviceId) => {
-    await wait(1500);
-    return {
-      success: true,
-      message: `Service ${serviceId} restarted successfully.`,
-    };
+    await wait(400);
+    throw new Error("Service restart is unavailable in this environment.");
   },
   toggleMaintenanceMode: async (serviceId, enable) => {
-    await wait(1000);
-    return {
-      success: true,
-      message: `Maintenance mode ${enable ? "enabled" : "disabled"} for ${serviceId}.`,
-    };
+    await wait(400);
+    throw new Error("Maintenance mode control is unsupported on this platform.");
   },
   exportHealthReport: async () => {
-    await wait(1200);
-    return { success: true, url: "/downloads/system_health_report.pdf" };
+    await wait(400);
+    throw new Error("System health report export is currently offline.");
   },
 };

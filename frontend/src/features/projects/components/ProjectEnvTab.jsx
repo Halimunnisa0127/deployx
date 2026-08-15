@@ -20,7 +20,7 @@ import Modal from '../../../components/ui/Modal';
 import Input from '../../../components/ui/Input';
 import SearchBar from '../../../components/common/SearchBar';
 import EmptyState from '../../../components/common/EmptyState';
-import { getMockEnvVariables } from '../utils/projectMockData';
+import { useProjectMutations } from '../hooks/useProjectMutations';
 
 const ENV_BADGE_VARIANTS = {
   Production: 'info',
@@ -29,9 +29,9 @@ const ENV_BADGE_VARIANTS = {
   All: 'success',
 };
 
-export default function ProjectEnvTab({ project, onAction }) {
-  // Initialize local state with mock data
-  const [envVars, setEnvVars] = useState(() => getMockEnvVariables(project));
+export default function ProjectEnvTab({ project, onAction, onUpdate }) {
+  const { updateProject } = useProjectMutations();
+  const envVars = project?.environmentVariables || [];
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEnv, setSelectedEnv] = useState('All');
 
@@ -45,14 +45,24 @@ export default function ProjectEnvTab({ project, onAction }) {
   const [formData, setFormData] = useState({ key: '', value: '', environment: 'Production' });
   const [formError, setFormError] = useState('');
 
+  // Format backend envVars for UI
+  const displayVars = useMemo(() => {
+    return envVars.map(e => ({
+      ...e,
+      id: e._id || e.key,
+      environment: e.environments?.length === 3 ? 'All' : (e.environments?.[0] || 'Production'),
+      updatedAt: 'Just now' // Placeholder until backend tracks env var updates
+    }));
+  }, [envVars]);
+
   // Search & Environment Filter
   const filteredVars = useMemo(() => {
-    return envVars.filter((item) => {
+    return displayVars.filter((item) => {
       const matchesSearch = item.key.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesEnv = selectedEnv === 'All' || item.environment === selectedEnv || item.environment === 'All';
       return matchesSearch && matchesEnv;
     });
-  }, [envVars, searchQuery, selectedEnv]);
+  }, [displayVars, searchQuery, selectedEnv]);
 
   // Toggle secret visibility
   const toggleReveal = (id) => {
@@ -84,27 +94,49 @@ export default function ProjectEnvTab({ project, onAction }) {
   };
 
   // Duplicate variable
-  const handleDuplicate = (item) => {
+  const handleDuplicate = async (item) => {
     const newKey = `${item.key}_COPY`;
     const newVar = {
-      id: `env-${Date.now()}`,
       key: newKey,
-      value: item.value,
-      environment: item.environment,
-      updatedAt: 'Just now',
+      value: item.value === '********' ? '********' : item.value,
+      environments: item.environments || (item.environment === 'All' ? ['Production', 'Preview', 'Development'] : [item.environment]),
     };
-    setEnvVars((prev) => [newVar, ...prev]);
-    if (onAction) onAction(`Duplicated environment variable ${item.key}`);
+    
+    try {
+      await updateProject(project._id || project.id, {
+        environmentVariables: [newVar, ...envVars.map(e => ({
+          key: e.key,
+          value: e.value,
+          environments: e.environments || (e.environment === 'All' ? ['Production', 'Preview', 'Development'] : [e.environment])
+        }))]
+      });
+      if (onAction) onAction(`Duplicated environment variable ${item.key}`);
+      if (onUpdate) onUpdate();
+    } catch (err) {
+      if (onAction) onAction(`Failed to duplicate: ${err.message}`);
+    }
   };
 
   // Delete variable
-  const handleDelete = (id, key) => {
-    setEnvVars((prev) => prev.filter((item) => item.id !== id));
-    if (onAction) onAction(`Deleted environment variable ${key}`);
+  const handleDelete = async (id, key) => {
+    // Note: Since DB doesn't have id for env vars, we delete by key
+    try {
+      await updateProject(project._id || project.id, {
+        environmentVariables: envVars.filter((item) => item.key !== key).map(e => ({
+          key: e.key,
+          value: e.value,
+          environments: e.environments || (e.environment === 'All' ? ['Production', 'Preview', 'Development'] : [e.environment])
+        }))
+      });
+      if (onAction) onAction(`Deleted environment variable ${key}`);
+      if (onUpdate) onUpdate();
+    } catch (err) {
+      if (onAction) onAction(`Failed to delete: ${err.message}`);
+    }
   };
 
   // Save (Add or Edit) submit handler
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (!formData.key.trim()) {
       setFormError('Key name is required.');
@@ -112,31 +144,40 @@ export default function ProjectEnvTab({ project, onAction }) {
     }
 
     const formattedKey = formData.key.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+    
+    // Map current envVars to expected schema
+    let newEnvVars = envVars.map(e => ({
+      key: e.key,
+      value: e.value,
+      environments: e.environments || (e.environment === 'All' ? ['Production', 'Preview', 'Development'] : [e.environment])
+    }));
 
     if (editingItem) {
       // Update existing
-      setEnvVars((prev) =>
-        prev.map((item) =>
-          item.id === editingItem.id
-            ? { ...item, key: formattedKey, value: formData.value, environment: formData.environment, updatedAt: 'Just now' }
-            : item
-        )
+      newEnvVars = newEnvVars.map((item) =>
+        item.key === editingItem.key
+          ? { key: formattedKey, value: formData.value, environments: formData.environment === 'All' ? ['Production', 'Preview', 'Development'] : [formData.environment] }
+          : item
       );
-      if (onAction) onAction(`Updated environment variable ${formattedKey}`);
     } else {
       // Add new
-      const newVar = {
-        id: `env-${Date.now()}`,
+      newEnvVars.push({
         key: formattedKey,
         value: formData.value,
-        environment: formData.environment,
-        updatedAt: 'Just now',
-      };
-      setEnvVars((prev) => [newVar, ...prev]);
-      if (onAction) onAction(`Added environment variable ${formattedKey}`);
+        environments: formData.environment === 'All' ? ['Production', 'Preview', 'Development'] : [formData.environment]
+      });
     }
 
-    setIsModalOpen(false);
+    try {
+      await updateProject(project._id || project.id, {
+        environmentVariables: newEnvVars
+      });
+      if (onAction) onAction(`${editingItem ? 'Updated' : 'Added'} environment variable ${formattedKey}`);
+      if (onUpdate) onUpdate();
+      setIsModalOpen(false);
+    } catch (err) {
+      setFormError(err.message || 'Failed to save environment variable.');
+    }
   };
 
   return (
