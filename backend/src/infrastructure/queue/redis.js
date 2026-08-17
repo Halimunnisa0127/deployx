@@ -12,6 +12,11 @@ const redisConfig = {
   },
 };
 
+// Enable TLS for production Redis (Upstash)
+if (process.env.NODE_ENV === 'production') {
+  redisConfig.tls = {};
+}
+
 const redisConnection = new Redis(redisConfig);
 
 let lastLoggedErrorTime = 0;
@@ -19,8 +24,12 @@ const ERROR_LOG_THROTTLE_MS = 10000;
 
 redisConnection.on('error', (err) => {
   const now = Date.now();
+
   if (now - lastLoggedErrorTime > ERROR_LOG_THROTTLE_MS) {
-    console.error('[Redis] Connection Error:', err.message || 'Connection refused');
+    console.error(
+      '[Redis] Connection Error:',
+      err.message || 'Connection refused'
+    );
     lastLoggedErrorTime = now;
   }
 });

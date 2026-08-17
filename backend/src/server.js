@@ -14,8 +14,10 @@ const startServer = async () => {
 
   server = http.createServer(app);
 
-  server.listen(config.port, () => {
-    logger.info(`Server listening on port ${config.port} in ${config.env} mode`);
+  server.listen(config.port, '0.0.0.0', () => {
+    logger.info(
+      `Server listening on port ${config.port} in ${config.env} mode`
+    );
   });
 };
 
@@ -24,21 +26,21 @@ startServer();
 // Graceful Shutdown
 const shutdown = async (signal) => {
   logger.info(`Received ${signal}. Shutting down gracefully...`);
-  
+
   if (server) {
     server.close(async () => {
       logger.info('HTTP server closed. Finishing active requests...');
-      
+
       try {
         await mongoose.connection.close(false);
         logger.info('MongoDB connection closed.');
       } catch (err) {
         logger.error(`Error closing MongoDB connection: ${err.message}`);
       }
-      
+
       logger.info('Flushing logger...');
       logger.flush();
-      
+
       process.exit(0);
     });
   } else {
