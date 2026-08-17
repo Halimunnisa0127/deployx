@@ -6,6 +6,7 @@ const setRefreshTokenCookie = (res, token) => {
     httpOnly: true,
     secure: config.isProduction,
     sameSite: config.isProduction ? 'none' : 'strict',
+    partitioned: config.isProduction ? true : undefined,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
@@ -15,6 +16,7 @@ const clearRefreshTokenCookie = (res) => {
     httpOnly: true,
     secure: config.isProduction,
     sameSite: config.isProduction ? 'none' : 'strict',
+    partitioned: config.isProduction ? true : undefined,
     expires: new Date(0),
   });
 };
