@@ -40,6 +40,15 @@ app.use(requestLoggerMiddleware);
 // Rate Limiter
 app.use(rateLimiterMiddleware);
 
+// Root Endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Welcome to DeployX Backend",
+    status: "running"
+  });
+});
+
 // Health
 app.use('/', healthRoutes);
 
