@@ -1,11 +1,9 @@
 const pino = require('pino');
 const config = require('../env/env');
 
-const isDev = config.env === 'development';
-
 const logger = pino({
-  level: isDev ? 'debug' : 'info',
-  transport: isDev
+  level: config.isDevelopment ? 'debug' : 'info',
+  transport: config.isDevelopment
     ? {
         target: 'pino-pretty',
         options: {
@@ -15,11 +13,6 @@ const logger = pino({
         },
       }
     : undefined,
-  formatters: {
-    level: (label) => {
-      return { level: label };
-    },
-  },
 });
 
 module.exports = logger;
