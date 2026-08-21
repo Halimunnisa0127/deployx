@@ -7,6 +7,7 @@ const setRefreshTokenCookie = (res, token) => {
     secure: config.isProduction,
     sameSite: config.isProduction ? 'none' : 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    path: '/',
   });
 };
 
@@ -16,6 +17,7 @@ const clearRefreshTokenCookie = (res) => {
     secure: config.isProduction,
     sameSite: config.isProduction ? 'none' : 'strict',
     expires: new Date(0),
+    path: '/',
   });
 };
 
