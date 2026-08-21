@@ -49,47 +49,30 @@ class AuthService {
   }
 
   async refreshTokens(token) {
-    let verifiedToken = token;
-    let decoded = null;
+    const tokensToCheck = Array.isArray(token) ? token : [token];
 
-    if (Array.isArray(token)) {
-      for (const t of token) {
-        try {
-          decoded = jwtHelper.verifyRefreshToken(t);
-          if (decoded) {
-            verifiedToken = t;
-            break;
-          }
-        } catch (e) {
-          // ignore and try next
-        }
-      }
-    } else {
+    for (const t of tokensToCheck) {
       try {
-        decoded = jwtHelper.verifyRefreshToken(token);
+        const decoded = jwtHelper.verifyRefreshToken(t);
+        if (!decoded) continue;
+
+        const user = await User.findById(decoded.id);
+        if (!user || user.refreshTokenVersion !== decoded.version || !user.isActive) {
+          continue; // Outdated version or disabled user, try next cookie
+        }
+
+        // Found the valid token matching the database session version!
+        const accessToken = jwtHelper.generateAccessToken(user._id, user.role);
+        const refreshToken = jwtHelper.generateRefreshToken(user._id, user.refreshTokenVersion);
+
+        return { user, accessToken, refreshToken };
       } catch (e) {
-        // decoded remains null
+        // Verification or lookup failed for this token, try next
       }
     }
 
-    if (!decoded) {
-      throw new UnauthorizedError('Invalid or expired refresh token');
-    }
-
-    try {
-      const user = await User.findById(decoded.id);
-
-      if (!user || user.refreshTokenVersion !== decoded.version || !user.isActive) {
-        throw new UnauthorizedError('Invalid or expired refresh token');
-      }
-
-      const accessToken = jwtHelper.generateAccessToken(user._id, user.role);
-      const refreshToken = jwtHelper.generateRefreshToken(user._id, user.refreshTokenVersion);
-
-      return { user, accessToken, refreshToken };
-    } catch (error) {
-      throw new UnauthorizedError('Invalid or expired refresh token');
-    }
+    // None of the provided cookies were valid
+    throw new UnauthorizedError('Invalid or expired refresh token');
   }
 
   async logout(userId) {
