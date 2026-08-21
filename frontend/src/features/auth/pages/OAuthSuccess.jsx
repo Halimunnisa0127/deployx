@@ -1,68 +1,49 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { refreshAccessToken, getCurrentUser } from '../slice/authSlice';
+import { useSelector } from 'react-redux';
 
 export default function OAuthSuccess() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const hasRun = useRef(false);
 
+  const { isAuthenticated, status, error: authError } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
+    if (isAuthenticated) {
+      if (hasRun.current) return;
+      hasRun.current = true;
 
-    const processOAuth = async () => {
-      try {
-        // 1. Fetch access token via HttpOnly refresh token cookie
-        const refreshAction = await dispatch(refreshAccessToken());
-        
-        if (refreshAccessToken.fulfilled.match(refreshAction)) {
-          // 2. Fetch the user profile using the new token
-          const resultAction = await dispatch(getCurrentUser());
-          
-          if (getCurrentUser.fulfilled.match(resultAction)) {
-            // Success! 
-            if (window.opener) {
-              window.opener.postMessage('github_connected', '*');
-            }
-            // Otherwise, redirect to dashboard or back to wizard
-            const wizardStep = sessionStorage.getItem('wizard_step');
-            if (wizardStep) {
-              navigate('/dashboard/projects/create');
-            } else {
-              navigate('/dashboard');
-            }
-            
-            // Fallback via localStorage in case window.opener is lost across redirects
-            localStorage.setItem('github_connected', 'true');
-            
-            window.close();
-            
-            // If not a popup or unable to close, navigate after a short delay
-            setTimeout(() => {
-              if (!window.closed) navigate('/dashboard');
-            }, 500);
-            
-            return;
-          } else {
-            // Failed to fetch user profile
-            throw new Error(resultAction.payload || 'Failed to fetch user profile');
-          }
-        } else {
-          throw new Error('Failed to obtain access token.');
-        }
-      } catch (err) {
-        console.error('OAuth callback error:', err);
-        setError(err.message || 'An error occurred during authentication.');
-        setTimeout(() => navigate('/login'), 3000);
+      // Success! 
+      if (window.opener) {
+        window.opener.postMessage('github_connected', '*');
       }
-    };
+      // Otherwise, redirect to dashboard or back to wizard
+      const wizardStep = sessionStorage.getItem('wizard_step');
+      if (wizardStep) {
+        navigate('/dashboard/projects/create');
+      } else {
+        navigate('/dashboard');
+      }
+      
+      // Fallback via localStorage in case window.opener is lost across redirects
+      localStorage.setItem('github_connected', 'true');
+      
+      window.close();
+      
+      // If not a popup or unable to close, navigate after a short delay
+      setTimeout(() => {
+        if (!window.closed) navigate('/dashboard');
+      }, 500);
+    } else if (status === 'failed') {
+      if (hasRun.current) return;
+      hasRun.current = true;
 
-    processOAuth();
-  }, [dispatch, navigate]);
+      setError(authError || 'Failed to obtain access token.');
+      setTimeout(() => navigate('/login'), 3000);
+    }
+  }, [isAuthenticated, status, authError, navigate]);
 
   return (
     <div style={{
