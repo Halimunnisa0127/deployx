@@ -18,12 +18,28 @@ class AuthController {
   }
 
   async refreshToken(req, res) {
-    const incomingToken = req.cookies[COOKIE_NAMES.REFRESH_TOKEN];
-    if (!incomingToken) {
+    const rawCookies = req.headers.cookie;
+    const tokens = [];
+
+    if (rawCookies) {
+      const pairs = rawCookies.split(';');
+      for (const pair of pairs) {
+        const index = pair.indexOf('=');
+        if (index !== -1) {
+          const key = pair.substring(0, index).trim();
+          const val = pair.substring(index + 1).trim();
+          if (key === COOKIE_NAMES.REFRESH_TOKEN && val) {
+            tokens.push(val);
+          }
+        }
+      }
+    }
+
+    if (tokens.length === 0) {
       return res.status(StatusCodes.UNAUTHORIZED).json(ApiResponse.error('No refresh token provided', {}, StatusCodes.UNAUTHORIZED));
     }
 
-    const { accessToken, refreshToken } = await authService.refreshTokens(incomingToken);
+    const { accessToken, refreshToken } = await authService.refreshTokens(tokens);
     setRefreshTokenCookie(res, refreshToken);
     res.status(StatusCodes.OK).json(ApiResponse.success('Token refreshed successfully', { accessToken }));
   }
