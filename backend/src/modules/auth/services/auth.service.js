@@ -49,8 +49,34 @@ class AuthService {
   }
 
   async refreshTokens(token) {
+    let verifiedToken = token;
+    let decoded = null;
+
+    if (Array.isArray(token)) {
+      for (const t of token) {
+        try {
+          decoded = jwtHelper.verifyRefreshToken(t);
+          if (decoded) {
+            verifiedToken = t;
+            break;
+          }
+        } catch (e) {
+          // ignore and try next
+        }
+      }
+    } else {
+      try {
+        decoded = jwtHelper.verifyRefreshToken(token);
+      } catch (e) {
+        // decoded remains null
+      }
+    }
+
+    if (!decoded) {
+      throw new UnauthorizedError('Invalid or expired refresh token');
+    }
+
     try {
-      const decoded = jwtHelper.verifyRefreshToken(token);
       const user = await User.findById(decoded.id);
 
       if (!user || user.refreshTokenVersion !== decoded.version || !user.isActive) {
