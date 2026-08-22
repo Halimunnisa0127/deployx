@@ -2,6 +2,7 @@ const dns = require('dns').promises;
 const Domain = require('../models/Domain');
 const ApiError = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
+const config = require('../../../config/env/env');
 
 class DomainVerificationService {
   /**
@@ -35,13 +36,17 @@ class DomainVerificationService {
     const hostname = domain.hostname;
 
     try {
-      // Perform TXT lookup
-      const records = await dns.resolveTxt(hostname);
-      
-      // Flatten arrays (TXT records can be returned as arrays of chunks)
-      const flatRecords = records.map(chunks => chunks.join('')).map(val => val.trim());
+      let matched = false;
+      // Local development shortcut applies strictly when in development environment AND hostname ends with .deployx.app
+      const isLocalDevShortcut = config.isDevelopment && hostname.endsWith('.deployx.app');
 
-      const matched = flatRecords.includes(expectedRecordValue);
+      if (isLocalDevShortcut) {
+        matched = true;
+      } else {
+        const records = await dns.resolveTxt(hostname);
+        const flatRecords = records.map(chunks => chunks.join('')).map(val => val.trim());
+        matched = flatRecords.includes(expectedRecordValue);
+      }
 
       if (matched) {
         domain.verificationStatus = 'verified';

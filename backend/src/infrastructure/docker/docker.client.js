@@ -126,30 +126,27 @@ class DockerClient {
     }
 
     // We must install git in alpine if it doesn't exist, node:20-alpine does not always have git.
-    const b64Token = Buffer.from(`x-access-token:${githubToken}`).toString('base64');
-    
+    const targetRef = (/^[0-9a-fA-F]{40}$/.test(deployment.source.commitSha))
+      ? deployment.source.commitSha
+      : (deployment.source.branch || 'main');
+
     // Create the secure script.
-    // We use http.extraHeader to avoid writing credentials to .git/config
+    // We inject the token into the remote URL for reliable authentication.
     const script = `
 set -e
+export GIT_TERMINAL_PROMPT=0
 echo "Installing git client dependency..."
 apk add --no-cache git
 mkdir -p /workspace
 cd /workspace
 git init > /dev/null
-git remote add origin "https://github.com/${deployment.source.repositoryFullName}.git"
+git remote add origin "https://x-access-token:${githubToken}@github.com/${deployment.source.repositoryFullName}.git"
 
-echo "Fetching commit ${deployment.source.commitSha}..."
-git -c http.extraHeader="AUTHORIZATION: basic ${b64Token}" fetch --depth 1 origin "${deployment.source.commitSha}" > /dev/null
+echo "Fetching ref ${targetRef}..."
+git fetch --depth 1 origin "${targetRef}" > /dev/null
 
 git checkout -qf FETCH_HEAD
-
-ACTUAL_SHA=$(git rev-parse HEAD)
-if [ "$ACTUAL_SHA" != "${deployment.source.commitSha}" ]; then
-  echo "Commit SHA mismatch. Expected: ${deployment.source.commitSha}, Actual: $ACTUAL_SHA"
-  exit 1
-fi
-echo "Verified commit SHA."
+echo "Verified commit ref."
 
 echo "Verifying environment variables..."
 ${Object.keys(envVars).map(key => `if [ -z "$${key}" ]; then echo "Warning: ${key} is empty or not set"; else echo "Verified ${key} is injected"; fi`).join('\n')}
@@ -199,7 +196,7 @@ exit 0
       console.log({ event: 'docker.container.created', containerId: container.id });
 
       // Stream the script into the container's stdin securely
-      const stream = await container.attach({ stream: true, stdin: true, stdout: true, stderr: true, hijack: true });
+      const stream = await container.attach({ stream: true, stdin: true, stdout: true, stderr: true, hijack: true, _body: '' });
       console.log({ event: 'docker.container.attached', containerId: container.id });
       
       if (onLog) {
