@@ -154,6 +154,7 @@ const worker = new Worker('deployments', async (job) => {
       throw new Error(`GitHub account not found for deployment owner ${deployment.owner}`);
     }
     const githubToken = decrypt(githubAccount.encryptedAccessToken);
+    const b64Token = Buffer.from(`x-access-token:${githubToken}`).toString('base64');
 
     // Project Environment Variable Secure Decryption
     await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Injecting scoped environment variables...');
@@ -191,7 +192,8 @@ const worker = new Worker('deployments', async (job) => {
       githubToken, 
       envVars, 
       (level, chunk) => {
-        deploymentLogService.appendLog(deploymentId, deployment.project, level, chunk, envVars);
+        const redactionMap = { ...envVars, GITHUB_TOKEN: githubToken, B64_TOKEN: b64Token };
+        deploymentLogService.appendLog(deploymentId, deployment.project, level, chunk, redactionMap);
       },
       async (container) => {
         await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Artifact collection started...');

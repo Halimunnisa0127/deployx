@@ -10,6 +10,7 @@ const securityMiddleware = (app) => {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:', 'https:'],
         },
       },
     })

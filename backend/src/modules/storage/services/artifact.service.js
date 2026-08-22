@@ -170,102 +170,124 @@ class ArtifactService {
    * Safely serves a single file directly from the `.tar` artifact stream.
    * Does not unpack to disk.
    */
-  static async serveFileFromArtifact(storageKey, reqPath, isSpaFallback, res) {
-    // 1. Normalize requested path
-    let normalizedPath = reqPath || '';
-    
-    // 2. Remove query strings and hash fragments
-    normalizedPath = normalizedPath.split('?')[0].split('#')[0];
-
-    // 3 & 4. Recursively URL-decode the requested path until no changes occur, catching malformed URI encoding safely
-    try {
-      let decodedPath = normalizedPath;
-      let lastDecodedPath;
-      do {
-        lastDecodedPath = decodedPath;
-        decodedPath = decodeURIComponent(decodedPath);
-      } while (decodedPath !== lastDecodedPath);
-      normalizedPath = decodedPath;
-    } catch (error) {
-      return res.status(400).send('Invalid URI encoding');
-    }
-
-    // 6. Normalize separators safely
-    normalizedPath = normalizedPath.replace(/\\/g, '/');
-
-    // 5. Reject invalid paths (traversals, absolute paths, null bytes)
-    if (
-      normalizedPath.includes('../') ||
-      normalizedPath.includes('..\\') ||
-      normalizedPath.includes('\0') ||
-      normalizedPath.startsWith('/') ||
-      path.isAbsolute(normalizedPath)
-    ) {
-      return res.status(400).send('Invalid path traversal detected');
-    }
-
-    // Default to index.html if empty
-    if (!normalizedPath || normalizedPath === '/' || normalizedPath === '.') {
-      normalizedPath = 'index.html';
-    }
-
-    let fileFound = false;
-    
-    // We get a readable stream of the .tar
-    const archiveStream = await storageProvider.getArtifactStream(storageKey);
-    const extract = tar.extract();
-
-    extract.on('entry', (header, stream, next) => {
-      // In tar, folders might be named 'dir/' but we are looking for files
-      if (header.type === 'file' && header.name === normalizedPath) {
-        fileFound = true;
+  static serveFileFromArtifact(storageKey, reqPath, isSpaFallback, res) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // 1. Normalize requested path
+        let normalizedPath = reqPath || '';
         
-        const ext = path.extname(header.name).toLowerCase();
-        const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-        
-        res.setHeader('Content-Type', contentType);
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-        
-        stream.pipe(res);
-        
-        stream.on('end', () => {
-          // Abort the rest of the extraction for performance
-          archiveStream.destroy();
-        });
-      } else {
-        stream.on('end', () => next());
-        stream.resume(); // drain
-      }
-    });
+        // 2. Remove query strings and hash fragments
+        normalizedPath = normalizedPath.split('?')[0].split('#')[0];
 
-    extract.on('finish', () => {
-      if (!fileFound) {
-        const isStaticAsset = /\.[a-zA-Z0-9]+$/.test(normalizedPath) || normalizedPath.startsWith('assets/') || normalizedPath.startsWith('static/');
-        if (isSpaFallback && !isStaticAsset && normalizedPath !== 'index.html') {
-          // Re-trigger for SPA fallback to index.html
-          return ArtifactService.serveFileFromArtifact(storageKey, 'index.html', false, res);
-        } else {
-          return res.status(404).send('Not Found');
+        // 3 & 4. Recursively URL-decode the requested path until no changes occur, catching malformed URI encoding safely
+        try {
+          let decodedPath = normalizedPath;
+          let lastDecodedPath;
+          do {
+            lastDecodedPath = decodedPath;
+            decodedPath = decodeURIComponent(decodedPath);
+          } while (decodedPath !== lastDecodedPath);
+          normalizedPath = decodedPath;
+        } catch (error) {
+          if (!res.headersSent) res.status(400).send('Invalid URI encoding');
+          return resolve();
         }
+
+        // 6. Normalize separators safely
+        normalizedPath = normalizedPath.replace(/\\/g, '/');
+
+        // 5. Reject invalid paths (traversals, absolute paths, null bytes)
+        if (
+          normalizedPath.includes('../') ||
+          normalizedPath.includes('..\\') ||
+          normalizedPath.includes('\0') ||
+          normalizedPath.startsWith('/') ||
+          path.isAbsolute(normalizedPath)
+        ) {
+          if (!res.headersSent) res.status(400).send('Invalid path traversal detected');
+          return resolve();
+        }
+
+        // Default to index.html if empty
+        if (!normalizedPath || normalizedPath === '/' || normalizedPath === '.') {
+          normalizedPath = 'index.html';
+        }
+
+        let fileFound = false;
+        
+        // We get a readable stream of the .tar
+        const archiveStream = await storageProvider.getArtifactStream(storageKey);
+        const extract = tar.extract();
+
+        extract.on('entry', (header, stream, next) => {
+          const isMatch = header.name === normalizedPath || 
+                         (header.name.includes('/') && header.name.substring(header.name.indexOf('/') + 1) === normalizedPath);
+          // In tar, folders might be named 'dir/' but we are looking for files
+          if (header.type === 'file' && isMatch) {
+            fileFound = true;
+            
+            const ext = path.extname(header.name).toLowerCase();
+            const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+            
+            res.setHeader('Content-Type', contentType);
+            res.setHeader('X-Content-Type-Options', 'nosniff');
+            // Cache static assets, but DO NOT cache index.html forever!
+            if (normalizedPath === 'index.html') {
+              res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+            } else {
+              res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+            }
+            
+            stream.pipe(res);
+            
+            stream.on('end', () => {
+              // Abort the rest of the extraction for performance
+              archiveStream.destroy();
+            });
+          } else {
+            stream.on('end', () => next());
+            stream.resume(); // drain
+          }
+        });
+
+        extract.on('finish', () => {
+          if (!fileFound) {
+            const isStaticAsset = /\.[a-zA-Z0-9]+$/.test(normalizedPath) || normalizedPath.startsWith('assets/') || normalizedPath.startsWith('static/');
+            if (isSpaFallback && !isStaticAsset && normalizedPath !== 'index.html') {
+              // Re-trigger for SPA fallback to index.html
+              ArtifactService.serveFileFromArtifact(storageKey, 'index.html', false, res)
+                .then(resolve)
+                .catch(reject);
+            } else {
+              if (!res.headersSent) res.status(404).send('Not Found');
+              resolve();
+            }
+          } else {
+            resolve();
+          }
+        });
+
+        extract.on('error', (err) => {
+          if (!res.headersSent) {
+            console.error('[ArtifactService] Error extracting tar stream:', err.message);
+            res.status(500).send('Internal Server Error');
+          }
+          resolve();
+        });
+
+        archiveStream.on('error', (err) => {
+          // It's normal for stream to error with "premature close" if we abort it early.
+          if (!fileFound && !res.headersSent) {
+            res.status(500).send('Storage read error');
+          }
+          resolve();
+        });
+
+        archiveStream.pipe(extract);
+      } catch (err) {
+        reject(err);
       }
     });
-
-    extract.on('error', (err) => {
-      if (!res.headersSent) {
-        console.error('[ArtifactService] Error extracting tar stream:', err.message);
-        res.status(500).send('Internal Server Error');
-      }
-    });
-
-    archiveStream.on('error', (err) => {
-      // It's normal for stream to error with "premature close" if we abort it early.
-      if (!fileFound && !res.headersSent) {
-        res.status(500).send('Storage read error');
-      }
-    });
-
-    archiveStream.pipe(extract);
   }
 }
 

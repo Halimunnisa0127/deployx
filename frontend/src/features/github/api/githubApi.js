@@ -12,7 +12,7 @@ export const githubApi = {
   },
 
   getRepositories: async () => {
-    const response = await api.get('/integrations/github/repositories');
+    const response = await api.get('/integrations/github/repositories?limit=100');
     // The backend uses QueryBuilder which returns { data: [...], meta: {...} } inside the ApiResponse data field.
     return response.data?.data?.data || []; 
   },

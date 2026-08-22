@@ -1,6 +1,5 @@
 const domainRoutingService = require('../modules/domains/services/domainRouting.service');
 const ArtifactService = require('../modules/storage/services/artifact.service');
-const http = require('http');
 
 const domainRouter = async (req, res, next) => {
   const path = req.path;
@@ -55,42 +54,15 @@ const domainRouter = async (req, res, next) => {
 
     console.log(`[DomainRouter] Lookup Success | hostname: ${hostname} | projectId: ${deployment._projectIdToMatch || deployment.project} | deploymentId: ${deployment._id} | status: ${deployment.status} | runtimePort: ${deployment.runtimePort}`);
 
-    // 4. Route request to Nginx runtime container if dynamic port is set
-    if (deployment.runtimePort) {
-      const proxyTarget = `http://127.0.0.1:${deployment.runtimePort}`;
-      console.log(`[DomainRouter] Proxying request to target: ${proxyTarget} (runtimePort: ${deployment.runtimePort})`);
-
-      const proxyReq = http.request({
-        host: '127.0.0.1',
-        port: deployment.runtimePort,
-        path: req.originalUrl,
-        method: req.method,
-        headers: req.headers
-      }, (proxyRes) => {
-        console.log(`[DomainRouter] Proxy success for ${hostname} -> ${proxyTarget} (Status: ${proxyRes.statusCode})`);
-        res.writeHead(proxyRes.statusCode, proxyRes.headers);
-        proxyRes.pipe(res);
-      });
-
-      proxyReq.on('error', (err) => {
-        console.error(`[DomainRouter] Proxy connection failed for ${hostname} -> ${proxyTarget}:`, err.message);
-        if (!res.headersSent) {
-          res.status(502).send('Bad Gateway');
-        }
-      });
-
-      req.pipe(proxyReq);
-      return;
-    }
-
-    // Fallback: Serve requested file directly from the deployment's artifact archive (without requiring JWT auth)
+    // Serve requested file directly from the deployment's artifact archive (without requiring JWT auth)
     const isSpaFallback = ['React', 'Vue', 'Angular', 'Svelte'].includes(deployment.buildSettings?.framework);
     let requestedPath = req.path;
     if (requestedPath.startsWith('/')) {
       requestedPath = requestedPath.substring(1);
     }
 
-    return ArtifactService.serveFileFromArtifact(deployment.artifact.storageKey, requestedPath, isSpaFallback, res);
+    await ArtifactService.serveFileFromArtifact(deployment.artifact.storageKey, requestedPath, isSpaFallback, res);
+    return;
 
   } catch (error) {
     console.error(`[DomainRouter] Routing failed for hostname ${hostname}:`, error.message);

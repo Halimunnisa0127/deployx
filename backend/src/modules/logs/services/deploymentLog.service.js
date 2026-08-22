@@ -37,13 +37,14 @@ class DeploymentLogService {
       }
     }
 
-    // 2. Redact GitHub tokens (ghp_, github_pat_, or x-access-token matches)
-    safeMessage = safeMessage.replace(/ghp_[a-zA-Z0-9]{36}/g, '[REDACTED_TOKEN]');
-    safeMessage = safeMessage.replace(/github_pat_[a-zA-Z0-9_]{82}/g, '[REDACTED_TOKEN]');
+    // 2. Redact GitHub tokens
+    safeMessage = safeMessage.replace(/gh[pousr]_[a-zA-Z0-9_]{36,255}/g, '[REDACTED_TOKEN]');
+    safeMessage = safeMessage.replace(/github_pat_[a-zA-Z0-9_]{82,255}/g, '[REDACTED_TOKEN]');
     safeMessage = safeMessage.replace(/x-access-token:[^\s@]+@/g, 'x-access-token:[REDACTED_TOKEN]@');
     
     // 3. Redact common authorization headers if accidentally printed
-    safeMessage = safeMessage.replace(/(Authorization:\s*Bearer\s+)[^\s]+/gi, '$1[REDACTED]');
+    safeMessage = safeMessage.replace(/(Authorization:\s*Bearer\s+)[^\s\\]+/gi, '$1[REDACTED]');
+    safeMessage = safeMessage.replace(/(Authorization:\s*Basic\s+)[^\s\\]+/gi, '$1[REDACTED]');
 
     return safeMessage;
   }

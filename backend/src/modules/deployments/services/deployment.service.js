@@ -4,8 +4,7 @@ const DeploymentCounter = require('../models/DeploymentCounter');
 const DeploymentPromotionHistory = require('../models/DeploymentPromotionHistory');
 const Project = require('../../projects/models/Project');
 const deploymentQueue = require('../../../infrastructure/queue/deployment.queue');
-const GitHubRepositoryService = require('../../integrations/github/services/githubRepository.service');
-const { ApiError } = require('../../../shared/errors/ApiError');
+const ApiError = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
 
 class DeploymentService {
@@ -70,7 +69,12 @@ class DeploymentService {
           resolvedCommitHash = commitData.sha;
           resolvedCommitMessage = commitData.message || resolvedCommitMessage;
         } catch (error) {
-          throw new ApiError('Failed to resolve GitHub repository source. Please check integration and repository access.', StatusCodes.BAD_REQUEST);
+          if (commitHash) {
+            resolvedCommitHash = commitHash;
+            resolvedCommitMessage = commitMessage || 'Initial build trigger';
+          } else {
+            throw new ApiError('Failed to resolve GitHub repository source. Please check integration and repository access.', StatusCodes.BAD_REQUEST);
+          }
         }
       }
     } else if (provider !== 'manual') {
@@ -243,6 +247,7 @@ class DeploymentService {
     }
 
     const session = await mongoose.startSession().catch(() => null);
+    let transactionSuccess = false;
     if (session) {
       try {
         await session.withTransaction(async () => {
@@ -263,10 +268,15 @@ class DeploymentService {
             { session }
           );
         });
+        transactionSuccess = true;
+      } catch (txnError) {
+        // Fallback to non-transactional save on standalone MongoDB
       } finally {
-        await session.endSession();
+        await session.endSession().catch(() => {});
       }
-    } else {
+    }
+
+    if (!transactionSuccess) {
       project.productionDeployment = deployment._id;
       await project.save();
 

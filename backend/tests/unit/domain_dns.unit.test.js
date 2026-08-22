@@ -120,6 +120,73 @@ describe('Domain DNS Verification & Token Isolation Unit Tests', () => {
     });
   });
 
+  describe('Environment-Aware Domain Verification Hardening', () => {
+    const config = require('../../src/config/env/env');
+
+    test('Local development .deployx.app shortcut is allowed', async () => {
+      config.isDevelopment = true;
+      const mockDomain = {
+        _id: domainId,
+        owner: userId,
+        hostname: 'test.deployx.app',
+        verificationToken: 'token-dev-123',
+        verificationStatus: 'pending',
+        status: 'pending',
+        save: jest.fn().mockResolvedValue(true)
+      };
+
+      Domain.findById = jest.fn().mockResolvedValue(mockDomain);
+
+      const result = await DomainVerificationService.verifyDomain(domainId, userId);
+      expect(result.verified).toBe(true);
+      expect(mockDomain.verificationStatus).toBe('verified');
+      expect(mockDomain.status).toBe('active');
+    });
+
+    test('Production environment rejects .deployx.app without real TXT record', async () => {
+      config.isDevelopment = false;
+      config.isProduction = true;
+      const mockDomain = {
+        _id: domainId,
+        owner: userId,
+        hostname: 'prod.deployx.app',
+        verificationToken: 'token-prod-123',
+        verificationStatus: 'pending',
+        status: 'pending',
+        save: jest.fn().mockResolvedValue(true)
+      };
+
+      Domain.findById = jest.fn().mockResolvedValue(mockDomain);
+      dns.resolveTxt.mockResolvedValue([['other-token']]);
+
+      const result = await DomainVerificationService.verifyDomain(domainId, userId);
+      expect(result.verified).toBe(false);
+      expect(mockDomain.verificationStatus).toBe('failed');
+    });
+
+    test('Production environment verifies valid TXT record on custom domain', async () => {
+      config.isDevelopment = false;
+      config.isProduction = true;
+      const mockDomain = {
+        _id: domainId,
+        owner: userId,
+        hostname: 'customdomain.com',
+        verificationToken: 'token-prod-valid',
+        verificationStatus: 'pending',
+        status: 'pending',
+        save: jest.fn().mockResolvedValue(true)
+      };
+
+      Domain.findById = jest.fn().mockResolvedValue(mockDomain);
+      dns.resolveTxt.mockResolvedValue([['deployx-verification=token-prod-valid']]);
+
+      const result = await DomainVerificationService.verifyDomain(domainId, userId);
+      expect(result.verified).toBe(true);
+      expect(mockDomain.verificationStatus).toBe('verified');
+      expect(mockDomain.status).toBe('active');
+    });
+  });
+
   describe('Token Isolation in API Responses', () => {
     test('getProjectDomains excludes verificationToken', async () => {
       const selectMock = jest.fn().mockResolvedValue([

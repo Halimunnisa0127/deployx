@@ -52,6 +52,11 @@ const config = {
     artifactCleanupIntervalMs: 24 * 60 * 60 * 1000,
   },
 
+  artifacts: {
+    maxSizeBytes: Number(process.env.ARTIFACT_MAX_SIZE_BYTES) || 52428800, // 50MB
+    maxFileCount: Number(process.env.ARTIFACT_MAX_FILE_COUNT) || 10000,
+  },
+
   timeouts: {
     deploymentQueueTimeoutMs: 300000,
     deploymentBuildTimeoutMs: 600000,
