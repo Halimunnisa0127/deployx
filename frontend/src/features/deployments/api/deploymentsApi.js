@@ -54,5 +54,10 @@ export const deploymentsApi = {
   analyzeDeployment: async (id) => {
     const response = await api.post('/api/ai/deployment/analyze', { deploymentId: id });
     return response.data;
+  },
+
+  chat: async (message, history, context) => {
+    const response = await api.post('/api/ai/chat', { message, history, context });
+    return response.data;
   }
 };

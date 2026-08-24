@@ -1,6 +1,7 @@
 const express = require('express');
-const { testGemini, analyzeDeployment } = require('./ai.service');
+const { testGemini, analyzeDeployment, chatWithAI } = require('./ai.service');
 const { authenticate } = require('../../middleware/auth.middleware');
+const { aiRateLimiter } = require('../../middleware/rateLimiter.middleware');
 const ApiResponse = require('../../shared/responses/ApiResponse');
 
 const router = express.Router();
@@ -23,7 +24,7 @@ router.get('/test', async (req, res) => {
   }
 });
 
-router.post('/deployment/analyze', authenticate, async (req, res, next) => {
+router.post('/deployment/analyze', authenticate, aiRateLimiter, async (req, res, next) => {
   try {
     const { deploymentId } = req.body;
     
@@ -38,6 +39,32 @@ router.post('/deployment/analyze', authenticate, async (req, res, next) => {
   } catch (error) {
     console.error('Deployment AI analysis error:', error);
     next(error); // Let global error handler catch it
+  }
+});
+
+router.post('/chat', authenticate, aiRateLimiter, async (req, res, next) => {
+  try {
+    const { message, history, context } = req.body;
+
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json(ApiResponse.error('Message string is required', {}, 400));
+    }
+
+    if (message.length > 1000) {
+      return res.status(400).json(ApiResponse.error('Message is too long (max 1000 chars)', {}, 400));
+    }
+
+    if (!Array.isArray(history)) {
+      return res.status(400).json(ApiResponse.error('History must be an array', {}, 400));
+    }
+
+    const userId = req.user.id;
+    const responseData = await chatWithAI(userId, message, history, context);
+
+    return res.json(ApiResponse.success('Chat response generated successfully', responseData));
+  } catch (error) {
+    console.error('AI chat error:', error);
+    next(error);
   }
 });
 

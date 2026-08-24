@@ -1,5 +1,8 @@
 import { Outlet } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { DashboardSidebar, DashboardHeader } from '../features/dashboard';
+import DeployXAIAssistant from '../features/deployments/components/DeployXAIAssistant';
+import { setAIAssistantOpen } from '../store/slices/uiSlice';
 
 /**
  * DashboardLayout
@@ -11,6 +14,9 @@ import { DashboardSidebar, DashboardHeader } from '../features/dashboard';
  *  - Layout spacing
  */
 export default function DashboardLayout({ children }) {
+  const dispatch = useDispatch();
+  const isAIAssistantOpen = useSelector((state) => state.ui.isAIAssistantOpen);
+
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 font-sans antialiased transition-colors duration-300">
       {/* Sidebar placement */}
@@ -26,6 +32,12 @@ export default function DashboardLayout({ children }) {
           {children || <Outlet />}
         </div>
       </main>
+
+      {/* Global AI Assistant Drawer */}
+      <DeployXAIAssistant 
+        isOpen={isAIAssistantOpen} 
+        onClose={() => dispatch(setAIAssistantOpen(false))} 
+      />
     </div>
   );
 }

@@ -14,10 +14,13 @@ import {
   Terminal,
 } from 'lucide-react';
 
+import { useDispatch } from 'react-redux';
+import { toggleAIAssistant } from '../../../store/slices/uiSlice';
 import SearchBar from '../../../components/common/SearchBar';
 import Button from '../../../components/ui/Button';
 import GithubIcon from '../../../components/ui/GithubIcon';
 import { MOCK_GLOBAL_SEARCH_ITEMS } from '../data/mockDashboardData';
+import { Sparkles } from 'lucide-react';
 
 // Helper to format breadcrumb segment names
 function formatBreadcrumbLabel(segment) {
@@ -36,6 +39,7 @@ const CATEGORY_ICON_MAP = {
 };
 
 export default function DashboardHeader({ onToggleMobile }) {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -203,6 +207,16 @@ export default function DashboardHeader({ onToggleMobile }) {
             </div>
           )}
         </div>
+
+        {/* Ask DeployX AI Button */}
+        <button
+          onClick={() => dispatch(toggleAIAssistant())}
+          className="relative p-2 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/20 hover:border-indigo-500/30 text-indigo-400 hover:text-indigo-300 transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 flex items-center gap-2"
+          aria-label="Ask DeployX AI"
+        >
+          <Sparkles className="w-4 h-4" />
+          <span className="hidden sm:inline text-xs font-semibold">Ask AI</span>
+        </button>
 
         {/* Notifications Button with Unread Counter */}
         <Link

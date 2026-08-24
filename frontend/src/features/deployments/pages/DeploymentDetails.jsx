@@ -7,19 +7,20 @@ import BuildMetadataCard from '../components/BuildMetadataCard';
 import BuildArtifactsCard from '../components/BuildArtifactsCard';
 import DeploymentTimeline from '../components/DeploymentTimeline';
 import BuildLogsTerminal from '../components/BuildLogsTerminal';
-import DeployXAIAssistant from '../components/DeployXAIAssistant';
 import Button from '../../../components/ui/Button';
 import { ArrowLeft, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
 import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
 import { useDeploymentMutations } from '../hooks/useDeploymentMutations';
 import { useDeploymentLogs } from '../hooks/useDeploymentLogs';
+import { useDispatch } from 'react-redux';
+import { toggleAIAssistant } from '../../../store/slices/uiSlice';
 
 export default function DeploymentDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [notification, setNotification] = useState(null);
-  const [showAIAssistant, setShowAIAssistant] = useState(false);
 
   const { deployment: rawDeployment, isLoading, error, refetch } = useDeploymentDetails(id);
   const { createDeployment, cancelDeployment, redeployDeployment, isCreating, isCancelling } = useDeploymentMutations();
@@ -185,7 +186,7 @@ export default function DeploymentDetails() {
         onRedeploy={handleRedeploy}
         onViewLogs={handleViewLogs}
         onCopyUrl={handleCopyUrl}
-        onAskAI={() => setShowAIAssistant(true)}
+        onAskAI={() => dispatch(toggleAIAssistant())}
       />
 
       {/* 3. Structured Deployment Overview Grid */}
@@ -207,15 +208,6 @@ export default function DeploymentDetails() {
         logs={deploymentLogs} 
         isLoading={isLoadingLogs}
       />
-
-      {/* DeployX AI Assistant Modal */}
-      {showAIAssistant && (
-        <DeployXAIAssistant
-          deploymentId={deployment.id}
-          onClose={() => setShowAIAssistant(false)}
-          onRedeploy={handleRedeploy}
-        />
-      )}
     </div>
   );
 }

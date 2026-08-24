@@ -8,7 +8,7 @@ const corsMiddleware = require('./config/cors/cors.middleware');
 const bodyParserMiddleware = require('./middleware/bodyParser.middleware');
 const requestContext = require('./middleware/requestContext');
 const requestLoggerMiddleware = require('./middleware/requestLogger.middleware');
-const rateLimiterMiddleware = require('./middleware/rateLimiter.middleware');
+const { rateLimiterMiddleware } = require('./middleware/rateLimiter.middleware');
 const domainRouter = require('./middleware/domainRouter.middleware');
 
 const healthRoutes = require('./routes/health.routes');

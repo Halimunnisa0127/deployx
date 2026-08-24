@@ -1,4 +1,4 @@
-const rateLimit = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 
 const ApiResponse = require('../shared/responses/ApiResponse');
 
@@ -22,4 +22,21 @@ const rateLimiterMiddleware = rateLimit({
   ),
 });
 
-module.exports = rateLimiterMiddleware;
+const aiRateLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 5, // 5 requests per 5 minutes per IP
+  keyGenerator: (req) => {
+    // If authenticated, limit by user ID, otherwise by IP
+    return req.user ? req.user.id : (req.ip ? ipKeyGenerator(req.ip) : 'unknown');
+  },
+  message: ApiResponse.error(
+    'AI rate limit exceeded. Please try again later.',
+    {},
+    429
+  ),
+});
+
+module.exports = {
+  rateLimiterMiddleware,
+  aiRateLimiter
+};
