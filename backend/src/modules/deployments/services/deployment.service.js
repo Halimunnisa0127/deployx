@@ -23,7 +23,7 @@ class DeploymentService {
   /**
    * Create a new deployment record (Status: queued)
    */
-  static async createDeployment(userId, deploymentData) {
+  static async createDeployment(userId, deploymentData, options = {}) {
     const { projectId, environment, branch, commitHash, commitMessage } = deploymentData;
 
     // 1. Verify project exists
@@ -59,7 +59,7 @@ class DeploymentService {
     let repositoryFullName = project.gitRepository.fullName || null;
 
     if (provider === 'github' && repositoryFullName) {
-      if (deploymentData.isWebhookTrigger) {
+      if (options.isWebhookTrigger || options.isRedeploy) {
         resolvedCommitHash = commitHash;
         resolvedCommitMessage = commitMessage;
       } else {
@@ -100,7 +100,7 @@ class DeploymentService {
       buildSettings: buildSettingsSnapshot,
       region: project.region,
       status: 'queued',
-      triggeredBy: deploymentData.isWebhookTrigger ? 'GitHub Webhook' : 'Manual Redeploy',
+      triggeredBy: options.isWebhookTrigger ? 'GitHub Webhook' : (options.isRedeploy ? 'Manual Redeploy' : 'Manual Trigger'),
       url: null,
     });
 
@@ -201,6 +201,26 @@ class DeploymentService {
   }
 
   /**
+   * Redeploy an existing deployment
+   */
+  static async redeployDeployment(userId, deploymentId) {
+    // 1. Fetch original deployment and verify access
+    const original = await this.getDeploymentById(userId, deploymentId);
+
+    // 2. Clone configuration, strictly preserving the original commit hash
+    const deploymentData = {
+      projectId: original.project._id || original.project,
+      environment: original.environment,
+      branch: original.branch,
+      commitHash: original.source?.commitSha || original.commitHash,
+      commitMessage: original.source?.commitMessage || original.commitMessage
+    };
+
+    // 3. Create the new deployment record
+    return await this.createDeployment(userId, deploymentData, { isRedeploy: true });
+  }
+
+  /**
    * Find an existing deployment by commit to prevent duplicate webhook deployments
    */
   static async getDeploymentByCommit(projectId, branch, commitSha) {
@@ -288,6 +308,15 @@ class DeploymentService {
         triggeredBy: action === 'rollback' ? 'rollback' : 'manual',
         actor: userId,
       });
+    }
+
+    if (previousDeploymentId) {
+      const DockerClient = require('../../../infrastructure/docker/docker.client');
+      try {
+        await DockerClient.removeRuntimeContainer(previousDeploymentId);
+      } catch (err) {
+        // Safely ignore if container already missing
+      }
     }
 
     return deployment;

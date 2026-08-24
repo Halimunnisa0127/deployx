@@ -14,6 +14,13 @@ const authenticate = (req, res, next) => {
 
   try {
     const decoded = verifyAccessToken(token);
+    
+    if (decoded.scope === 'preview') {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json(ApiResponse.error('Preview tokens are not allowed for API access', {}, StatusCodes.UNAUTHORIZED));
+    }
+
     req.user = decoded; // { id, role, iat, exp }
     next();
   } catch (error) {
@@ -36,7 +43,9 @@ const optionalAuth = (req, res, next) => {
   if (token) {
     try {
       const decoded = verifyAccessToken(token);
-      req.user = decoded;
+      if (decoded.scope !== 'preview') {
+        req.user = decoded;
+      }
     } catch (error) {
       // Ignore token errors for optional auth
     }

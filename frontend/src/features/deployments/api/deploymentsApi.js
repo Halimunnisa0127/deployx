@@ -26,6 +26,11 @@ export const deploymentsApi = {
     return response.data;
   },
 
+  redeployDeployment: async (id) => {
+    const response = await api.post(`/deployments/${id}/redeploy`);
+    return response.data;
+  },
+
   promoteDeployment: async (id) => {
     const response = await api.post(`/deployments/${id}/promote`);
     return response.data;
@@ -43,6 +48,11 @@ export const deploymentsApi = {
 
   getDeploymentHistory: async (projectId, page = 1, limit = 10) => {
     const response = await api.get(`/deployments/project/${projectId}/history`, { params: { page, limit } });
+    return response.data;
+  },
+
+  analyzeDeployment: async (id) => {
+    const response = await api.post('/api/ai/deployment/analyze', { deploymentId: id });
     return response.data;
   }
 };

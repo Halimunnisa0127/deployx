@@ -12,6 +12,7 @@ import {
   Folder,
   AlertCircle,
 } from 'lucide-react';
+import { openPreview } from '../utils/getPreviewUrl';
 import Button from '../../../components/ui/Button';
 import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
 import { useDeploymentLogs } from '../hooks/useDeploymentLogs';
@@ -107,8 +108,6 @@ export default function DeploymentProgressScreen({
     );
   }
 
-  const realUrl = deployment?.url || url;
-
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 animate-fade-in font-sans selection:bg-blue-500 selection:text-white">
       {/* Header Info Banner */}
@@ -181,13 +180,11 @@ export default function DeploymentProgressScreen({
             </Button>
           )}
 
-          {currentStatus === 'ready' && realUrl && (
+          {currentStatus === 'ready' && (
             <Button
               variant="primary"
               size="sm"
-              href={realUrl}
-              target="_blank"
-              rel="noreferrer"
+              onClick={() => openPreview(deployment?.id || deployment?._id)}
               iconRight={<ExternalLink className="w-4 h-4" />}
               className="shadow-lg shadow-blue-500/20"
             >

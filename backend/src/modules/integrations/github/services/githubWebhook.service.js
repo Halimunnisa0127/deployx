@@ -113,11 +113,10 @@ class GithubWebhookService {
       environment: 'Production',
       branch: branch,
       commitHash: after,
-      commitMessage: head_commit ? head_commit.message : '',
-      isWebhookTrigger: true // Bypasses github branch HEAD lookup
+      commitMessage: head_commit ? head_commit.message : ''
     };
 
-    const deployment = await DeploymentService.createDeployment(project.owner, deploymentData);
+    const deployment = await DeploymentService.createDeployment(project.owner, deploymentData, { isWebhookTrigger: true });
 
     // Attach deployment ID to the delivery log
     delivery.deployment = deployment._id;

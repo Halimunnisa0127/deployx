@@ -13,6 +13,7 @@ import {
   Share2,
   Check
 } from 'lucide-react';
+import { openPreview, getCleanPreviewUrl } from '../utils/getPreviewUrl';
 
 const STATUS_VARIANT_MAP = {
   success: 'success',
@@ -55,27 +56,31 @@ export default function DeploymentDetailsHeader({
   const envVariant = ENV_VARIANT_MAP[environment] || 'neutral';
   const isFailed = status === 'failed';
 
+
+
   const handleOpenApp = () => {
-    if (!isFailed && url) {
-      window.open(url, '_blank', 'noopener,noreferrer');
+    if (!isFailed) {
+      openPreview(id);
     }
   };
 
   const handleCopyUrlClick = () => {
+    const previewUrl = getCleanPreviewUrl(id);
     if (onCopyUrl) {
-      onCopyUrl(url);
-    } else if (url) {
-      navigator.clipboard.writeText(url);
+      onCopyUrl(previewUrl);
+    } else {
+      navigator.clipboard.writeText(previewUrl);
     }
     setCopiedUrl(true);
     setTimeout(() => setCopiedUrl(false), 2000);
   };
 
   const handleShareClick = () => {
+    const previewUrl = getCleanPreviewUrl(id);
     if (onShare) {
-      onShare(url);
-    } else if (url) {
-      navigator.clipboard.writeText(url);
+      onShare(previewUrl);
+    } else {
+      navigator.clipboard.writeText(previewUrl);
     }
     setShared(true);
     setTimeout(() => setShared(false), 2000);

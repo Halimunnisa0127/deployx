@@ -35,10 +35,25 @@ export default function ProjectDetails() {
 
   const { project, isLoading: projectsStatusLoading, refetch } = useProjectDetails(id);
   const { deployments, refetch: refetchDeployments } = useDeployments(id);
-  const { createDeployment, rollbackDeployment, isCreating } = useDeploymentMutations();
+  const { createDeployment, rollbackDeployment, redeployDeployment, isCreating } = useDeploymentMutations();
 
   const handleAction = async (actionName) => {
-    if (actionName.includes('Redeploy') || actionName === 'Trigger First Build') {
+    if (isCreating) return;
+    
+    if (actionName.startsWith('Redeploy triggered for ')) {
+      const depId = actionName.split('Redeploy triggered for ')[1];
+      try {
+        const newDeployment = await redeployDeployment(depId);
+        setActionFeedback(`Successfully queued redeployment #${newDeployment.deploymentNumber}`);
+        refetchDeployments();
+      } catch (err) {
+        setActionFeedback(`Failed to trigger redeploy.`);
+      }
+      setTimeout(() => setActionFeedback(''), 4000);
+      return;
+    }
+
+    if (actionName === 'Trigger First Build') {
       try {
         const newDeployment = await createDeployment({
           projectId: id,

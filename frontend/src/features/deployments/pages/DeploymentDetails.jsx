@@ -7,6 +7,7 @@ import BuildMetadataCard from '../components/BuildMetadataCard';
 import BuildArtifactsCard from '../components/BuildArtifactsCard';
 import DeploymentTimeline from '../components/DeploymentTimeline';
 import BuildLogsTerminal from '../components/BuildLogsTerminal';
+import DeployXAIAssistant from '../components/DeployXAIAssistant';
 import Button from '../../../components/ui/Button';
 import { ArrowLeft, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
 import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
@@ -18,23 +19,17 @@ export default function DeploymentDetails() {
   const navigate = useNavigate();
 
   const [notification, setNotification] = useState(null);
+  const [showAIAssistant, setShowAIAssistant] = useState(false);
 
   const { deployment: rawDeployment, isLoading, error, refetch } = useDeploymentDetails(id);
-  const { createDeployment, cancelDeployment, isCreating, isCancelling } = useDeploymentMutations();
+  const { createDeployment, cancelDeployment, redeployDeployment, isCreating, isCancelling } = useDeploymentMutations();
   const deployment = rawDeployment ? { ...rawDeployment, id: rawDeployment._id || rawDeployment.id } : null;
   const { logs: deploymentLogs, isLoading: isLoadingLogs } = useDeploymentLogs(id, deployment?.status);
 
   const handleRedeploy = async () => {
+    if (isCreating) return;
     try {
-      if (!deployment?.project) return;
-      const projectId = typeof deployment.project === 'object' ? deployment.project._id : deployment.project;
-      
-      const newDeployment = await createDeployment({
-        projectId,
-        environment: deployment.environment,
-        branch: deployment.branch,
-        commitHash: deployment.commitHash,
-      });
+      const newDeployment = await redeployDeployment(id);
       
       setNotification({
         type: 'success',
@@ -42,7 +37,7 @@ export default function DeploymentDetails() {
       });
       setTimeout(() => {
         setNotification(null);
-        navigate(`/dashboard/deployments/${newDeployment._id}`);
+        navigate(`/dashboard/deployments/${newDeployment._id || newDeployment.id}`);
       }, 3000);
     } catch (err) {
       setNotification({
@@ -190,6 +185,7 @@ export default function DeploymentDetails() {
         onRedeploy={handleRedeploy}
         onViewLogs={handleViewLogs}
         onCopyUrl={handleCopyUrl}
+        onAskAI={() => setShowAIAssistant(true)}
       />
 
       {/* 3. Structured Deployment Overview Grid */}
@@ -211,6 +207,15 @@ export default function DeploymentDetails() {
         logs={deploymentLogs} 
         isLoading={isLoadingLogs}
       />
+
+      {/* DeployX AI Assistant Modal */}
+      {showAIAssistant && (
+        <DeployXAIAssistant
+          deploymentId={deployment.id}
+          onClose={() => setShowAIAssistant(false)}
+          onRedeploy={handleRedeploy}
+        />
+      )}
     </div>
   );
 }
