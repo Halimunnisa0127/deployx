@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { DashboardSidebar, DashboardHeader } from '../features/dashboard';
 import DeployXAIAssistant from '../features/deployments/components/DeployXAIAssistant';
+import FloatingAIAssistant from '../components/ui/FloatingAIAssistant/FloatingAIAssistant';
 import { setAIAssistantOpen } from '../store/slices/uiSlice';
 
 /**
@@ -32,6 +33,9 @@ export default function DashboardLayout({ children }) {
           {children || <Outlet />}
         </div>
       </main>
+
+      {/* Floating AI Assistant Mascot Trigger */}
+      <FloatingAIAssistant />
 
       {/* Global AI Assistant Drawer */}
       <DeployXAIAssistant 
