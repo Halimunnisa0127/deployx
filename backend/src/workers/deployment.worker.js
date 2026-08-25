@@ -73,10 +73,7 @@ const worker = new Worker('deployments', async (job) => {
           await deploymentLogService.appendLog(deploymentId, deployment.project, level, msg);
         });
 
-        await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Cleaning up previous runtime containers...');
-        await DockerClient.removePreviousRuntimeContainers(deployment.project);
-
-        await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Spawning production Nginx runtime serving container...');
+        await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Spawning Nginx runtime serving container for this deployment...');
         const updatedDep = await Deployment.findById(deploymentId).populate('artifact');
         if (!updatedDep || !updatedDep.artifact) {
           throw new Error('Deployment or associated artifact not found for runtime serving setup.');
@@ -204,16 +201,14 @@ const worker = new Worker('deployments', async (job) => {
       }
     );
     
-    // Spawning production Nginx serving runtime container
-    await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Cleaning up previous runtime containers...');
-    await DockerClient.removePreviousRuntimeContainers(deployment.project);
-
-    await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Spawning production Nginx runtime serving container...');
+    // Spawning Nginx serving runtime container for this deployment
+    await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Spawning Nginx runtime serving container for this deployment...');
     const updatedDep = await Deployment.findById(deploymentId).populate('artifact');
     if (!updatedDep || !updatedDep.artifact) {
       throw new Error('Deployment or associated artifact not found for runtime serving setup.');
     }
     const runtimeInfo = await DockerClient.startRuntimeContainer(updatedDep, updatedDep.artifact);
+
 
     const duration = Date.now() - startTime;
 

@@ -60,6 +60,16 @@ router.post(
 );
 
 /**
+ * Redeploy deployment
+ * Endpoint: POST /deployments/:id/redeploy
+ */
+router.post(
+  '/:id/redeploy',
+  authenticate,
+  asyncHandler(deploymentController.redeployDeployment)
+);
+
+/**
  * Get deployment logs
  * Endpoint: GET /deployments/:id/logs
  */
@@ -96,12 +106,44 @@ router.get(
 );
 
 /**
+ * Authenticate and initiate a preview session
+ * Endpoint: POST /deployments/:id/preview-auth
+ */
+router.post(
+  '/:id/preview-auth',
+  authenticate,
+  asyncHandler(deploymentController.authenticatePreviewSession)
+);
+
+const authenticatePreview = (req, res, next) => {
+  const token = req.cookies && req.cookies.deployx_preview_token;
+
+  if (!token) {
+    return res.status(401).send('Preview session expired or invalid');
+  }
+
+  try {
+    const { verifyPreviewToken } = require('../../../utils/helpers/jwt.helper');
+    const decoded = verifyPreviewToken(token);
+
+    if (decoded.scope !== 'preview' || decoded.sub !== req.params.id) {
+      return res.status(403).send('Invalid preview scope');
+    }
+
+    req.preview = decoded; // pass preview payload if needed
+    next();
+  } catch (error) {
+    return res.status(401).send('Preview session expired');
+  }
+};
+
+/**
  * Serve deployment site artifacts
  * Endpoint: GET /deployments/:id/site/*
  */
 router.get(
   '/:id/site/*',
-  authenticate,
+  authenticatePreview,
   asyncHandler(deploymentController.serveDeploymentSite)
 );
 

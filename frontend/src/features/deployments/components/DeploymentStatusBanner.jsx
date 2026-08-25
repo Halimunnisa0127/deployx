@@ -9,31 +9,35 @@ import {
   Terminal, 
   RotateCcw,
   Hourglass,
-  Clock
+  Clock,
+  Sparkles
 } from 'lucide-react';
+
+import { openPreview, getCleanPreviewUrl } from '../utils/getPreviewUrl';
 
 export default function DeploymentStatusBanner({
   deployment,
   onRedeploy,
   onViewLogs,
-  onCopyUrl
+  onCopyUrl,
+  onAskAI
 }) {
   const [copied, setCopied] = useState(false);
   const status = deployment?.status || 'success';
-  const url = deployment?.url || '';
+  const cleanPreviewUrl = getCleanPreviewUrl(deployment?.id || deployment?._id);
 
   const handleCopy = () => {
     if (onCopyUrl) {
-      onCopyUrl(url);
-    } else if (url) {
-      navigator.clipboard.writeText(url);
+      onCopyUrl(cleanPreviewUrl);
+    } else if (cleanPreviewUrl) {
+      navigator.clipboard.writeText(cleanPreviewUrl);
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleOpenApp = () => {
-    if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    openPreview(deployment?.id || deployment?._id);
   };
 
   // 1. BUILDING / IN PROGRESS BANNER
@@ -137,7 +141,17 @@ export default function DeploymentStatusBanner({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-indigo-500/20 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/30"
+              iconLeft={<Sparkles className="w-3.5 h-3.5 text-indigo-400" />}
+              onClick={onAskAI}
+            >
+              Ask DeployX AI
+            </Button>
+
             <Button
               variant="secondary"
               size="sm"

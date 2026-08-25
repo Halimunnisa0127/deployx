@@ -29,10 +29,24 @@ const decodeToken = (token) => {
   return jwt.decode(token);
 };
 
+const generatePreviewToken = (deploymentId) => {
+  return jwt.sign(
+    { sub: deploymentId, scope: 'preview' },
+    config.jwt.previewSecret,
+    { expiresIn: '5m' }
+  );
+};
+
+const verifyPreviewToken = (token) => {
+  return jwt.verify(token, config.jwt.previewSecret);
+};
+
 module.exports = {
   generateAccessToken,
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
+  generatePreviewToken,
+  verifyPreviewToken,
   decodeToken,
 };

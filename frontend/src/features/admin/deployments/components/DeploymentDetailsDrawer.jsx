@@ -12,7 +12,9 @@ import {
   ExternalLink,
   RotateCcw,
   StopCircle,
+  GitCommit,
 } from "lucide-react";
+import { openPreview } from "../../../../deployments/utils/getPreviewUrl";
 import Badge from "../../../../components/ui/Badge";
 import Button from "../../../../components/ui/Button";
 import LogsViewer from "./LogsViewer";
@@ -96,9 +98,7 @@ export default function DeploymentDetailsDrawer({
                   size="sm"
                   iconLeft={<ExternalLink className="w-4 h-4" />}
                   className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
-                  onClick={() =>
-                    window.open(`https://${deployment.url}`, "_blank")
-                  }
+                  onClick={() => openPreview(deployment.id || deployment._id)}
                 >
                   Visit
                 </Button>
@@ -257,9 +257,7 @@ export default function DeploymentDetailsDrawer({
               <Button
                 variant="secondary"
                 iconLeft={<Globe className="w-4 h-4" />}
-                onClick={() =>
-                  window.open(`https://${deployment.url}`, "_blank")
-                }
+                onClick={() => openPreview(deployment.id || deployment._id)}
                 className="w-full"
               >
                 Open Deployment URL

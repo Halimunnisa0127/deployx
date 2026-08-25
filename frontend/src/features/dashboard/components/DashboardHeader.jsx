@@ -14,6 +14,7 @@ import {
   Terminal,
 } from 'lucide-react';
 
+import { useDispatch } from 'react-redux';
 import SearchBar from '../../../components/common/SearchBar';
 import Button from '../../../components/ui/Button';
 import GithubIcon from '../../../components/ui/GithubIcon';
@@ -36,6 +37,7 @@ const CATEGORY_ICON_MAP = {
 };
 
 export default function DashboardHeader({ onToggleMobile }) {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');

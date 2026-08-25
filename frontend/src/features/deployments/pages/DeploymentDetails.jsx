@@ -12,29 +12,25 @@ import { ArrowLeft, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
 import { useDeploymentDetails } from '../hooks/useDeploymentDetails';
 import { useDeploymentMutations } from '../hooks/useDeploymentMutations';
 import { useDeploymentLogs } from '../hooks/useDeploymentLogs';
+import { useDispatch } from 'react-redux';
+import { toggleAIAssistant } from '../../../store/slices/uiSlice';
 
 export default function DeploymentDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [notification, setNotification] = useState(null);
 
   const { deployment: rawDeployment, isLoading, error, refetch } = useDeploymentDetails(id);
-  const { createDeployment, cancelDeployment, isCreating, isCancelling } = useDeploymentMutations();
+  const { createDeployment, cancelDeployment, redeployDeployment, isCreating, isCancelling } = useDeploymentMutations();
   const deployment = rawDeployment ? { ...rawDeployment, id: rawDeployment._id || rawDeployment.id } : null;
   const { logs: deploymentLogs, isLoading: isLoadingLogs } = useDeploymentLogs(id, deployment?.status);
 
   const handleRedeploy = async () => {
+    if (isCreating) return;
     try {
-      if (!deployment?.project) return;
-      const projectId = typeof deployment.project === 'object' ? deployment.project._id : deployment.project;
-      
-      const newDeployment = await createDeployment({
-        projectId,
-        environment: deployment.environment,
-        branch: deployment.branch,
-        commitHash: deployment.commitHash,
-      });
+      const newDeployment = await redeployDeployment(id);
       
       setNotification({
         type: 'success',
@@ -42,7 +38,7 @@ export default function DeploymentDetails() {
       });
       setTimeout(() => {
         setNotification(null);
-        navigate(`/dashboard/deployments/${newDeployment._id}`);
+        navigate(`/dashboard/deployments/${newDeployment._id || newDeployment.id}`);
       }, 3000);
     } catch (err) {
       setNotification({
@@ -190,6 +186,7 @@ export default function DeploymentDetails() {
         onRedeploy={handleRedeploy}
         onViewLogs={handleViewLogs}
         onCopyUrl={handleCopyUrl}
+        onAskAI={() => dispatch(toggleAIAssistant())}
       />
 
       {/* 3. Structured Deployment Overview Grid */}

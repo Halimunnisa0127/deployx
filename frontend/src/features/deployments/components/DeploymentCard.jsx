@@ -14,6 +14,7 @@ import {
   Eye,
   Timer
 } from 'lucide-react';
+import { openPreview } from '../utils/getPreviewUrl';
 
 const STATUS_VARIANT_MAP = {
   success: 'success',
@@ -109,9 +110,9 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
     }
   };
 
-  const handleUrlClick = (e) => {
+  const handleOpenApp = (e) => {
     e.stopPropagation();
-    if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    openPreview(id);
   };
 
   const handleRedeployClick = (e) => {
@@ -256,7 +257,7 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
               variant="secondary"
               size="sm"
               iconLeft={<ExternalLink className="w-3.5 h-3.5 text-sky-400" />}
-              onClick={handleUrlClick}
+              onClick={handleOpenApp}
               className="text-xs"
               aria-label="Open Deployment"
             >

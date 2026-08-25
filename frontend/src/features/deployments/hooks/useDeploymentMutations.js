@@ -51,11 +51,25 @@ export function useDeploymentMutations() {
     }
   };
 
+  const redeployDeployment = async (id) => {
+    try {
+      setIsCreating(true);
+      const response = await deploymentsApi.redeployDeployment(id);
+      return response.data?.deployment || response.deployment;
+    } catch (err) {
+      console.error("Failed to redeploy", err);
+      throw err;
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   return {
     createDeployment,
     cancelDeployment,
     promoteDeployment,
     rollbackDeployment,
+    redeployDeployment,
     isCreating,
     isCancelling,
   };

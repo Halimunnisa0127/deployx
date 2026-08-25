@@ -340,6 +340,51 @@ exit 0
   }
 
   /**
+   * Finds a runtime container using its deploymentId label or name.
+   */
+  static async findRuntimeContainer(deploymentId) {
+    try {
+      const list = await docker.listContainers({
+        all: true,
+        filters: JSON.stringify({
+          label: [`deploymentId=${deploymentId}`, 'type=runtime']
+        })
+      });
+      if (list && list.length > 0) {
+        return docker.getContainer(list[0].Id);
+      }
+      // Fallback name search
+      const nameList = await docker.listContainers({
+        all: true,
+        filters: JSON.stringify({
+          name: [`deployx-runtime-${deploymentId}`]
+        })
+      });
+      if (nameList && nameList.length > 0) {
+        return docker.getContainer(nameList[0].Id);
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  /**
+   * Stops and removes a specific deployment's runtime container.
+   */
+  static async removeRuntimeContainer(deploymentId) {
+    try {
+      const container = await this.findRuntimeContainer(deploymentId);
+      if (container) {
+        await container.stop().catch(() => {});
+        await container.remove({ force: true }).catch(() => {});
+      }
+    } catch (error) {
+      // Ignore if already removed
+    }
+  }
+
+  /**
    * Finds an available dynamic port.
    */
   static async findFreePort() {

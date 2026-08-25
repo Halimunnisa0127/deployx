@@ -11,6 +11,7 @@ import {
   Hourglass,
   ArrowUpRight
 } from 'lucide-react';
+import { openPreview, getCleanPreviewUrl } from '../utils/getPreviewUrl';
 
 const STATUS_ICON_MAP = {
   success: <CheckCircle2 className="w-4 h-4 text-emerald-400" />,
@@ -34,6 +35,8 @@ const ENV_VARIANT_MAP = {
 
 export default function DeploymentSummaryGrid({ deployment }) {
   const {
+    id,
+    _id,
     projectName,
     environment,
     framework,
@@ -44,12 +47,12 @@ export default function DeploymentSummaryGrid({ deployment }) {
     duration,
     triggeredBy,
     deployedAt,
-    url,
   } = deployment;
 
   const statusVariant = STATUS_VARIANT_MAP[status] || 'neutral';
   const envVariant = ENV_VARIANT_MAP[environment] || 'neutral';
   const statusIcon = STATUS_ICON_MAP[status] || STATUS_ICON_MAP.queued;
+  const cleanPreviewUrl = getCleanPreviewUrl(id || _id);
 
   return (
     <div className="p-6 rounded-2xl bg-card border border-border shadow-sm space-y-6">
@@ -112,16 +115,14 @@ export default function DeploymentSummaryGrid({ deployment }) {
         <div className="space-y-1 sm:col-span-2">
           <span className="text-xs font-medium text-muted-foreground">Deployment URL</span>
           <div className="pt-0.5">
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline"
+            <button
+              onClick={() => openPreview(id || _id)}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline bg-transparent border-none p-0 cursor-pointer"
             >
               <Globe className="w-4 h-4" />
-              <span>{url}</span>
+              <span>{cleanPreviewUrl}</span>
               <ArrowUpRight className="w-4 h-4" />
-            </a>
+            </button>
           </div>
         </div>
 

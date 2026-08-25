@@ -13,8 +13,13 @@ const adminHealthRoutes = require('../modules/admin/routes/adminHealth.routes');
 const adminUserRoutes = require('../modules/admin/routes/adminUser.routes');
 const adminProjectRoutes = require('../modules/admin/routes/adminProject.routes');
 const adminDeploymentRoutes = require('../modules/admin/routes/adminDeployment.routes');
+const aiRoutes = require('../aimodules/ai/ai.routes');
 
 const router = express.Router();
+
+
+router.use('/users', userRoutes);
+router.use('/api/ai', aiRoutes);
 
 // Authentication
 router.use('/auth', authRoutes);

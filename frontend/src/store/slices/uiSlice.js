@@ -7,6 +7,7 @@ const getInitialTheme = () => {
 
 const initialState = {
   theme: getInitialTheme(),
+  isAIAssistantOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -20,9 +21,15 @@ const uiSlice = createSlice({
     setTheme: (state, action) => {
       state.theme = action.payload;
       localStorage.setItem('theme', action.payload);
+    },
+    toggleAIAssistant: (state) => {
+      state.isAIAssistantOpen = !state.isAIAssistantOpen;
+    },
+    setAIAssistantOpen: (state, action) => {
+      state.isAIAssistantOpen = action.payload;
     }
   },
 });
 
-export const { toggleTheme, setTheme } = uiSlice.actions;
+export const { toggleTheme, setTheme, toggleAIAssistant, setAIAssistantOpen } = uiSlice.actions;
 export default uiSlice.reducer;
