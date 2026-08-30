@@ -7,7 +7,6 @@
 Deploy, monitor, and manage your applications with confidence.
 
 Inspired by **Vercel**, **Railway**, and **Render**, DeployX provides a modern developer experience for building, deploying, and managing applications from GitHub repositories.
-
 ---
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
@@ -35,6 +34,10 @@ DeployX follows enterprise-grade architecture principles with a strong focus on 
 The project is being built as a portfolio-grade SaaS application that closely resembles the workflow of real-world deployment platforms such as Vercel, Railway, and Render.
 
 ---
+
+## 🖼️ Preview
+![Home Preview](./frontend//src/assets/images/deployx.png)
+
 
 # 🎯 Project Vision
 
