@@ -5,32 +5,36 @@ import OverviewCard from "../../components/OverviewCard";
 export default function UsersStatisticsCards({ users = [] }) {
   const stats = useMemo(() => {
     const total = users.length;
-    const active = users.filter((u) => u.status === "active").length;
-    const suspended = users.filter((u) => u.status === "suspended").length;
-    // For mock new users, just randomly set it based on total
-    const newUsers = Math.floor(total * 0.3);
+    const active = users.filter((u) => u.status === "active" || u.isActive === true).length;
+    const suspended = users.filter((u) => u.status === "suspended" || u.isActive === false).length;
+    
+    const now = Date.now();
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    const newUsers = users.filter(
+      (u) => u.joinedAt && now - new Date(u.joinedAt).getTime() <= thirtyDaysMs
+    ).length;
 
     return { total, active, suspended, newUsers };
   }, [users]);
 
   const cards = [
-    { title: "Total Users", value: stats.total, change: 12.5, icon: Users },
+    { title: "Total Users", value: stats.total, change: 0, icon: Users },
     {
       title: "Active Users",
       value: stats.active,
-      change: 8.2,
+      change: 0,
       icon: UserCheck,
     },
     {
       title: "Suspended Users",
       value: stats.suspended,
-      change: -2.1,
+      change: 0,
       icon: UserX,
     },
     {
       title: "New Users (30 Days)",
       value: stats.newUsers,
-      change: 15.4,
+      change: 0,
       icon: UserPlus,
     },
   ];

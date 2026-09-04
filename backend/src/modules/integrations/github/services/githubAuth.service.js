@@ -94,42 +94,56 @@ exports.handleCallback = async (code, state, currentUserId = null) => {
   // Encrypt Access Token
   const encryptedToken = encrypt(accessToken);
 
-  let githubAccount = await GitHubAccount.findOne({ githubId: String(userProfile.id) });
+  const targetUserId = oauthState.userId || currentUserId;
   let user;
 
-  if (githubAccount) {
-    // Scenario 1: GitHubAccount exists -> Log the user in
-    user = await User.findById(githubAccount.userId);
+  if (targetUserId) {
+    // Scenario A: User was already authenticated when connecting GitHub
+    user = await User.findById(targetUserId);
     if (!user) {
-      throw new ApiError('Linked User account not found', 500);
+      throw new ApiError('Target user account not found', 404);
     }
-    
-    // Update tokens and metadata
+  } else {
+    // Scenario B: OAuth Login / Signup flow
+    const existingGithubAccount = await GitHubAccount.findOne({ githubId: String(userProfile.id) });
+    if (existingGithubAccount) {
+      user = await User.findById(existingGithubAccount.userId);
+      if (!user) {
+        throw new ApiError('Linked User account not found', 500);
+      }
+    } else {
+      user = await User.findOne({ email: primaryEmail });
+      if (!user) {
+        user = await User.create({
+          fullName: userProfile.name || userProfile.login,
+          email: primaryEmail,
+          avatar: userProfile.avatar_url || '',
+          authProvider: ['github'],
+        });
+      }
+    }
+  }
+
+  // Ensure 'github' is in authProvider
+  if (!user.authProvider.includes('github')) {
+    user.authProvider.push('github');
+    await user.save();
+  }
+
+  // Associate or update GitHubAccount for this user
+  let githubAccount = await GitHubAccount.findOne({
+    $or: [{ userId: user._id }, { githubId: String(userProfile.id) }],
+  });
+
+  if (githubAccount) {
+    githubAccount.userId = user._id;
+    githubAccount.githubId = String(userProfile.id);
     githubAccount.username = userProfile.login;
     githubAccount.avatarUrl = userProfile.avatar_url;
     githubAccount.encryptedAccessToken = encryptedToken;
+    githubAccount.connectedAt = new Date();
     await githubAccount.save();
   } else {
-    // Check if DeployX User with this email already exists
-    user = await User.findOne({ email: primaryEmail });
-
-    if (user) {
-      // Scenario 2: User exists -> Link GitHubAccount
-      if (!user.authProvider.includes('github')) {
-        user.authProvider.push('github');
-        await user.save();
-      }
-    } else {
-      // Scenario 3: Neither exists -> Create User automatically
-      user = await User.create({
-        fullName: userProfile.name || userProfile.login,
-        email: primaryEmail,
-        avatar: userProfile.avatar_url || '',
-        authProvider: ['github'],
-      });
-    }
-
-    // Create the associated GitHubAccount
     githubAccount = await GitHubAccount.create({
       userId: user._id,
       provider: PROVIDERS.GITHUB,

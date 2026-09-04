@@ -12,12 +12,12 @@ export function useProjects() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (params = {}) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await projectsService.getProjects();
-      setProjects(data);
+      const data = await projectsService.getProjects(params);
+      setProjects(Array.isArray(data) ? data : (data?.projects || []));
     } catch (err) {
       setError(err.message || "Failed to load projects");
       console.error("Failed to load projects:", err);

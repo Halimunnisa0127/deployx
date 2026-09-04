@@ -3,12 +3,14 @@ import { GitBranch, Clock, ArrowUpRight, Rocket, Timer } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
 import GithubIcon from '../../../components/ui/GithubIcon';
-import { MOCK_RECENT_DEPLOYMENTS } from '../data/mockDashboardData';
 
 const STATUS_VARIANT_MAP = {
   success: 'success',
+  ready: 'success',
+  live: 'success',
   building: 'info',
   failed: 'danger',
+  error: 'danger',
   queued: 'neutral',
 };
 
@@ -18,11 +20,10 @@ const ENV_VARIANT_MAP = {
   Development: 'neutral',
 };
 
-export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOYMENTS }) {
+export default function RecentDeploymentsCard({ deployments = [] }) {
   return (
     <Card
-      className="max-w-full p-6"
-      className="relative overflow-hidden flex flex-col h-full hover:-translate-y-[3px] hover:border-indigo-500/40 dark:hover:border-indigo-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1.5 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-sky-500"
+      className="relative overflow-hidden flex flex-col h-full hover:-translate-y-[3px] hover:border-indigo-500/40 dark:hover:border-indigo-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1.5 before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-sky-500 max-w-full p-6"
     >
       {/* Card Header */}
       <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-white/5 mb-4">
@@ -49,8 +50,18 @@ export default function RecentDeploymentsCard({ deployments = MOCK_RECENT_DEPLOY
 
       {/* Deployment List */}
       {deployments.length === 0 ? (
-        <div className="py-8 text-center text-muted-foreground text-sm">
-          No deployments found.
+        <div className="py-8 text-center text-muted-foreground text-sm flex flex-col items-center justify-center space-y-2">
+          <Rocket className="w-8 h-8 text-slate-400 dark:text-slate-600 mb-1" />
+          <p className="font-semibold text-foreground">No deployments yet</p>
+          <p className="text-xs text-muted-foreground max-w-xs">
+            Push code to your repository or create a new project to trigger your first automated build.
+          </p>
+          <Link
+            to="/dashboard/projects/new"
+            className="mt-2 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+          >
+            Create New Project &rarr;
+          </Link>
         </div>
       ) : (
         <div className="divide-y divide-slate-200/80 dark:divide-slate-800/60 flex flex-col gap-4">

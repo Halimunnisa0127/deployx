@@ -1,7 +1,7 @@
 import * as domainsApi from "../api/domainsApi";
 
-export const getDomains = async () => {
-  return await domainsApi.fetchDomains();
+export const getDomains = async (params) => {
+  return await domainsApi.fetchDomains(params);
 };
 
 export const getDomain = async (id) => {
@@ -10,6 +10,10 @@ export const getDomain = async (id) => {
 
 export const getDNSRecords = async (id) => {
   return await domainsApi.fetchDNSRecords(id);
+};
+
+export const getDomainInstructions = async (id) => {
+  return await domainsApi.fetchDomainInstructions(id);
 };
 
 export const getSSLInfo = async (id) => {

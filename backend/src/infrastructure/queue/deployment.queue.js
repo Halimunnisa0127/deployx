@@ -1,13 +1,14 @@
 const { Queue } = require('bullmq');
 const redisConnection = require('./redis');
+const config = require('../../config/env/env');
 
 const deploymentQueue = new Queue('deployments', {
   connection: redisConnection,
   defaultJobOptions: {
-    attempts: 3,
+    attempts: config.queue?.maxAttempts || 3,
     backoff: {
       type: 'exponential',
-      delay: 2000,
+      delay: config.queue?.backoffDelayMs || 2000,
     },
     removeOnComplete: true,
     removeOnFail: false,

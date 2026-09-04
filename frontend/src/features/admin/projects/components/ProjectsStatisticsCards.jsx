@@ -16,25 +16,25 @@ export default function ProjectsStatisticsCards({ projects = [] }) {
     {
       title: "Total Projects",
       value: stats.total,
-      change: 18.2,
+      change: 0,
       icon: FolderGit2,
     },
     {
       title: "Active Projects",
       value: stats.active,
-      change: 12.5,
+      change: 0,
       icon: CheckCircle2,
     },
     {
       title: "Archived Projects",
       value: stats.archived,
-      change: 2.1,
+      change: 0,
       icon: Archive,
     },
     {
       title: "Failed Projects",
       value: stats.failed,
-      change: -5.4,
+      change: 0,
       icon: AlertCircle,
     },
   ];

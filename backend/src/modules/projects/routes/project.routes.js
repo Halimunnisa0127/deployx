@@ -1,6 +1,11 @@
 const express = require('express');
 const projectController = require('../controllers/project.controller');
-const { checkProjectNameSchema, createProjectSchema, updateProjectSchema } = require('../validators/project.validator');
+const {
+  checkProjectNameSchema,
+  createProjectSchema,
+  updateProjectSchema,
+  projectIdParamSchema,
+} = require('../validators/project.validator');
 const validate = require('../../../shared/validators/validate');
 const { authenticate } = require('../../../middleware/auth.middleware');
 const { asyncHandler } = require('../../../utils');
@@ -47,18 +52,24 @@ router.get('/', authenticate, asyncHandler(projectController.getProjects));
  * Get Project by ID
  * Endpoint: GET /projects/:id
  */
-router.get('/:id', authenticate, asyncHandler(projectController.getProject));
+router.get('/:id', authenticate, validate(projectIdParamSchema), asyncHandler(projectController.getProject));
 
 /**
  * Update Project
  * Endpoint: PATCH /projects/:id
  */
-router.patch('/:id', authenticate, validate(updateProjectSchema), asyncHandler(projectController.updateProject));
+router.patch(
+  '/:id',
+  authenticate,
+  validate(projectIdParamSchema),
+  validate(updateProjectSchema),
+  asyncHandler(projectController.updateProject)
+);
 
 /**
  * Delete Project
  * Endpoint: DELETE /projects/:id
  */
-router.delete('/:id', authenticate, asyncHandler(projectController.deleteProject));
+router.delete('/:id', authenticate, validate(projectIdParamSchema), asyncHandler(projectController.deleteProject));
 
 module.exports = router;

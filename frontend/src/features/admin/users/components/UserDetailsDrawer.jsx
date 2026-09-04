@@ -73,7 +73,7 @@ export default function UserDetailsDrawer({
             <Calendar className="w-4 h-4" /> Member Since
           </span>
           <span className="text-sm font-medium text-slate-900 dark:text-slate-200">
-            {new Date(user.joinedAt).toLocaleDateString()}
+            {user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : "N/A"}
           </span>
         </div>
 

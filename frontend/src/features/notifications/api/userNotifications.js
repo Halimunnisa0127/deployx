@@ -1,1 +1,2 @@
-// File moved to data/userNotifications.js
+export * from './notificationApi';
+export { notificationApi as default } from './notificationApi';

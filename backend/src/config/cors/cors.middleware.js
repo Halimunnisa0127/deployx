@@ -3,7 +3,7 @@ const cors = require('cors');
 const config = require('../env/env');
 
 const allowedOrigins = [
-  'http://localhost:5173',
+  ...(config.allowedOrigins || []),
   config.clientUrl,
 ].filter(Boolean);
 
@@ -25,9 +25,14 @@ const corsMiddleware = function (req, res, next) {
         return callback(null, true);
       }
 
-      // Allow wildcard for deployx domains to serve deployed apps smoothly
-      // Using simple string matching to allow deployed apps (e.g. *.deployx.app)
-      if (origin.endsWith('.deployx.app') || origin.endsWith('localhost:5000')) {
+      // Allow wildcard for configured base domain and local development to serve deployed apps smoothly
+      const baseDomain = config.appBaseDomain || 'deployx.app';
+      if (
+        origin.endsWith(`.${baseDomain}`) ||
+        origin.endsWith('.deployx.app') ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1')
+      ) {
          return callback(null, true);
       }
 

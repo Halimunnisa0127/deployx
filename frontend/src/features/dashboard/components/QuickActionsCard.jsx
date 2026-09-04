@@ -1,7 +1,37 @@
 import { Link } from 'react-router-dom';
 import { FolderPlus, GitBranch, Terminal, Globe, Key, PlusCircle, Users, ArrowUpRight, Zap } from 'lucide-react';
 import Card from '../../../components/ui/Card';
-import { MOCK_QUICK_ACTIONS } from '../data/mockDashboardData';
+
+const DEFAULT_QUICK_ACTIONS = [
+  {
+    id: 'new_project',
+    title: 'New Project',
+    description: 'Deploy a new web application from GitHub repository or template.',
+    to: '/dashboard/projects/new',
+    icon: 'FolderPlus',
+  },
+  {
+    id: 'import_repo',
+    title: 'Import Repository',
+    description: 'Connect GitHub and deploy directly with zero server configuration.',
+    to: '/dashboard/projects/import',
+    icon: 'GitBranch',
+  },
+  {
+    id: 'manage_domains',
+    title: 'Manage Domains',
+    description: 'Configure custom domains, SSL certificates, and DNS records.',
+    to: '/dashboard/domains',
+    icon: 'Globe',
+  },
+  {
+    id: 'env_vars',
+    title: 'Environment Variables',
+    description: 'Configure application secrets and runtime environment keys.',
+    to: '/dashboard/settings/environment',
+    icon: 'Key',
+  },
+];
 
 const ACTION_ICON_MAP = {
   FolderPlus: <FolderPlus className="w-5 h-5 text-indigo-400" />,
@@ -23,7 +53,7 @@ const ACCENT_BG = {
   Users: 'bg-rose-500/10 border-rose-500/20 group-hover:bg-rose-500/20',
 };
 
-export default function QuickActionsCard({ actions = MOCK_QUICK_ACTIONS }) {
+export default function QuickActionsCard({ actions = DEFAULT_QUICK_ACTIONS }) {
   return (
     <Card
       className="max-w-full p-6"

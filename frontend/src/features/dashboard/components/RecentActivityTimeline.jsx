@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Activity, Rocket, Globe, Key, User, ArrowUpRight } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import GithubIcon from '../../../components/ui/GithubIcon';
-import { MOCK_RECENT_ACTIVITIES } from '../data/mockDashboardData';
 
 const ACTIVITY_ICON_MAP = {
   deployment: <Rocket className="w-3.5 h-3.5 text-indigo-400" />,
@@ -38,7 +37,7 @@ const FILTERS = [
   { id: 'this_week', label: 'This Week' },
 ];
 
-export default function RecentActivityTimeline({ activities = MOCK_RECENT_ACTIVITIES }) {
+export default function RecentActivityTimeline({ activities = [] }) {
   const [activeFilter, setActiveFilter] = useState('all');
 
   const filteredActivities = activeFilter === 'all'

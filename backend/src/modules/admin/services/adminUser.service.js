@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const User = require('../../users/models/User');
 const Project = require('../../projects/models/Project');
 const { StatusCodes } = require('http-status-codes');
@@ -24,7 +25,11 @@ class AdminUserService {
     const skip = (pageNum - 1) * limitNum;
 
     const total = await User.countDocuments(query);
-    const users = await User.find(query).skip(skip).limit(limitNum).sort({ createdAt: -1 });
+    const users = await User.find(query)
+      .select('-password -resetPasswordToken -resetPasswordExpires -otpSecret -oauthAccessToken -verificationToken')
+      .skip(skip)
+      .limit(limitNum)
+      .sort({ createdAt: -1 });
 
     const populatedUsers = [];
     for (const u of users) {
@@ -58,7 +63,9 @@ class AdminUserService {
   }
 
   static async getUser(id) {
-    const u = await User.findById(id);
+    const u = await User.findById(id).select(
+      '-password -resetPasswordToken -resetPasswordExpires -otpSecret -oauthAccessToken -verificationToken'
+    );
     if (!u) {
       throw new ApiError('User not found', StatusCodes.NOT_FOUND);
     }
@@ -86,10 +93,12 @@ class AdminUserService {
       throw new ApiError('Email already registered', StatusCodes.BAD_REQUEST);
     }
 
+    const temporaryPassword = data.password || `Temp_${crypto.randomBytes(12).toString('hex')}!`;
+
     const u = await User.create({
       fullName: data.fullName || data.name,
       email: data.email,
-      password: data.password || 'TemporaryPassword123!',
+      password: temporaryPassword,
       role: data.role || 'user',
       isActive: data.status === 'active' || data.isActive !== false,
     });
@@ -136,7 +145,10 @@ class AdminUserService {
     };
   }
 
-  static async deleteUser(id) {
+  static async deleteUser(id, currentAdminId = null) {
+    if (currentAdminId && currentAdminId.toString() === id.toString()) {
+      throw new ApiError('Cannot delete your own admin account', StatusCodes.BAD_REQUEST);
+    }
     const result = await User.deleteOne({ _id: id });
     if (result.deletedCount === 0) {
       throw new ApiError('User not found', StatusCodes.NOT_FOUND);

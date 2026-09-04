@@ -3,6 +3,8 @@ const Deployment = require('../../deployments/models/Deployment');
 const ApiError = require('../../../shared/errors/ApiError');
 const ApiResponse = require('../../../shared/responses/ApiResponse');
 
+const { ROLES } = require('../../../shared/constants/constants');
+
 exports.getDeploymentLogs = async (req, res) => {
   const { id: deploymentId } = req.params;
   const { page = 1, limit = 100 } = req.query;
@@ -13,9 +15,10 @@ exports.getDeploymentLogs = async (req, res) => {
     throw new ApiError(404, 'Deployment not found');
   }
 
-  // 2. Authorize user (Ownership check)
+  // 2. Authorize user (Owner or Admin check)
   const requestUserId = req.user ? (req.user.id || req.user._id) : null;
-  if (!requestUserId || deployment.owner.toString() !== requestUserId.toString()) {
+  const isAdmin = req.user && (req.user.role === 'admin' || req.user.role === ROLES.ADMIN);
+  if (!requestUserId || (deployment.owner.toString() !== requestUserId.toString() && !isAdmin)) {
     throw new ApiError(403, 'You do not have permission to view logs for this deployment');
   }
 

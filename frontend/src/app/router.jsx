@@ -136,6 +136,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/dashboard/projects/create",
+    element: <Navigate to="/dashboard/projects/new" replace />,
+  },
+  {
+    path: "/dashboard/projects/import",
+    element: <Navigate to="/dashboard/projects/new" replace />,
+  },
+  {
     path: "/dashboard/projects/:id",
     element: (
       <PrivateRoute>

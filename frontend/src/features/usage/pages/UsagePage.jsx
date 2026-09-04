@@ -31,7 +31,7 @@ export default function UsagePage() {
     activeTab, setActiveTab,
     chartPeriod, setChartPeriod,
     isLoading, isExporting,
-    data, handleExport, refetch,
+    data, error, handleExport, refetch,
   } = useUsage();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -39,16 +39,31 @@ export default function UsagePage() {
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    if (refetch) await refetch();
-    setLastUpdated('Updated just now');
-    setTimeout(() => setIsRefreshing(false), 500);
+    try {
+      if (refetch) await refetch();
+      setLastUpdated('Updated just now');
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
-  if (isLoading)               return <UsageSkeleton />;
-  if (!data || !data.summary)  return <EmptyUsageState onRefresh={handleRefresh} isRefreshing={isRefreshing} />;
+  if (isLoading) return <UsageSkeleton />;
+  if (!data || !data.summary) return <EmptyUsageState onRefresh={handleRefresh} isRefreshing={isRefreshing} />;
 
   return (
-    <div className="pb-10">
+    <div className="pb-10 space-y-6">
+      {/* API Error Alert */}
+      {error && (
+        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-between gap-4">
+          <span className="text-sm font-medium">{error}</span>
+          <button
+            onClick={handleRefresh}
+            className="text-xs font-bold underline hover:no-underline"
+          >
+            Retry
+          </button>
+        </div>
+      )}
 
       {/* ── 1. Header ─────────────────────────────────────────── */}
       <UsageHeader

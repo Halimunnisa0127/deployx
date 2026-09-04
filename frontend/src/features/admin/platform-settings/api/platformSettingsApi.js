@@ -1,30 +1,64 @@
-import { mockSettings } from "../data/platformSettingsData";
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import api from "../../../../lib/axios";
 
 export const platformSettingsApi = {
   getSettings: async () => {
-    await wait(800);
-    return { ...mockSettings };
+    const response = await api.get("/admin/settings");
+    return response.data?.data?.settings || response.data?.data || {};
   },
+
   saveSettings: async (settings) => {
-    await wait(1000);
-    return { success: true, message: "Settings saved successfully" };
+    // Only send runtime editable sections to the backend
+    const payload = {
+      general: settings.general,
+      branding: settings.branding,
+      maintenance: settings.maintenance,
+      features: settings.features,
+      security: settings.security,
+    };
+    const response = await api.patch("/admin/settings", payload);
+    return response.data?.data?.settings || response.data;
   },
+
   resetSettings: async () => {
-    await wait(800);
-    return { success: true, message: "Settings reset to defaults" };
+    const response = await api.post("/admin/settings/reset");
+    return response.data?.data?.settings || response.data;
   },
+
   sendTestEmail: async (email) => {
-    await wait(1500);
-    return { success: true, message: `Test email sent to ${email}` };
+    const response = await api.post("/admin/settings/test-email", { email });
+    return response.data;
   },
-  exportSettings: async () => {
-    await wait(1000);
-    return { success: true, url: "/downloads/platform_settings.json" };
+
+  exportSettings: async (settings) => {
+    const safeData = {
+      general: settings.general,
+      branding: settings.branding,
+      maintenance: settings.maintenance,
+      features: settings.features,
+      security: settings.security,
+      exportedAt: new Date().toISOString(),
+    };
+    const blob = new Blob([JSON.stringify(safeData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `deployx-settings-${new Date().toISOString().split("T")[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    return { success: true };
   },
-  importSettings: async (file) => {
-    await wait(1500);
-    return { success: true, message: "Settings imported successfully" };
+
+  importSettings: async (fileContent) => {
+    let parsed;
+    try {
+      parsed = typeof fileContent === "string" ? JSON.parse(fileContent) : fileContent;
+    } catch (e) {
+      throw new Error("Invalid JSON configuration file");
+    }
+    return await platformSettingsApi.saveSettings(parsed);
   },
 };

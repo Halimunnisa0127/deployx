@@ -3,6 +3,7 @@ const Deployment = require('../models/Deployment');
 const DeploymentCounter = require('../models/DeploymentCounter');
 const DeploymentPromotionHistory = require('../models/DeploymentPromotionHistory');
 const Project = require('../../projects/models/Project');
+const NotificationService = require('../../notifications/services/notification.service');
 const deploymentQueue = require('../../../infrastructure/queue/deployment.queue');
 const ApiError = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
@@ -121,6 +122,18 @@ class DeploymentService {
       });
       throw new ApiError('Failed to enqueue deployment job.', StatusCodes.INTERNAL_SERVER_ERROR);
     }
+
+    // Send in-app notification to deployment owner
+    await NotificationService.createNotification({
+      recipient: userId,
+      type: 'info',
+      category: 'deployment',
+      title: 'Deployment Queued',
+      message: `Deployment #${deploymentNumber} for project "${project.name}" is queued.`,
+      project: project._id,
+      projectName: project.name,
+      deployment: deployment._id,
+    });
 
     return deployment;
   }

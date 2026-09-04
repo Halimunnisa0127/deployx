@@ -7,12 +7,12 @@ export function useUsers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchUsersData = useCallback(async () => {
+  const fetchUsersData = useCallback(async (params = {}) => {
     try {
       setLoading(true);
       setError(null);
-      const data = await usersService.getUsers();
-      setUsers(data);
+      const data = await usersService.getUsers(params);
+      setUsers(Array.isArray(data) ? data : (data?.users || []));
     } catch (err) {
       setError(err.message || "Failed to fetch users");
     } finally {

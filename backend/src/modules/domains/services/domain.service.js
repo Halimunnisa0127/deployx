@@ -3,6 +3,7 @@ const { StatusCodes } = require('http-status-codes');
 const Domain = require('../models/Domain');
 const Project = require('../../projects/models/Project');
 const Deployment = require('../../deployments/models/Deployment');
+const NotificationService = require('../../notifications/services/notification.service');
 const ApiError = require('../../../shared/errors/ApiError');
 
 class DomainService {
@@ -112,6 +113,18 @@ class DomainService {
         targetDeployment: null
       });
 
+      // Send in-app notification to domain owner
+      await NotificationService.createNotification({
+        recipient: userId,
+        type: 'info',
+        category: 'domain',
+        title: 'Custom Domain Registered',
+        message: `Domain "${hostname}" was registered for project "${project.name}". Add the DNS challenge TXT record to verify ownership.`,
+        project: projectId,
+        projectName: project.name,
+        domain: domain._id,
+      });
+
       return domain;
     } catch (error) {
       if (error.code === 11000) {
@@ -119,6 +132,17 @@ class DomainService {
       }
       throw error;
     }
+  }
+
+  /**
+   * List all domains across all projects for a user
+   */
+  static async getUserDomains(userId) {
+    const domains = await Domain.find({ owner: userId })
+      .populate('project', 'name slug framework')
+      .select('-verificationToken')
+      .sort({ createdAt: -1 });
+    return domains;
   }
 
   /**
@@ -135,7 +159,10 @@ class DomainService {
     }
 
     // Return domains with select to exclude verificationToken in normal list responses
-    const domains = await Domain.find({ project: projectId }).select('-verificationToken');
+    const domains = await Domain.find({ project: projectId })
+      .populate('project', 'name slug framework')
+      .select('-verificationToken')
+      .sort({ createdAt: -1 });
     return domains;
   }
 
@@ -143,7 +170,9 @@ class DomainService {
    * Get specific domain details (excludes token for security)
    */
   static async getDomain(userId, domainId) {
-    const domain = await Domain.findById(domainId).select('-verificationToken');
+    const domain = await Domain.findById(domainId)
+      .populate('project', 'name slug framework')
+      .select('-verificationToken');
     if (!domain) {
       throw new ApiError('Domain not found', StatusCodes.NOT_FOUND);
     }

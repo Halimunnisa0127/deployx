@@ -34,10 +34,13 @@ const gitHubAccountSchema = new mongoose.Schema(
       type: String,
     },
     encryptedAccessToken: {
-      encryptedData: { type: String, required: true },
-      iv: { type: String, required: true },
-      authTag: { type: String, required: true },
-      version: { type: Number, required: true },
+      type: {
+        encryptedData: { type: String, required: true },
+        iv: { type: String, required: true },
+        authTag: { type: String, required: true },
+        version: { type: Number, required: true },
+      },
+      select: false,
     },
     installationId: {
       type: String,
@@ -49,6 +52,7 @@ const gitHubAccountSchema = new mongoose.Schema(
     },
     refreshToken: {
       type: String,
+      select: false,
     },
     tokenExpiresAt: {
       type: Date,

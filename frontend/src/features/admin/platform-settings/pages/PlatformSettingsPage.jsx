@@ -15,50 +15,47 @@ import SettingsSummaryCard from "../components/SettingsSummaryCard";
 import SaveBar from "../components/SaveBar";
 import { SettingsSkeleton } from "../components/SettingsSkeleton";
 import { SettingsEmptyState } from "../components/SettingsEmptyState";
-// Reuse existing generic confirmation if needed
 
 import { usePlatformSettings } from "../hooks/usePlatformSettings";
 
 const settingsSchema = z.object({
   general: z.object({
     platformName: z.string().min(1, "Platform name is required"),
-    defaultRegion: z.string(),
-    timezone: z.string(),
-    language: z.string(),
+    defaultRegion: z.string().optional(),
+    timezone: z.string().optional(),
+    language: z.string().optional(),
   }),
   branding: z.object({
     primaryLogo: z.string().optional(),
     favicon: z.string().optional(),
-    accentColor: z.string(),
+    accentColor: z.string().optional(),
   }),
   maintenance: z.object({
-    enabled: z.boolean(),
-    message: z.string(),
+    enabled: z.boolean().optional(),
+    message: z.string().optional(),
     allowedIps: z.string().optional(),
   }),
   features: z.object({
-    betaFeatures: z.boolean(),
-    userRegistration: z.boolean(),
-    githubIntegration: z.boolean(),
-    emailNotifications: z.boolean(),
+    betaFeatures: z.boolean().optional(),
+    userRegistration: z.boolean().optional(),
+    githubIntegration: z.boolean().optional(),
+    emailNotifications: z.boolean().optional(),
   }),
-  email: z.object({
-    smtpHost: z.string().min(1, "SMTP Host is required"),
-    port: z.string().min(1, "Port is required"),
-    senderName: z.string().optional(),
-    senderEmail: z
-      .string()
-      .email("Invalid email address")
-      .min(1, "Sender email is required"),
-    encryption: z.string(),
-    username: z.string().optional(),
-    password: z.string().optional(),
-  }),
+  email: z
+    .object({
+      smtpConfigured: z.boolean().optional(),
+      smtpHost: z.string().optional(),
+      port: z.string().optional(),
+      encryption: z.string().optional(),
+      senderName: z.string().optional(),
+      senderEmail: z.string().optional(),
+    })
+    .optional(),
   security: z.object({
-    sessionTimeout: z.string(),
-    passwordPolicy: z.string(),
-    require2fa: z.boolean(),
-    apiRateLimit: z.string(),
+    sessionTimeout: z.string().optional(),
+    passwordPolicy: z.string().optional(),
+    require2fa: z.boolean().optional(),
+    apiRateLimit: z.string().optional(),
   }),
 });
 
@@ -71,6 +68,7 @@ export default function PlatformSettingsPage() {
     saveSettings,
     sendTestEmail,
     exportSettings,
+    importSettings,
   } = usePlatformSettings();
 
   const [activeSection, setActiveSection] = useState("general");
@@ -93,15 +91,16 @@ export default function PlatformSettingsPage() {
     fetchSettings().then((data) => {
       if (data) reset(data);
     });
-     
   }, [fetchSettings, reset]);
 
   const onSubmit = async (data) => {
     try {
       await saveSettings(data);
-      reset(data); // Reset form state to new values so isDirty becomes false
+      reset(data);
+      alert("Settings saved successfully!");
     } catch (err) {
-      alert("Failed to save settings");
+      console.error("Save settings error:", err);
+      alert(err.response?.data?.message || err.message || "Failed to save settings");
     }
   };
 
@@ -115,20 +114,50 @@ export default function PlatformSettingsPage() {
   };
 
   const handleTestEmail = async () => {
-    const email = prompt("Enter email address to send test message to:");
+    const email = prompt("Enter recipient email address for SMTP test:");
     if (email) {
-      await sendTestEmail(email);
-      alert(`Test email sent to ${email}`);
+      try {
+        const res = await sendTestEmail(email);
+        alert(res.message || `Test email dispatched to ${email}`);
+      } catch (err) {
+        alert(err.response?.data?.message || err.message || "Failed to send test email");
+      }
     }
   };
 
   const handleExport = async () => {
-    await exportSettings();
-    alert("Exporting settings...");
+    try {
+      await exportSettings(formData);
+    } catch (err) {
+      alert("Failed to export settings");
+    }
   };
 
-  const handleImport = async () => {
-    alert("Import functionality simulated.");
+  const handleImport = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = async (e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        try {
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            try {
+              const updated = await importSettings(event.target.result);
+              if (updated) reset(updated);
+              alert("Settings imported and applied successfully!");
+            } catch (err) {
+              alert(err.response?.data?.message || err.message || "Invalid settings file");
+            }
+          };
+          reader.readAsText(file);
+        } catch (err) {
+          alert("Failed to read file");
+        }
+      }
+    };
+    input.click();
   };
 
   const scrollToSection = (id) => {
@@ -144,7 +173,7 @@ export default function PlatformSettingsPage() {
   };
 
   return (
-    <div className="pb-24 animate-in fade-in duration-300">
+    <div className="pb-24 animate-in fade-in duration-300 text-left">
       <PlatformSettingsHeader onExport={handleExport} onImport={handleImport} />
 
       {error ? (
@@ -168,10 +197,14 @@ export default function PlatformSettingsPage() {
           <div className="flex-1 space-y-10 min-w-0">
             <SettingsSummaryCard data={formData} />
 
-            {activeSection === "general" && <GeneralSettingsCard register={register} errors={errors} />}
-            
-            {activeSection === "branding" && <BrandingSettingsCard register={register} watch={watch} />}
-            
+            {activeSection === "general" && (
+              <GeneralSettingsCard register={register} errors={errors} />
+            )}
+
+            {activeSection === "branding" && (
+              <BrandingSettingsCard register={register} watch={watch} />
+            )}
+
             {activeSection === "maintenance" && (
               <MaintenanceSettingsCard
                 register={register}
@@ -179,17 +212,19 @@ export default function PlatformSettingsPage() {
                 setValue={setValue}
               />
             )}
-            
-            {activeSection === "features" && <FeatureFlagsCard watch={watch} setValue={setValue} />}
-            
+
+            {activeSection === "features" && (
+              <FeatureFlagsCard watch={watch} setValue={setValue} />
+            )}
+
             {activeSection === "email" && (
               <EmailSettingsCard
                 register={register}
-                errors={errors}
+                watch={watch}
                 onTestEmail={handleTestEmail}
               />
             )}
-            
+
             {activeSection === "security" && (
               <SecuritySettingsCard
                 register={register}

@@ -27,37 +27,37 @@ export default function AnalyticsCards({ deployments = [] }) {
     {
       title: "Total Deployments",
       value: stats.total,
-      change: 24.5,
+      change: 0,
       icon: Rocket,
     },
     {
       title: "Running Deployments",
       value: stats.running,
-      change: 5.2,
+      change: 0,
       icon: PlayCircle,
     },
     {
       title: "Successful Deployments",
       value: stats.success,
-      change: 18.7,
+      change: 0,
       icon: CheckCircle2,
     },
     {
       title: "Failed Deployments",
       value: stats.failed,
-      change: -12.4,
+      change: 0,
       icon: AlertCircle,
     },
     {
       title: "Queued Deployments",
       value: stats.queued,
-      change: 1.5,
+      change: 0,
       icon: Clock,
     },
     {
       title: "Cancelled Deployments",
       value: stats.cancelled,
-      change: -3.2,
+      change: 0,
       icon: XCircle,
     },
   ];

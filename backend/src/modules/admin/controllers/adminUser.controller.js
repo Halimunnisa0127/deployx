@@ -28,7 +28,13 @@ class AdminUserController {
 
   async deleteUser(req, res) {
     const { id } = req.params;
-    await adminUserService.deleteUser(id);
+    const currentAdminId = req.user?._id || req.user?.id;
+    if (currentAdminId && currentAdminId.toString() === id.toString()) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json(ApiResponse.error('Cannot delete your own admin account', {}, StatusCodes.BAD_REQUEST));
+    }
+    await adminUserService.deleteUser(id, currentAdminId);
     return res.status(StatusCodes.OK).json(ApiResponse.success('User deleted successfully'));
   }
 

@@ -1,34 +1,77 @@
-import { useState } from 'react';
-import { Terminal, Search, Copy, Check } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Terminal, Search, Copy, Check, RefreshCw, AlertCircle } from 'lucide-react';
 import Button from '../../../components/ui/Button';
-
-const MOCK_PROJECT_LOGS = [
-  { id: 1, timestamp: '18:48:12', level: 'info', type: 'system', message: 'DeployX Edge Runtime container initialized for us-east-1.' },
-  { id: 2, timestamp: '18:48:15', level: 'info', type: 'build', message: 'Git clone completed successfully for commit #8f7a9c2.' },
-  { id: 3, timestamp: '18:48:19', level: 'info', type: 'build', message: 'Installing node_modules via npm (cached)... 482 packages added.' },
-  { id: 4, timestamp: '18:48:24', level: 'info', type: 'build', message: 'vite v5.2.0 building for production... dist/ index.html generated.' },
-  { id: 5, timestamp: '18:48:29', level: 'info', type: 'system', message: 'Static bundle uploaded to 120+ POP edge cache nodes.' },
-  { id: 6, timestamp: '18:48:32', level: 'info', type: 'system', message: 'SSL Certificate provisioned via Let\'s Encrypt for https://my-awesome-app.deployx.app.' },
-  { id: 7, timestamp: '18:48:35', level: 'success', type: 'system', message: '🎉 Deployment live on production edge network.' },
-  { id: 8, timestamp: '18:50:01', level: 'info', type: 'runtime', message: 'GET / 200 OK - 142ms - Edge POP: sfo1' },
-  { id: 9, timestamp: '18:50:04', level: 'info', type: 'runtime', message: 'GET /assets/index-D7s8a9f.js 200 OK - 12ms - Cache status: HIT' },
-  { id: 10, timestamp: '18:51:10', level: 'warn', type: 'runtime', message: 'API request latency spike detected: 320ms on POST /api/v1/telemetry' },
-  { id: 11, timestamp: '18:52:45', level: 'info', type: 'runtime', message: 'GET /dashboard 200 OK - 45ms - Edge POP: iad1' },
-];
+import { deploymentsApi } from '../../deployments/api/deploymentsApi';
 
 export default function ProjectLogsTab({ project, onAction }) {
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterLevel, setFilterLevel] = useState('all'); // 'all' | 'info' | 'warn' | 'error'
   const [copied, setCopied] = useState(false);
+  const [activeDeploymentId, setActiveDeploymentId] = useState(null);
 
-  const filteredLogs = MOCK_PROJECT_LOGS.filter((log) => {
-    const matchesSearch = log.message.toLowerCase().includes(searchQuery.toLowerCase()) || log.type.toLowerCase().includes(searchQuery.toLowerCase());
+  const fetchLogs = useCallback(async (isManualRefresh = false) => {
+    const projectId = project?._id || project?.id;
+    if (!projectId) return;
+
+    try {
+      if (isManualRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
+      }
+
+      // 1. Identify deployment to fetch logs for
+      let deploymentId = activeDeploymentId;
+      if (!deploymentId) {
+        const depRes = await deploymentsApi.getProjectDeployments(projectId);
+        const projectDeployments = depRes?.data?.deployments || depRes?.data || [];
+        if (projectDeployments.length > 0) {
+          deploymentId = projectDeployments[0]._id || projectDeployments[0].id;
+          setActiveDeploymentId(deploymentId);
+        }
+      }
+
+      if (deploymentId) {
+        const logsRes = await deploymentsApi.getDeploymentLogs(deploymentId, 1, 200);
+        const rawLogs = logsRes?.data?.logs || [];
+        const formatted = rawLogs.map((l) => ({
+          id: l._id || l.id || `${l.sequence}-${l.createdAt}`,
+          timestamp: l.createdAt ? new Date(l.createdAt).toLocaleTimeString() : '00:00:00',
+          level: l.level === 'warning' ? 'warn' : l.level || 'info',
+          type: l.type || 'build',
+          message: l.message,
+        }));
+        setLogs(formatted);
+      } else {
+        setLogs([]);
+      }
+    } catch (err) {
+      console.warn('Could not load live logs for project deployment:', err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [project, activeDeploymentId]);
+
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]);
+
+  const filteredLogs = logs.filter((log) => {
+    const matchesSearch =
+      log.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      log.type?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesLevel = filterLevel === 'all' || log.level === filterLevel;
     return matchesSearch && matchesLevel;
   });
 
   const handleCopyLogs = () => {
-    const logText = filteredLogs.map((l) => `[${l.timestamp}] [${l.level.toUpperCase()}] [${l.type}] ${l.message}`).join('\n');
+    const logText = filteredLogs
+      .map((l) => `[${l.timestamp}] [${l.level.toUpperCase()}] [${l.type}] ${l.message}`)
+      .join('\n');
     navigator.clipboard.writeText(logText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -73,7 +116,20 @@ export default function ProjectLogsTab({ project, onAction }) {
             type="button"
             variant="secondary"
             size="sm"
+            onClick={() => fetchLogs(true)}
+            disabled={refreshing || loading}
+            iconLeft={<RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />}
+            className="text-xs"
+          >
+            Refresh
+          </Button>
+
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
             onClick={handleCopyLogs}
+            disabled={filteredLogs.length === 0}
             iconLeft={copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
             className="text-xs"
           >
@@ -98,8 +154,17 @@ export default function ProjectLogsTab({ project, onAction }) {
 
         {/* Log Lines Content */}
         <div className="p-4 space-y-2 max-h-[420px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-800">
-          {filteredLogs.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 italic">No logs match your filter criteria.</div>
+          {loading ? (
+            <div className="p-8 text-center text-slate-400 flex items-center justify-center gap-2">
+              <RefreshCw className="w-4 h-4 animate-spin text-blue-400" />
+              <span>Fetching live logs...</span>
+            </div>
+          ) : filteredLogs.length === 0 ? (
+            <div className="p-8 text-center text-slate-500 flex flex-col items-center justify-center gap-2">
+              <AlertCircle className="w-6 h-6 text-slate-600 mb-1" />
+              <p className="italic">No deployment logs available for this project yet.</p>
+              <p className="text-xs text-slate-600">Trigger a new deployment to view build and runtime output in real-time.</p>
+            </div>
           ) : (
             filteredLogs.map((log) => {
               let badgeStyle = 'bg-blue-500/10 text-blue-400 border-blue-500/20';

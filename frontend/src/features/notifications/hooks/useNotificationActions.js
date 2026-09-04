@@ -11,14 +11,21 @@ export function useNotificationActions(setNotifications) {
   const markAllAsRead = async () => {
     // Optimistic UI update
     setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
-    // Real API call
-    await notificationService.markAllAsRead();
+    try {
+      await notificationService.markAllAsRead();
+    } catch (err) {
+      console.error('Failed to mark all as read:', err);
+    }
   };
 
   const confirmClearAll = async () => {
     setNotifications([]);
     setIsClearAllModalOpen(false);
-    await notificationService.clearNotifications();
+    try {
+      await notificationService.clearNotifications();
+    } catch (err) {
+      console.error('Failed to clear notifications:', err);
+    }
   };
 
   // Single Item Actions
@@ -26,18 +33,26 @@ export function useNotificationActions(setNotifications) {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, unread: !n.unread } : n))
     );
-    await notificationService.markAsRead(id);
+    try {
+      await notificationService.markAsRead(id);
+    } catch (err) {
+      console.error('Failed to update notification read status:', err);
+    }
   };
 
   const confirmDeleteSingle = async () => {
     if (itemToDelete) {
-      setNotifications((prev) => prev.filter((n) => n.id !== itemToDelete.id));
-      if (selectedNotification?.id === itemToDelete.id) {
+      const idToDelete = itemToDelete.id;
+      setNotifications((prev) => prev.filter((n) => n.id !== idToDelete));
+      if (selectedNotification?.id === idToDelete) {
         setSelectedNotification(null);
       }
-      const idToDelete = itemToDelete.id;
       setItemToDelete(null);
-      await notificationService.deleteNotification(idToDelete);
+      try {
+        await notificationService.deleteNotification(idToDelete);
+      } catch (err) {
+        console.error('Failed to delete notification:', err);
+      }
     }
   };
 

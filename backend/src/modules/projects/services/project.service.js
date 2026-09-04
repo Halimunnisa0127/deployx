@@ -1,5 +1,6 @@
 const Project = require('../models/Project');
 const EncryptionUtil = require('../../../shared/utils/encryption.util');
+const config = require('../../../config/env/env');
 
 class ProjectService {
   /**
@@ -46,8 +47,9 @@ class ProjectService {
 
     const isAvailable = !existingProject;
     
-    // Generate preview deployment URL matching frontend style (https://slug.deployx.app)
-    const previewUrl = `https://${rawSlug}.deployx.app`;
+    // Generate preview deployment URL matching frontend style
+    const baseDomain = config.appBaseDomain || 'deployx.app';
+    const previewUrl = `https://${rawSlug}.${baseDomain}`;
 
     return {
       name,
@@ -72,7 +74,8 @@ class ProjectService {
       throw new Error(`Project with slug '${slug}' already exists. Please choose a different name.`);
     }
 
-    const domainUrl = `https://${slug}.deployx.app`;
+    const baseDomain = config.appBaseDomain || 'deployx.app';
+    const domainUrl = `https://${slug}.${baseDomain}`;
 
     let encryptedEnvVars = [];
     if (data.environmentVariables) {
@@ -179,8 +182,9 @@ class ProjectService {
         throw new Error(`Project with slug '${newSlug}' already exists. Please choose a different name.`);
       }
       
+      const baseDomain = config.appBaseDomain || 'deployx.app';
       project.slug = newSlug;
-      project.domainUrl = `https://${newSlug}.deployx.app`;
+      project.domainUrl = `https://${newSlug}.${baseDomain}`;
     }
 
     await project.save();
@@ -194,6 +198,20 @@ class ProjectService {
     const project = await Project.findOne({ _id: projectId, owner: userId });
     if (!project) {
       throw new Error('Project not found');
+    }
+
+    try {
+      const Domain = require('../../domains/models/Domain');
+      await Domain.deleteMany({ project: projectId });
+    } catch (err) {
+      // Ignore
+    }
+
+    try {
+      const DockerClient = require('../../../infrastructure/docker/docker.client');
+      await DockerClient.removePreviousRuntimeContainers(projectId);
+    } catch (err) {
+      // Ignore
     }
 
     await Project.deleteOne({ _id: projectId });

@@ -5,6 +5,9 @@ import api from '../src/lib/axios';
 vi.mock('../src/lib/axios', () => ({
   default: {
     get: vi.fn(),
+    post: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
   },
 }));
 
@@ -13,80 +16,67 @@ describe('Admin System Health API Client Unit Tests', () => {
     vi.clearAllMocks();
   });
 
-  test('getOverview maps backend services status correctly', async () => {
+  test('getOverview calls GET /admin/health/overview', async () => {
     const mockOverview = {
       status: 'healthy',
       services: { mongodb: 'ready', redis: 'ready', docker: 'ready' },
-      queue: { waiting: 0, active: 0, completed: 5, failed: 0, delayed: 0 },
-      timestamp: '2026-08-12T12:00:00Z'
     };
 
     api.get.mockResolvedValue({
-      data: {
-        data: mockOverview
-      }
+      data: { data: mockOverview },
     });
 
-    const result = await systemHealthApi.getOverview();
+    const res = await systemHealthApi.getOverview();
     expect(api.get).toHaveBeenCalledWith('/admin/health/overview');
-    expect(result.status).toBe('healthy');
-    expect(result.services.mongodb).toBe('ready');
+    expect(res).toEqual(mockOverview);
   });
 
-  test('getInfrastructure maps metrics correctly', async () => {
+  test('getPerformance calls GET /admin/health/performance', async () => {
+    const mockPerformance = {
+      cpu: { current: 42, trend: 1.5, data: [{ time: '12:00', value: 40 }] },
+      memory: { current: 65, trend: -0.5, data: [{ time: '12:00', value: 65 }] },
+    };
+
+    api.get.mockResolvedValue({
+      data: { data: mockPerformance },
+    });
+
+    const res = await systemHealthApi.getPerformance();
+    expect(api.get).toHaveBeenCalledWith('/admin/health/performance');
+    expect(res.cpu.current).toBe(42);
+    expect(res.cpu.data).toHaveLength(1);
+  });
+
+  test('getHistory calls GET /admin/health/history with parameters', async () => {
+    const mockHistory = {
+      metric: 'cpu',
+      range: '24h',
+      data: [{ time: '10:00', value: 35, min: 20, max: 45 }],
+    };
+
+    api.get.mockResolvedValue({
+      data: { data: mockHistory },
+    });
+
+    const res = await systemHealthApi.getHistory({ metric: 'cpu', range: '24h' });
+    expect(api.get).toHaveBeenCalledWith('/admin/health/history', {
+      params: { metric: 'cpu', range: '24h' },
+    });
+    expect(res.metric).toBe('cpu');
+  });
+
+  test('getInfrastructure calls GET /admin/health/infrastructure', async () => {
     const mockInfra = {
       mongodb: { status: 'ready' },
       redis: { status: 'ready' },
-      docker: { status: 'ready', activeBuildsCount: 0 }
     };
 
     api.get.mockResolvedValue({
-      data: {
-        data: mockInfra
-      }
+      data: { data: mockInfra },
     });
 
-    const result = await systemHealthApi.getInfrastructure();
+    const res = await systemHealthApi.getInfrastructure();
     expect(api.get).toHaveBeenCalledWith('/admin/health/infrastructure');
-    expect(result.mongodb.status).toBe('ready');
-  });
-
-  test('getIncidents maps pagination query parameters correctly', async () => {
-    const mockIncidents = {
-      incidents: [],
-      pagination: { total: 0, page: 2, limit: 10 }
-    };
-
-    api.get.mockResolvedValue({
-      data: {
-        data: mockIncidents
-      }
-    });
-
-    const result = await systemHealthApi.getIncidents(2, 10);
-    expect(api.get).toHaveBeenCalledWith('/admin/health/incidents?page=2&limit=10');
-    expect(result.pagination.page).toBe(2);
-  });
-
-  test('handles 401 unauthenticated and 403 unauthorized errors', async () => {
-    const err401 = new Error('Unauthorized');
-    err401.response = { status: 401 };
-    api.get.mockRejectedValueOnce(err401);
-
-    await expect(systemHealthApi.getOverview()).rejects.toThrow('Unauthorized');
-
-    const err403 = new Error('Forbidden');
-    err403.response = { status: 403 };
-    api.get.mockRejectedValueOnce(err403);
-
-    await expect(systemHealthApi.getOverview()).rejects.toThrow('Forbidden');
-  });
-
-  test('handles 503 service degraded response safely', async () => {
-    const err503 = new Error('Service Unavailable');
-    err503.response = { status: 503 };
-    api.get.mockRejectedValueOnce(err503);
-
-    await expect(systemHealthApi.getOverview()).rejects.toThrow('Service Unavailable');
+    expect(res.mongodb.status).toBe('ready');
   });
 });

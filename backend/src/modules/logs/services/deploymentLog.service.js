@@ -1,10 +1,11 @@
 const DeploymentLog = require('../models/DeploymentLog');
 const LogSequence = require('../models/LogSequence');
+const config = require('../../../config/env/env');
 
 // Maximum characters per individual log message
-const MAX_LOG_LENGTH = 5000;
+const MAX_LOG_LENGTH = config.logs?.maxLength || 5000;
 // Practical limit: 10,000 logs per deployment
-const MAX_LOGS_PER_DEPLOYMENT = 10000;
+const MAX_LOGS_PER_DEPLOYMENT = config.logs?.maxPerDeployment || 10000;
 
 class DeploymentLogService {
   /**

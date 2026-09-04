@@ -121,7 +121,7 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
         {deploymentList.map((dep) => {
           const statusVariant = STATUS_VARIANT_MAP[dep.status] ?? 'neutral';
           const envVariant = (dep.environment || 'Production').toLowerCase() === 'production' ? 'info' : 'neutral';
-          const mockUrl = dep.url || `https://${dep.id}.${(project?.name || 'app').toLowerCase().replace(/[^a-z0-9-]/g, '')}.deployx.app`;
+          const deploymentUrl = dep.url || (project?.domainUrl ? `https://${project.domainUrl}` : null);
 
           return (
             <Card
@@ -223,16 +223,18 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
                       Redeploy
                     </Button>
 
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      href={mockUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      iconLeft={<ExternalLink className="w-3.5 h-3.5" />}
-                    >
-                      Open URL
-                    </Button>
+                    {deploymentUrl && (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        href={deploymentUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        iconLeft={<ExternalLink className="w-3.5 h-3.5" />}
+                      >
+                        Open URL
+                      </Button>
+                    )}
 
                     <Button
                       variant="secondary"

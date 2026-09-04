@@ -3,21 +3,20 @@ import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
 import { Progress } from '../../../components/ui';
 import { Link } from 'react-router-dom';
-import { MOCK_PROJECT_OVERVIEW } from '../data/mockDashboardData';
 
-export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }) {
+export default function ProjectOverviewCard({ overview = {} }) {
   const {
-    total = 15,
-    liveCount = 9,
-    previewCount = 3,
+    total = 0,
+    liveCount = 0,
+    previewCount = 0,
     buildingCount = 0,
-    failedCount = 1,
-    archivedCount = 2,
+    failedCount = 0,
+    archivedCount = 0,
   } = overview;
 
-  // Handle previewCount fallback if buildingCount exists
-  const effectivePreview = previewCount || buildingCount || 3;
+  const effectivePreview = previewCount || buildingCount || 0;
   const effectiveTotal = total || (liveCount + effectivePreview + failedCount + archivedCount);
+  const safeTotal = effectiveTotal > 0 ? effectiveTotal : 1;
 
   const categories = [
     {
@@ -35,7 +34,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
       count: liveCount,
       color: 'bg-emerald-500',
       icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />,
-      percent: Math.round((liveCount / effectiveTotal) * 100),
+      percent: effectiveTotal > 0 ? Math.round((liveCount / safeTotal) * 100) : 0,
       badgeText: 'Healthy',
       badgeVariant: 'success',
     },
@@ -45,7 +44,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
       count: effectivePreview,
       color: 'bg-sky-500',
       icon: <PlayCircle className="w-4 h-4 text-sky-400" />,
-      percent: Math.round((effectivePreview / effectiveTotal) * 100),
+      percent: effectiveTotal > 0 ? Math.round((effectivePreview / safeTotal) * 100) : 0,
       badgeText: 'Preview',
       badgeVariant: 'info',
     },
@@ -55,7 +54,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
       count: failedCount,
       color: 'bg-rose-500',
       icon: <AlertTriangle className="w-4 h-4 text-rose-400" />,
-      percent: Math.round((failedCount / effectiveTotal) * 100),
+      percent: effectiveTotal > 0 ? Math.round((failedCount / safeTotal) * 100) : 0,
       badgeText: 'Critical',
       badgeVariant: 'danger',
     },
@@ -65,7 +64,7 @@ export default function ProjectOverviewCard({ overview = MOCK_PROJECT_OVERVIEW }
       count: archivedCount,
       color: 'bg-slate-500',
       icon: <Archive className="w-4 h-4 text-slate-400" />,
-      percent: Math.round((archivedCount / effectiveTotal) * 100),
+      percent: effectiveTotal > 0 ? Math.round((archivedCount / safeTotal) * 100) : 0,
       badgeText: 'Archived',
       badgeVariant: 'neutral',
     },

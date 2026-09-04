@@ -17,11 +17,13 @@ import {
 } from "../components/DeploymentsEmptyState";
 import SearchBar from "../../../../components/common/SearchBar";
 import { useDeployments } from "../hooks/useDeployments";
+import { deploymentsService } from "../services/deploymentsService";
 
 export default function DeploymentsPage() {
   const {
     loading,
     refreshing,
+    error,
     deployments,
     filteredDeployments,
     counts,
@@ -41,13 +43,28 @@ export default function DeploymentsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalConfig, setModalConfig] = useState(null); // { type, deployment }
 
-  const handleRowClick = (deployment) => {
+  const handleRowClick = async (deployment) => {
     setSelectedDeployment(deployment);
     setIsDrawerOpen(true);
+    try {
+      const [fullDeployment, logs] = await Promise.all([
+        deploymentsService.getDeployment(deployment.id),
+        deploymentsService.getDeploymentLogs(deployment.id)
+      ]);
+      setSelectedDeployment(prev => ({
+        ...(prev || deployment),
+        ...(fullDeployment || {}),
+        logs: logs || 'No logs found for this deployment.'
+      }));
+    } catch (err) {
+      console.error("Failed to load full deployment details:", err);
+    }
   };
 
   const handleOpenProject = (deployment) => {
-    console.log("Open project for", deployment.project);
+    if (deployment?.domain) {
+      window.open(deployment.domain.startsWith('http') ? deployment.domain : `https://${deployment.domain}`, '_blank');
+    }
   };
 
   const handleRedeploy = async (deployment) => {
@@ -76,6 +93,7 @@ export default function DeploymentsPage() {
     onViewDetails: handleRowClick,
     onOpenProject: handleOpenProject,
     onRedeploy: handleRedeploy,
+    onRollback: handleRedeploy,
     onCancel: (dep) => confirmAction("cancel", dep),
     onDelete: (dep) => confirmAction("delete", dep),
   };
@@ -162,7 +180,7 @@ export default function DeploymentsPage() {
             ? "Cancel Deployment"
             : "Delete Deployment"
         }
-        message={`Are you sure you want to ${modalConfig?.type} ${modalConfig?.deployment?.project}? ${modalConfig?.type === "delete" ? "This action cannot be undone." : ""}`}
+        message={`Are you sure you want to ${modalConfig?.type} ${modalConfig?.deployment?.project || 'this deployment'}? ${modalConfig?.type === "delete" ? "This action cannot be undone." : ""}`}
         confirmText={
           modalConfig?.type === "cancel"
             ? "Cancel Deployment"

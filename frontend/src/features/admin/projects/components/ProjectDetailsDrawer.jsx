@@ -40,10 +40,10 @@ export default function ProjectDetailsDrawer({
             <FolderGit2 className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-foreground">{project.name}</h2>
+            <h2 className="text-xl font-bold text-foreground">{project.name || "Unnamed Project"}</h2>
             <p className="text-muted-foreground text-sm flex items-center gap-1.5 mt-1">
               <Globe className="w-3.5 h-3.5" />
-              {project.connectedDomain}
+              {project.connectedDomain || project.domainUrl || "No domain attached"}
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ export default function ProjectDetailsDrawer({
               <Shield className="w-3.5 h-3.5" /> Status
             </span>
             <div>
-              <Badge status={project.status} type="project" />
+              <Badge status={project.status || "active"} type="project" />
             </div>
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function ProjectDetailsDrawer({
               <User className="w-4 h-4" /> Owner
             </span>
             <span className="text-sm font-medium text-foreground">
-              {project.owner}
+              {project.owner || project.ownerEmail || "Unknown"}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -82,7 +82,7 @@ export default function ProjectDetailsDrawer({
               <Calendar className="w-4 h-4" /> Created
             </span>
             <span className="text-sm font-medium text-foreground">
-              {new Date(project.createdAt).toLocaleDateString()}
+              {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : "N/A"}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -90,7 +90,7 @@ export default function ProjectDetailsDrawer({
               <Calendar className="w-4 h-4" /> Updated
             </span>
             <span className="text-sm font-medium text-foreground">
-              {new Date(project.updatedAt).toLocaleDateString()}
+              {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : "N/A"}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -98,7 +98,7 @@ export default function ProjectDetailsDrawer({
               <GitBranch className="w-4 h-4" /> Environment
             </span>
             <span className="text-sm font-medium text-foreground capitalize">
-              {project.environment}
+              {project.environment || "production"}
             </span>
           </div>
         </div>
@@ -111,17 +111,19 @@ export default function ProjectDetailsDrawer({
           <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-border p-4 flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-sm text-muted-foreground truncate">
-                {project.repository}
+                {project.repository || (project.gitRepository?.repoUrl ? project.gitRepository.repoUrl.replace(/^https?:\/\//, '') : 'No Git repo connected')}
               </p>
             </div>
-            <a
-              href={`https://${project.repository}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 text-xs font-medium"
-            >
-              View
-            </a>
+            {(project.repository || project.gitRepository?.repoUrl) && (
+              <a
+                href={project.gitRepository?.repoUrl || `https://${project.repository}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 text-xs font-medium"
+              >
+                View
+              </a>
+            )}
           </div>
         </div>
 

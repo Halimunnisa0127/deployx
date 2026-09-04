@@ -18,7 +18,6 @@ import { useDispatch } from 'react-redux';
 import SearchBar from '../../../components/common/SearchBar';
 import Button from '../../../components/ui/Button';
 import GithubIcon from '../../../components/ui/GithubIcon';
-import { MOCK_GLOBAL_SEARCH_ITEMS } from '../data/mockDashboardData';
 
 // Helper to format breadcrumb segment names
 function formatBreadcrumbLabel(segment) {
@@ -27,6 +26,17 @@ function formatBreadcrumbLabel(segment) {
   return segment.charAt(0).toUpperCase() + segment.slice(1);
 }
 
+const BASE_NAVIGATION_ITEMS = [
+  { id: 'nav-p', name: 'All Projects', category: 'Projects', link: '/dashboard/projects' },
+  { id: 'nav-p-new', name: 'Create New Project', category: 'Projects', link: '/dashboard/projects/new' },
+  { id: 'nav-p-import', name: 'Import Repository', category: 'Projects', link: '/dashboard/projects/import' },
+  { id: 'nav-d', name: 'All Deployments', category: 'Deployments', link: '/dashboard/deployments' },
+  { id: 'nav-dm', name: 'Custom Domains', category: 'Domains', link: '/dashboard/domains' },
+  { id: 'nav-u', name: 'Infrastructure Usage', category: 'Usage', link: '/dashboard/usage' },
+  { id: 'nav-env', name: 'Environment Variables', category: 'Settings', link: '/dashboard/settings/environment' },
+  { id: 'nav-tm', name: 'Team Access', category: 'Settings', link: '/dashboard/settings/team' },
+];
+
 const CATEGORY_ICON_MAP = {
   Projects: <FolderPlus className="w-3.5 h-3.5 text-indigo-400" />,
   Deployments: <Rocket className="w-3.5 h-3.5 text-purple-400" />,
@@ -34,9 +44,11 @@ const CATEGORY_ICON_MAP = {
   Repositories: <GithubIcon className="w-3.5 h-3.5 text-emerald-400" />,
   Teams: <Users className="w-3.5 h-3.5 text-rose-400" />,
   Logs: <Terminal className="w-3.5 h-3.5 text-amber-400" />,
+  Settings: <Terminal className="w-3.5 h-3.5 text-slate-400" />,
+  Usage: <Rocket className="w-3.5 h-3.5 text-sky-400" />,
 };
 
-export default function DashboardHeader({ onToggleMobile }) {
+export default function DashboardHeader({ onToggleMobile, searchItems = BASE_NAVIGATION_ITEMS }) {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -46,7 +58,7 @@ export default function DashboardHeader({ onToggleMobile }) {
 
   // Filter search items based on query
   const filteredSearchItems = searchQuery.trim()
-    ? MOCK_GLOBAL_SEARCH_ITEMS.filter(
+    ? searchItems.filter(
         (item) =>
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.category.toLowerCase().includes(searchQuery.toLowerCase())

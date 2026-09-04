@@ -1,6 +1,11 @@
 import api from '../../../lib/axios';
 
 export const domainsApi = {
+  getUserDomains: async () => {
+    const response = await api.get('/domains');
+    return response.data;
+  },
+
   createDomain: async (projectId, hostname) => {
     const response = await api.post('/domains', { projectId, hostname });
     return response.data;

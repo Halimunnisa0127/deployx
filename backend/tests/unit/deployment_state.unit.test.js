@@ -15,6 +15,7 @@ jest.mock('../../src/infrastructure/docker/docker.client');
 describe('Deployment State Machine & Lifecycle Unit Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mongoose.startSession = jest.fn().mockResolvedValue(null);
   });
 
   describe('Deployment State Machine transitions', () => {

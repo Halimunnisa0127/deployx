@@ -5,6 +5,17 @@ const ApiResponse = require('../../../shared/responses/ApiResponse');
 
 class DomainController {
   /**
+   * Get all custom domains for user
+   */
+  async getUserDomains(req, res) {
+    const userId = req.user.id;
+    const domains = await domainService.getUserDomains(userId);
+    res
+      .status(StatusCodes.OK)
+      .json(ApiResponse.success('User domains retrieved successfully', { domains }));
+  }
+
+  /**
    * Create new custom domain
    */
   async createDomain(req, res) {

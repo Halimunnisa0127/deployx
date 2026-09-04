@@ -30,5 +30,18 @@ router.use(requireAdmin);
 router.get('/overview', adminHealthController.getOverview);
 router.get('/infrastructure', adminHealthController.getInfrastructure);
 router.get('/incidents', adminHealthController.getIncidents);
+router.get('/history', adminHealthController.getHistoricalMetrics);
+router.get('/performance', adminHealthController.getPerformance);
+router.post('/sample', adminHealthController.recordSample);
+
+// Admin Analytics Endpoints
+router.get('/analytics', adminHealthController.getAnalyticsOverview);
+router.get('/deployment-trends', adminHealthController.getDeploymentTrends);
+router.get('/user-growth', adminHealthController.getUserGrowth);
+router.get('/project-growth', adminHealthController.getProjectGrowth);
+router.get('/frameworks', adminHealthController.getFrameworkDistribution);
+router.get('/top-projects', adminHealthController.getTopProjects);
+router.get('/top-users', adminHealthController.getTopUsers);
+router.get('/regions', adminHealthController.getRegionDistribution);
 
 module.exports = router;

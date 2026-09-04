@@ -5,74 +5,8 @@ import {
   Info, 
 } from 'lucide-react';
 
-export const INITIAL_MOCK_NOTIFICATIONS = [
-  {
-    id: 'notif-1',
-    type: 'success',
-    title: 'Deployment Successful',
-    message: 'Your project "deployx-frontend" was successfully deployed to production.',
-    projectName: 'deployx-frontend',
-    commitHash: '7a8f3b2',
-    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // Today (15 mins ago)
-    unread: true,
-    details: 'Build completed in 1m 24s. All 42 unit tests passed. SSL certificates automatically renewed for deployx.dev domain.',
-  },
-  {
-    id: 'notif-2',
-    type: 'warning',
-    title: 'High CPU Usage Detected',
-    message: 'Your project "analytics-service" is experiencing higher than normal CPU usage (>85%).',
-    projectName: 'analytics-service',
-    commitHash: 'e49c10d',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString(), // Today (3 hours ago)
-    unread: true,
-    details: 'Worker node us-east-1a CPU spiked to 88.4%. Consider scaling up instance capacity or checking memory allocation.',
-  },
-  {
-    id: 'notif-3',
-    type: 'error',
-    title: 'Build Failed on Main Branch',
-    message: 'The build for "backend-api" failed during step npm run build with exit code 1.',
-    projectName: 'backend-api',
-    commitHash: '2c7104e',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 26).toISOString(), // Yesterday (26 hours ago)
-    unread: false,
-    details: 'SyntaxError: Unexpected token in src/auth/jwt.js at line 42. Check build logs in Deployment Details dashboard.',
-  },
-  {
-    id: 'notif-4',
-    type: 'info',
-    title: 'New Team Member Joined',
-    message: 'Jane Doe (jane@deployx.dev) accepted your organization invitation.',
-    projectName: 'Workspace',
-    commitHash: 'N/A',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 30).toISOString(), // Yesterday (30 hours ago)
-    unread: false,
-    details: 'Jane Doe was assigned Developer permissions for all production and preview projects.',
-  },
-  {
-    id: 'notif-5',
-    type: 'success',
-    title: 'Custom Domain Connected',
-    message: 'Domain "api.deployx.dev" successfully routed with active TLS/SSL certificate.',
-    projectName: 'deployx-api-service',
-    commitHash: '9b3f81a',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(), // Earlier (3 days ago)
-    unread: false,
-    details: 'DNS CNAME records verified via Cloudflare DNS resolver. Automated Let\'s Encrypt SSL provisioning active.',
-  },
-  {
-    id: 'notif-6',
-    type: 'info',
-    title: 'Environment Variable Updated',
-    message: 'DATABASE_URL environment key updated for project "analytics-worker".',
-    projectName: 'analytics-worker',
-    commitHash: 'f812d90',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 120).toISOString(), // Earlier (5 days ago)
-    unread: false,
-    details: 'Updated by Alex Rivera. Secret value masked in runtime environment configs.',
-  },
-];
+// Deprecated mock array
+export const INITIAL_MOCK_NOTIFICATIONS = [];
 
 export const NOTIFICATION_ICONS = {
   success: <CheckCircle2 className="w-5 h-5 text-emerald-400" />,

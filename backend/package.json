@@ -8,6 +8,7 @@
     "worker": "node src/workers/deployment.worker.js",
     "reconciliation": "node src/workers/reconciliation.worker.js",
     "cleanup": "node src/workers/resource.cleanup.worker.js",
+    "create-admin": "node scripts/createAdmin.js",
     "test": "jest --runInBand --detectOpenHandles"
   },
   "keywords": [],

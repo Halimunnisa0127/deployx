@@ -1,50 +1,70 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { notificationService } from '../services/notificationService';
 
 export function useNotifications(currentUser) {
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Notification Preferences State
-  const [settings, setSettings] = useState({
-    deployment: true,
-    domain: true,
-    github: true,
-    email: true,
+  // Notification Preferences State (persisted in localStorage)
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('deployx_notification_settings');
+      return saved
+        ? JSON.parse(saved)
+        : {
+            deployment: true,
+            domain: true,
+            github: true,
+            email: true,
+          };
+    } catch {
+      return {
+        deployment: true,
+        domain: true,
+        github: true,
+        email: true,
+      };
+    }
   });
 
-  // Load notifications based on the current user's role
-  useEffect(() => {
-    let isMounted = true;
+  const fetchNotifications = useCallback(async () => {
+    if (!currentUser) return;
     setIsLoading(true);
+    setError(null);
 
-    notificationService.getNotifications(currentUser).then((data) => {
-      if (isMounted) {
-        setNotifications(data);
-        
-        // Simulate a small network delay for the skeleton
-        setTimeout(() => {
-          if (isMounted) {
-            setIsLoading(false);
-          }
-        }, 400);
-      }
-    }).catch((err) => {
+    try {
+      const data = await notificationService.getNotificationsData();
+      setNotifications(data.notifications || []);
+      setUnreadCount(data.unreadCount || 0);
+    } catch (err) {
       console.error('Failed to fetch notifications:', err);
-      if (isMounted) setIsLoading(false);
-    });
-
-    return () => {
-      isMounted = false;
-    };
+      setError(err.response?.data?.message || err.message || 'Failed to load notifications');
+    } finally {
+      setIsLoading(false);
+    }
   }, [currentUser]);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  const handleUpdateSettings = (newSettings) => {
+    setSettings(newSettings);
+    notificationService.updateSettings(newSettings);
+  };
 
   return {
     notifications,
     setNotifications,
+    unreadCount,
+    setUnreadCount,
     isLoading,
     setIsLoading,
+    error,
+    refetch: fetchNotifications,
     settings,
-    setSettings,
+    setSettings: handleUpdateSettings,
   };
 }

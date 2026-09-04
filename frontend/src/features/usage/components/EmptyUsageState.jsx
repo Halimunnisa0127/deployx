@@ -8,12 +8,13 @@ export default function EmptyUsageState({ onRefresh, onResetFilters, isRefreshin
 
   const handleRefreshClick = async () => {
     setLocalRefreshing(true);
-    if (onRefresh) {
-      await onRefresh();
-    }
-    setTimeout(() => {
+    try {
+      if (onRefresh) {
+        await onRefresh();
+      }
+    } finally {
       setLocalRefreshing(false);
-    }, 600);
+    }
   };
 
   const activeRefreshing = isRefreshing || localRefreshing;

@@ -69,7 +69,7 @@ const projectSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['draft', 'building', 'live', 'failed'],
+      enum: ['draft', 'building', 'live', 'failed', 'archived'],
       default: 'draft',
     },
     stepCompleted: {

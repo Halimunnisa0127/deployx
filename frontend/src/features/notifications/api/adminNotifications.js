@@ -1,1 +1,2 @@
-// File moved to data/adminNotifications.js
+export * from './notificationApi';
+export { notificationApi as default } from './notificationApi';

@@ -215,6 +215,36 @@ export default function DeploymentDetailsDrawer({
                   </div>
                 </div>
               )}
+
+              {/* Build Artifact Details (Measured Storage Metadata) */}
+              {deployment.artifact && (
+                <div className="space-y-3">
+                  <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5 uppercase tracking-wide">
+                    <Database className="w-4 h-4 text-indigo-500 dark:text-indigo-400" /> Build Artifact
+                  </h3>
+                  <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-border p-4 space-y-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+                      <div>
+                        <span className="text-muted-foreground block text-[11px]">Archive Size</span>
+                        <span className="font-mono font-semibold text-foreground">{deployment.artifact.formattedSize || `${(deployment.artifact.size / (1024 * 1024)).toFixed(2)} MB`}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block text-[11px]">Output Directory</span>
+                        <span className="font-mono font-semibold text-foreground">{deployment.artifact.outputDirectory || 'dist'}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block text-[11px]">Extracted Files</span>
+                        <span className="font-mono font-semibold text-foreground">{deployment.artifact.fileCount || 0} files</span>
+                      </div>
+                    </div>
+                    {deployment.artifact.checksum && (
+                      <div className="pt-2 border-t border-border/60 text-[11px] text-muted-foreground font-mono truncate">
+                        SHA-256: <span className="text-slate-300">{deployment.artifact.checksum}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className="p-6 h-full flex flex-col">

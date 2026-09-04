@@ -70,7 +70,7 @@ export function MetricSkeleton() {
               <Skeleton
                 key={j}
                 className="w-full rounded-t-sm"
-                style={{ height: `${Math.max(20, Math.random() * 100)}%` }}
+                style={{ height: `${[30, 50, 75, 45, 60, 85, 40, 70, 90, 55, 65, 80][j % 12]}%` }}
               />
             ))}
           </div>

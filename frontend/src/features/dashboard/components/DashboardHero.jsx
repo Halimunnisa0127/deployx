@@ -13,7 +13,7 @@ import useAuth from '../../../hooks/useAuth';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
 
-export default function DashboardHero() {
+export default function DashboardHero({ latestDeployment = null, projectsCount = 0 }) {
   const { user } = useAuth();
   const displayName = user?.fullName || user?.name || user?.displayName || (user?.email ? user.email.split('@')[0] : 'User');
 
@@ -46,8 +46,6 @@ export default function DashboardHero() {
     second: '2-digit',
     hour12: true,
   });
-
-
 
   return (
     <div className="relative overflow-hidden rounded-[18px] bg-card border border-border p-5 md:p-6 shadow-sm dark:shadow-xl backdrop-blur-xl transition-all duration-300 group">
@@ -108,19 +106,18 @@ export default function DashboardHero() {
             <div className="flex items-center gap-2 pt-1 flex-wrap text-xs font-medium">
               <Badge variant="primary" className="flex items-center gap-1.5 px-3 py-1 font-semibold">
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
-                <span>Pro Plan</span>
+                <span>Active Workspace</span>
               </Badge>
 
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border text-foreground transition-colors">
                 <Globe className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
-                <span>Region: Singapore</span>
+                <span>Projects: {projectsCount}</span>
               </div>
 
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted border border-border text-foreground transition-colors">
                 <Users className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
-                <span>Team Members: 5</span>
+                <span>Account Role: {user?.role || 'Developer'}</span>
               </div>
-
             </div>
           </div>
 
@@ -150,14 +147,21 @@ export default function DashboardHero() {
 
             {/* Sync Metadata Details Below Buttons */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-end gap-2.5 text-xs text-muted-foreground font-mono">
-              <div className="flex items-center gap-2 bg-muted border border-border px-3 py-1 rounded-lg">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                <span>Last deployment: <span className="font-semibold text-foreground">deployx-frontend</span> (2m ago)</span>
-              </div>
+              {latestDeployment ? (
+                <div className="flex items-center gap-2 bg-muted border border-border px-3 py-1 rounded-lg">
+                  <span className={`w-2 h-2 rounded-full ${latestDeployment.status === 'failed' ? 'bg-rose-500' : 'bg-emerald-500'} animate-pulse shrink-0`} />
+                  <span>Last deployment: <span className="font-semibold text-foreground">{latestDeployment.projectName}</span> ({latestDeployment.timeAgo})</span>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 bg-muted border border-border px-3 py-1 rounded-lg">
+                  <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                  <span>No deployments yet</span>
+                </div>
+              )}
 
               <div className="flex items-center gap-1.5 bg-muted border border-border px-3 py-1 rounded-lg text-muted-foreground">
                 <RefreshCw className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0" />
-                <span>Synced 1 min ago</span>
+                <span>Live connected</span>
               </div>
             </div>
           </div>

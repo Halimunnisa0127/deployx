@@ -137,8 +137,11 @@ async function reconcileStaleDeployments() {
 function startReconciliationLoop() {
   // Run once immediately
   reconcileStaleDeployments();
-  // Run every 1 minute
-  intervalId = setInterval(reconcileStaleDeployments, 60000);
+  // Run every interval
+  intervalId = setInterval(
+    reconcileStaleDeployments,
+    config.worker?.reconciliationIntervalMs || 60000
+  );
 }
 
 // Graceful Shutdown

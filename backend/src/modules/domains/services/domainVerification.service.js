@@ -1,5 +1,6 @@
 const dns = require('dns').promises;
 const Domain = require('../models/Domain');
+const NotificationService = require('../../notifications/services/notification.service');
 const ApiError = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
 const config = require('../../../config/env/env');
@@ -54,6 +55,15 @@ class DomainVerificationService {
         domain.verifiedAt = new Date();
         await domain.save();
 
+        await NotificationService.createNotification({
+          recipient: domain.owner,
+          type: 'success',
+          category: 'domain',
+          title: 'Custom Domain Verified',
+          message: `Domain "${hostname}" has been verified successfully and is now active.`,
+          domain: domain._id,
+        });
+
         return {
           verified: true,
           verificationStatus: 'verified',
@@ -62,6 +72,15 @@ class DomainVerificationService {
       } else {
         domain.verificationStatus = 'failed';
         await domain.save();
+
+        await NotificationService.createNotification({
+          recipient: domain.owner,
+          type: 'warning',
+          category: 'domain',
+          title: 'Domain Verification Failed',
+          message: `DNS verification for "${hostname}" failed. The required TXT challenge was not found.`,
+          domain: domain._id,
+        });
 
         return {
           verified: false,
@@ -74,6 +93,15 @@ class DomainVerificationService {
       
       domain.verificationStatus = 'failed';
       await domain.save();
+
+      await NotificationService.createNotification({
+        recipient: domain.owner,
+        type: 'warning',
+        category: 'domain',
+        title: 'Domain Verification Failed',
+        message: `DNS verification lookup for "${hostname}" failed (${error.code || 'DNS_ERROR'}).`,
+        domain: domain._id,
+      });
 
       // Return a safe message without raw stack traces or internal logs
       let message = 'DNS verification could not be completed. Please try again.';

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import Badge from '../../../components/ui/Badge';
 import { useDomainDetails } from '../hooks/useDomainDetails';
+import { env } from '../../../config/env';
 
 export default function DomainDetails() {
   const { id } = useParams();
@@ -206,10 +207,10 @@ export default function DomainDetails() {
                 <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                   <td className="px-4 py-4 font-mono text-indigo-600 dark:text-indigo-400 font-medium">CNAME</td>
                   <td className="px-4 py-4 font-mono text-foreground">www</td>
-                  <td className="px-4 py-4 font-mono text-foreground">cname.deployx.app</td>
+                  <td className="px-4 py-4 font-mono text-foreground">{`cname.${env.APP_BASE_DOMAIN || 'deployx.app'}`}</td>
                   <td className="px-4 py-4 text-slate-600 dark:text-slate-500">3600</td>
                   <td className="px-4 py-4 text-right">
-                    <Button variant="ghost" size="sm" onClick={() => handleCopy('cname.deployx.app')}>Copy</Button>
+                    <Button variant="ghost" size="sm" onClick={() => handleCopy(`cname.${env.APP_BASE_DOMAIN || 'deployx.app'}`)}>Copy</Button>
                   </td>
                 </tr>
               </tbody>

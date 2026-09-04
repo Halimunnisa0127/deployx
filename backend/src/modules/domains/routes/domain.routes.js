@@ -13,6 +13,16 @@ const { asyncHandler } = require('../../../utils');
 const router = express.Router();
 
 /**
+ * Get all custom domains for current user
+ * GET /domains
+ */
+router.get(
+  '/',
+  authenticate,
+  asyncHandler(domainController.getUserDomains)
+);
+
+/**
  * Register a custom domain
  * POST /domains
  */

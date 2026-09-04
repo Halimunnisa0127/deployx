@@ -1,18 +1,18 @@
 import api from "../../../../lib/axios";
 
-export const fetchUsers = async () => {
-  const response = await api.get("/admin/users");
-  return response.data.data.users;
+export const fetchUsers = async (params = {}) => {
+  const response = await api.get("/admin/users", { params });
+  return response.data?.data?.users || response.data?.data || [];
 };
 
 export const fetchUser = async (id) => {
   const response = await api.get(`/admin/users/${id}`);
-  return response.data.data.user;
+  return response.data?.data?.user || response.data?.data;
 };
 
 export const postUser = async (data) => {
   const response = await api.post("/admin/users", data);
-  return response.data.data.user;
+  return response.data?.data?.user || response.data?.data;
 };
 
 export const putUser = async (id, data) => {

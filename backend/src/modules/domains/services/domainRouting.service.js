@@ -1,6 +1,7 @@
 const Domain = require('../models/Domain');
 const Deployment = require('../../deployments/models/Deployment');
 const Project = require('../../projects/models/Project');
+const Artifact = require('../../storage/models/Artifact');
 
 class DomainRoutingService {
   /**
