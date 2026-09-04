@@ -15,6 +15,7 @@ import {
   PanelLeftOpen,
   X,
   ChevronsUpDown,
+  ArrowLeft,
 } from "lucide-react";
 
 import useAuth from "../../../hooks/useAuth";
@@ -61,6 +62,12 @@ const ADMIN_NAV_ITEMS = [
     label: "Settings",
     href: "/admin/settings",
     icon: Settings,
+  },
+  {
+    id: "workspace",
+    label: "User Workspace",
+    href: "/dashboard",
+    icon: ArrowLeft,
   },
 ];
 
@@ -210,7 +217,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
                         {user?.name || "Administrator"}
                       </span>
                       <span className="text-[10px] text-muted-foreground truncate transition-colors">
-                        admin@deployx.dev
+                        {user?.email || "admin@deployx.app"}
                       </span>
                     </div>
                   </div>

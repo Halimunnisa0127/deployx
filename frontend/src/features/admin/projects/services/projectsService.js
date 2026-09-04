@@ -6,8 +6,8 @@ import {
   exportProjectsApi,
 } from "../api/projectsApi";
 
-export const getProjects = async () => {
-  return await fetchProjects();
+export const getProjects = async (params = {}) => {
+  return await fetchProjects(params);
 };
 
 export const getProject = async (id) => {

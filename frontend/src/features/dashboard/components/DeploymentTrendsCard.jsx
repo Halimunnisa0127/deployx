@@ -2,14 +2,20 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TrendingUp, CheckCircle2, XCircle } from 'lucide-react';
 import Card from '../../../components/ui/Card';
-import { MOCK_DEPLOYMENT_TRENDS } from '../data/mockDashboardData';
 
-export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) {
+const DEFAULT_7_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => ({
+  day,
+  success: 0,
+  failed: 0,
+}));
+
+export default function DeploymentTrendsCard({ data = DEFAULT_7_DAYS }) {
+  const chartData = data && data.length > 1 ? data : DEFAULT_7_DAYS;
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [visibleSeries, setVisibleSeries] = useState({ success: true, failed: true });
 
-  const totalSuccess = data.reduce((acc, curr) => acc + curr.success, 0);
-  const totalFailed = data.reduce((acc, curr) => acc + curr.failed, 0);
+  const totalSuccess = chartData.reduce((acc, curr) => acc + curr.success, 0);
+  const totalFailed = chartData.reduce((acc, curr) => acc + curr.failed, 0);
   const totalDeployments = totalSuccess + totalFailed;
   const overallSuccessRate = totalDeployments > 0 ? Math.round((totalSuccess / totalDeployments) * 100) : 100;
 
@@ -23,12 +29,12 @@ export default function DeploymentTrendsCard({ data = MOCK_DEPLOYMENT_TRENDS }) 
   const chartHeight = svgHeight - paddingTop - paddingBottom;
   const bottomY = svgHeight - paddingBottom;
 
-  const maxVal = Math.max(...data.map((d) => Math.max(d.success, d.failed)), 35);
+  const maxVal = Math.max(...chartData.map((d) => Math.max(d.success, d.failed)), 10);
 
   // Generate (x, y) coordinates for data points
   const getCoordinates = (key) => {
-    return data.map((d, index) => {
-      const x = paddingX + index * (chartWidth / (data.length - 1));
+    return chartData.map((d, index) => {
+      const x = paddingX + index * (chartWidth / (chartData.length - 1));
       const val = d[key] || 0;
       const y = bottomY - (val / maxVal) * chartHeight;
       return { x, y, val, day: d.day, raw: d };

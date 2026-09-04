@@ -110,7 +110,7 @@ exports.getRepositories = async (userId, query) => {
  * Synchronize a single repository
  */
 exports.syncRepository = async (userId, repositoryId) => {
-  const account = await GitHubAccount.findOne({ userId });
+  const account = await GitHubAccount.findOne({ userId }).select('+encryptedAccessToken');
   if (!account) {
     throw new ApiError(404, 'GitHub account not connected');
   }

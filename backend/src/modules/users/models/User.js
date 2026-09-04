@@ -63,10 +63,12 @@ const userSchema = new mongoose.Schema(
     resetPasswordOtp: {
       type: String,
       default: null,
+      select: false,
     },
     resetPasswordOtpExpiry: {
       type: Date,
       default: null,
+      select: false,
     },
     refreshTokenVersion: {
       type: Number,

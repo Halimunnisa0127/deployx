@@ -1,11 +1,12 @@
 const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
+const config = require('../config/env/env');
 
 const ApiResponse = require('../shared/responses/ApiResponse');
 
 const rateLimiterMiddleware = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: config.rateLimit?.windowMs || 15 * 60 * 1000,
 
-  max: 100,
+  max: config.rateLimit?.maxRequests || 100,
 
   skip: (req) => {
     return (
@@ -23,8 +24,8 @@ const rateLimiterMiddleware = rateLimit({
 });
 
 const aiRateLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 5, // 5 requests per 5 minutes per IP
+  windowMs: config.rateLimit?.aiWindowMs || 5 * 60 * 1000, // Configurable window
+  max: config.rateLimit?.aiMaxRequests || 5, // Configurable max requests
   keyGenerator: (req) => {
     // If authenticated, limit by user ID, otherwise by IP
     return req.user ? req.user.id : (req.ip ? ipKeyGenerator(req.ip) : 'unknown');

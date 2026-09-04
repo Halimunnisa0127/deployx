@@ -11,6 +11,17 @@ const config = {
 
   clientUrl: process.env.CLIENT_URL,
 
+  appBaseDomain: process.env.APP_BASE_DOMAIN || 'deployx.app',
+
+  allowedOrigins: process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
+    : ['http://localhost:5173'],
+
+  ai: {
+    apiKey: process.env.GEMINI_API_KEY,
+    model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+  },
+
   mongoUri:
     process.env.MONGODB_URI,
 
@@ -59,8 +70,59 @@ const config = {
   },
 
   timeouts: {
-    deploymentQueueTimeoutMs: 300000,
-    deploymentBuildTimeoutMs: 600000,
+    deploymentQueueTimeoutMs: Number(process.env.DEPLOYMENT_QUEUE_TIMEOUT_MS) || 300000,
+    deploymentBuildTimeoutMs: Number(process.env.DEPLOYMENT_BUILD_TIMEOUT_MS) || 600000,
+  },
+
+  docker: {
+    nodeImage: process.env.DOCKER_NODE_IMAGE || 'node:20-alpine',
+    runtimeImage: process.env.DOCKER_RUNTIME_IMAGE || 'nginx:alpine',
+    utilityImage: process.env.DOCKER_UTILITY_IMAGE || 'alpine:latest',
+    buildMemoryBytes: (Number(process.env.DOCKER_BUILD_MEMORY_MB) || 2048) * 1024 * 1024,
+    runtimeMemoryBytes: (Number(process.env.DOCKER_RUNTIME_MEMORY_MB) || 128) * 1024 * 1024,
+    buildCpuQuota: (Number(process.env.DOCKER_BUILD_CPU || process.env.DOCKER_BUILD_CPU_QUOTA) || 2) * 1e9,
+    runtimeCpuQuota: (Number(process.env.DOCKER_RUNTIME_CPU || process.env.DOCKER_RUNTIME_CPU_QUOTA) || 0.5) * 1e9,
+    buildTimeoutMs: Number(process.env.BUILD_TIMEOUT_MS) || Number(process.env.DEPLOYMENT_BUILD_TIMEOUT_MS) || 600000,
+    npmCacheVolume: process.env.DOCKER_NPM_CACHE_VOLUME || 'deployx-npm-cache',
+  },
+
+  worker: {
+    concurrency: Number(process.env.WORKER_CONCURRENCY) || 1,
+    heartbeatIntervalMs: Number(process.env.WORKER_HEARTBEAT_INTERVAL_MS) || 15000,
+    heartbeatTtlSeconds: Number(process.env.WORKER_HEARTBEAT_TTL_SECONDS) || 30,
+    reconciliationIntervalMs: Number(process.env.RECONCILIATION_INTERVAL_MS) || 60000,
+  },
+
+  queue: {
+    maxAttempts: Number(process.env.QUEUE_MAX_ATTEMPTS) || 3,
+    backoffDelayMs: Number(process.env.QUEUE_BACKOFF_DELAY_MS) || 2000,
+  },
+
+  rateLimit: {
+    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+    maxRequests: Number(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
+    aiWindowMs: Number(process.env.AI_RATE_LIMIT_WINDOW_MS) || 5 * 60 * 1000,
+    aiMaxRequests: Number(process.env.AI_RATE_LIMIT_MAX_REQUESTS) || 5,
+  },
+
+  logs: {
+    maxLength: Number(process.env.MAX_LOG_LENGTH) || 5000,
+    maxPerDeployment: Number(process.env.MAX_LOGS_PER_DEPLOYMENT) || 10000,
+  },
+
+  domains: {
+    routerIp: process.env.DOMAIN_ROUTER_IP || '76.76.21.21',
+    cnameTarget: process.env.DOMAIN_CNAME_TARGET || `cname.${process.env.APP_BASE_DOMAIN || 'deployx.app'}`,
+  },
+
+  email: {
+    smtpHost: process.env.SMTP_HOST || '',
+    smtpPort: Number(process.env.SMTP_PORT) || 587,
+    smtpSecure: process.env.SMTP_SECURE === 'true',
+    smtpUser: process.env.SMTP_USER || '',
+    smtpPass: process.env.SMTP_PASS || '',
+    smtpFrom: process.env.SMTP_FROM || 'support@deployx.app',
+    isConfigured: Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS),
   },
 };
 

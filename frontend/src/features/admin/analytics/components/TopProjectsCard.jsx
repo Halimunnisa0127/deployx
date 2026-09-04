@@ -9,36 +9,42 @@ export default function TopProjectsCard({ projects = [] }) {
         <p className="text-sm text-muted-foreground">By deployment volume</p>
       </div>
       <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
-        <div className="space-y-4">
-          {projects.map((project, idx) => (
-            <div
-              key={idx}
-              className="flex items-center justify-between group p-2 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-xl transition-colors cursor-pointer"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0 text-indigo-400 group-hover:text-indigo-300 transition-colors">
-                  <FolderGit2 className="w-5 h-5" />
+        {projects.length === 0 ? (
+          <div className="flex items-center justify-center h-full text-xs text-muted-foreground">
+            No projects recorded yet
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {projects.map((project, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between group p-2 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-xl transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0 text-indigo-400 group-hover:text-indigo-300 transition-colors">
+                    <FolderGit2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-medium text-slate-900 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {project.name}
+                    </h4>
+                    <div className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
+                      <User className="w-3 h-3" /> {project.owner}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-sm font-medium text-slate-900 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    {project.name}
-                  </h4>
-                  <div className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                    <User className="w-3 h-3" /> {project.owner}
+                <div className="text-right">
+                  <div className="text-sm font-bold text-muted-foreground">
+                    {(project.deployments || 0).toLocaleString()}
+                  </div>
+                  <div className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center justify-end gap-1">
+                    <ShieldCheck className="w-3 h-3" /> {project.successRate ?? 100}%
                   </div>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="text-sm font-bold text-muted-foreground">
-                  {project.deployments.toLocaleString()}
-                </div>
-                <div className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center justify-end gap-1">
-                  <ShieldCheck className="w-3 h-3" /> {project.successRate}%
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { z } from 'zod';
 import Input from '../../../components/ui/Input';
 import PasswordInput from '../../../components/ui/PasswordInput';
 import Button from '../../../components/ui/Button';
+import { env } from '../../../config/env';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
@@ -46,7 +47,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
       </div>
 
       <Button
-        href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/integrations/google/oauth/connect`}
+        href={`${env.API_BASE_URL}/integrations/google/oauth/connect`}
         variant="secondary"
         fullWidth
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
@@ -61,7 +62,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
       </Button>
 
       <Button
-        href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/integrations/github/oauth/connect`}
+        href={`${env.API_BASE_URL}/integrations/github/oauth/connect`}
         variant="secondary"
         fullWidth
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '12px' }}

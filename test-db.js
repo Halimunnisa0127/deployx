@@ -9,10 +9,12 @@ async function run() {
   await mongoose.connect(process.env.MONGODB_URI);
   console.log("Connected to MongoDB");
 
-  const project = await Project.findOne({ slug: 'bridal-makeup-template' });
-  console.log("Project by slug:", project ? { id: project._id, domainUrl: project.domainUrl, prodDep: project.productionDeployment } : null);
+  const testSlug = process.argv[2] || process.env.TEST_SLUG || 'bridal-makeup-template';
+  const baseDomain = process.env.APP_BASE_DOMAIN || 'deployx.app';
+  const hostname = `${testSlug}.${baseDomain}`;
 
-  const hostname = 'bridal-makeup-template.deployx.app';
+  const project = await Project.findOne({ slug: testSlug });
+  console.log("Project by slug:", project ? { id: project._id, domainUrl: project.domainUrl, prodDep: project.productionDeployment } : null);
   
   const projectByUrl1 = await Project.findOne({ domainUrl: `https://${hostname}` });
   console.log("Project by https URL:", projectByUrl1 ? projectByUrl1.domainUrl : null);

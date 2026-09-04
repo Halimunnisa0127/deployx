@@ -1,34 +1,41 @@
 import { notificationApi } from '../api/notificationApi';
 
 export const notificationService = {
-  // Role-aware fetch function
-  getNotifications: async (currentUser) => {
-    // Return admin notifications if role is admin
-    if (currentUser?.role === 'admin') {
-      return notificationApi.getAdminNotifications();
-    }
-    // Otherwise return standard user notifications
-    return notificationApi.getUserNotifications();
+  getNotifications: async (currentUser, params = {}) => {
+    return await notificationApi.getUserNotifications(params);
   },
 
-  // Mocked actions that would typically hit an API
+  getNotificationsData: async (params = {}) => {
+    return await notificationApi.getNotificationsData(params);
+  },
+
+  getUnreadCount: async () => {
+    return await notificationApi.getUnreadCount();
+  },
+
   markAsRead: async (id) => {
-    return true;
+    return await notificationApi.markAsRead(id);
   },
 
   markAllAsRead: async () => {
-    return true;
+    return await notificationApi.markAllAsRead();
   },
 
   deleteNotification: async (id) => {
-    return true;
+    return await notificationApi.deleteNotification(id);
   },
 
   clearNotifications: async () => {
-    return true;
+    return await notificationApi.clearAllNotifications();
   },
 
   updateSettings: async (settings) => {
+    // Client preferences persist in localStorage
+    try {
+      localStorage.setItem('deployx_notification_settings', JSON.stringify(settings));
+    } catch (e) {
+      // Ignore
+    }
     return true;
-  }
+  },
 };

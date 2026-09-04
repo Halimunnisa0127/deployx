@@ -1,7 +1,11 @@
 const express = require('express');
 const deploymentController = require('../controllers/deployment.controller');
 const deploymentLogController = require('../../logs/controllers/deploymentLog.controller');
-const { createDeploymentSchema } = require('../validators/deployment.validator');
+const {
+  createDeploymentSchema,
+  projectIdParamSchema,
+  deploymentIdParamSchema,
+} = require('../validators/deployment.validator');
 const validate = require('../../../shared/validators/validate');
 const { authenticate } = require('../../../middleware/auth.middleware');
 const { asyncHandler } = require('../../../utils');
@@ -36,6 +40,7 @@ router.get(
 router.get(
   '/project/:projectId',
   authenticate,
+  validate(projectIdParamSchema),
   asyncHandler(deploymentController.getProjectDeployments)
 );
 
@@ -46,6 +51,7 @@ router.get(
 router.get(
   '/:id',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentController.getDeploymentById)
 );
 
@@ -56,6 +62,7 @@ router.get(
 router.post(
   '/:id/cancel',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentController.cancelDeployment)
 );
 
@@ -66,6 +73,7 @@ router.post(
 router.post(
   '/:id/redeploy',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentController.redeployDeployment)
 );
 
@@ -76,6 +84,7 @@ router.post(
 router.get(
   '/:id/logs',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentLogController.getDeploymentLogs)
 );
 
@@ -86,12 +95,14 @@ router.get(
 router.post(
   '/:id/promote',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentController.promoteDeployment)
 );
 
 router.post(
   '/:id/rollback',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentController.promoteDeployment)
 );
 
@@ -102,6 +113,7 @@ router.post(
 router.get(
   '/project/:projectId/history',
   authenticate,
+  validate(projectIdParamSchema),
   asyncHandler(deploymentController.getDeploymentHistory)
 );
 
@@ -112,6 +124,7 @@ router.get(
 router.post(
   '/:id/preview-auth',
   authenticate,
+  validate(deploymentIdParamSchema),
   asyncHandler(deploymentController.authenticatePreviewSession)
 );
 

@@ -1,23 +1,31 @@
-import Input from "../../../../components/ui/Input";
 import Button from "../../../../components/ui/Button";
-import { Mail } from "lucide-react";
+import { Mail, ShieldCheck, Server, Lock } from "lucide-react";
+import Badge from "../../../../components/ui/Badge";
 
-export default function EmailSettingsCard({ register, errors, onTestEmail }) {
+export default function EmailSettingsCard({ register, watch, onTestEmail }) {
+  const emailState = watch("email") || {};
+
   return (
     <div
       id="email"
       className="bg-card rounded-2xl border border-border p-6 shadow-sm dark:shadow-lg"
     >
-      <div className="mb-6 border-b border-border pb-4 flex items-center justify-between">
+      <div className="mb-6 border-b border-border pb-4 flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-lg font-bold text-foreground">
-            Email Configuration (SMTP)
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Configure outbound email server settings.
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-lg font-bold text-foreground">
+              Email Configuration (SMTP)
+            </h2>
+            <Badge variant={emailState.smtpConfigured ? "success" : "neutral"}>
+              {emailState.smtpConfigured ? "Configured" : "Ethereal Fallback"}
+            </Badge>
+          </div>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Outbound email infrastructure configuration.
           </p>
         </div>
         <Button
+          type="button"
           variant="secondary"
           iconLeft={<Mail className="w-4 h-4" />}
           onClick={onTestEmail}
@@ -26,104 +34,51 @@ export default function EmailSettingsCard({ register, errors, onTestEmail }) {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            SMTP Host <span className="text-rose-500">*</span>
-          </label>
-          <Input
-            {...register("email.smtpHost")}
-            placeholder="smtp.example.com"
-            className="w-full bg-card border-border focus:border-indigo-500 focus:ring-indigo-500/20"
-          />
-
-          {errors?.email?.smtpHost && (
-            <p className="mt-1.5 text-sm text-rose-500">
-              {errors.email.smtpHost.message}
-            </p>
-          )}
+      <div className="space-y-6 max-w-3xl">
+        {/* Security / Secret Isolation Notice */}
+        <div className="flex items-start gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-border text-xs text-muted-foreground">
+          <Lock className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+          <p>
+            SMTP authentication credentials are securely injected via server environment variables (<code className="text-indigo-400">SMTP_HOST</code>, <code className="text-indigo-400">SMTP_USER</code>, <code className="text-indigo-400">SMTP_PASS</code>) and are strictly redacted from browser endpoints.
+          </p>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            Port <span className="text-rose-500">*</span>
-          </label>
-          <Input
-            {...register("email.port")}
-            placeholder="587"
-            className="w-full bg-card border-border"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl bg-card border border-border flex flex-col gap-1.5">
+            <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <Server className="w-3.5 h-3.5 text-indigo-500" /> Host
+            </span>
+            <span className="text-sm font-mono text-foreground font-medium">
+              {emailState.smtpHost || "smtp.ethereal.email"}
+            </span>
+          </div>
 
-          {errors?.email?.port && (
-            <p className="mt-1.5 text-sm text-rose-500">
-              {errors.email.port.message}
-            </p>
-          )}
-        </div>
+          <div className="p-4 rounded-xl bg-card border border-border flex flex-col gap-1.5">
+            <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <Server className="w-3.5 h-3.5 text-indigo-500" /> Port / Security
+            </span>
+            <span className="text-sm font-mono text-foreground font-medium">
+              Port {emailState.port || "587"} ({emailState.encryption?.toUpperCase() || "TLS"})
+            </span>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            Encryption
-          </label>
-          <select
-            {...register("email.encryption")}
-            className="w-full h-10 px-3 bg-card border border-border rounded-xl text-sm text-foreground focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
-          >
-            <option value="none">None</option>
-            <option value="ssl">SSL</option>
-            <option value="tls">TLS</option>
-          </select>
-        </div>
+          <div className="p-4 rounded-xl bg-card border border-border flex flex-col gap-1.5">
+            <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <Mail className="w-3.5 h-3.5 text-indigo-500" /> Sender Name
+            </span>
+            <span className="text-sm text-foreground font-medium">
+              {emailState.senderName || "DeployX Support"}
+            </span>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            Sender Name
-          </label>
-          <Input
-            {...register("email.senderName")}
-            placeholder="DeployX Admin"
-            className="w-full bg-card border-border"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            Sender Email <span className="text-rose-500">*</span>
-          </label>
-          <Input
-            {...register("email.senderEmail")}
-            placeholder="admin@deployx.example.com"
-            className="w-full bg-card border-border"
-          />
-
-          {errors?.email?.senderEmail && (
-            <p className="mt-1.5 text-sm text-rose-500">
-              {errors.email.senderEmail.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            Username
-          </label>
-          <Input
-            {...register("email.username")}
-            placeholder="SMTP Username"
-            className="w-full bg-card border-border"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-foreground mb-1.5">
-            Password
-          </label>
-          <Input
-            type="password"
-            {...register("email.password")}
-            placeholder="••••••••••••"
-            className="w-full bg-card border-border"
-          />
+          <div className="p-4 rounded-xl bg-card border border-border flex flex-col gap-1.5">
+            <span className="text-xs text-muted-foreground font-semibold uppercase tracking-wider flex items-center gap-1.5">
+              <ShieldCheck className="w-3.5 h-3.5 text-indigo-500" /> Sender Address
+            </span>
+            <span className="text-sm font-mono text-foreground font-medium">
+              {emailState.senderEmail || "support@deployx.app"}
+            </span>
+          </div>
         </div>
       </div>
     </div>

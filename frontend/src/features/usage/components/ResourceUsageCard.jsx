@@ -57,11 +57,12 @@ export default function ResourceUsageCard({ item }) {
   const TrendIcon = item.isUp ? TrendingUp : TrendingDown;
 
   // Goal Tracking Logic
-  const goalLimit = Math.floor(item.limit * 0.7);
+  const limitVal = item.limit || 1;
+  const goalLimit = Math.floor(limitVal * 0.7);
   const forecastVal = Math.floor(item.forecastUsed || 0);
 
-  const isCritical = forecastVal > item.limit;
-  const isWarning = forecastVal > goalLimit && !isCritical;
+  const isCritical = item.limit > 0 && forecastVal > item.limit;
+  const isWarning = item.limit > 0 && forecastVal > goalLimit && !isCritical;
 
   let statusKey = 'On Track';
   let StatusIcon = ShieldCheck;
@@ -115,7 +116,7 @@ export default function ResourceUsageCard({ item }) {
               </span>
             </div>
             <div className="text-xs text-muted-foreground mt-2 whitespace-nowrap">
-              {item.percent}% of {item.limit} {item.unit} limit
+              {item.percent || 0}% of {item.limit || 0} {item.unit} limit
             </div>
           </div>
 
@@ -134,7 +135,7 @@ export default function ResourceUsageCard({ item }) {
         <div className="space-y-4 mt-auto">
           {/* Progress Bar */}
           <ResourceProgressBar
-            percent={item.percent}
+            percent={Math.min(100, Math.max(0, item.percent || 0))}
             color={config.barColor}
             showLabels={false}
             height="h-1.5"

@@ -2,7 +2,6 @@ import { Activity, Server, Database, Cpu, Layers, HardDrive, Clock } from 'lucid
 import { Link } from 'react-router-dom';
 import Card from '../../../components/ui/Card';
 import Badge from '../../../components/ui/Badge';
-import { MOCK_SYSTEM_SERVICES } from '../data/mockDashboardData';
 
 const SERVICE_ICON_MAP = {
   api: <Server className="w-4 h-4 text-indigo-400" />,
@@ -17,7 +16,7 @@ const SERVICE_ICON_MAP = {
   build_queue: <Layers className="w-4 h-4 text-amber-400" />,
 };
 
-export default function SystemStatusPanel({ services = MOCK_SYSTEM_SERVICES }) {
+export default function SystemStatusPanel({ services = [] }) {
   const hasWarning = services.some((s) => s.status === 'warning');
   const hasOffline = services.some((s) => s.status === 'danger' || s.status === 'offline');
 

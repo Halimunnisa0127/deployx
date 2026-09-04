@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FolderPlus, Layers, Globe, Zap, TrendingUp, TrendingDown, ArrowUpRight } from 'lucide-react';
 import Card from '../../../components/ui/Card';
-import { MOCK_STAT_METRICS } from '../data/mockDashboardData';
 
 const ICON_MAP = {
   FolderPlus: <FolderPlus className="w-5 h-5 text-indigo-400" />,
@@ -17,7 +16,7 @@ const ACCENT_BG_MAP = {
   Zap: 'bg-emerald-500/10 border-emerald-500/20 group-hover:bg-emerald-500/20',
 };
 
-export default function StatCards({ metrics = MOCK_STAT_METRICS }) {
+export default function StatCards({ metrics = [] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
       {metrics.map((item) => {

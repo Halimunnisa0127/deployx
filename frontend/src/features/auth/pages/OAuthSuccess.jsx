@@ -1,14 +1,22 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshAccessToken } from '../slice/authSlice';
 
 export default function OAuthSuccess() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const hasRun = useRef(false);
 
   const { isAuthenticated, status, error: authError } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated && status !== 'loading' && status !== 'failed' && !hasRun.current) {
+      dispatch(refreshAccessToken());
+    }
+  }, [isAuthenticated, status, dispatch]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -22,7 +30,7 @@ export default function OAuthSuccess() {
       // Otherwise, redirect to dashboard or back to wizard
       const wizardStep = sessionStorage.getItem('wizard_step');
       if (wizardStep) {
-        navigate('/dashboard/projects/create');
+        navigate('/dashboard/projects/new');
       } else {
         navigate('/dashboard');
       }
@@ -34,7 +42,13 @@ export default function OAuthSuccess() {
       
       // If not a popup or unable to close, navigate after a short delay
       setTimeout(() => {
-        if (!window.closed) navigate('/dashboard');
+        if (!window.closed) {
+          if (wizardStep) {
+            navigate('/dashboard/projects/new');
+          } else {
+            navigate('/dashboard');
+          }
+        }
       }, 500);
     } else if (status === 'failed') {
       if (hasRun.current) return;

@@ -1,13 +1,13 @@
 import api from "../../../../lib/axios";
 
-export const fetchProjects = async () => {
-  const response = await api.get("/admin/projects");
-  return response.data.data.projects;
+export const fetchProjects = async (params = {}) => {
+  const response = await api.get("/admin/projects", { params });
+  return response.data?.data?.projects || response.data?.data || [];
 };
 
 export const fetchProjectById = async (id) => {
   const response = await api.get(`/admin/projects/${id}`);
-  return response.data.data.project;
+  return response.data?.data?.project || response.data?.data;
 };
 
 export const archiveProjectApi = async (id) => {

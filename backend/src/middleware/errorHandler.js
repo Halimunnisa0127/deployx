@@ -12,6 +12,15 @@ const errorHandler = (err, req, res, next) => {
   let message = err.message || 'Internal Server Error';
   let errorDetails = {};
 
+  // Handle Mongoose CastError (e.g. invalid ObjectId)
+  if (err.name === 'CastError') {
+    statusCode = StatusCodes.BAD_REQUEST;
+    message = `Invalid ${err.path || 'identifier'}: ${err.value}`;
+  } else if (err.name === 'ValidationError') {
+    statusCode = StatusCodes.BAD_REQUEST;
+    message = err.message || 'Validation Error';
+  }
+
   if (err.errors) {
     errorDetails.errors = err.errors;
   }

@@ -1,4 +1,5 @@
 const Docker = require('dockerode');
+const config = require('../../config/env/env');
 
 // Default dockerode connects to the local docker socket automatically.
 const docker = new Docker();
@@ -27,7 +28,7 @@ class DockerClient {
       throw new Error('Docker daemon is unavailable. Cannot perform execution.');
     }
 
-    const imageName = 'alpine:latest';
+    const imageName = config.docker?.utilityImage || 'alpine:latest';
     
     // Ensure image exists
     try {
@@ -53,8 +54,8 @@ class DockerClient {
       NetworkDisabled: true, // Strict isolation
       HostConfig: {
         Privileged: false,
-        Memory: 512 * 1024 * 1024, // 512 MB
-        NanoCPUs: 1 * 1e9, // 1 CPU Core
+        Memory: config.docker?.buildMemoryBytes || 512 * 1024 * 1024,
+        NanoCPUs: config.docker?.buildCpuQuota || 1 * 1e9,
         PidsLimit: 100,
         Binds: [] // No host mounting
       }
@@ -105,8 +106,8 @@ class DockerClient {
       throw new Error('Docker daemon is unavailable. Cannot perform execution.');
     }
 
-    // Default node image.
-    const imageName = 'node:20-alpine';
+    // Default node image from config.
+    const imageName = config.docker?.nodeImage || 'node:20-alpine';
     
     // Ensure image exists
     try {
@@ -130,40 +131,64 @@ class DockerClient {
       ? deployment.source.commitSha
       : (deployment.source.branch || 'main');
 
-    // Create the secure script.
-    // We inject the token into the remote URL for reliable authentication.
+    const memMB = Math.round((config.docker?.buildMemoryBytes || 2048 * 1024 * 1024) / (1024 * 1024));
+    const cpuCores = (config.docker?.buildCpuQuota || 2 * 1e9) / 1e9;
+
+    const userInstallCmd = (deployment.buildSettings?.installCommand || 'npm install').trim();
+    let normalizedInstallCmd = userInstallCmd;
+    if (userInstallCmd.startsWith('npm ') && !userInstallCmd.includes('--no-audit')) {
+      normalizedInstallCmd = `${userInstallCmd} --prefer-offline --no-audit --no-fund`;
+    }
+
+    // Create the secure script with structured timing and stage logging
+    // We inject the token into the remote URL for reliable authentication without logging it
     const script = `
 set -e
 export GIT_TERMINAL_PROMPT=0
-echo "Installing git client dependency..."
+echo "[DeployX] Container resource limits: ${memMB}MB RAM, ${cpuCores} CPU core(s)"
+echo "[DeployX] Installing git client dependency..."
 apk add --no-cache git
 mkdir -p /workspace
 cd /workspace
 git init > /dev/null
 git remote add origin "https://x-access-token:${githubToken}@github.com/${deployment.source.repositoryFullName}.git"
 
-echo "Fetching ref ${targetRef}..."
+echo "[DeployX] Fetching ref ${targetRef}..."
 git fetch --depth 1 origin "${targetRef}" > /dev/null
 
 git checkout -qf FETCH_HEAD
-echo "Verified commit ref."
+echo "[DeployX] Verified commit ref."
 
-echo "Verifying environment variables..."
+echo "[DeployX] Verifying environment variables..."
 ${Object.keys(envVars).map(key => `if [ -z "$${key}" ]; then echo "Warning: ${key} is empty or not set"; else echo "Verified ${key} is injected"; fi`).join('\n')}
 
-echo "Installing dependencies..."
 cd "/workspace/${deployment.buildSettings.rootDirectory || ''}"
-${deployment.buildSettings.installCommand}
 
-echo "Building project..."
-${deployment.buildSettings.buildCommand}
+echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Starting dependency installation..."
+if [ -f "package-lock.json" ] && [ "${userInstallCmd}" = "npm install" ]; then
+  echo "[DeployX] Detected package-lock.json. Executing: npm ci --prefer-offline --no-audit --no-fund"
+  npm ci --prefer-offline --no-audit --no-fund
+else
+  echo "[DeployX] Executing install command: ${normalizedInstallCmd}"
+  ${normalizedInstallCmd}
+fi
+echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Dependency installation completed."
 
-echo "Build complete."
+echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Starting project build..."
+echo "[DeployX] Executing build command: ${deployment.buildSettings.buildCommand || 'npm run build'}"
+${deployment.buildSettings.buildCommand || 'npm run build'}
+echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Project build completed."
+
+echo "[DeployX] Build complete."
 exit 0
 `;
 
     // Map object to Docker Env array format (KEY=VALUE)
     const dockerEnv = Object.entries(envVars).map(([key, value]) => `${key}=${value}`);
+
+    const binds = config.docker?.npmCacheVolume
+      ? [`${config.docker.npmCacheVolume}:/root/.npm`]
+      : [];
 
     const containerOptions = {
       name: `deployx-build-${deployment._id}`,
@@ -182,10 +207,10 @@ exit 0
       },
       HostConfig: {
         Privileged: false,
-        Memory: 512 * 1024 * 1024, // 512 MB
-        NanoCPUs: 1 * 1e9, // 1 CPU Core
+        Memory: config.docker?.buildMemoryBytes || 2048 * 1024 * 1024,
+        NanoCPUs: config.docker?.buildCpuQuota || 2 * 1e9,
         PidsLimit: 100,
-        Binds: [] // No host mounting
+        Binds: binds
       }
     };
 
@@ -224,10 +249,9 @@ exit 0
       });
       console.log({ event: 'docker.script.write.completed', containerId: container.id });
 
-      console.log(`[DockerClient] Waiting for container ${container.id} to finish (with 5 min timeout)...`);
+      const timeoutMs = config.docker?.buildTimeoutMs || (10 * 60 * 1000);
+      console.log(`[DockerClient] Waiting for container ${container.id} to finish (with ${Math.round(timeoutMs / 60000)} min timeout)...`);
       console.log({ event: 'docker.wait.started', containerId: container.id });
-      
-      const timeoutMs = 5 * 60 * 1000;
       let timeoutHandle;
       
       const waitPromise = container.wait();
@@ -443,7 +467,7 @@ exit 0
       throw new Error('Docker daemon is unavailable. Cannot launch runtime.');
     }
 
-    const imageName = 'nginx:alpine';
+    const imageName = config.docker?.runtimeImage || 'nginx:alpine';
 
     // Ensure Nginx image exists
     try {
@@ -478,8 +502,8 @@ exit 0
       ExposedPorts: { '80/tcp': {} },
       HostConfig: {
         PortBindings: { '80/tcp': [{ HostPort: String(freePort) }] },
-        Memory: 128 * 1024 * 1024, // 128 MB limit
-        NanoCPUs: 0.5 * 1e9,       // 0.5 CPU Core
+        Memory: config.docker?.runtimeMemoryBytes || 128 * 1024 * 1024,
+        NanoCPUs: config.docker?.runtimeCpuQuota || 0.5 * 1e9,
         PidsLimit: 50
       },
       Labels: {

@@ -25,7 +25,7 @@ export default function LogsSkeleton({ count = 8 }) {
         {Array.from({ length: count }).map((_, idx) => (
           <div key={idx} className="flex items-center gap-3 py-1">
             <Skeleton width="65px" height="12px" />
-            <Skeleton width={`${Math.floor(Math.random() * 40) + 50}%`} height="14px" />
+            <Skeleton width={`${[65, 85, 55, 75, 90, 60, 80, 70][idx % 8]}%`} height="14px" />
           </div>
         ))}
       </div>

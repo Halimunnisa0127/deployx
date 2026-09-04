@@ -14,9 +14,10 @@ export function useDomains() {
       else setLoading(true);
       setError(null);
       const data = await domainsService.getDomains();
-      setDomains(data);
+      setDomains(Array.isArray(data) ? data : (data?.domains || []));
     } catch (err) {
-      setError(err.message || "Failed to fetch domains");
+      console.error("Failed to fetch domains:", err);
+      setError(err.response?.data?.message || err.message || "Failed to fetch domains");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -28,25 +29,41 @@ export function useDomains() {
   }, [fetchDomainsData]);
 
   const handleVerifyDomain = async (id) => {
-    await domainsService.verifyDomain(id);
-    await fetchDomainsData(true);
+    try {
+      const res = await domainsService.verifyDomain(id);
+      await fetchDomainsData(true);
+      return res;
+    } catch (err) {
+      console.error("Failed to verify domain:", err);
+      alert(err.response?.data?.message || err.message || "Domain verification failed");
+    }
   };
 
   const handleRefreshDomain = async (id) => {
-    await domainsService.refreshDomain(id);
-    await fetchDomainsData(true);
+    try {
+      const res = await domainsService.refreshDomain(id);
+      await fetchDomainsData(true);
+      return res;
+    } catch (err) {
+      console.error("Failed to refresh domain:", err);
+      alert(err.response?.data?.message || err.message || "Failed to refresh domain records");
+    }
   };
 
   const handleRemoveDomain = async (id) => {
-    await domainsService.removeDomain(id);
-    await fetchDomainsData(true);
+    try {
+      await domainsService.removeDomain(id);
+      await fetchDomainsData(true);
+    } catch (err) {
+      console.error("Failed to remove domain:", err);
+      alert(err.response?.data?.message || err.message || "Failed to remove domain");
+    }
   };
 
   // Setup table features
-  // Using itemsPerPage 1000 to allow DomainsTable to handle its own pagination
   const table = useAdminTable({
     data: domains,
-    searchKeys: ["name", "project", "owner"],
+    searchKeys: ["name", "hostname", "project", "owner"],
     initialSort: { key: "name", direction: "asc" },
     itemsPerPage: 1000,
   });
@@ -66,7 +83,7 @@ export function useDomains() {
     }
   };
 
-  const counts = domains.reduce(
+  const counts = (domains || []).reduce(
     (acc, d) => {
       acc.all++;
       if (acc[d.verificationStatus] !== undefined) acc[d.verificationStatus]++;

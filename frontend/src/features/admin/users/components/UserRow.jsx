@@ -21,10 +21,10 @@ export default function UserRow({ user, onRowClick, ...actionProps }) {
     >
       <td className="px-5 py-4 min-w-[250px]">
         <div className="flex items-center gap-3">
-          <UserAvatar name={user.name} />
+          <UserAvatar name={user.name || user.fullName || "User"} />
           <div>
             <div className="font-bold text-theme-heading group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
-              {user.name}
+              {user.name || user.fullName || "Unnamed User"}
             </div>
             <div className="text-xs text-theme-muted truncate">{user.email}</div>
           </div>
@@ -34,19 +34,19 @@ export default function UserRow({ user, onRowClick, ...actionProps }) {
         <RoleBadge role={user.role} />
       </td>
       <td className="px-5 py-4">
-        <Badge status={user.status} type="user" />
+        <Badge status={user.status || (user.isActive ? "active" : "suspended")} type="user" />
       </td>
       <td className="px-5 py-4">
         <div className="inline-flex items-center gap-1.5 text-theme-secondary bg-muted px-2.5 py-1 rounded border border-border font-mono text-[11px]">
           <FolderGit2 className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
-          {user.projectsCount}{" "}
-          {user.projectsCount === 1 ? "Project" : "Projects"}
+          {user.projectsCount || 0}{" "}
+          {(user.projectsCount || 0) === 1 ? "Project" : "Projects"}
         </div>
       </td>
       <td className="px-5 py-4 text-theme-muted text-xs whitespace-nowrap">
         <span className="inline-flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 text-theme-muted" />
-          {new Date(user.joinedAt).toLocaleDateString()}
+          {user.joinedAt ? new Date(user.joinedAt).toLocaleDateString() : "N/A"}
         </span>
       </td>
       <td className="px-5 py-4 text-right">

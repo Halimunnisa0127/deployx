@@ -52,3 +52,5 @@ desktop.ini
 # =========================
 Caddyfile
 certs/*.pem
+powershell.cmd
+start-dev.bat

@@ -25,10 +25,10 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
           </div>
           <div>
             <div className="font-bold text-theme-heading group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors truncate">
-              {project.name}
+              {project.name || "Unnamed Project"}
             </div>
             <div className="text-xs text-theme-muted truncate flex items-center gap-1 mt-0.5">
-              <Globe className="w-3 h-3" /> {project.connectedDomain}
+              <Globe className="w-3 h-3" /> {project.connectedDomain || project.domainUrl || "No domain attached"}
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
       <td className="px-5 py-4 whitespace-nowrap">
         <div className="flex items-center gap-1.5 text-sm text-theme-secondary">
           <User className="w-3.5 h-3.5 text-theme-muted" />
-          {project.owner}
+          {project.owner || project.ownerEmail || "Unknown"}
         </div>
       </td>
       <td className="px-5 py-4 whitespace-nowrap">
@@ -44,19 +44,19 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
       </td>
       <td className="px-5 py-4 whitespace-nowrap">
         <span className="text-xs text-theme-muted capitalize bg-muted px-2 py-1 rounded border border-border font-mono">
-          {project.environment}
+          {project.environment || "production"}
         </span>
       </td>
       <td className="px-5 py-4 whitespace-nowrap">
-        <Badge status={project.status} type="project" />
+        <Badge status={project.status || "active"} type="project" />
       </td>
       <td className="px-5 py-4 whitespace-nowrap text-xs text-theme-muted">
-        {project.region}
+        {project.region || "auto"}
       </td>
       <td className="px-5 py-4 whitespace-nowrap text-theme-muted text-xs">
         <span className="inline-flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 text-theme-muted" />
-          {new Date(project.createdAt).toLocaleDateString()}
+          {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : "N/A"}
         </span>
       </td>
       <td className="px-5 py-4 text-right">

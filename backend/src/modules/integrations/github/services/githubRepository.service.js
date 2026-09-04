@@ -6,7 +6,7 @@ const { mapRepositories, mapBranches } = require('../mappers/repository.mapper')
 const { mapBranches: branchMapper } = require('../mappers/branch.mapper'); // Fixed destructuring properly below
 
 const getGitHubClientForUser = async (userId) => {
-  const account = await GitHubAccount.findOne({ userId });
+  const account = await GitHubAccount.findOne({ userId }).select('+encryptedAccessToken');
   if (!account) {
     throw new ApiError('GitHub account not connected', 404);
   }
@@ -134,7 +134,7 @@ exports.analyzeRepository = async (userId, owner, repo, branch, rootDirectory = 
     if (packageJsonData.packageManager.includes('yarn')) packageManager = 'yarn';
     else if (packageJsonData.packageManager.includes('pnpm')) packageManager = 'pnpm';
     else if (packageJsonData.packageManager.includes('bun')) packageManager = 'bun';
-  } else {
+    let detectedLockfile = null;
     const lockfiles = [
       { name: 'pnpm-lock.yaml', pm: 'pnpm' },
       { name: 'yarn.lock', pm: 'yarn' },
@@ -147,6 +147,7 @@ exports.analyzeRepository = async (userId, owner, repo, branch, rootDirectory = 
         const lfPath = cleanRoot ? `${cleanRoot}/${lf.name}` : lf.name;
         await client.get(`/repos/${owner}/${repo}/contents/${lfPath}${queryParams}`);
         packageManager = lf.pm;
+        detectedLockfile = lf.name;
         break;
       } catch (err) {
         // Continue searching
@@ -154,18 +155,22 @@ exports.analyzeRepository = async (userId, owner, repo, branch, rootDirectory = 
     }
   }
   
-  let installCommand = 'npm install';
+  let installCommand = 'npm install --prefer-offline --no-audit --no-fund';
   let buildCommand = null;
   const scripts = packageJsonData.scripts || {};
   
   if (packageManager === 'npm') {
-    installCommand = 'npm ci'; // Prefer npm ci for automated environments
+    if (detectedLockfile === 'package-lock.json') {
+      installCommand = 'npm ci --prefer-offline --no-audit --no-fund';
+    } else {
+      installCommand = 'npm install --prefer-offline --no-audit --no-fund';
+    }
     if (scripts.build) buildCommand = 'npm run build';
   } else if (packageManager === 'yarn') {
-    installCommand = 'yarn install --frozen-lockfile';
+    installCommand = 'yarn install --frozen-lockfile --prefer-offline';
     if (scripts.build) buildCommand = 'yarn build';
   } else if (packageManager === 'pnpm') {
-    installCommand = 'pnpm install --frozen-lockfile';
+    installCommand = 'pnpm install --frozen-lockfile --prefer-offline';
     if (scripts.build) buildCommand = 'pnpm build';
   } else if (packageManager === 'bun') {
     installCommand = 'bun install --frozen-lockfile';

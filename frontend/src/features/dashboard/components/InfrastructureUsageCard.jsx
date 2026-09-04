@@ -2,7 +2,6 @@ import { Gauge, Wifi, HardDrive, Clock, ArrowRight, Zap } from 'lucide-react';
 import Card from '../../../components/ui/Card';
 import { Progress } from '../../../components/ui';
 import { Link } from 'react-router-dom';
-import { MOCK_USAGE_SUMMARY } from '../data/mockDashboardData';
 
 const METRICS = [
   { id: 'bandwidth', label: 'Bandwidth', icon: Wifi, color: 'indigo' },
@@ -43,7 +42,7 @@ const COLOR_MAP = {
  * Displays Bandwidth, Storage, and Build Minutes with progress bars.
  * Links to the dedicated Usage page for full analytics.
  */
-export default function InfrastructureUsageCard({ usage = MOCK_USAGE_SUMMARY }) {
+export default function InfrastructureUsageCard({ usage = [] }) {
   const usageMap = Object.fromEntries(usage.map((u) => [u.id, u]));
 
   return (

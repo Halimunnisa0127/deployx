@@ -82,6 +82,11 @@ const worker = new Worker('deployments', async (job) => {
 
         const duration = Date.now() - startTime;
 
+        const proj = await Project.findById(deployment.project);
+        const resolvedUrl = config.isProduction && proj
+          ? (proj.domainUrl || `https://${proj.slug || proj._id}.${config.appBaseDomain}`)
+          : `http://localhost:${runtimeInfo.port}`;
+
         const latestDeployment = await Deployment.findOneAndUpdate(
           { _id: deploymentId, status: 'building' },
           {
@@ -91,7 +96,7 @@ const worker = new Worker('deployments', async (job) => {
             duration,
             runtimeContainerId: runtimeInfo.containerId,
             runtimePort: runtimeInfo.port,
-            url: `http://localhost:${runtimeInfo.port}`
+            url: resolvedUrl,
           },
           { new: true }
         );
@@ -146,7 +151,7 @@ const worker = new Worker('deployments', async (job) => {
     executionStage = 'setup';
     // Secure GitHub Token Retrieval
     await deploymentLogService.appendLog(deploymentId, deployment.project, 'info', 'Resolving and authenticating with source provider...');
-    const githubAccount = await GitHubAccount.findOne({ userId: deployment.owner });
+    const githubAccount = await GitHubAccount.findOne({ userId: deployment.owner }).select('+encryptedAccessToken');
     if (!githubAccount) {
       throw new Error(`GitHub account not found for deployment owner ${deployment.owner}`);
     }
@@ -212,6 +217,11 @@ const worker = new Worker('deployments', async (job) => {
 
     const duration = Date.now() - startTime;
 
+    const proj = await Project.findById(deployment.project);
+    const resolvedUrl = config.isProduction && proj
+      ? (proj.domainUrl || `https://${proj.slug || proj._id}.${config.appBaseDomain}`)
+      : `http://localhost:${runtimeInfo.port}`;
+
     // Complete Transition atomically building -> ready with runtime metadata
     const latestDeployment = await Deployment.findOneAndUpdate(
       { _id: deploymentId, status: 'building' },
@@ -222,7 +232,7 @@ const worker = new Worker('deployments', async (job) => {
         duration,
         runtimeContainerId: runtimeInfo.containerId,
         runtimePort: runtimeInfo.port,
-        url: `http://localhost:${runtimeInfo.port}`
+        url: resolvedUrl,
       },
       { new: true }
     );
@@ -271,7 +281,7 @@ const worker = new Worker('deployments', async (job) => {
   }
 }, {
   connection: redisConnection,
-  concurrency: 1,
+  concurrency: config.worker?.concurrency || 1,
   lockDuration: 30000,
   lockRenewTime: 15000,
   maxStalledCount: 2,
@@ -290,7 +300,7 @@ worker.on('error', (err) => {
   logger.error({ event: 'worker.error', errorCode: 'WORKER_ERROR', workerId, err: err.message }, '[Worker] BullMQ Worker Error');
 });
 
-const HEARTBEAT_TTL = 30; // 30 seconds TTL
+const HEARTBEAT_TTL = config.worker?.heartbeatTtlSeconds || 30;
 const updateHeartbeat = async () => {
   try {
     const key = `deployx:worker:heartbeat:${workerId}`;
@@ -308,7 +318,7 @@ const updateHeartbeat = async () => {
 };
 
 updateHeartbeat();
-const heartbeatInterval = setInterval(updateHeartbeat, 15000);
+const heartbeatInterval = setInterval(updateHeartbeat, config.worker?.heartbeatIntervalMs || 15000);
 
 // Graceful Shutdown
 const shutdown = async (signal) => {

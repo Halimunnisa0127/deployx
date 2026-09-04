@@ -10,6 +10,8 @@ import {
   ShieldCheck,
   Trash2,
   ExternalLink,
+  Copy,
+  Check,
 } from "lucide-react";
 import VerificationBadge from "./VerificationBadge";
 import EnvironmentBadge from "./EnvironmentBadge";
@@ -20,6 +22,7 @@ import VerificationTimeline from "./VerificationTimeline";
 import { DrawerSkeleton } from "./DomainsSkeleton";
 import {
   getDNSRecords,
+  getDomainInstructions,
   getSSLInfo,
   getVerificationHistory,
 } from "../services/domainsService";
@@ -35,8 +38,10 @@ export default function DomainDetailsDrawer({
 }) {
   const [loading, setLoading] = useState(true);
   const [dnsRecords, setDnsRecords] = useState([]);
+  const [instructions, setInstructions] = useState(null);
   const [sslInfo, setSslInfo] = useState(null);
   const [history, setHistory] = useState([]);
+  const [copiedChallenge, setCopiedChallenge] = useState(false);
 
   useEffect(() => {
     if (isOpen && domain) {
@@ -47,19 +52,29 @@ export default function DomainDetailsDrawer({
   const fetchDetails = async (id) => {
     try {
       setLoading(true);
-      const [fetchedDNS, fetchedSSL, fetchedHistory] = await Promise.all([
+      const isPendingDomain = domain.verificationStatus !== "verified";
+      const [fetchedDNS, fetchedSSL, fetchedHistory, fetchedInstructions] = await Promise.all([
         getDNSRecords(id),
         getSSLInfo(id),
         getVerificationHistory(id),
+        isPendingDomain ? getDomainInstructions(id) : Promise.resolve(null),
       ]);
       setDnsRecords(fetchedDNS);
       setSslInfo(fetchedSSL);
       setHistory(fetchedHistory);
+      setInstructions(fetchedInstructions);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCopyChallenge = (text) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    setCopiedChallenge(true);
+    setTimeout(() => setCopiedChallenge(false), 2000);
   };
 
   if (!domain) return null;
@@ -134,7 +149,46 @@ export default function DomainDetailsDrawer({
             </div>
           </div>
 
-          {/* DNS Records */}
+          {/* Verification Challenge Card (TXT) - Loaded securely via /instructions */}
+          {instructions && isPending && (
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-amber-500" /> DNS Ownership Challenge
+              </h3>
+              <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 space-y-3">
+                <p className="text-xs text-muted-foreground">
+                  To complete ownership verification, add this TXT record at your DNS provider:
+                </p>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between p-2.5 bg-slate-900/60 rounded-lg border border-border">
+                    <div className="flex flex-col min-w-0 pr-2">
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">Record Name</span>
+                      <span className="font-mono text-xs text-foreground truncate">{instructions.name || domain.name}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-2.5 bg-slate-900/60 rounded-lg border border-border">
+                    <div className="flex flex-col min-w-0 pr-2">
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">TXT Value</span>
+                      <span className="font-mono text-xs text-amber-400 truncate">{instructions.value}</span>
+                    </div>
+                    <button
+                      onClick={() => handleCopyChallenge(instructions.value)}
+                      className="p-1.5 rounded-md hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+                      title="Copy TXT Value"
+                    >
+                      {copiedChallenge ? (
+                        <Check className="w-4 h-4 text-emerald-400" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* DNS Routing Records */}
           <DNSRecordsCard records={dnsRecords} />
 
           {/* SSL Information */}

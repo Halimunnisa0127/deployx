@@ -179,14 +179,18 @@ function DomainCard({ domain, onClick, onOpenDomain }) {
             Connected Project: <strong className="text-foreground font-medium">{projectName}</strong>
           </span>
 
-          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-            <User className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-            Created by: <strong className="text-foreground font-medium">{createdBy}</strong>
-          </span>
+          {createdBy && (
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              <User className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+              Created by: <strong className="text-foreground font-medium">{createdBy}</strong>
+            </span>
+          )}
 
-          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-            Last Updated: <strong className="text-foreground font-medium">{updatedAt}</strong>
-          </span>
+          {updatedAt && (
+            <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+              Last Updated: <strong className="text-foreground font-medium">{updatedAt}</strong>
+            </span>
+          )}
         </div>
 
         {/* Hover Actions Toolbar */}

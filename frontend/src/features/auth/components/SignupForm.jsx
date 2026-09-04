@@ -6,6 +6,7 @@ import PasswordInput from '../../../components/ui/PasswordInput';
 import Button from '../../../components/ui/Button';
 import Checkbox from '../../../components/ui/Checkbox';
 import { Link } from 'react-router-dom';
+import { env } from '../../../config/env';
 
 const signupSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
@@ -72,7 +73,7 @@ export default function SignupForm({ onSubmit, isLoading }) {
       </div>
 
       <Button
-        href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/integrations/google/oauth/connect`}
+        href={`${env.API_BASE_URL}/integrations/google/oauth/connect`}
         variant="secondary"
         fullWidth
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
@@ -87,7 +88,7 @@ export default function SignupForm({ onSubmit, isLoading }) {
       </Button>
 
       <Button
-        href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/integrations/github/oauth/connect`}
+        href={`${env.API_BASE_URL}/integrations/github/oauth/connect`}
         variant="secondary"
         fullWidth
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginTop: '12px' }}

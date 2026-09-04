@@ -30,32 +30,32 @@ export default function AnalyticsCards({ domains = [] }) {
   }, [domains]);
 
   const cards = [
-    { title: "Total Domains", value: stats.total, change: 12.5, icon: Globe },
+    { title: "Total Domains", value: stats.total, change: 0, icon: Globe },
     {
       title: "Verified Domains",
       value: stats.verified,
-      change: 8.2,
+      change: 0,
       icon: CheckCircle2,
     },
     {
       title: "Pending Verification",
       value: stats.pending,
-      change: 1.5,
+      change: 0,
       icon: Clock,
     },
     {
       title: "Failed Verification",
       value: stats.failed,
-      change: -2.4,
+      change: 0,
       icon: XCircle,
     },
     {
       title: "SSL Expiring Soon",
       value: stats.sslExpiring,
-      change: 5.0,
+      change: 0,
       icon: ShieldAlert,
     },
-    { title: "Preview Domains", value: stats.preview, change: 15.2, icon: Eye },
+    { title: "Preview Domains", value: stats.preview, change: 0, icon: Eye },
   ];
 
   return (

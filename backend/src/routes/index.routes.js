@@ -5,6 +5,7 @@ const userRoutes = require('../modules/users/routes/user.routes');
 const projectRoutes = require('../modules/projects/routes/project.routes');
 const deploymentRoutes = require('../modules/deployments/routes/deployment.routes');
 const domainRoutes = require('../modules/domains/routes/domain.routes');
+const notificationRoutes = require('../modules/notifications/routes/notification.routes');
 
 const githubIntegration = require('../modules/integrations/github');
 const googleIntegration = require('../modules/integrations/google');
@@ -13,6 +14,8 @@ const adminHealthRoutes = require('../modules/admin/routes/adminHealth.routes');
 const adminUserRoutes = require('../modules/admin/routes/adminUser.routes');
 const adminProjectRoutes = require('../modules/admin/routes/adminProject.routes');
 const adminDeploymentRoutes = require('../modules/admin/routes/adminDeployment.routes');
+const adminDomainRoutes = require('../modules/admin/routes/adminDomain.routes');
+const adminSettingsRoutes = require('../modules/admin/routes/adminSettings.routes');
 const aiRoutes = require('../aimodules/ai/ai.routes');
 
 const router = express.Router();
@@ -35,6 +38,9 @@ router.use('/deployments', deploymentRoutes);
 
 // Domains
 router.use('/domains', domainRoutes);
+
+// Notifications
+router.use('/notifications', notificationRoutes);
 
 // GitHub Integration
 router.use(
@@ -67,6 +73,16 @@ router.use(
 router.use(
   '/admin/deployments',
   adminDeploymentRoutes
+);
+
+router.use(
+  '/admin/domains',
+  adminDomainRoutes
+);
+
+router.use(
+  '/admin/settings',
+  adminSettingsRoutes
 );
 
 module.exports = router;

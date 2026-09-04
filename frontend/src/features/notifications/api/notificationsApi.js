@@ -1,1 +1,2 @@
-// Replaced by userNotifications.js and adminNotifications.js
+export * from './notificationApi';
+export { notificationApi as default } from './notificationApi';

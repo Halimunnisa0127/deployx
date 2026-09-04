@@ -17,15 +17,15 @@ export function useDomainDetails(id) {
       const d = domainResponse.data?.domain;
       if (d) {
         const mappedDomain = {
-          id: d._id,
+          id: d._id || d.id,
           name: d.hostname,
-          projectName: 'DeployX Project',
-          projectId: d.project,
+          projectName: d.project?.name || (typeof d.project === 'string' ? 'Project' : 'Custom Domain'),
+          projectId: d.project?._id || d.project,
           environment: d.targetType === 'production' ? 'Production' : 'Preview',
-          status: d.verificationStatus, // 'verified', 'pending', 'failed'
-          sslStatus: d.sslStatus === 'active' ? 'active' : 'pending',
+          status: d.verificationStatus || 'pending', // 'verified', 'pending', 'failed'
+          sslStatus: d.sslStatus || 'pending',
           dnsStatus: d.verificationStatus === 'verified' ? 'verified' : 'pending',
-          createdAt: new Date(d.createdAt).toLocaleDateString(),
+          createdAt: d.createdAt ? new Date(d.createdAt).toLocaleDateString() : 'Recent',
           url: `https://${d.hostname}`,
           isLive: d.status === 'active',
         };

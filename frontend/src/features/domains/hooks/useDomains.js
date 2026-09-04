@@ -15,32 +15,38 @@ export function useDomains() {
   const fetchDomains = useCallback(async () => {
     try {
       setIsLoading(true);
-      const userProjects = await projectsService.fetchProjects();
+      const [projectsRes, domainsRes] = await Promise.allSettled([
+        projectsService.fetchProjects(),
+        domainsApi.getUserDomains(),
+      ]);
+
+      const userProjects = projectsRes.status === 'fulfilled' && Array.isArray(projectsRes.value)
+        ? projectsRes.value
+        : [];
       setProjects(userProjects);
-      
-      const allDomains = [];
-      for (const proj of userProjects) {
-        const response = await domainsApi.getProjectDomains(proj._id);
-        const projectDomains = response.data?.domains || [];
-        projectDomains.forEach(d => {
-          allDomains.push({
-            id: d._id,
-            name: d.hostname,
-            projectName: proj.name,
-            framework: proj.framework || 'auto',
-            environment: d.targetType === 'production' ? 'Production' : 'Preview',
-            status: d.verificationStatus, // 'verified', 'pending', 'failed'
-            sslStatus: d.sslStatus === 'active' ? 'active' : 'pending',
-            dnsStatus: d.verificationStatus === 'verified' ? 'verified' : 'pending',
-            createdAt: new Date(d.createdAt).toLocaleDateString(),
-            url: `https://${d.hostname}`,
-            isLive: d.status === 'active',
-          });
-        });
-      }
-      setDomains(allDomains);
+
+      const rawDomains = domainsRes.status === 'fulfilled' && domainsRes.value?.data?.domains
+        ? domainsRes.value.data.domains
+        : (domainsRes.status === 'fulfilled' && Array.isArray(domainsRes.value?.data) ? domainsRes.value.data : []);
+
+      const formattedDomains = rawDomains.map((d) => ({
+        id: d._id || d.id,
+        name: d.hostname,
+        projectName: d.project?.name || 'Project',
+        projectId: d.project?._id || d.project,
+        framework: d.project?.framework || 'auto',
+        environment: d.targetType === 'production' ? 'Production' : 'Preview',
+        status: d.verificationStatus || 'pending', // 'verified', 'pending', 'failed'
+        sslStatus: d.sslStatus || 'pending',
+        dnsStatus: d.verificationStatus === 'verified' ? 'verified' : 'pending',
+        createdAt: d.createdAt ? new Date(d.createdAt).toLocaleDateString() : 'Recent',
+        url: `https://${d.hostname}`,
+        isLive: d.status === 'active',
+      }));
+
+      setDomains(formattedDomains);
     } catch (err) {
-      console.error("Failed to fetch domains", err);
+      console.error("Failed to fetch domains:", err);
     } finally {
       setIsLoading(false);
     }

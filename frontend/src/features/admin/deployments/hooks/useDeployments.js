@@ -6,15 +6,18 @@ export function useDeployments() {
   const [deployments, setDeployments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchDeployments = useCallback(async (isRefresh = false) => {
     try {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
+      setError(null);
       const data = await deploymentsService.getDeployments();
-      setDeployments(data);
-    } catch (error) {
-      console.error("Failed to load deployments:", error);
+      setDeployments(Array.isArray(data) ? data : (data?.deployments || []));
+    } catch (err) {
+      console.error("Failed to load deployments:", err);
+      setError(err.response?.data?.message || err.message || "Failed to load deployments");
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -51,17 +54,8 @@ export function useDeployments() {
 
   const { search, filters } = tableParams;
 
-  // Emulate the activeFilter logic from Page
   const activeFilter = filters.state.status || 'all';
   const setActiveFilter = (val) => filters.update('status', val);
-
-  // Re-apply the special active filter logic since useAdminTable's default filter 
-  // might just do direct equality, but 'all' needs special handling.
-  // Wait, useFilters in useAdminTable probably handles generic filtering. Let's provide a custom filtered list just to be safe, 
-  // or use tableParams's filteredData. Actually, in DeploymentsPage it was:
-  // if (activeFilter !== "all" && d.status !== activeFilter) return false;
-  // If useAdminTable does exact match, 'status: all' might filter out everything. 
-  // Let's implement filteredDeployments here properly to match DeploymentsPage.
 
   const filteredDeployments = useMemo(() => {
     const query = search.query.trim().toLowerCase();
@@ -69,10 +63,10 @@ export function useDeployments() {
       if (activeFilter !== "all" && d.status !== activeFilter) return false;
       if (query) {
         return (
-          d.project.toLowerCase().includes(query) ||
-          d.owner.toLowerCase().includes(query) ||
-          d.id.toLowerCase().includes(query) ||
-          d.latestCommit.toLowerCase().includes(query)
+          (d.project && d.project.toLowerCase().includes(query)) ||
+          (d.owner && d.owner.toLowerCase().includes(query)) ||
+          (d.id && String(d.id).toLowerCase().includes(query)) ||
+          (d.latestCommit && d.latestCommit.toLowerCase().includes(query))
         );
       }
       return true;
@@ -85,27 +79,44 @@ export function useDeployments() {
       alert("Deployments exported successfully!");
     } catch (error) {
       console.error("Failed to export deployments", error);
+      alert(error.response?.data?.message || "Failed to export deployments");
     }
   };
 
   const handleRedeploy = async (id) => {
-    await deploymentsService.redeployDeployment(id);
-    fetchDeployments(true);
+    try {
+      await deploymentsService.redeployDeployment(id);
+      await fetchDeployments(true);
+    } catch (err) {
+      console.error("Failed to trigger redeploy:", err);
+      alert(err.response?.data?.message || err.message || "Failed to trigger redeploy");
+    }
   };
 
   const cancelDeployment = async (id) => {
-    await deploymentsService.cancelDeployment(id);
-    fetchDeployments(true);
+    try {
+      await deploymentsService.cancelDeployment(id);
+      await fetchDeployments(true);
+    } catch (err) {
+      console.error("Failed to cancel deployment:", err);
+      alert(err.response?.data?.message || err.message || "Failed to cancel deployment");
+    }
   };
 
   const deleteDeployment = async (id) => {
-    await deploymentsService.deleteDeployment(id);
-    fetchDeployments(true);
+    try {
+      await deploymentsService.deleteDeployment(id);
+      await fetchDeployments(true);
+    } catch (err) {
+      console.error("Failed to delete deployment:", err);
+      alert(err.response?.data?.message || err.message || "Failed to delete deployment");
+    }
   };
 
   return {
     loading,
     refreshing,
+    error,
     deployments,
     filteredDeployments,
     counts,
@@ -118,6 +129,5 @@ export function useDeployments() {
     handleRedeploy,
     cancelDeployment,
     deleteDeployment,
-    // Add pagination or sort if needed
   };
 }

@@ -132,60 +132,6 @@ export const ROOT_DIR_EXAMPLES = ['/', 'frontend', 'apps/web'];
 
 export const ENV_TYPES = ['Production', 'Preview', 'Development'];
 
-export const MOCK_REPOSITORIES = [
-  {
-    id: 'repo-1',
-    name: 'deployx-web-app',
-    fullName: 'acme-corp/deployx-web-app',
-    visibility: 'Public',
-    defaultBranch: 'main',
-    branches: ['main', 'staging', 'feature/v2'],
-    lastUpdated: 'Updated 2 hours ago',
-    language: 'TypeScript',
-    detectedFramework: 'React',
-  },
-  {
-    id: 'repo-2',
-    name: 'ecommerce-api-service',
-    fullName: 'acme-corp/ecommerce-api-service',
-    visibility: 'Private',
-    defaultBranch: 'main',
-    branches: ['main', 'develop', 'release-1.0'],
-    lastUpdated: 'Updated 1 day ago',
-    language: 'Node.js',
-    detectedFramework: 'Express',
-  },
-  {
-    id: 'repo-3',
-    name: 'nextjs-blog-template',
-    fullName: 'acme-corp/nextjs-blog-template',
-    visibility: 'Public',
-    defaultBranch: 'main',
-    branches: ['main', 'patch-1'],
-    lastUpdated: 'Updated 3 days ago',
-    language: 'JavaScript',
-    detectedFramework: 'Next.js',
-  },
-  {
-    id: 'repo-4',
-    name: 'internal-dashboard',
-    fullName: 'acme-corp/internal-dashboard',
-    visibility: 'Private',
-    defaultBranch: 'master',
-    branches: ['master', 'dev'],
-    lastUpdated: 'Updated 5 days ago',
-    language: 'React',
-    detectedFramework: 'Vite',
-  },
-  {
-    id: 'repo-5',
-    name: 'auth-service-microservice',
-    fullName: 'acme-corp/auth-service-microservice',
-    visibility: 'Private',
-    defaultBranch: 'main',
-    branches: ['main', 'fix/oauth'],
-    lastUpdated: 'Updated 1 week ago',
-    language: 'Go',
-    detectedFramework: 'Node.js',
-  },
-];
+// Deprecated mock repositories. Replaced by live GitHub integrations API.
+export const MOCK_REPOSITORIES = [];
+

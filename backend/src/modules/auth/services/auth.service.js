@@ -98,12 +98,13 @@ class AuthService {
       return true;
     }
 
-    // Generate a 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate a cryptographically secure 6-digit OTP
+    const otp = crypto.randomInt(100000, 1000000).toString();
     
-    // Set expiry to 10 minutes from now
+    // Set expiry from config or default to 10 minutes
+    const otpExpiryMinutes = Number(process.env.OTP_EXPIRY_MINUTES) || 10;
     const expiry = new Date();
-    expiry.setMinutes(expiry.getMinutes() + 10);
+    expiry.setMinutes(expiry.getMinutes() + otpExpiryMinutes);
 
     user.resetPasswordOtp = otp;
     user.resetPasswordOtpExpiry = expiry;
@@ -113,8 +114,8 @@ class AuthService {
     await sendEmail({
       to: email,
       subject: 'Password Reset OTP',
-      text: `Your password reset OTP is ${otp}. It will expire in 10 minutes.`,
-      html: `<p>Your password reset OTP is <strong>${otp}</strong>.</p><p>It will expire in 10 minutes.</p>`
+      text: `Your password reset OTP is ${otp}. It will expire in ${otpExpiryMinutes} minutes.`,
+      html: `<p>Your password reset OTP is <strong>${otp}</strong>.</p><p>It will expire in ${otpExpiryMinutes} minutes.</p>`
     });
 
     return true;

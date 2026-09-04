@@ -2,9 +2,12 @@ const { GoogleGenAI, Type, Schema } = require('@google/genai');
 const DeploymentService = require('../../modules/deployments/services/deployment.service');
 const DeploymentLogService = require('../../modules/logs/services/deploymentLog.service');
 const ProjectService = require('../../modules/projects/services/project.service');
+const config = require('../../config/env/env');
+
+const AI_MODEL = config.ai?.model || process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: config.ai?.apiKey || process.env.GEMINI_API_KEY,
 });
 
 const SYSTEM_INSTRUCTION = `You are DeployX AI, a deployment and DevOps assistant for the DeployX platform.
@@ -30,7 +33,7 @@ Keep responses practical and concise. Use Markdown.`;
 
 const testGemini = async () => {
   const response = await ai.models.generateContent({
-    model: 'gemini-3.6-flash',
+    model: AI_MODEL,
     contents: 'Explain this deployment error in one sentence: npm ERR! Missing script: build',
   });
 
@@ -110,7 +113,7 @@ const chatWithAI = async (userId, message, history, context) => {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
+      model: AI_MODEL,
       contents: formattedHistory,
       config: {
         systemInstruction: finalSystemInstruction,
@@ -178,7 +181,7 @@ Provide your analysis strictly in the requested JSON format.
 
   // 6. Call Gemini
   const response = await ai.models.generateContent({
-    model: 'gemini-3.6-flash',
+    model: AI_MODEL,
     contents: prompt,
     config: {
       responseMimeType: "application/json",

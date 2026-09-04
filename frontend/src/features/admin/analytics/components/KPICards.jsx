@@ -10,53 +10,61 @@ import OverviewCard from "../../components/OverviewCard";
 export default function KPICards({ data }) {
   if (!data) return null;
 
+  const totalDeploymentsVal = data.totalDeployments?.value ?? data.totalDeployments ?? 0;
+  const successRateVal = data.successRate?.value ?? data.successRate ?? 100;
+  const activeUsersVal = data.activeUsers?.value ?? data.activeUsers ?? (data.totalUsers?.value ?? 0);
+  const activeProjectsVal = data.activeProjects?.value ?? data.activeProjects ?? (data.totalProjects?.value ?? 0);
+  const failureRateVal = data.failureRate?.value ?? data.failureRate ?? 0;
+  const durationVal = data.deploymentDuration?.value ?? data.deploymentDuration ?? '0s';
+  const bandwidthVal = data.bandwidthUsage?.value ?? 'Not tracked';
+
   const cards = [
     {
       title: "Total Deployments",
-      value: data.totalDeployments.value.toLocaleString(),
-      change: data.totalDeployments.trend,
+      value: Number(totalDeploymentsVal).toLocaleString(),
+      change: data.totalDeployments?.trend || 0,
       icon: Rocket,
     },
     {
       title: "Success Rate",
-      value: `${data.successRate.value}%`,
-      change: data.successRate.trend,
+      value: `${successRateVal}%`,
+      change: data.successRate?.trend || 0,
       icon: ShieldCheck,
     },
     {
       title: "Active Users",
-      value: data.activeUsers.value.toLocaleString(),
-      change: data.activeUsers.trend,
+      value: Number(activeUsersVal).toLocaleString(),
+      change: data.activeUsers?.trend || 0,
       icon: Users,
     },
     {
       title: "Active Projects",
-      value: data.activeProjects.value.toLocaleString(),
-      change: data.activeProjects.trend,
+      value: Number(activeProjectsVal).toLocaleString(),
+      change: data.activeProjects?.trend || 0,
       icon: FolderGit2,
     },
     {
       title: "Failure Rate",
-      value: `${data.failureRate.value}%`,
-      change: data.failureRate.trend,
+      value: `${failureRateVal}%`,
+      change: data.failureRate?.trend || 0,
       icon: Activity,
     },
     {
       title: "Deployment Time",
-      value: data.deploymentDuration.value,
-      change: data.deploymentDuration.trend,
+      value: String(durationVal),
+      change: data.deploymentDuration?.trend || 0,
       icon: Rocket,
     },
     {
       title: "Bandwidth Usage",
-      value: data.bandwidthUsage.value,
-      change: data.bandwidthUsage.trend,
+      value: String(bandwidthVal),
+      change: 0,
       icon: Activity,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 gap-4">
       {cards.map((card, idx) => (
         <OverviewCard
           key={idx}

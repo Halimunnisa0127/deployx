@@ -41,7 +41,7 @@ export const useSystemHealth = () => {
     return {
       healthScore: Math.max(0, score),
       uptime: score === 100 ? 99.9 : score >= 80 ? 95.0 : 0.0,
-      activeServices: Object.values(rawOverview.services).filter(s => s === "ready").length + 5, // add constant mock service count
+      activeServices: Object.values(rawOverview.services).filter(s => s === "ready").length,
       offlineServices: offlineCount,
       warningServices: warningCount,
       criticalServices: offlineCount > 0 ? 1 : 0,

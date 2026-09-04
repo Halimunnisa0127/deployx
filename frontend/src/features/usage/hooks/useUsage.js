@@ -24,15 +24,18 @@ export function useUsage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const res = await fetchUsageData(dateRange);
       setData(res);
     } catch (err) {
       console.error('Failed to load usage metrics:', err);
+      setError(err.message || 'Failed to load usage metrics.');
     } finally {
       setIsLoading(false);
     }
@@ -64,6 +67,7 @@ export function useUsage() {
     isLoading,
     isExporting,
     data,
+    error,
     searchQuery,
     setSearchQuery,
     handleExport,

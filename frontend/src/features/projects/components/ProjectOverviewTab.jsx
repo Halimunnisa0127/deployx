@@ -25,8 +25,6 @@ import Button from '../../../components/ui/Button';
 
 import {
   STATUS_VARIANT_MAP,
-  getMockProjectStats,
-  getMockProjectActivities,
 } from '../utils/projectMockData';
 
 const GithubIcon = (props) => (
@@ -90,19 +88,67 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
     ? `https://github.com/${project.gitRepository.fullName}`
     : '#';
 
-  const stats = getMockProjectStats(project);
-  const activities = getMockProjectActivities(project);
+  const totalDeployments = deployments.length;
+  const successfulDeployments = deployments.filter(
+    (d) => d.status === 'ready' || d.status === 'live' || d.status === 'success'
+  ).length;
+  const successRate = totalDeployments > 0
+    ? `${Math.round((successfulDeployments / totalDeployments) * 100)}%`
+    : '100%';
+  const activeDomains = project?.customDomains?.length || (project?.domainUrl || project?.slug ? 1 : 0);
+  const envCount = project?.envVariables?.length || 0;
 
-  const latestDeployment = deployments[0] || {
-    id: 'dep-101',
-    commit: 'Update landing page hero section',
-    hash: '7a8f9c2',
-    branch: project?.branch || 'main',
-    status: project?.status || 'live',
-    time: '2 hours ago',
-    duration: '42s',
-    triggeredBy: 'GitHub Push by @alex-dev',
-  };
+  const stats = [
+    {
+      id: 'stat-1',
+      title: 'Total Deployments',
+      value: String(totalDeployments),
+      subtitle: `${successfulDeployments} successful`,
+      iconName: 'Layers',
+    },
+    {
+      id: 'stat-2',
+      title: 'Success Rate',
+      value: successRate,
+      subtitle: `${successfulDeployments}/${totalDeployments || 0} passed`,
+      iconName: 'CheckCircle2',
+    },
+    {
+      id: 'stat-3',
+      title: 'Active Domains',
+      value: String(activeDomains),
+      subtitle: 'Primary endpoint active',
+      iconName: 'Globe',
+    },
+    {
+      id: 'stat-4',
+      title: 'Env Variables',
+      value: String(envCount),
+      subtitle: `${envCount} configured keys`,
+      iconName: 'Key',
+    },
+  ];
+
+  const activities = deployments.slice(0, 5).map((d, i) => ({
+    id: d._id || d.id || `act-${i}`,
+    title: d.status === 'ready' || d.status === 'success' ? 'Deployment Completed' : `Deployment ${d.status || 'Triggered'}`,
+    description: d.source?.commitMessage || d.commitMessage || `Deployment #${d.deploymentNumber || i + 1}`,
+    timeAgo: d.createdAt ? new Date(d.createdAt).toLocaleDateString() : 'Recently',
+    type: d.status === 'ready' || d.status === 'success' ? 'success' : (d.status === 'failed' ? 'rollback' : 'env'),
+  }));
+
+  const latestDeployment = deployments[0]
+    ? {
+        id: deployments[0]._id || deployments[0].id || 'dep-1',
+        commit: deployments[0].source?.commitMessage || deployments[0].commitMessage || 'Latest build release',
+        hash: (deployments[0].source?.commitSha || deployments[0].commitHash || 'latest').substring(0, 7),
+        branch: deployments[0].source?.branch || deployments[0].branch || project?.gitRepository?.branch || 'main',
+        status: deployments[0].status || project?.status || 'live',
+        time: deployments[0].createdAt ? new Date(deployments[0].createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
+        duration: deployments[0].duration ? `${deployments[0].duration}s` : 'Active',
+        triggeredBy: deployments[0].triggeredBy || 'Manual Push',
+      }
+    : null;
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(`https://${defaultUrl}`);
@@ -266,68 +312,75 @@ export default function ProjectOverviewTab({ project, deployments = [], onAction
             </h3>
           </div>
           <Badge variant={badgeVariant}>
-            {latestDeployment.status}
+            {latestDeployment ? latestDeployment.status : (project?.status || 'No Deployments')}
           </Badge>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-5">
-          <div className="space-y-1">
-            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
-              Commit Hash & Message
-            </span>
-            <span className="text-slate-200 font-semibold block truncate">
-              {latestDeployment.commit}
-            </span>
-            <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block">
-              {latestDeployment.hash}
-            </span>
+        {latestDeployment ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-5">
+              <div className="space-y-1">
+                <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
+                  Commit Hash & Message
+                </span>
+                <span className="text-slate-200 font-semibold block truncate">
+                  {latestDeployment.commit}
+                </span>
+                <span className="font-mono text-indigo-400 text-sm bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 inline-block">
+                  {latestDeployment.hash}
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
+                  Branch
+                </span>
+                <span className="font-mono text-slate-200 font-semibold flex items-center gap-1.5">
+                  <GitBranch className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  {latestDeployment.branch}
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
+                  Triggered By
+                </span>
+                <span className="text-slate-200 font-medium flex items-center gap-1.5">
+                  <User className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  {latestDeployment.triggeredBy}
+                </span>
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
+                  Duration & Timestamp
+                </span>
+                <span className="text-slate-200 font-medium flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                  {latestDeployment.time} ({latestDeployment.duration})
+                </span>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-border flex items-center justify-between">
+              <span className="text-sm text-theme-muted font-mono">
+                Deployment ID: {latestDeployment.id}
+              </span>
+              <Button
+                variant="secondary"
+                size="sm"
+                iconLeft={<ExternalLink className="w-3.5 h-3.5" />}
+                onClick={() => onAction && onAction('View Deployment')}
+              >
+                View Deployment
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="py-6 text-center text-sm text-slate-400">
+            No deployments recorded yet for this project. Trigger a build or push to branch to deploy.
           </div>
-
-          <div className="space-y-1">
-            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
-              Branch
-            </span>
-            <span className="font-mono text-slate-200 font-semibold flex items-center gap-1.5">
-              <GitBranch className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-              {latestDeployment.branch}
-            </span>
-          </div>
-
-          <div className="space-y-1">
-            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
-              Triggered By
-            </span>
-            <span className="text-slate-200 font-medium flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-              {latestDeployment.triggeredBy || 'GitHub Push by @alex-dev'}
-            </span>
-          </div>
-
-          <div className="space-y-1">
-            <span className="text-slate-400 block text-sm uppercase tracking-wider font-medium">
-              Duration & Timestamp
-            </span>
-            <span className="text-slate-200 font-medium flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-              {latestDeployment.time} ({latestDeployment.duration})
-            </span>
-          </div>
-        </div>
-
-        <div className="pt-3 border-t border-border flex items-center justify-between">
-          <span className="text-sm text-theme-muted font-mono">
-
-            Deployment ID: {latestDeployment.id || 'dep-101'}
-          </span>
-          <Button
-            variant="secondary"
-            size="sm"
-            iconLeft={<ExternalLink className="w-3.5 h-3.5" />}
-            onClick={() => onAction && onAction('View Deployment')}
-          >
-            View Deployment
-          </Button>
-        </div>
+        )}
       </Card>
 
       {/* SECTION 4 — Recent Activity Timeline */}

@@ -35,51 +35,57 @@ export default function TopResourceConsumers({ consumers = [] }) {
       </div>
 
       <div className="space-y-3.5">
-        {consumers.map((item) => {
-          const Icon = CONSUMER_ICONS[item.type] || FolderGit2;
+        {consumers.length === 0 ? (
+          <div className="py-8 text-center text-sm text-muted-foreground">
+            No active project resource consumers recorded yet.
+          </div>
+        ) : (
+          consumers.map((item) => {
+            const Icon = CONSUMER_ICONS[item.type] || FolderGit2;
 
-          return (
-            <div
-              key={item.id}
-              className="p-3.5 rounded-xl bg-muted border border-border space-y-2.5 group hover:border-indigo-500/30 transition-all"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="p-2 rounded-xl bg-card border border-border shrink-0">
-                    <Icon className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      {item.name}
+            return (
+              <div
+                key={item.id}
+                className="p-3.5 rounded-xl bg-muted border border-border space-y-2.5 group hover:border-indigo-500/30 transition-all"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="p-2 rounded-xl bg-card border border-border shrink-0">
+                      <Icon className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground font-mono mt-0.5">
-                      <span>BW: {item.bandwidth}</span>
-                      <span>•</span>
-                      <span>ST: {item.storage}</span>
-                      <span>•</span>
-                      <span>FN: {item.functionExecutions}</span>
+                    <div className="min-w-0">
+                      <div className="text-xs sm:text-sm font-bold text-foreground truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                        {item.name}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground font-mono mt-0.5">
+                        <span>BW: {item.bandwidth}</span>
+                        <span>•</span>
+                        <span>ST: {item.storage}</span>
+                        <span>•</span>
+                        <span>FN: {item.functionExecutions}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-right shrink-0">
+                    <div className="text-xs sm:text-sm font-extrabold font-mono text-foreground">
+                      {item.sharePercent}%
+                    </div>
+                    <div className="text-xs text-muted-foreground font-mono">
+                      Total Share
                     </div>
                   </div>
                 </div>
 
-                <div className="text-right shrink-0">
-                  <div className="text-xs sm:text-sm font-extrabold font-mono text-foreground">
-                    {item.sharePercent}%
-                  </div>
-                  <div className="text-xs text-muted-foreground font-mono">
-                    Total Share
-                  </div>
-                </div>
+                <Progress 
+                  percent={item.sharePercent} 
+                  color={item.color || 'bg-indigo-500'} 
+                  height="h-2" 
+                />
               </div>
-
-              <Progress 
-                percent={item.sharePercent} 
-                color={item.color || 'bg-indigo-500'} 
-                height="h-2" 
-              />
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
     </Card>
   );

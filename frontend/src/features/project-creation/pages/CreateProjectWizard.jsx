@@ -369,25 +369,28 @@ export default function CreateProjectWizard() {
     sessionStorage.setItem('wizard_project_name', projectName);
     sessionStorage.setItem('wizard_step', '2');
     
-    // Redirect in the same window instead of a popup
-    let url = `${env.API_BASE_URL}/integrations/github/oauth/connect`;
-    if (options.forceConsent) {
-      url += '?prompt=consent';
-    }
-    window.location.href = url;
     const width = 600;
     const height = 700;
     const left = window.screen.width / 2 - width / 2;
     const top = window.screen.height / 2 - height / 2;
     
-    // Popup for GitHub OAuth, passing the token via query param
+    // Popup for GitHub OAuth, passing the token via query param for authentication
+    const authToken = token || localStorage.getItem('token');
     const authUrl = new URL(`${env.API_BASE_URL}/integrations/github/oauth/connect`);
-    if (token) {
-      authUrl.searchParams.append('token', token);
+    if (authToken) {
+      authUrl.searchParams.append('token', authToken);
+    }
+    if (options.forceConsent) {
+      authUrl.searchParams.append('prompt', 'consent');
     }
     
     const popup = window.open(authUrl.toString(), 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
     
+    // Fallback if popup is blocked by browser
+    if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+      window.location.href = authUrl.toString();
+      return;
+    }
     
     // Listen for message from popup
     const messageListener = (event) => {

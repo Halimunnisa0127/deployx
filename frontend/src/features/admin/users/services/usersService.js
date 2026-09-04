@@ -1,7 +1,7 @@
 import * as usersApi from "../api/usersApi";
 
-export const getUsers = async () => {
-  return await usersApi.fetchUsers();
+export const getUsers = async (params = {}) => {
+  return await usersApi.fetchUsers(params);
 };
 
 export const getUser = async (id) => {

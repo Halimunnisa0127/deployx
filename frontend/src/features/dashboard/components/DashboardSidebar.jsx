@@ -48,19 +48,16 @@ const GithubIcon = (props) => (
   </svg>
 );
 
-// Mock Workspaces list
 const INITIAL_WORKSPACES = [
   { id: 'ws-1', name: 'Personal Workspace', plan: 'Hobby', role: 'Owner' },
-  { id: 'ws-2', name: 'DeployX Production', plan: 'Pro', role: 'Admin' },
-  { id: 'ws-3', name: 'Acme Corp', plan: 'Enterprise', role: 'Member' },
 ];
 
 // Navigation configuration
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { id: 'projects', label: 'Projects', href: '/dashboard/projects', icon: FolderGit2, badge: '12' },
-  { id: 'deployments', label: 'Deployments', href: '/dashboard/deployments', icon: Rocket, badge: 'Live' },
-  { id: 'usage', label: 'Usage', href: '/dashboard/usage', icon: Gauge, badge: 'Pro' },
+  { id: 'projects', label: 'Projects', href: '/dashboard/projects', icon: FolderGit2 },
+  { id: 'deployments', label: 'Deployments', href: '/dashboard/deployments', icon: Rocket },
+  { id: 'usage', label: 'Usage', href: '/dashboard/usage', icon: Gauge },
   { id: 'domains', label: 'Domains', href: '/dashboard/domains', icon: Globe },
   { id: 'logs', label: 'Logs', href: '/dashboard/logs', icon: Terminal },
   { id: 'github', label: 'GitHub', href: '/dashboard/github', icon: GithubIcon },
@@ -75,13 +72,20 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [workspaces] = useState(INITIAL_WORKSPACES);
-  const [activeWorkspace, setActiveWorkspace] = useState(INITIAL_WORKSPACES[1]);
+  const [activeWorkspace, setActiveWorkspace] = useState(INITIAL_WORKSPACES[0] || { id: 'ws-1', name: 'Personal Workspace', plan: 'Hobby', role: 'Owner' });
   const [workspaceSearch, setWorkspaceSearch] = useState('');
   const [navSearchQuery, setNavSearchQuery] = useState('');
 
+  const currentWorkspace = activeWorkspace || workspaces[0] || {
+    id: 'ws-1',
+    name: user?.name ? `${user.name}'s Workspace` : 'Personal Workspace',
+    plan: user?.role === 'admin' ? 'Enterprise' : 'Hobby',
+    role: 'Owner',
+  };
+
   const filteredWorkspaces = useMemo(() => {
     return workspaces.filter((ws) =>
-      ws.name.toLowerCase().includes(workspaceSearch.toLowerCase())
+      (ws.name || '').toLowerCase().includes(workspaceSearch.toLowerCase())
     );
   }, [workspaces, workspaceSearch]);
 
@@ -150,13 +154,13 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
             trigger={
               <div className="w-full flex items-center justify-between p-2.5 rounded-xl bg-card hover:bg-slate-100 dark:hover:bg-slate-800/80 border border-border hover:border-slate-300 dark:hover:border-slate-700/80 transition-all group cursor-pointer shadow-sm">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <Avatar name={activeWorkspace.name} size="xs" variant="rounded" />
+                  <Avatar name={currentWorkspace.name} size="xs" variant="rounded" />
                   <div className="flex flex-col text-left min-w-0">
                     <span className="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
-                      {activeWorkspace.name}
+                      {currentWorkspace.name}
                     </span>
                     <span className="text-xs text-muted-foreground font-medium transition-colors">
-                      {activeWorkspace.plan} Plan
+                      {currentWorkspace.plan} Plan
                     </span>
                   </div>
                 </div>
@@ -188,7 +192,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                         close();
                       }}
                       className={`w-full flex items-center justify-between p-2 rounded-lg text-xs transition-colors ${
-                        activeWorkspace.id === ws.id
+                        currentWorkspace.id === ws.id
                           ? 'bg-indigo-50 dark:bg-indigo-600/15 text-indigo-700 dark:text-indigo-300 font-semibold border border-indigo-200 dark:border-indigo-500/20'
                           : 'text-muted-foreground hover:bg-slate-100 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-white'
                       }`}
@@ -197,7 +201,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                         <Avatar name={ws.name} size="xs" />
                         <span className="truncate">{ws.name}</span>
                       </div>
-                      {activeWorkspace.id === ws.id && (
+                      {currentWorkspace.id === ws.id && (
                         <Check className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
                       )}
                     </button>
@@ -222,9 +226,9 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
             )}
           </Dropdown>
         ) : (
-          <Tooltip content={`Workspace: ${activeWorkspace.name}`} position="right">
+          <Tooltip content={`Workspace: ${currentWorkspace.name}`} position="right">
             <div className="flex justify-center">
-              <Avatar name={activeWorkspace.name} size="sm" variant="rounded" />
+              <Avatar name={currentWorkspace.name} size="sm" variant="rounded" />
             </div>
           </Tooltip>
         )}

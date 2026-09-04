@@ -1,42 +1,56 @@
-import { analyticsMockData, generateDeploymentTrend, generateUserGrowth } from "../data/analyticsData";
+import api from '../../../../lib/axios';
 
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const parseDays = (dateRange) => {
+  if (!dateRange) return 30;
+  const match = String(dateRange).match(/\d+/);
+  return match ? parseInt(match[0], 10) : 30;
+};
 
 export const analyticsApi = {
-  getDashboardAnalytics: async (dateRange) => {
-    await wait(600);
-    return analyticsMockData.kpi;
+  getDashboardAnalytics: async (dateRange = '30d') => {
+    const days = parseDays(dateRange);
+    const response = await api.get('/admin/health/analytics', { params: { days } });
+    return response.data?.data || response.data;
   },
-  getDeploymentTrend: async (dateRange) => {
-    await wait(400);
-    return generateDeploymentTrend(15);
+
+  getDeploymentTrend: async (dateRange = '15d') => {
+    const days = parseDays(dateRange);
+    const response = await api.get('/admin/health/deployment-trends', { params: { days } });
+    return response.data?.data || response.data || [];
   },
-  getUserGrowth: async (dateRange) => {
-    await wait(400);
-    return generateUserGrowth(31);
+
+  getUserGrowth: async (dateRange = '30d') => {
+    const days = parseDays(dateRange);
+    const response = await api.get('/admin/health/user-growth', { params: { days } });
+    return response.data?.data || response.data || [];
   },
-  getProjectGrowth: async (dateRange) => {
-    await wait(400);
-    return analyticsMockData.projectGrowth;
+
+  getProjectGrowth: async () => {
+    const response = await api.get('/admin/health/project-growth');
+    return response.data?.data || response.data || [];
   },
+
   getFrameworkDistribution: async () => {
-    await wait(400);
-    return analyticsMockData.frameworkDistribution;
+    const response = await api.get('/admin/health/frameworks');
+    return response.data?.data || response.data || [];
   },
+
   getRegionDistribution: async () => {
-    await wait(400);
-    return analyticsMockData.regionDistribution;
+    const response = await api.get('/admin/health/regions');
+    return response.data?.data || response.data || [];
   },
-  getTopProjects: async () => {
-    await wait(500);
-    return analyticsMockData.topProjects;
+
+  getTopProjects: async (limit = 5) => {
+    const response = await api.get('/admin/health/top-projects', { params: { limit } });
+    return response.data?.data || response.data || [];
   },
-  getTopUsers: async () => {
-    await wait(500);
-    return analyticsMockData.topUsers;
+
+  getTopUsers: async (limit = 5) => {
+    const response = await api.get('/admin/health/top-users', { params: { limit } });
+    return response.data?.data || response.data || [];
   },
-  exportReport: async (format) => {
-    await wait(1200);
-    return { success: true, url: `/downloads/analytics_report.${format}` };
+
+  exportReport: async (format = 'pdf') => {
+    return { success: true, message: `Exporting ${format.toUpperCase()} report...` };
   },
 };

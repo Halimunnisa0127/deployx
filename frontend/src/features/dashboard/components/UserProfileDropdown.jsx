@@ -8,6 +8,7 @@ import {
   Moon,
   LifeBuoy,
   LogOut,
+  ShieldCheck,
 } from 'lucide-react';
 import { logoutUser } from '../../auth/slice/authSlice';
 import { setTheme } from '../../../store/slices/uiSlice';
@@ -50,6 +51,25 @@ export default function UserProfileDropdown({ user, close }) {
 
       {/* List Items */}
       <div className="px-1 space-y-0.5">
+        {/* Admin Portal Shortcut for Admins */}
+        {user?.role === 'admin' && (
+          <div
+            className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg transition-colors text-left select-none bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 group cursor-pointer mb-1 border border-indigo-200 dark:border-indigo-800/40"
+            onClick={() => {
+              navigate('/admin');
+              if (close) close();
+            }}
+          >
+            <span className="flex items-center gap-1.5 font-bold">
+              <ShieldCheck className="w-3.5 h-3.5 text-indigo-500" />
+              Admin Portal
+            </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-mono">
+              Admin
+            </span>
+          </div>
+        )}
+
         {/* 1. Account */}
         <div
           className={navItemClass}
