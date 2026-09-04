@@ -4,8 +4,11 @@ export const githubApi = {
   checkConnectionStatus: async () => {
     try {
       const response = await api.get('/integrations/github/status');
-      // response.data.data contains { status, lastSyncedAt, username }
-      return response.data?.data || null;
+      const data = response.data?.data;
+      if (data && data.isConnected === false) {
+        return null;
+      }
+      return data || null;
     } catch (error) {
       return null;
     }

@@ -13,7 +13,7 @@ const { decrypt } = require('../../../../utils/helpers/encryption.helper');
 exports.syncRepositories = async (userId) => {
   const account = await GitHubAccount.findOne({ userId });
   if (!account) {
-    throw new ApiError(404, 'GitHub account not connected');
+    throw new ApiError('GitHub account not connected', 404);
   }
 
   // Update status to syncing
@@ -112,7 +112,7 @@ exports.getRepositories = async (userId, query) => {
 exports.syncRepository = async (userId, repositoryId) => {
   const account = await GitHubAccount.findOne({ userId });
   if (!account) {
-    throw new ApiError(404, 'GitHub account not connected');
+    throw new ApiError('GitHub account not connected', 404);
   }
 
   const accessToken = decrypt(account.encryptedAccessToken);
@@ -123,7 +123,7 @@ exports.syncRepository = async (userId, repositoryId) => {
     // First, find the repo to get owner and repo name
     const repoRecord = await GitHubRepository.findOne({ userId, githubRepositoryId: repositoryId });
     if (!repoRecord) {
-      throw new ApiError(404, 'Repository not found in local database');
+      throw new ApiError('Repository not found in local database', 404);
     }
 
     const rawRepo = await client.get(`/repos/${repoRecord.owner}/${repoRecord.name}`);
@@ -150,7 +150,7 @@ exports.syncRepository = async (userId, repositoryId) => {
     if (error.status === 404) {
       // Repository deleted or renamed heavily
       await GitHubRepository.findOneAndDelete({ userId, githubRepositoryId: repositoryId });
-      throw new ApiError(404, 'Repository no longer exists on GitHub, removed from database');
+      throw new ApiError('Repository no longer exists on GitHub, removed from database', 404);
     }
     throw error;
   }
@@ -162,7 +162,7 @@ exports.syncRepository = async (userId, repositoryId) => {
 exports.getRepository = async (userId, repositoryId) => {
   const repo = await GitHubRepository.findOne({ userId, githubRepositoryId: repositoryId });
   if (!repo) {
-    throw new ApiError(404, 'Repository not found');
+    throw new ApiError('Repository not found', 404);
   }
   return repo;
 };
@@ -183,9 +183,15 @@ exports.cancelRepositorySync = async (userId) => {
 exports.getSyncStatus = async (userId) => {
   const account = await GitHubAccount.findOne({ userId });
   if (!account) {
-    throw new ApiError(404, 'GitHub account not connected');
+    return { 
+      isConnected: false,
+      status: GITHUB_SYNC_STATUS.PENDING,
+      lastSyncedAt: null,
+      username: null,
+    };
   }
   return { 
+    isConnected: true,
     status: account.syncStatus || GITHUB_SYNC_STATUS.PENDING,
     lastSyncedAt: account.lastSyncedAt,
     username: account.username,

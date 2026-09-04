@@ -3,15 +3,16 @@ const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const ApiResponse = require('../shared/responses/ApiResponse');
 
 const rateLimiterMiddleware = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 1 * 60 * 1000, // 1 minute
 
-  max: 100,
+  max: 1000,
 
   skip: (req) => {
     return (
       req.path === '/' ||
       req.path === '/health' ||
-      req.path.startsWith('/deployments')
+      req.path.startsWith('/deployments') ||
+      process.env.NODE_ENV === 'development'
     );
   },
 

@@ -88,6 +88,7 @@ userSchema.pre('save', async function () {
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
+  if (!this.password) return false;
   return comparePassword(candidatePassword, this.password);
 };
 

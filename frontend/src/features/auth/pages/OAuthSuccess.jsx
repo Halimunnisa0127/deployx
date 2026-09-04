@@ -1,14 +1,26 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCurrentUser } from '../slice/authSlice';
 
 export default function OAuthSuccess() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const hasRun = useRef(false);
+  const initialized = useRef(false);
 
   const { isAuthenticated, status, error: authError } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!initialized.current) {
+      initialized.current = true;
+      if (!isAuthenticated) {
+        dispatch(getCurrentUser());
+      }
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -22,7 +34,7 @@ export default function OAuthSuccess() {
       // Otherwise, redirect to dashboard or back to wizard
       const wizardStep = sessionStorage.getItem('wizard_step');
       if (wizardStep) {
-        navigate('/dashboard/projects/create');
+        navigate('/dashboard/projects/new');
       } else {
         navigate('/dashboard');
       }
@@ -30,7 +42,9 @@ export default function OAuthSuccess() {
       // Fallback via localStorage in case window.opener is lost across redirects
       localStorage.setItem('github_connected', 'true');
       
-      window.close();
+      if (window.opener && window.opener !== window) {
+        window.close();
+      }
       
       // If not a popup or unable to close, navigate after a short delay
       setTimeout(() => {
