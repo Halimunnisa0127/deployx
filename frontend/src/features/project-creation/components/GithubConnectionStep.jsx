@@ -252,20 +252,24 @@ export default function GithubConnectionStep({
               </div>
 
               <div className="flex items-center gap-2 flex-wrap">
-                {repoBranches && repoBranches.length > 0 ? repoBranches.map((b) => (
-                  <button
-                    key={b.name}
-                    type="button"
-                    onClick={() => handleSelectBranch(b.name)}
-                    className={`px-3 py-1.5 rounded-md border text-sm font-medium transition-colors ${
-                      b.name === selectedBranch
-                        ? 'bg-primary/10 border-primary text-primary'
-                        : 'border-border text-slate-600 hover:border-primary/50'
-                    }`}
-                  >
-                    {b.name} {b.isDefault && '(default)'}
-                  </button>
-                )) : (
+                {repoBranches && repoBranches.length > 0 ? repoBranches.map((b) => {
+                  const bName = typeof b === 'string' ? b : (b?.name || selectedRepo.defaultBranch || 'main');
+                  const isDef = typeof b === 'object' ? b?.isDefault : bName === selectedRepo.defaultBranch;
+                  return (
+                    <button
+                      key={bName}
+                      type="button"
+                      onClick={() => handleSelectBranch(bName)}
+                      className={`px-3 py-1.5 rounded-md border text-sm font-medium transition-colors ${
+                        bName === selectedBranch
+                          ? 'bg-primary/10 border-primary text-primary'
+                          : 'border-border text-slate-600 hover:border-primary/50'
+                      }`}
+                    >
+                      {bName} {isDef && '(default)'}
+                    </button>
+                  );
+                }) : (
                   <span className="text-xs text-slate-500">Loading branches...</span>
                 )}
               </div>

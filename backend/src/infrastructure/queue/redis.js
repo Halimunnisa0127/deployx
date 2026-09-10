@@ -4,9 +4,9 @@ const config = require('../../config/env/env');
 const isProduction = process.env.NODE_ENV === 'production';
 
 const redisConfig = {
-  host: config.redis.host,
-  port: config.redis.port,
-  password: config.redis.password,
+  host: config.redis?.host || '127.0.0.1',
+  port: config.redis?.port || 6379,
+  password: config.redis?.password || '',
 
   // Required by BullMQ
   maxRetriesPerRequest: null,
@@ -18,11 +18,12 @@ const redisConfig = {
 
 // Production Redis providers such as Upstash use TLS.
 // Local Redis normally does not.
-if (isProduction || (config.redis.host && config.redis.host.includes('upstash.io'))) {
+if (isProduction || (config.redis?.host && config.redis.host.includes('upstash.io'))) {
   redisConfig.tls = {};
 }
 
 const redisConnection = new Redis(redisConfig);
+
 
 let lastLoggedErrorTime = 0;
 const ERROR_LOG_THROTTLE_MS = 10_000;

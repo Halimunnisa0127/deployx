@@ -11,13 +11,13 @@ vi.mock('../src/features/deployments/api/deploymentsApi', () => ({
 
 describe('useDeploymentLogs Hook Unit Tests', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
     vi.clearAllMocks();
   });
 
   afterEach(() => {
     vi.useRealTimers();
   });
+
 
   test('calls log API with deploymentId and loading state works', async () => {
     deploymentsApi.getDeploymentLogs.mockReturnValue(new Promise(() => {})); // Never resolves
@@ -87,6 +87,7 @@ describe('useDeploymentLogs Hook Unit Tests', () => {
   });
 
   test('polling starts only for active deployments and clears on unmount', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     const mockLogs = { success: true, data: { logs: [] } };
     deploymentsApi.getDeploymentLogs.mockResolvedValue(mockLogs);
 
@@ -98,14 +99,17 @@ describe('useDeploymentLogs Hook Unit Tests', () => {
     });
 
     // Advance timers by 3000ms to trigger next polling tick
-    vi.advanceTimersByTime(3000);
+    await vi.advanceTimersByTimeAsync(3000);
     expect(deploymentsApi.getDeploymentLogs).toHaveBeenCalledTimes(2);
 
     // Unmount hook
     unmount();
 
     // Advance timers again, verify no further calls are made
-    vi.advanceTimersByTime(3000);
+    await vi.advanceTimersByTimeAsync(3000);
     expect(deploymentsApi.getDeploymentLogs).toHaveBeenCalledTimes(2);
+
+    vi.useRealTimers();
   });
+
 });

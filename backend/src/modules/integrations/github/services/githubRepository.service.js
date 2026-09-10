@@ -68,20 +68,45 @@ exports.getCommitByBranch = async (userId, owner, repo, branch) => {
 exports.analyzeRepository = async (userId, owner, repo, branch, rootDirectory = '') => {
   const client = await getGitHubClientForUser(userId);
   
-  const cleanRoot = rootDirectory.replace(/^\/+|\/+$/g, '');
-  const packageJsonPath = cleanRoot ? `${cleanRoot}/package.json` : 'package.json';
+  let cleanRoot = (rootDirectory || '').replace(/^\/+|\/+$/g, '');
   const queryParams = branch ? `?ref=${encodeURIComponent(branch)}` : '';
-  const endpoint = `/repos/${owner}/${repo}/contents/${packageJsonPath}${queryParams}`;
   
   let packageJsonData = null;
   try {
+    const packageJsonPath = cleanRoot ? `${cleanRoot}/package.json` : 'package.json';
+    const endpoint = `/repos/${owner}/${repo}/contents/${packageJsonPath}${queryParams}`;
     const fileResponse = await client.get(endpoint);
     if (fileResponse && fileResponse.content) {
       const packageJsonStr = Buffer.from(fileResponse.content, 'base64').toString('utf-8');
       packageJsonData = JSON.parse(packageJsonStr);
     }
   } catch (error) {
-    if (error.statusCode === 404 || error.status === 404) {
+    if ((error.statusCode === 404 || error.status === 404) && !cleanRoot) {
+      // package.json not found at repo root. Let's inspect subdirectories for nested project / monorepo
+      try {
+        const rootContents = await client.get(`/repos/${owner}/${repo}/contents${queryParams}`);
+        if (Array.isArray(rootContents)) {
+          const subdirs = rootContents.filter(item => item.type === 'dir');
+          for (const dir of subdirs) {
+            try {
+              const subPkg = await client.get(`/repos/${owner}/${repo}/contents/${dir.name}/package.json${queryParams}`);
+              if (subPkg && subPkg.content) {
+                const packageJsonStr = Buffer.from(subPkg.content, 'base64').toString('utf-8');
+                packageJsonData = JSON.parse(packageJsonStr);
+                cleanRoot = dir.name;
+                break;
+              }
+            } catch (subErr) {
+              // Ignore and continue checking other subdirectories
+            }
+          }
+        }
+      } catch (scanErr) {
+        // Fallback continues
+      }
+    }
+
+    if (!packageJsonData) {
       return {
         framework: 'auto',
         frameworkName: 'Unknown / Static Site',
@@ -96,7 +121,6 @@ exports.analyzeRepository = async (userId, owner, repo, branch, rootDirectory = 
         confidence: 'low'
       };
     }
-    throw error;
   }
   
   const deps = { ...(packageJsonData.dependencies || {}), ...(packageJsonData.devDependencies || {}), ...(packageJsonData.peerDependencies || {}) };
@@ -130,28 +154,30 @@ exports.analyzeRepository = async (userId, owner, repo, branch, rootDirectory = 
   }
   
   let packageManager = 'npm';
+  let detectedLockfile = null;
+
   if (packageJsonData.packageManager) {
     if (packageJsonData.packageManager.includes('yarn')) packageManager = 'yarn';
     else if (packageJsonData.packageManager.includes('pnpm')) packageManager = 'pnpm';
     else if (packageJsonData.packageManager.includes('bun')) packageManager = 'bun';
-    let detectedLockfile = null;
-    const lockfiles = [
-      { name: 'pnpm-lock.yaml', pm: 'pnpm' },
-      { name: 'yarn.lock', pm: 'yarn' },
-      { name: 'package-lock.json', pm: 'npm' },
-      { name: 'bun.lockb', pm: 'bun' },
-      { name: 'bun.lock', pm: 'bun' }
-    ];
-    for (const lf of lockfiles) {
-      try {
-        const lfPath = cleanRoot ? `${cleanRoot}/${lf.name}` : lf.name;
-        await client.get(`/repos/${owner}/${repo}/contents/${lfPath}${queryParams}`);
-        packageManager = lf.pm;
-        detectedLockfile = lf.name;
-        break;
-      } catch (err) {
-        // Continue searching
-      }
+  }
+
+  const lockfiles = [
+    { name: 'pnpm-lock.yaml', pm: 'pnpm' },
+    { name: 'yarn.lock', pm: 'yarn' },
+    { name: 'package-lock.json', pm: 'npm' },
+    { name: 'bun.lockb', pm: 'bun' },
+    { name: 'bun.lock', pm: 'bun' }
+  ];
+  for (const lf of lockfiles) {
+    try {
+      const lfPath = cleanRoot ? `${cleanRoot}/${lf.name}` : lf.name;
+      await client.get(`/repos/${owner}/${repo}/contents/${lfPath}${queryParams}`);
+      packageManager = lf.pm;
+      detectedLockfile = lf.name;
+      break;
+    } catch (err) {
+      // Continue searching
     }
   }
   

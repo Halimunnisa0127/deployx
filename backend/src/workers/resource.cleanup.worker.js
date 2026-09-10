@@ -12,26 +12,13 @@ const LocalArtifactStorageProvider = require('../modules/storage/providers/Local
 const Docker = require('dockerode');
 
 const workerId = `cleaner-${os.hostname()}-${process.pid}-${crypto.randomBytes(4).toString('hex')}`;
-const storageProvider = new LocalArtifactStorageProvider();
-const docker = new Docker();
-
-// Connect to MongoDB
-if (require.main === module) {
-  mongoose.connect(config.mongoUri)
-    .then(() => {
-      logger.info({ event: 'cleaner.started', workerId }, '[Cleaner] Connected to MongoDB');
-      startCleanupLoop();
-    })
-    .catch((err) => {
-      logger.fatal({ event: 'cleaner.error', workerId, err: err.message }, '[Cleaner] MongoDB connection error');
-      process.exit(1);
-    });
-}
-
 let intervalId;
 
 async function runCleanup() {
+  const storageProvider = new LocalArtifactStorageProvider();
+  const docker = new Docker();
   logger.info({ event: 'cleaner.tick', workerId }, '[Cleaner] Starting resource cleanup cycle...');
+
 
   try {
     // 1. Scan for all Artifact documents
@@ -169,5 +156,18 @@ const shutdown = async (signal) => {
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 
+if (require.main === module) {
+  mongoose.connect(config.mongoUri)
+    .then(() => {
+      logger.info({ event: 'cleaner.started', workerId }, '[Cleaner] Connected to MongoDB');
+      startCleanupLoop();
+    })
+    .catch((err) => {
+      logger.fatal({ event: 'cleaner.error', workerId, err: err.message }, '[Cleaner] MongoDB connection error');
+      process.exit(1);
+    });
+}
+
 module.exports = { runCleanup, startCleanupLoop };
+
 

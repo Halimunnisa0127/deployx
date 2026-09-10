@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLocation, useMatch, useNavigate } from 'react-router-dom';
+import { useMatch, useNavigate } from 'react-router-dom';
 import { deploymentsApi } from '../api/deploymentsApi';
 import { getProjectApi } from '../../projects/api/projects.api';
 import { 
@@ -8,7 +8,6 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   Terminal, 
-  FileCode2,
   ChevronRight,
   RefreshCw,
   Loader2,
@@ -18,7 +17,6 @@ import Button from '../../../components/ui/Button';
 
 export default function DeployXAIAssistant({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const messagesEndRef = useRef(null);
 
   const [loading, setLoading] = useState(false);

@@ -26,9 +26,10 @@ describe('Admin Projects API Client Unit Tests', () => {
     });
 
     const projects = await fetchProjects();
-    expect(api.get).toHaveBeenCalledWith('/admin/projects');
+    expect(api.get).toHaveBeenCalledWith('/admin/projects', { params: {} });
     expect(projects).toEqual(mockProjects);
   });
+
 
   test('fetchProjectById requests correct detail endpoint', async () => {
     const mockProject = { _id: 'proj-1', name: 'Cool App' };

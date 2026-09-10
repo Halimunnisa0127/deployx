@@ -193,8 +193,40 @@ export const useSystemHealth = () => {
   }, [incidentPage, incidentLimit]);
 
   useEffect(() => {
-    fetchData(false, incidentPage);
-  }, [incidentPage]);
+    let ignore = false;
+    Promise.all([
+      systemHealthService.getSystemOverview(),
+      systemHealthService.getInfrastructureStatus(),
+      systemHealthService.getPerformanceMetrics(),
+      systemHealthService.getIncidentTimeline(incidentPage, incidentLimit),
+    ])
+      .then(([overviewRes, infraRes, metricsRes, incidentsRes]) => {
+        if (!ignore) {
+          setOverview(mapOverviewData(overviewRes));
+          setInfrastructure(mapInfraServices(infraRes));
+          setMetrics(metricsRes);
+          if (incidentsRes) {
+            setIncidents(mapTimelineIncidents(incidentsRes.incidents));
+            setPagination({
+              total: incidentsRes.pagination.total,
+              pages: incidentsRes.pagination.pages,
+            });
+          }
+          setHasData(true);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        if (!ignore) {
+          console.error("Failed to fetch system health:", error);
+          setHasData(false);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [incidentPage, incidentLimit]);
 
   // Handle Polling Auto Refresh
   useEffect(() => {

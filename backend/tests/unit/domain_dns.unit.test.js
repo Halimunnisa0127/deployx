@@ -4,9 +4,14 @@ const DomainVerificationService = require('../../src/modules/domains/services/do
 const DomainService = require('../../src/modules/domains/services/domain.service');
 const Domain = require('../../src/modules/domains/models/Domain');
 const Project = require('../../src/modules/projects/models/Project');
+const NotificationService = require('../../src/modules/notifications/services/notification.service');
 
 jest.mock('../../src/modules/domains/models/Domain');
 jest.mock('../../src/modules/projects/models/Project');
+jest.mock('../../src/modules/notifications/services/notification.service', () => ({
+  createNotification: jest.fn().mockResolvedValue({ _id: 'mock-notif' }),
+  getNotifications: jest.fn().mockResolvedValue([]),
+}));
 jest.mock('dns', () => ({
   promises: {
     resolveTxt: jest.fn()
@@ -189,27 +194,32 @@ describe('Domain DNS Verification & Token Isolation Unit Tests', () => {
 
   describe('Token Isolation in API Responses', () => {
     test('getProjectDomains excludes verificationToken', async () => {
-      const selectMock = jest.fn().mockResolvedValue([
-        { _id: 'dom1', hostname: 'dom1.com' }
-      ]);
-      Domain.find = jest.fn().mockReturnValue({ select: selectMock });
+      const queryMock = {
+        populate: jest.fn().mockReturnThis(),
+        select: jest.fn().mockReturnThis(),
+        sort: jest.fn().mockResolvedValue([
+          { _id: 'dom1', hostname: 'dom1.com' }
+        ])
+      };
+      Domain.find = jest.fn().mockReturnValue(queryMock);
       Project.findById = jest.fn().mockResolvedValue({ _id: projectId, owner: userId });
 
       const domains = await DomainService.getProjectDomains(userId, projectId);
       expect(Domain.find).toHaveBeenCalledWith({ project: projectId });
-      expect(selectMock).toHaveBeenCalledWith('-verificationToken');
+      expect(queryMock.select).toHaveBeenCalledWith('-verificationToken');
       expect(domains[0]).not.toHaveProperty('verificationToken');
     });
 
     test('getDomain details excludes verificationToken', async () => {
-      const selectMock = jest.fn().mockResolvedValue(
-        { _id: domainId, owner: userId, hostname: 'example.com' }
-      );
-      Domain.findById = jest.fn().mockReturnValue({ select: selectMock });
+      const queryMock = {
+        populate: jest.fn().mockReturnThis(),
+        select: jest.fn().mockResolvedValue({ _id: domainId, owner: userId, hostname: 'example.com' })
+      };
+      Domain.findById = jest.fn().mockReturnValue(queryMock);
 
       const domain = await DomainService.getDomain(userId, domainId);
       expect(Domain.findById).toHaveBeenCalledWith(domainId);
-      expect(selectMock).toHaveBeenCalledWith('-verificationToken');
+      expect(queryMock.select).toHaveBeenCalledWith('-verificationToken');
       expect(domain).not.toHaveProperty('verificationToken');
     });
 

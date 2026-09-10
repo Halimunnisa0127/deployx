@@ -176,7 +176,7 @@ const authSlice = createSlice({
         state.user = payload.user || payload;
         localStorage.setItem('user', JSON.stringify(state.user));
       })
-      .addCase(getCurrentUser.rejected, (state, action) => {
+      .addCase(getCurrentUser.rejected, (state) => {
         state.status = 'failed';
         state.isAuthenticated = false;
         state.user = null;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, useRef, memo } from 'react';
 import BuildLogToolbar from './BuildLogToolbar';
 import BuildLogLine from './BuildLogLine';
 import BuildLogsEmptyState from './BuildLogsEmptyState';
@@ -13,13 +13,8 @@ const STATUS_STYLES = {
   },
   building: {
     label: 'Building',
-    classes: 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400',
-    dotClasses: 'bg-blue-500 dark:bg-blue-400 animate-pulse'
-  },
-  in_progress: {
-    label: 'Building',
-    classes: 'bg-blue-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400',
-    dotClasses: 'bg-blue-500 dark:bg-blue-400 animate-pulse'
+    classes: 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400',
+    dotClasses: 'bg-amber-500 dark:amber-400'
   },
   ready: {
     label: 'Ready',
@@ -31,22 +26,28 @@ const STATUS_STYLES = {
     classes: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400',
     dotClasses: 'bg-emerald-500 dark:bg-emerald-400'
   },
+  error: {
+    label: 'Failed',
+    classes: 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400',
+    dotClasses: 'bg-rose-500 dark:bg-rose-400'
+  },
   failed: {
     label: 'Failed',
     classes: 'bg-rose-500/10 border-rose-500/20 text-rose-600 dark:text-rose-400',
     dotClasses: 'bg-rose-500 dark:bg-rose-400'
   },
-  cancelled: {
-    label: 'Cancelled',
-    classes: 'bg-red-500/10 border-red-500/20 text-red-600 dark:text-red-400',
-    dotClasses: 'bg-red-500 dark:bg-red-400'
-  }
+  canceled: {
+    label: 'Canceled',
+    classes: 'bg-slate-500/10 border-slate-500/20 text-slate-600 dark:text-slate-400',
+    dotClasses: 'bg-slate-500 dark:bg-slate-400'
+  },
 };
 
 function BuildLogsTerminal({
-  logs: initialLogs = [],
   deploymentId,
   environment = 'Production',
+  logs: propLogs,
+  initialLogs = [],
   status = 'success',
   isStreaming = false,
   isLoading = false,
@@ -55,7 +56,9 @@ function BuildLogsTerminal({
   maxHeight = '420px',
   className = '',
 }) {
-  const [displayedLogs, setDisplayedLogs] = useState(initialLogs);
+  const [isCleared, setIsCleared] = useState(false);
+  const rawLogs = propLogs || initialLogs || [];
+  const displayedLogs = isCleared ? [] : rawLogs;
   const [copied, setCopied] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isWordWrap, setIsWordWrap] = useState(true);
@@ -64,11 +67,6 @@ function BuildLogsTerminal({
   const scrollRef = useRef(null);
   const isBuilding = status === 'building' || status === 'in_progress' || isStreaming;
   const currentStatusStyle = STATUS_STYLES[status] || STATUS_STYLES.ready;
-
-  // Sync initial logs
-  useEffect(() => {
-    setDisplayedLogs(initialLogs);
-  }, [initialLogs]);
 
   // Compute stats: Errors & Warnings counts
   const errorCount = (displayedLogs || []).filter((l) => l.type === 'error').length;
@@ -102,12 +100,12 @@ function BuildLogsTerminal({
 
   // 3. Clear Logs Handler
   const handleClearLogs = () => {
-    setDisplayedLogs([]);
+    setIsCleared(true);
   };
 
   // Reset cleared logs
   const handleResetLogs = () => {
-    setDisplayedLogs(initialLogs);
+    setIsCleared(false);
   };
 
   return (

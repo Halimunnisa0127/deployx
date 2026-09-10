@@ -42,8 +42,25 @@ export function useUsage() {
   }, [dateRange]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    let ignore = false;
+    fetchUsageData(dateRange)
+      .then((res) => {
+        if (!ignore) {
+          setData(res);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error('Failed to load usage metrics:', err);
+          setError(err.message || 'Failed to load usage metrics.');
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [dateRange]);
 
   const handleExport = async (format = 'csv') => {
     setIsExporting(true);

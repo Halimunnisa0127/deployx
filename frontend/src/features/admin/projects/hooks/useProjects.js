@@ -27,8 +27,25 @@ export function useProjects() {
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    let ignore = false;
+    projectsService.getProjects()
+      .then((data) => {
+        if (!ignore) {
+          setProjects(Array.isArray(data) ? data : (data?.projects || []));
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err.message || "Failed to load projects");
+          console.error("Failed to load projects:", err);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const counts = useMemo(() => {
     const res = {

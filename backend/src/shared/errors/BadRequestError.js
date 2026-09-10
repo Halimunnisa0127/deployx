@@ -6,4 +6,7 @@ class BadRequestError extends ApiError {
     super(message, StatusCodes.BAD_REQUEST);
   }
 }
+
+BadRequestError.BadRequestError = BadRequestError;
 module.exports = BadRequestError;
+

@@ -61,8 +61,42 @@ export function useAnalytics(initialDateRange = "30d") {
   }, [dateRange]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    let ignore = false;
+    Promise.all([
+      analyticsService.getDashboardAnalytics(dateRange),
+      analyticsService.getDeploymentTrend(dateRange),
+      analyticsService.getUserGrowth(dateRange),
+      analyticsService.getProjectGrowth(dateRange),
+      analyticsService.getFrameworkDistribution(),
+      analyticsService.getRegionDistribution(),
+      analyticsService.getTopProjects(),
+      analyticsService.getTopUsers(),
+    ])
+      .then(([kpiRes, trendRes, usersRes, projRes, frameRes, regRes, topProjRes, topUsersRes]) => {
+        if (!ignore) {
+          setKpiData(kpiRes);
+          setDeploymentTrend(trendRes);
+          setUserGrowth(usersRes);
+          setProjectGrowth(projRes);
+          setFrameworks(frameRes);
+          setRegions(regRes);
+          setTopProjects(topProjRes);
+          setTopUsers(topUsersRes);
+          setHasData(true);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        if (!ignore) {
+          console.error("Failed to fetch analytics:", error);
+          setHasData(false);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [dateRange]);
 
   const handleExport = async (format = "pdf") => {
     try {

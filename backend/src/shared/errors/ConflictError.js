@@ -6,4 +6,7 @@ class ConflictError extends ApiError {
     super(message, StatusCodes.CONFLICT);
   }
 }
+
+ConflictError.ConflictError = ConflictError;
 module.exports = ConflictError;
+

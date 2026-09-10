@@ -22,8 +22,8 @@ export default function DeploymentDetails() {
 
   const [notification, setNotification] = useState(null);
 
-  const { deployment: rawDeployment, isLoading, error, refetch } = useDeploymentDetails(id);
-  const { createDeployment, cancelDeployment, redeployDeployment, isCreating, isCancelling } = useDeploymentMutations();
+  const { deployment: rawDeployment, isLoading, error } = useDeploymentDetails(id);
+  const { redeployDeployment, isCreating } = useDeploymentMutations();
   const deployment = rawDeployment ? { ...rawDeployment, id: rawDeployment._id || rawDeployment.id } : null;
   const { logs: deploymentLogs, isLoading: isLoadingLogs } = useDeploymentLogs(id, deployment?.status);
 
@@ -40,7 +40,7 @@ export default function DeploymentDetails() {
         setNotification(null);
         navigate(`/dashboard/deployments/${newDeployment._id || newDeployment.id}`);
       }, 3000);
-    } catch (err) {
+    } catch {
       setNotification({
         type: 'error',
         message: 'Failed to trigger redeploy',
@@ -56,24 +56,6 @@ export default function DeploymentDetails() {
       message: `Rollback functionality is coming in a future CI/CD phase.`,
     });
     setTimeout(() => setNotification(null), 4000);
-  };
-  
-  const handleCancel = async () => {
-    try {
-      await cancelDeployment(id);
-      setNotification({
-        type: 'success',
-        message: 'Deployment cancelled successfully',
-      });
-      refetch();
-      setTimeout(() => setNotification(null), 3000);
-    } catch (err) {
-      setNotification({
-        type: 'error',
-        message: 'Failed to cancel deployment',
-      });
-      setTimeout(() => setNotification(null), 4000);
-    }
   };
 
   const handleCopyUrl = (url) => {

@@ -2,7 +2,8 @@ const PlatformSettings = require('../models/PlatformSettings');
 const config = require('../../../config/env/env');
 const { ApiError } = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
-const { sendEmail } = require('../../../utils/helpers/email.helper');
+const emailHelper = require('../../../utils/helpers/email.helper');
+
 
 class AdminSettingsService {
   /**
@@ -261,8 +262,9 @@ class AdminSettingsService {
     const normalizedEmail = recipientEmail.trim().toLowerCase();
 
     try {
-      await sendEmail({
+      await emailHelper.sendEmail({
         to: normalizedEmail,
+
         subject: 'DeployX Platform Settings - SMTP Test',
         text: 'This is a test email sent from the DeployX Admin Platform Settings console to verify outbound SMTP configuration.',
         html: `

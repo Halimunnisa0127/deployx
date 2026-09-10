@@ -71,6 +71,11 @@ class LocalArtifactStorageProvider {
     }
   }
 
+  async deleteArtifact(key) {
+    return this.delete(key);
+  }
+
+
   /**
    * Checks if an artifact exists.
    */

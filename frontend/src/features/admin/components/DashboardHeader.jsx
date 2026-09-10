@@ -1,6 +1,6 @@
 import { Layers, Bell, User as UserIcon, Search } from "lucide-react";
 
-export default function DashboardHeader({ stats, dateRange, setDateRange, refreshData, refreshing }) {
+export default function DashboardHeader({ dateRange, setDateRange, refreshData, refreshing }) {
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
       <div>

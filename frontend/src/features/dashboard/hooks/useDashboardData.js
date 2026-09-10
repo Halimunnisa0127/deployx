@@ -26,9 +26,11 @@ export function useDashboardData() {
     usageSummary: [],
   });
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (isManualRefresh = false) => {
     try {
-      setLoading(true);
+      if (isManualRefresh) {
+        setLoading(true);
+      }
       setError(null);
 
       // Fetch projects, deployments, and health status in parallel
@@ -287,8 +289,229 @@ export function useDashboardData() {
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    let ignore = false;
+    Promise.allSettled([
+      fetchProjectsApi(),
+      deploymentsApi.getDeployments(),
+      api.get('/health/ready'),
+    ]).then(([projectsRes, deploymentsRes, healthRes]) => {
+      if (ignore) return;
+      const projects = projectsRes.status === 'fulfilled' && projectsRes.value?.data?.projects
+        ? projectsRes.value.data.projects
+        : (projectsRes.status === 'fulfilled' && Array.isArray(projectsRes.value?.data) ? projectsRes.value.data : []);
+
+      const deployments = deploymentsRes.status === 'fulfilled' && deploymentsRes.value?.data?.deployments
+        ? deploymentsRes.value.data.deployments
+        : (deploymentsRes.status === 'fulfilled' && Array.isArray(deploymentsRes.value?.data) ? deploymentsRes.value.data : []);
+
+      const totalProjects = projects.length;
+      const totalDeployments = deployments.length;
+      const successfulDeployments = deployments.filter(
+        (d) => d.status === 'ready' || d.status === 'success' || d.status === 'live'
+      ).length;
+      const successRate = totalDeployments > 0
+        ? `${((successfulDeployments / totalDeployments) * 100).toFixed(1)}%`
+        : '100%';
+      const activeDomains = projects.filter((p) => Boolean(p.domainUrl || p.slug)).length;
+
+      const statMetrics = [
+        {
+          id: 'total_projects',
+          title: 'Total Projects',
+          value: String(totalProjects),
+          iconName: 'FolderPlus',
+          trend: 'up',
+          change: `${totalProjects} active`,
+          period: 'Live Workspace',
+          link: '/dashboard/projects',
+        },
+        {
+          id: 'total_deployments',
+          title: 'Total Deployments',
+          value: String(totalDeployments),
+          iconName: 'Layers',
+          trend: 'up',
+          change: `${successfulDeployments} successful`,
+          period: 'All-time runs',
+          link: '/dashboard/deployments',
+        },
+        {
+          id: 'active_domains',
+          title: 'Active Domains',
+          value: String(activeDomains),
+          iconName: 'Globe',
+          trend: 'up',
+          change: `${activeDomains} connected`,
+          period: 'Live endpoints',
+          link: '/dashboard/domains',
+        },
+        {
+          id: 'build_success_rate',
+          title: 'Deployment Success',
+          value: successRate,
+          iconName: 'Zap',
+          trend: parseFloat(successRate) >= 90 ? 'up' : 'neutral',
+          change: `${successfulDeployments}/${totalDeployments || 0} builds`,
+          period: 'Overall reliability',
+          link: '/dashboard/deployments',
+        },
+      ];
+
+      const recentDeployments = deployments.slice(0, 5).map((d) => {
+        const id = d._id || d.id || '';
+        const shortId = id ? id.substring(0, 7) : 'dep';
+        return {
+          id,
+          project: d.project?.name || 'Unknown Project',
+          environment: d.environment === 'production' ? 'Production' : 'Preview',
+          commit: d.source?.commitHash?.substring(0, 7) || shortId,
+          branch: d.source?.branch || d.branch || 'main',
+          time: formatTimeAgo(d.createdAt),
+          status: d.status === 'ready' ? 'success' : (d.status || 'queued'),
+          url: d.url || (d.project?.slug ? `https://${d.project.slug}.deployx.app` : null),
+          author: d.creator?.username || d.creator?.name || 'Automated System',
+          commitMessage: d.source?.commitMessage || d.commitMessage || 'Automated deployment trigger',
+        };
+      });
+
+      const liveCount = projects.filter((p) => p.status === 'ready' || p.status === 'live' || p.status === 'deployed').length;
+      const buildingCount = projects.filter((p) => p.status === 'building' || p.status === 'deploying').length;
+      const previewCount = projects.filter((p) => p.status === 'preview').length;
+      const failedCount = projects.filter((p) => p.status === 'failed' || p.status === 'error').length;
+      const archivedCount = projects.filter((p) => p.status === 'archived' || p.status === 'inactive').length;
+
+      const projectOverview = {
+        total: totalProjects,
+        liveCount,
+        previewCount: previewCount || buildingCount,
+        buildingCount,
+        failedCount,
+        archivedCount,
+      };
+
+      const isSystemHealthy = healthRes.status === 'fulfilled' && (healthRes.value?.status === 'ok' || healthRes.value?.status === 'healthy');
+      const systemServices = [
+        { name: 'API Server', status: 'operational', ping: '12ms' },
+        { name: 'Build Worker Engine', status: 'operational', ping: '18ms' },
+        { name: 'Static Hosting Edge', status: 'operational', ping: '8ms' },
+        { name: 'Database Primary', status: isSystemHealthy ? 'operational' : 'degraded', ping: '5ms' },
+      ];
+
+      const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const last7Days = [];
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        const dayName = daysOfWeek[date.getDay()];
+        const dateString = date.toISOString().split('T')[0];
+
+        const dayDeployments = deployments.filter((d) => {
+          if (!d.createdAt) return false;
+          return d.createdAt.startsWith(dateString);
+        });
+
+        const daySuccess = dayDeployments.filter(
+          (d) => d.status === 'ready' || d.status === 'success' || d.status === 'live'
+        ).length;
+        const dayFailed = dayDeployments.filter(
+          (d) => d.status === 'failed' || d.status === 'error'
+        ).length;
+
+        last7Days.push({
+          day: dayName,
+          success: daySuccess,
+          failed: dayFailed,
+        });
+      }
+
+      const activities = [];
+      deployments.slice(0, 8).forEach((d) => {
+        activities.push({
+          id: `act-dep-${d._id || d.id}`,
+          title: `Deployed ${d.project?.name || 'Project'}`,
+          description: d.source?.commitMessage || d.commitMessage || `Deployment #${(d._id || d.id).substring(0, 6)}`,
+          projectName: d.project?.name || 'Project',
+          type: 'deployment',
+          timeAgo: formatTimeAgo(d.createdAt),
+          timestamp: new Date(d.createdAt).getTime(),
+          filter: getDayFilter(d.createdAt),
+        });
+      });
+
+      projects.slice(0, 5).forEach((p) => {
+        activities.push({
+          id: `act-proj-${p._id || p.id}`,
+          title: `Created Project ${p.name}`,
+          description: `Initialized ${p.framework || 'Node.js'} repository template`,
+          projectName: p.name,
+          type: 'github',
+          timeAgo: formatTimeAgo(p.createdAt),
+          timestamp: new Date(p.createdAt).getTime(),
+          filter: getDayFilter(p.createdAt),
+        });
+      });
+
+      activities.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+      const usageSummary = [
+        {
+          id: 'bandwidth',
+          name: 'Bandwidth',
+          used: Math.min(totalDeployments * 0.25, 100),
+          total: 100,
+          unit: 'GB',
+          percent: Math.min(Math.round((totalDeployments * 0.25 / 100) * 100), 100),
+        },
+        {
+          id: 'storage',
+          name: 'Storage',
+          used: Math.min(totalProjects * 0.5, 50),
+          total: 50,
+          unit: 'GB',
+          percent: Math.min(Math.round((totalProjects * 0.5 / 50) * 100), 100),
+        },
+        {
+          id: 'build_minutes',
+          name: 'Build Minutes',
+          used: totalDeployments * 2,
+          total: 1000,
+          unit: 'mins',
+          percent: Math.min(Math.round(((totalDeployments * 2) / 1000) * 100), 100),
+        },
+        {
+          id: 'function_executions',
+          name: 'Function Executions',
+          used: totalDeployments * 15,
+          total: 1000,
+          unit: 'K',
+          percent: Math.min(Math.round(((totalDeployments * 15) / 1000) * 100), 100),
+        },
+      ];
+
+      setData({
+        projects,
+        deployments,
+        statMetrics,
+        recentDeployments,
+        projectOverview,
+        systemServices,
+        deploymentTrends: last7Days,
+        recentActivities: activities.slice(0, 6),
+        usageSummary,
+      });
+      setLoading(false);
+    }).catch((err) => {
+      if (!ignore) {
+        console.error('[useDashboardData] Failed to load dashboard data:', err);
+        setError('Failed to load dashboard metrics. Please try again.');
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return {
     ...data,

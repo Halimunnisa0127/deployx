@@ -274,7 +274,8 @@ class AdminDeploymentService {
         const artifact = await Artifact.findById(deployment.artifact);
         if (artifact && artifact.storageKey) {
           const storageProvider = new LocalArtifactStorageProvider();
-          await storageProvider.deleteArtifact(artifact.storageKey).catch(() => {});
+          await storageProvider.delete(artifact.storageKey).catch(() => {});
+
         }
         await Artifact.deleteOne({ _id: deployment.artifact });
       }

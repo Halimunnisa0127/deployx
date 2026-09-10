@@ -21,8 +21,24 @@ export function useUsers() {
   }, []);
 
   useEffect(() => {
-    fetchUsersData();
-  }, [fetchUsersData]);
+    let ignore = false;
+    usersService.getUsers()
+      .then((data) => {
+        if (!ignore) {
+          setUsers(Array.isArray(data) ? data : (data?.users || []));
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err.message || "Failed to fetch users");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleDeleteUser = async (id) => {
     await usersService.deleteUser(id);

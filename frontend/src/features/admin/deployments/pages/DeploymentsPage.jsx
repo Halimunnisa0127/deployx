@@ -23,7 +23,6 @@ export default function DeploymentsPage() {
   const {
     loading,
     refreshing,
-    error,
     deployments,
     filteredDeployments,
     counts,

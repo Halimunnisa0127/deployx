@@ -7,6 +7,7 @@ import { deploymentsApi } from '../../deployments/api/deploymentsApi';
 
 export const fetchUsageData = async (dateRange = 'this_month') => {
   try {
+    void dateRange;
     const [projectsRes, deploymentsRes] = await Promise.allSettled([
       fetchProjectsApi(),
       deploymentsApi.getDeployments(),
@@ -31,14 +32,9 @@ export const fetchUsageData = async (dateRange = 'this_month') => {
       const projId = d.project?._id || d.project || 'default';
       const projFramework = d.project?.framework || 'auto';
 
-      let durationMins = 0;
-      if (d.createdAt && d.completedAt) {
-        const start = new Date(d.createdAt).getTime();
-        const end = new Date(d.completedAt).getTime();
-        durationMins = Math.max(0.1, (end - start) / (1000 * 60));
-      } else {
-        durationMins = 0.5; // Estimated duration for running/queued jobs
-      }
+      const durationMins = (d.createdAt && d.completedAt)
+        ? Math.max(0.1, (new Date(d.completedAt).getTime() - new Date(d.createdAt).getTime()) / (1000 * 60))
+        : 0.5;
 
       totalBuildMins += durationMins;
 

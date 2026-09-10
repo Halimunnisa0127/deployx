@@ -17,30 +17,30 @@ import GithubIcon from "../../../../components/ui/GithubIcon";
 import Badge from "../../../../components/ui/Badge";
 import Dropdown from "../../../../components/ui/Dropdown";
 
-const getIconForType = (type) => {
+const renderIconForType = (type, className = "w-5 h-5 text-muted-foreground") => {
   switch (type) {
     case "api":
-      return Server;
+      return <Server className={className} />;
     case "database":
-      return Database;
+      return <Database className={className} />;
     case "docker":
-      return Box;
+      return <Box className={className} />;
     case "queue":
-      return Layers;
+      return <Layers className={className} />;
     case "storage":
-      return HardDrive;
+      return <HardDrive className={className} />;
     case "github":
-      return GithubIcon;
+      return <GithubIcon className={className} />;
     case "worker":
-      return Cpu;
+      return <Cpu className={className} />;
     case "scheduler":
-      return Clock;
+      return <Clock className={className} />;
     case "email":
-      return Mail;
+      return <Mail className={className} />;
     case "ssl":
-      return Shield;
+      return <Shield className={className} />;
     default:
-      return Server;
+      return <Server className={className} />;
   }
 };
 
@@ -50,7 +50,6 @@ export function InfrastructureCard({
   onRestart,
   onToggleMaintenance,
 }) {
-  const Icon = getIconForType(service.type);
   const menuItems = [
     {
       id: "restart",
@@ -91,7 +90,7 @@ export function InfrastructureCard({
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-muted border border-border flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-            <Icon className="w-5 h-5 text-muted-foreground" />
+            {renderIconForType(service.type)}
           </div>
           <div>
             <h3 className="text-foreground font-semibold">{service.name}</h3>

@@ -43,13 +43,38 @@ export function useDeploymentDetails(id) {
 
   useEffect(() => {
     isMountedRef.current = true;
-    setIsLoading(true);
-    fetchDeployment();
+    if (!id) {
+      return;
+    }
+    let ignore = false;
+    deploymentsApi.getDeploymentDetails(id)
+      .then((response) => {
+        if (!response || !response.data || !response.data.deployment) {
+          throw new Error('Invalid response structure: deployment is undefined');
+        }
+        if (!ignore) {
+          const rawDeployment = response.data.deployment;
+          setDeployment({
+            ...rawDeployment,
+            id: rawDeployment._id,
+            projectName: rawDeployment.project?.name || '',
+          });
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to fetch deployment details", err);
+          setError(err.response?.data?.message || err.message || 'Failed to fetch deployment');
+          setIsLoading(false);
+        }
+      });
 
     return () => {
+      ignore = true;
       isMountedRef.current = false;
     };
-  }, [id, fetchDeployment]);
+  }, [id]);
 
   useEffect(() => {
     if (!id) return;

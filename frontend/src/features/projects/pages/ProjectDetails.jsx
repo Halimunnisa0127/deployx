@@ -1,7 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { AlertCircle, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
 import Button from '../../../components/ui/Button';
 import Skeleton from '../../../components/ui/Skeleton';
@@ -46,7 +45,7 @@ export default function ProjectDetails() {
         const newDeployment = await redeployDeployment(depId);
         setActionFeedback(`Successfully queued redeployment #${newDeployment.deploymentNumber}`);
         refetchDeployments();
-      } catch (err) {
+      } catch {
         setActionFeedback(`Failed to trigger redeploy.`);
       }
       setTimeout(() => setActionFeedback(''), 4000);
@@ -63,7 +62,7 @@ export default function ProjectDetails() {
         });
         setActionFeedback(`Successfully queued deployment #${newDeployment.deploymentNumber}`);
         refetchDeployments();
-      } catch (err) {
+      } catch {
         setActionFeedback(`Failed to trigger deployment.`);
       }
       setTimeout(() => setActionFeedback(''), 4000);
@@ -78,7 +77,7 @@ export default function ProjectDetails() {
           setActionFeedback(`Successfully rolled back to deployment #${rollbackTarget.deploymentNumber || rollbackTarget.id}`);
           refetchDeployments();
           refetch();
-        } catch (err) {
+        } catch {
           setActionFeedback(`Failed to rollback deployment.`);
         }
       } else {

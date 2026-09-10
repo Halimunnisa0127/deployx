@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAccessToken } from '../slice/authSlice';
 
 export default function OAuthSuccess() {
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);

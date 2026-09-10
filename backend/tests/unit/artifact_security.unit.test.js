@@ -35,13 +35,14 @@ describe('Artifact Path Security Unit Tests', () => {
     });
 
     test('Accepts clean paths', async () => {
-      // Mock storage provider getArtifactStream to prevent file access crash in unit test
-      const mockStream = { pipe: jest.fn(), on: jest.fn() };
+      const { Readable } = require('stream');
+      const mockStream = new Readable({ read() { this.push(null); } });
       LocalArtifactStorageProvider.prototype.getArtifactStream = jest.fn().mockResolvedValue(mockStream);
 
       await ArtifactService.serveFileFromArtifact('key.tar', 'assets/js/app.js', false, res);
       // It shouldn't trigger status 400
       expect(res.status).not.toHaveBeenCalledWith(400);
     });
+
   });
 });

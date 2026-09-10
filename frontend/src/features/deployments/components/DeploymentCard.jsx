@@ -90,7 +90,6 @@ function DeploymentCard({ deployment, onClick, onRedeploy }) {
     duration,
     triggeredBy,
     deployedAt,
-    url,
     isLive,
   } = deployment;
 

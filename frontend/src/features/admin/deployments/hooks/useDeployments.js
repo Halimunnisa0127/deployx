@@ -25,8 +25,25 @@ export function useDeployments() {
   }, []);
 
   useEffect(() => {
-    fetchDeployments();
-  }, [fetchDeployments]);
+    let ignore = false;
+    deploymentsService.getDeployments()
+      .then((data) => {
+        if (!ignore) {
+          setDeployments(Array.isArray(data) ? data : (data?.deployments || []));
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to load deployments:", err);
+          setError(err.response?.data?.message || err.message || "Failed to load deployments");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const counts = useMemo(() => {
     const res = {

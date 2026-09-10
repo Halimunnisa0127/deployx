@@ -107,11 +107,19 @@ describe('Admin Deployments Unit Tests', () => {
         triggeredBy: 'Manual',
       };
 
-      Deployment.findById = jest.fn().mockReturnValue({
-        populate: jest.fn().mockReturnThis(),
-      });
-      // Final populated resolution
-      Deployment.findById().populate().populate().populate = jest.fn().mockResolvedValue(mockDeployment);
+      const createQueryMock = (resolvedValue) => {
+        const query = {};
+        query.populate = jest.fn().mockReturnValue(query);
+        query.select = jest.fn().mockReturnValue(query);
+        query.sort = jest.fn().mockReturnValue(query);
+        query.skip = jest.fn().mockReturnValue(query);
+        query.limit = jest.fn().mockReturnValue(query);
+        query.exec = jest.fn().mockResolvedValue(resolvedValue);
+        query.then = (onFulfilled, onRejected) => Promise.resolve(resolvedValue).then(onFulfilled, onRejected);
+        return query;
+      };
+
+      Deployment.findById = jest.fn().mockReturnValue(createQueryMock(mockDeployment));
 
       const result = await AdminDeploymentService.getDeployment(depId);
 
@@ -129,13 +137,20 @@ describe('Admin Deployments Unit Tests', () => {
     });
 
     test('getDeployment throws 404 for nonexistent deployment', async () => {
-      Deployment.findById = jest.fn().mockReturnValue({
-        populate: jest.fn().mockReturnThis(),
-      });
-      Deployment.findById().populate().populate().populate = jest.fn().mockResolvedValue(null);
+      const createQueryMock = (resolvedValue) => {
+        const query = {};
+        query.populate = jest.fn().mockReturnValue(query);
+        query.select = jest.fn().mockReturnValue(query);
+        query.exec = jest.fn().mockResolvedValue(resolvedValue);
+        query.then = (onFulfilled, onRejected) => Promise.resolve(resolvedValue).then(onFulfilled, onRejected);
+        return query;
+      };
+
+      Deployment.findById = jest.fn().mockReturnValue(createQueryMock(null));
 
       await expect(AdminDeploymentService.getDeployment('invalid-id')).rejects.toThrow('Deployment not found');
     });
+
   });
 
   describe('3. Deployment Cancellation & Safety Rules', () => {

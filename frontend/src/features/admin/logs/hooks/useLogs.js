@@ -26,7 +26,24 @@ export function useLogs() {
   };
 
   useEffect(() => {
-    fetchData();
+    let ignore = false;
+    logsService.getLogs()
+      .then((data) => {
+        if (!ignore) {
+          setLogs(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err);
+          console.error('Failed to load logs:', err);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const table = useAdminTable({

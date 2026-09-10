@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ArrowLeft, ArrowRight, X, Rocket } from 'lucide-react';
 import Button from '../../../components/ui/Button';
 import {
-  createProject,
   checkProjectNameThunk,
   createProjectThunk,
 } from '../../projects/slice/projectsSlice';
@@ -14,9 +13,6 @@ import DeploymentProgressScreen from '../../deployments/components/DeploymentPro
 import { 
   STEPS, 
   FRAMEWORK_OPTIONS, 
-  PACKAGE_MANAGERS, 
-  NODE_VERSIONS, 
-  REGION_OPTIONS 
 } from '../constants/wizardConstants';
 
 import {
@@ -35,12 +31,25 @@ export default function CreateProjectWizard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(() => {
+    try {
+      const savedStep = sessionStorage.getItem('wizard_step');
+      return savedStep ? Number(savedStep) : 1;
+    } catch {
+      return 1;
+    }
+  });
   const [activeDeploymentId, setActiveDeploymentId] = useState(null);
   const [deploymentError, setDeploymentError] = useState(null);
 
   // Form State
-  const [projectName, setProjectName] = useState('');
+  const [projectName, setProjectName] = useState(() => {
+    try {
+      return sessionStorage.getItem('wizard_project_name') || '';
+    } catch {
+      return '';
+    }
+  });
   const [gitRepository, setGitRepository] = useState('');
   const [branch, setBranch] = useState('main');
 
@@ -104,15 +113,18 @@ export default function CreateProjectWizard() {
     try {
       const statusObj = await githubApi.checkConnectionStatus();
       const isConnected = !!statusObj;
-      setIsGithubConnected(isConnected);
+      const username = statusObj?.username || '';
+      let repos = [];
       if (isConnected) {
-        setGithubUsername(statusObj.username || '');
-        let repos = await githubApi.getRepositories();
+        repos = await githubApi.getRepositories();
         if (!repos || repos.length === 0) {
-          // If empty, force a sync since the backend might have not synced yet
           await githubApi.syncRepositories();
           repos = await githubApi.getRepositories();
         }
+      }
+      setIsGithubConnected(isConnected);
+      if (isConnected) {
+        setGithubUsername(username);
         setRepositories(repos || []);
       }
     } catch (error) {
@@ -121,15 +133,38 @@ export default function CreateProjectWizard() {
   };
 
   useEffect(() => {
-    const savedName = sessionStorage.getItem('wizard_project_name');
-    const savedStep = sessionStorage.getItem('wizard_step');
-    if (savedName) setProjectName(savedName);
-    if (savedStep) setCurrentStep(Number(savedStep));
-    
-    sessionStorage.removeItem('wizard_project_name');
-    sessionStorage.removeItem('wizard_step');
+    try {
+      sessionStorage.removeItem('wizard_project_name');
+      sessionStorage.removeItem('wizard_step');
+    } catch {
+      // Ignore
+    }
 
-    fetchRepositories();
+    let ignore = false;
+    githubApi.checkConnectionStatus()
+      .then(async (statusObj) => {
+        if (ignore) return;
+        const isConnected = !!statusObj;
+        setIsGithubConnected(isConnected);
+        if (isConnected) {
+          setGithubUsername(statusObj.username || '');
+          let repos = await githubApi.getRepositories();
+          if (!repos || repos.length === 0) {
+            await githubApi.syncRepositories();
+            repos = await githubApi.getRepositories();
+          }
+          if (!ignore) {
+            setRepositories(repos || []);
+          }
+        }
+      })
+      .catch((error) => {
+        if (!ignore) console.error(error);
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   // Deployment Progress Mode
@@ -180,21 +215,22 @@ export default function CreateProjectWizard() {
     analyze();
   }, [selectedRepo, selectedBranch, branch, rootDirectory, isAutoDetect]);
 
-  // Auto-fill defaults when framework changes (only if not relying on dynamic analysis right now)
-  useEffect(() => {
-    // If we just ran dynamic analysis and it set the values, don't override them with static presets.
-    // We only use static presets if the user manually selects a framework from the dropdown.
-    if (selectedFramework === 'auto' || isAnalyzing || Object.keys(frameworkPresets).length === 0) return;
-    
-    const preset = frameworkPresets[selectedFramework];
-    if (preset) {
-      setPackageManager(preset.packageManager);
-      setInstallCommand(preset.installCommand);
-      setBuildCommand(preset.buildCommand);
-      setOutputDirectory(preset.outputDirectory);
-      setNodeVersion(preset.nodeVersion);
+  const handleFrameworkChange = (fw) => {
+    setSelectedFramework(fw);
+    if (fw === 'auto') {
+      setIsAutoDetect(true);
+    } else {
+      setIsAutoDetect(false);
+      const preset = frameworkPresets[fw];
+      if (preset) {
+        setPackageManager(preset.packageManager);
+        setInstallCommand(preset.installCommand);
+        setBuildCommand(preset.buildCommand);
+        setOutputDirectory(preset.outputDirectory);
+        setNodeVersion(preset.nodeVersion);
+      }
     }
-  }, [selectedFramework, isAnalyzing, frameworkPresets]);
+  };
 
   // Reset to framework defaults
   const handleResetToDefaults = () => {
@@ -453,7 +489,8 @@ export default function CreateProjectWizard() {
     } catch (error) {
       console.error('Failed to fetch branches', error);
       // Fallback to default branch
-      setRepoBranches([repo.defaultBranch]);
+      const defBranch = repo.defaultBranch || 'main';
+      setRepoBranches([{ name: defBranch, isDefault: true }]);
     }
   };
 
@@ -467,15 +504,6 @@ export default function CreateProjectWizard() {
     setIsAutoDetect(enabled);
     if (enabled) {
       setSelectedFramework('auto');
-    }
-  };
-
-  const handleFrameworkChange = (frameworkId) => {
-    setSelectedFramework(frameworkId);
-    if (frameworkId === 'auto') {
-      setIsAutoDetect(true);
-    } else {
-      setIsAutoDetect(false);
     }
   };
 

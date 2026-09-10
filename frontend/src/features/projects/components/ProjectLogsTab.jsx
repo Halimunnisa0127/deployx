@@ -3,7 +3,7 @@ import { Terminal, Search, Copy, Check, RefreshCw, AlertCircle } from 'lucide-re
 import Button from '../../../components/ui/Button';
 import { deploymentsApi } from '../../deployments/api/deploymentsApi';
 
-export default function ProjectLogsTab({ project, onAction }) {
+export default function ProjectLogsTab({ project }) {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -57,8 +57,50 @@ export default function ProjectLogsTab({ project, onAction }) {
   }, [project, activeDeploymentId]);
 
   useEffect(() => {
-    fetchLogs();
-  }, [fetchLogs]);
+    let ignore = false;
+    const projectId = project?._id || project?.id;
+    if (!projectId) {
+      return;
+    }
+
+    const load = async () => {
+      try {
+        let deploymentId = activeDeploymentId;
+        if (!deploymentId) {
+          const depRes = await deploymentsApi.getProjectDeployments(projectId);
+          const projectDeployments = depRes?.data?.deployments || depRes?.data || [];
+          if (projectDeployments.length > 0) {
+            deploymentId = projectDeployments[0]._id || projectDeployments[0].id;
+            if (!ignore) setActiveDeploymentId(deploymentId);
+          }
+        }
+
+        if (deploymentId) {
+          const logsRes = await deploymentsApi.getDeploymentLogs(deploymentId, 1, 200);
+          const rawLogs = logsRes?.data?.logs || [];
+          const formatted = rawLogs.map((l) => ({
+            id: l._id || l.id || `${l.sequence}-${l.createdAt}`,
+            timestamp: l.createdAt ? new Date(l.createdAt).toLocaleTimeString() : '00:00:00',
+            level: l.level === 'warning' ? 'warn' : l.level || 'info',
+            type: l.type || 'build',
+            message: l.message,
+          }));
+          if (!ignore) setLogs(formatted);
+        } else {
+          if (!ignore) setLogs([]);
+        }
+      } catch (err) {
+        console.warn('Could not load live logs for project deployment:', err);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    };
+
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, [project, activeDeploymentId]);
 
   const filteredLogs = logs.filter((log) => {
     const matchesSearch =

@@ -7,12 +7,7 @@ export default function UsersStatisticsCards({ users = [] }) {
     const total = users.length;
     const active = users.filter((u) => u.status === "active" || u.isActive === true).length;
     const suspended = users.filter((u) => u.status === "suspended" || u.isActive === false).length;
-    
-    const now = Date.now();
-    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-    const newUsers = users.filter(
-      (u) => u.joinedAt && now - new Date(u.joinedAt).getTime() <= thirtyDaysMs
-    ).length;
+    const newUsers = users.filter((u) => Boolean(u.joinedAt)).length;
 
     return { total, active, suspended, newUsers };
   }, [users]);

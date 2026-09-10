@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -19,7 +18,6 @@ import {
 } from 'lucide-react';
 
 import useAuth from '../../../hooks/useAuth';
-import { logoutUser } from '../../auth/slice/authSlice';
 
 import Avatar from '../../../components/common/Avatar';
 import SearchBar from '../../../components/common/SearchBar';
@@ -64,8 +62,6 @@ const NAV_ITEMS = [
 ];
 
 export default function DashboardSidebar({ onToggleMobileExternal }) {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
 
@@ -95,11 +91,6 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
     const query = navSearchQuery.toLowerCase().trim();
     return NAV_ITEMS.filter((item) => item.label.toLowerCase().includes(query));
   }, [navSearchQuery]);
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate('/login');
-  };
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
   const toggleMobile = () => {

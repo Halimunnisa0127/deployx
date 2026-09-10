@@ -6,4 +6,7 @@ class UnauthorizedError extends ApiError {
     super(message, StatusCodes.UNAUTHORIZED);
   }
 }
+
+UnauthorizedError.UnauthorizedError = UnauthorizedError;
 module.exports = UnauthorizedError;
+

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Modal from '../../../components/ui/Modal';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
@@ -10,11 +10,7 @@ export default function AddDomainModal({ isOpen, onClose, projects = [], onSucce
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (projects && projects.length > 0) {
-      setSelectedProjectId(projects[0].id || projects[0]._id || '');
-    }
-  }, [projects]);
+  const effectiveProjectId = selectedProjectId || projects?.[0]?.id || projects?.[0]?._id || '';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +19,7 @@ export default function AddDomainModal({ isOpen, onClose, projects = [], onSucce
       setError('Domain name cannot be empty.');
       return;
     }
-    if (!selectedProjectId) {
+    if (!effectiveProjectId) {
       setError('Please select a project.');
       return;
     }
@@ -31,7 +27,7 @@ export default function AddDomainModal({ isOpen, onClose, projects = [], onSucce
     try {
       setIsSubmitting(true);
       setError('');
-      await domainsApi.createDomain(selectedProjectId, trimmed);
+      await domainsApi.createDomain(effectiveProjectId, trimmed);
       setDomain('');
       onClose();
       if (onSuccess) onSuccess();

@@ -34,7 +34,6 @@ const ENV_VARIANT_MAP = {
 
 function DomainCard({ domain, onClick, onOpenDomain }) {
   const {
-    id,
     name,
     projectName,
     framework,
@@ -51,8 +50,6 @@ function DomainCard({ domain, onClick, onOpenDomain }) {
 
   const statusVariant = STATUS_VARIANT_MAP[status] || 'neutral';
   const envVariant = ENV_VARIANT_MAP[environment] || 'neutral';
-  const sslVariant = sslStatus === 'active' ? 'info' : (sslStatus === 'failed' ? 'danger' : 'warning');
-  const dnsVariant = dnsStatus === 'verified' ? 'success' : (dnsStatus === 'failed' ? 'danger' : 'warning');
 
   const handleCardClick = () => {
     if (onClick) {

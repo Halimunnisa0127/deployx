@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProjectsList } from '../hooks/useProjectsList';
 import ProjectCard from '../components/ProjectCard';

@@ -25,8 +25,25 @@ export function useDomains() {
   }, []);
 
   useEffect(() => {
-    fetchDomainsData();
-  }, [fetchDomainsData]);
+    let ignore = false;
+    domainsService.getDomains()
+      .then((data) => {
+        if (!ignore) {
+          setDomains(Array.isArray(data) ? data : (data?.domains || []));
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to fetch domains:", err);
+          setError(err.response?.data?.message || err.message || "Failed to fetch domains");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleVerifyDomain = async (id) => {
     try {

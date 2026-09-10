@@ -57,7 +57,7 @@ export const platformSettingsApi = {
     try {
       parsed = typeof fileContent === "string" ? JSON.parse(fileContent) : fileContent;
     } catch (e) {
-      throw new Error("Invalid JSON configuration file");
+      throw new Error("Invalid JSON configuration file", { cause: e });
     }
     return await platformSettingsApi.saveSettings(parsed);
   },

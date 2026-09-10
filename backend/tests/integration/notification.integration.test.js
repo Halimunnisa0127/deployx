@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const app = require('../../src/app');
 const User = require('../../src/modules/users/models/User');
 const Notification = require('../../src/modules/notifications/models/Notification');
-const { generateAccessToken } = require('../../src/utils/token.util');
+const { generateAccessToken } = require('../../src/utils/helpers/jwt.helper');
+
 
 describe('In-App Notifications Integration Tests', () => {
   let mongoAvailable = false;
@@ -43,8 +44,9 @@ describe('In-App Notifications Integration Tests', () => {
         isEmailVerified: true,
       });
 
-      tokenA = generateAccessToken({ id: userA._id.toString(), email: userA.email, role: userA.role });
-      tokenB = generateAccessToken({ id: userB._id.toString(), email: userB.email, role: userB.role });
+      tokenA = generateAccessToken(userA._id.toString(), userA.role);
+      tokenB = generateAccessToken(userB._id.toString(), userB.role);
+
 
       notifA1 = await Notification.create({
         recipient: userA._id,

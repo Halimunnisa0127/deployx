@@ -12,7 +12,6 @@ import {
   ExternalLink,
   RotateCcw,
   StopCircle,
-  GitCommit,
 } from "lucide-react";
 import { openPreview } from "../../../deployments/utils/getPreviewUrl";
 import Badge from "../../../../components/ui/Badge";

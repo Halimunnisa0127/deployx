@@ -261,6 +261,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard/logs",
+    errorElement: <RouteErrorBoundary />,
     element: (
       <PrivateRoute>
         <DashboardLayout>

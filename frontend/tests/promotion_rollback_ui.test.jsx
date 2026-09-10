@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import ProjectDeploymentsTab from '../src/features/projects/components/ProjectDeploymentsTab';
 import { useDeploymentMutations } from '../src/features/deployments/hooks/useDeploymentMutations';
 import { deploymentsApi } from '../src/features/deployments/api/deploymentsApi';
@@ -17,6 +17,7 @@ describe('Promotion and Rollback UI component tests', () => {
   const mockDeployments = [
     {
       id: 'dep-101',
+
       status: 'ready',
       environment: 'Production',
       branch: 'main',
@@ -46,10 +47,12 @@ describe('Promotion and Rollback UI component tests', () => {
     });
 
     render(
-      <ProjectDeploymentsTab
-        project={mockProject}
-        deployments={mockDeployments}
-      />
+      <MemoryRouter>
+        <ProjectDeploymentsTab
+          project={mockProject}
+          deployments={mockDeployments}
+        />
+      </MemoryRouter>
     );
 
     const promoteButton = screen.getByRole('button', { name: /promote/i });
@@ -77,11 +80,14 @@ describe('Promotion and Rollback UI component tests', () => {
     });
 
     render(
-      <ProjectDeploymentsTab
-        project={mockProject}
-        deployments={mockDeployments}
-      />
+      <MemoryRouter>
+        <ProjectDeploymentsTab
+          project={mockProject}
+          deployments={mockDeployments}
+        />
+      </MemoryRouter>
     );
+
 
     await waitFor(() => {
       expect(screen.getByText('PROMOTE')).toBeInTheDocument();

@@ -85,6 +85,7 @@ export default function PlatformSettingsPage() {
     defaultValues: {},
   });
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const formData = watch();
 
   useEffect(() => {
@@ -128,7 +129,7 @@ export default function PlatformSettingsPage() {
   const handleExport = async () => {
     try {
       await exportSettings(formData);
-    } catch (err) {
+    } catch {
       alert("Failed to export settings");
     }
   };
@@ -152,7 +153,7 @@ export default function PlatformSettingsPage() {
             }
           };
           reader.readAsText(file);
-        } catch (err) {
+        } catch {
           alert("Failed to read file");
         }
       }
@@ -219,7 +220,6 @@ export default function PlatformSettingsPage() {
 
             {activeSection === "email" && (
               <EmailSettingsCard
-                register={register}
                 watch={watch}
                 onTestEmail={handleTestEmail}
               />

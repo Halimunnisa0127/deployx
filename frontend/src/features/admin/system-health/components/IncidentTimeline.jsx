@@ -9,18 +9,18 @@ import {
 import Badge from "../../../../components/ui/Badge";
 import { Timeline, TimelineItem } from "../../../../components/ui";
 
-const getEventIcon = (type) => {
+const renderEventIcon = (type, className = "w-5 h-5") => {
   switch (type) {
     case "alert":
-      return AlertCircle;
+      return <AlertCircle className={className} />;
     case "outage":
-      return ShieldAlert;
+      return <ShieldAlert className={className} />;
     case "maintenance":
-      return Wrench;
+      return <Wrench className={className} />;
     case "deployment":
-      return Activity;
+      return <Activity className={className} />;
     default:
-      return CheckCircle2;
+      return <CheckCircle2 className={className} />;
   }
 };
 
@@ -38,7 +38,6 @@ const getEventColor = (severity) => {
 };
 
 export function TimelineEvent({ event, isLast }) {
-  const Icon = getEventIcon(event.type);
   const colorClasses = getEventColor(event.severity);
   const formattedTime = formatDistanceToNow(new Date(event.timestamp), { addSuffix: true });
 
@@ -46,7 +45,7 @@ export function TimelineEvent({ event, isLast }) {
     <TimelineItem
       isLast={isLast}
       time={formattedTime}
-      icon={<Icon className="w-5 h-5" />}
+      icon={renderEventIcon(event.type)}
       iconContainerClassName={`w-12 h-12 rounded-full border flex items-center justify-center shrink-0 z-10 ${colorClasses}`}
     >
       <div className="bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-border p-4">

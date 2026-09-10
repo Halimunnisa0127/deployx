@@ -1,13 +1,11 @@
 import { X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function Drawer({ isOpen, onClose, title, children, width = 'w-full md:w-[600px] lg:w-[800px]' }) {
-  const [mounted, setMounted] = useState(false);
+const emptySubscribe = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+export default function Drawer({ isOpen, onClose, title, children, width = 'w-full md:w-[600px] lg:w-[800px]' }) {
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   useEffect(() => {
     if (isOpen) {

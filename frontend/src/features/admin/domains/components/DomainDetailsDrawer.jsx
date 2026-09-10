@@ -44,31 +44,34 @@ export default function DomainDetailsDrawer({
   const [copiedChallenge, setCopiedChallenge] = useState(false);
 
   useEffect(() => {
-    if (isOpen && domain) {
-      fetchDetails(domain.id);
-    }
-  }, [isOpen, domain]);
-
-  const fetchDetails = async (id) => {
-    try {
-      setLoading(true);
-      const isPendingDomain = domain.verificationStatus !== "verified";
-      const [fetchedDNS, fetchedSSL, fetchedHistory, fetchedInstructions] = await Promise.all([
-        getDNSRecords(id),
-        getSSLInfo(id),
-        getVerificationHistory(id),
-        isPendingDomain ? getDomainInstructions(id) : Promise.resolve(null),
-      ]);
-      setDnsRecords(fetchedDNS);
-      setSslInfo(fetchedSSL);
-      setHistory(fetchedHistory);
-      setInstructions(fetchedInstructions);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (!isOpen || !domain?.id) return;
+    let ignore = false;
+    const isPendingDomain = domain?.verificationStatus !== "verified";
+    Promise.all([
+      getDNSRecords(domain.id),
+      getSSLInfo(domain.id),
+      getVerificationHistory(domain.id),
+      isPendingDomain ? getDomainInstructions(domain.id) : Promise.resolve(null),
+    ])
+      .then(([fetchedDNS, fetchedSSL, fetchedHistory, fetchedInstructions]) => {
+        if (!ignore) {
+          setDnsRecords(fetchedDNS);
+          setSslInfo(fetchedSSL);
+          setHistory(fetchedHistory);
+          setInstructions(fetchedInstructions);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error(err);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [isOpen, domain?.id, domain?.verificationStatus]);
 
   const handleCopyChallenge = (text) => {
     if (!text) return;

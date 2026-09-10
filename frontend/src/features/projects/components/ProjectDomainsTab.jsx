@@ -34,9 +34,8 @@ const DNS_VARIANT_MAP = {
   Unverified: 'danger',
 };
 
-export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
+export default function ProjectDomainsTab({ project, onAction }) {
   const [domains, setDomains] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Modal states
@@ -46,12 +45,9 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
   const [redirectInput, setRedirectInput] = useState('Direct');
   const [formError, setFormError] = useState('');
 
-  const fallbackUrl = defaultUrl || `${(project?.name || 'app').toLowerCase().replace(/[^a-z0-9-]/g, '')}.deployx.app`;
-
   const fetchDomains = useCallback(async () => {
     if (!project?._id && !project?.id) return;
     try {
-      setIsLoading(true);
       const projectId = project._id || project.id;
       const response = await domainsApi.getProjectDomains(projectId);
       const projectDomains = response.data?.domains || [];
@@ -72,14 +68,43 @@ export default function ProjectDomainsTab({ project, defaultUrl, onAction }) {
       setDomains(mapped);
     } catch (err) {
       console.error('Failed to fetch project domains:', err);
-    } finally {
-      setIsLoading(false);
     }
   }, [project]);
 
   useEffect(() => {
-    fetchDomains();
-  }, [fetchDomains]);
+    let ignore = false;
+    if (!project?._id && !project?.id) return;
+    const projectId = project._id || project.id;
+    domainsApi.getProjectDomains(projectId)
+      .then((response) => {
+        if (!ignore) {
+          const projectDomains = response.data?.domains || [];
+          const mapped = projectDomains.map((d) => ({
+            id: d._id,
+            name: d.hostname,
+            projectName: project.name,
+            type: d.targetType === 'production' ? 'Production' : 'Preview',
+            status: d.verificationStatus,
+            sslStatus: d.sslStatus === 'active' ? 'Active' : 'Pending',
+            dnsStatus: d.verificationStatus === 'verified' ? 'Verified' : 'Pending',
+            createdDate: new Date(d.createdAt).toLocaleDateString(),
+            lastChecked: 'Just now',
+            cnameTarget: 'cname.deployx.app',
+            isPrimary: d.targetType === 'production',
+            redirectStatus: d.targetType === 'production' ? 'Direct (No Redirect)' : 'Direct',
+          }));
+          setDomains(mapped);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error('Failed to fetch project domains:', err);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [project]);
 
   // Global refresh status
   const handleGlobalRefresh = async () => {

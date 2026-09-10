@@ -63,6 +63,7 @@ export default function Card({
         shadowClasses[elevated ? 'lg' : shadow],
         hoverable && 'transition-shadow hover:shadow-md dark:hover:shadow-slate-800/50',
         clickable && 'cursor-pointer active:scale-[0.99] transition-transform',
+        animated && 'transition-all duration-200',
         borderless && 'border-transparent',
         paddingClasses[padding],
         className

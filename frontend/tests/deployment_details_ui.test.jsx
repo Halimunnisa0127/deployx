@@ -1,14 +1,23 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import DeploymentDetails from '../src/features/deployments/pages/DeploymentDetails';
 import { useDeploymentDetails } from '../src/features/deployments/hooks/useDeploymentDetails';
 import { useDeploymentLogs } from '../src/features/deployments/hooks/useDeploymentLogs';
 import { useDeploymentMutations } from '../src/features/deployments/hooks/useDeploymentMutations';
 
-vi.mock('react-router-dom', () => ({
-  useParams: () => ({ id: 'dep-123' }),
-  useNavigate: () => vi.fn(),
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    useParams: () => ({ id: 'dep-123' }),
+    useNavigate: () => vi.fn(),
+  };
+});
+
+vi.mock('react-redux', () => ({
+  useDispatch: () => vi.fn(),
+  useSelector: (fn) => (fn ? fn({ auth: { user: {} } }) : {}),
 }));
 
 vi.mock('../src/features/deployments/hooks/useDeploymentDetails');
@@ -34,7 +43,11 @@ describe('DeploymentDetails UI Component tests', () => {
     });
     useDeploymentLogs.mockReturnValue({ logs: [], isLoading: true });
 
-    render(<DeploymentDetails />);
+    render(
+      <MemoryRouter>
+        <DeploymentDetails />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Loading deployment details...')).toBeInTheDocument();
   });
 
@@ -46,7 +59,11 @@ describe('DeploymentDetails UI Component tests', () => {
     });
     useDeploymentLogs.mockReturnValue({ logs: [], isLoading: false });
 
-    render(<DeploymentDetails />);
+    render(
+      <MemoryRouter>
+        <DeploymentDetails />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Deployment Not Found')).toBeInTheDocument();
     expect(screen.getByText('Not Found')).toBeInTheDocument();
   });
@@ -70,7 +87,11 @@ describe('DeploymentDetails UI Component tests', () => {
       isLoading: false,
     });
 
-    render(<DeploymentDetails />);
+    render(
+      <MemoryRouter>
+        <DeploymentDetails />
+      </MemoryRouter>
+    );
     expect(screen.getByText('Build output line')).toBeInTheDocument();
   });
 
@@ -90,8 +111,12 @@ describe('DeploymentDetails UI Component tests', () => {
     });
     useDeploymentLogs.mockReturnValue({ logs: [], isLoading: false });
 
-    render(<DeploymentDetails />);
-    expect(screen.getByText(/failed/i)).toBeInTheDocument();
+    render(
+      <MemoryRouter>
+        <DeploymentDetails />
+      </MemoryRouter>
+    );
+    expect(screen.getAllByText(/failed/i).length).toBeGreaterThan(0);
   });
 
   test('renders cancelled banner when deployment status is cancelled', () => {
@@ -109,7 +134,13 @@ describe('DeploymentDetails UI Component tests', () => {
     });
     useDeploymentLogs.mockReturnValue({ logs: [], isLoading: false });
 
-    render(<DeploymentDetails />);
-    expect(screen.getByText(/cancelled/i)).toBeInTheDocument();
+    render(
+      <MemoryRouter>
+        <DeploymentDetails />
+      </MemoryRouter>
+    );
+    expect(screen.getAllByText(/cancelled/i).length).toBeGreaterThan(0);
   });
 });
+
+

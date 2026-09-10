@@ -47,7 +47,6 @@ export default function DeploymentDetailsHeader({
     environment,
     status,
     isLive,
-    url,
     rollbackAvailable,
     redeployAvailable,
   } = deployment;

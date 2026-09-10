@@ -71,8 +71,41 @@ export function useAdminDashboard() {
   }, [dateRange]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    let ignore = false;
+    Promise.all([
+      getDashboardStats(dateRange),
+      getRecentDeployments(dateRange),
+      getRecentUsers(dateRange),
+      getPlatformHealth(),
+      getActivity(dateRange),
+      getDeploymentTrend(dateRange),
+      getUserGrowth(dateRange),
+    ])
+      .then(([statsData, deploymentsData, usersData, healthData, activityData, trendData, growthData]) => {
+        if (!ignore) {
+          setData({
+            stats: statsData,
+            deployments: deploymentsData,
+            users: usersData,
+            health: healthData,
+            activity: activityData,
+            trend: trendData,
+            growth: growthData,
+          });
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to load admin dashboard data:", err);
+          setError("Failed to load dashboard data. Please try again later.");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [dateRange]);
 
   const refreshData = () => {
     fetchData(true);

@@ -27,7 +27,6 @@ export default function DeploymentProgressScreen({
   projectName = '',
   repository = '',
   branch = '',
-  url = '',
   deploymentId,
   creationError,
   onCancel,
@@ -37,14 +36,14 @@ export default function DeploymentProgressScreen({
   const logsEndRef = useRef(null);
 
   // Authoritative status and logs polling
-  const { deployment, isLoading: isLoadingDetails, error: detailsError } = useDeploymentDetails(deploymentId);
+  const { deployment } = useDeploymentDetails(deploymentId);
   
   const displayProjectName = deployment?.projectName || deployment?.project?.name || projectName || 'Loading project...';
   const displayRepository = deployment?.source?.repositoryFullName || repository || 'Loading repository...';
   const displayBranch = deployment?.source?.branch || branch || 'Loading branch...';
 
   const currentStatus = creationError ? 'failed' : (deployment?.status || 'queued');
-  const { logs, isLoading: isLoadingLogs, error: logsError } = useDeploymentLogs(deploymentId, currentStatus);
+  const { logs, isLoading: isLoadingLogs } = useDeploymentLogs(deploymentId, currentStatus);
 
   // Auto-scroll logs terminal
   useEffect(() => {
