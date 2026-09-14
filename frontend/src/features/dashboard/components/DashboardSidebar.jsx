@@ -16,6 +16,9 @@ import {
   X,
   Gauge,
   ShieldCheck,
+  Users,
+  Activity,
+  Settings,
 } from 'lucide-react';
 
 import useAuth from '../../../hooks/useAuth';
@@ -62,6 +65,18 @@ const NAV_ITEMS = [
   { id: 'github', label: 'GitHub', href: '/dashboard/github', icon: GithubIcon },
 ];
 
+const ADMIN_NAV_ITEMS = [
+  { id: 'dashboard', label: 'Overview', href: '/admin', icon: LayoutDashboard },
+  { id: 'users', label: 'Users', href: '/admin/users', icon: Users },
+  { id: 'projects', label: 'Projects', href: '/admin/projects', icon: FolderGit2 },
+  { id: 'deployments', label: 'Deployments', href: '/admin/deployments', icon: Rocket },
+  { id: 'domains', label: 'Domains', href: '/admin/domains', icon: Globe },
+  { id: 'logs', label: 'Platform Logs', href: '/admin/logs', icon: Terminal },
+  { id: 'analytics', label: 'Analytics', href: '/admin/analytics', icon: Activity },
+  { id: 'system-health', label: 'System Health', href: '/admin/system-health', icon: ShieldCheck },
+  { id: 'settings', label: 'Settings', href: '/admin/settings', icon: Settings },
+];
+
 export default function DashboardSidebar({ onToggleMobileExternal }) {
   const location = useLocation();
   const { user } = useAuth();
@@ -73,12 +88,14 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
   const [workspaceSearch, setWorkspaceSearch] = useState('');
   const [navSearchQuery, setNavSearchQuery] = useState('');
 
-  const currentWorkspace = activeWorkspace || workspaces[0] || {
-    id: 'ws-1',
-    name: user?.name ? `${user.name}'s Workspace` : 'Personal Workspace',
-    plan: user?.role === 'admin' ? 'Enterprise' : 'Hobby',
-    role: 'Owner',
-  };
+  const currentWorkspace = user?.role === 'admin'
+    ? { id: 'ws-admin', name: 'Platform Admin', plan: 'Enterprise', role: 'Superadmin' }
+    : (activeWorkspace || workspaces[0] || {
+        id: 'ws-1',
+        name: user?.name ? `${user.name}'s Workspace` : 'Personal Workspace',
+        plan: 'Hobby',
+        role: 'Owner',
+      });
 
   const filteredWorkspaces = useMemo(() => {
     return workspaces.filter((ws) =>
@@ -86,13 +103,10 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
     );
   }, [workspaces, workspaceSearch]);
 
-  // Include Admin Portal if current user is an admin
+  // Use ADMIN_NAV_ITEMS directly for admin role so every button uses admin endpoints
   const effectiveNavItems = useMemo(() => {
     if (user?.role === 'admin') {
-      return [
-        { id: 'admin-portal', label: 'Admin Portal', href: '/admin', icon: ShieldCheck, badge: 'Admin' },
-        ...NAV_ITEMS,
-      ];
+      return ADMIN_NAV_ITEMS;
     }
     return NAV_ITEMS;
   }, [user?.role]);

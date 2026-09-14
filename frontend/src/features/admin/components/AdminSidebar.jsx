@@ -66,7 +66,7 @@ const ADMIN_NAV_ITEMS = [
   {
     id: "workspace",
     label: "User Workspace",
-    href: "/dashboard",
+    href: "/dashboard?view=developer",
     icon: ArrowLeft,
   },
 ];

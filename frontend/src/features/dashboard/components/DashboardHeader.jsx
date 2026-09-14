@@ -219,16 +219,6 @@ export default function DashboardHeader({ onToggleMobile, searchItems = BASE_NAV
           )}
         </div>
 
-        {/* Admin Portal Quick Link for Admins */}
-        {user?.role === 'admin' && !location.pathname.startsWith('/admin') && (
-          <Link
-            to="/admin"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500/15 to-indigo-500/15 border border-rose-500/30 text-rose-600 dark:text-rose-300 hover:bg-rose-500/25 text-xs font-bold transition-all shadow-sm"
-          >
-            <ShieldCheck className="w-4 h-4 text-rose-500 flex-shrink-0" />
-            <span className="hidden sm:inline">Admin Panel</span>
-          </Link>
-        )}
 
         {/* Notifications Button with Unread Counter */}
         <Link
