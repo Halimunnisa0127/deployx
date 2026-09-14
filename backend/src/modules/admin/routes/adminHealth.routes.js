@@ -43,5 +43,6 @@ router.get('/frameworks', adminHealthController.getFrameworkDistribution);
 router.get('/top-projects', adminHealthController.getTopProjects);
 router.get('/top-users', adminHealthController.getTopUsers);
 router.get('/regions', adminHealthController.getRegionDistribution);
+router.get('/logs', adminHealthController.getPlatformLogs);
 
 module.exports = router;

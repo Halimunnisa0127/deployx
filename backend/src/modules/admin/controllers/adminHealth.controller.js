@@ -79,6 +79,12 @@ class AdminHealthController {
     const regions = await adminHealthService.getRegionDistribution();
     return res.status(StatusCodes.OK).json(ApiResponse.success('Region distribution retrieved', regions));
   }
+
+  async getPlatformLogs(req, res) {
+    const { page, limit, level, search } = req.query;
+    const result = await adminHealthService.getPlatformLogs({ page, limit, level, search });
+    return res.status(StatusCodes.OK).json(ApiResponse.success('Platform logs retrieved successfully', result));
+  }
 }
 
 module.exports = new AdminHealthController();

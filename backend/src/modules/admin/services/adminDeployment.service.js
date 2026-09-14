@@ -36,6 +36,8 @@ class AdminDeploymentService {
         query.status = 'ready';
       } else if (status === 'running') {
         query.status = 'building';
+      } else if (status === 'cancelled') {
+        query.status = { $in: ['canceled', 'cancelled'] };
       } else {
         query.status = status;
       }
@@ -65,7 +67,8 @@ class AdminDeploymentService {
     const mappedDeployments = deployments.map(d => {
       let mappedStatus = d.status;
       if (d.status === 'ready') mappedStatus = 'success';
-      if (d.status === 'building') mappedStatus = 'running';
+      if (d.status === 'building' || d.status === 'deploying') mappedStatus = 'running';
+      if (d.status === 'canceled' || d.status === 'cancelled') mappedStatus = 'cancelled';
 
       return {
         id: d._id,

@@ -42,11 +42,11 @@ export default function RecentUsersTable({ users = [] }) {
                 <td className="px-4 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
-                      {usr.name.charAt(0)}
+                      {(usr.name || usr.fullName || usr.email || 'U').charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <div className="font-bold text-theme-heading group-hover:text-indigo-600 dark:group-hover:text-indigo-300 transition-colors">
-                        {usr.name}
+                        {usr.name || usr.fullName || 'User'}
                       </div>
                       <div className="text-xs text-theme-muted">{usr.email}</div>
                     </div>

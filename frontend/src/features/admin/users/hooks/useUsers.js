@@ -64,6 +64,11 @@ export function useUsers() {
     await usersService.resetPassword(id);
   };
 
+  const handleCreateUser = async (data) => {
+    await usersService.createUser(data);
+    await fetchUsersData();
+  };
+
   // Setup table features
   const table = useAdminTable({
     data: users,
@@ -82,6 +87,7 @@ export function useUsers() {
       activateUser: handleActivateUser,
       changeRole: handleChangeRole,
       resetPassword: handleResetPassword,
+      createUser: handleCreateUser,
     },
     table,
   };

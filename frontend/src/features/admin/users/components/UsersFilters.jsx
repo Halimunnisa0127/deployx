@@ -3,9 +3,8 @@ const TABS = [
   { id: "all", label: "All Users" },
   { id: "active", label: "Active" },
   { id: "suspended", label: "Suspended" },
-  { id: "admin", label: "Admin" },
-  { id: "developer", label: "Developer" },
-  { id: "viewer", label: "Viewer" },
+  { id: "admin", label: "Admins" },
+  { id: "user", label: "Standard Users" },
 ];
 
 export default function UsersFilters({

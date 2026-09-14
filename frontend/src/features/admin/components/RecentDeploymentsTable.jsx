@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, Clock, Calendar } from "lucide-react";
+import { Eye, Clock, Calendar, Rocket } from "lucide-react";
 import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
 
@@ -13,7 +13,19 @@ export default function RecentDeploymentsTable({ deployments = [] }) {
   );
 
   if (!deployments.length) {
-    return null; // Will show empty state in parent
+    return (
+      <div className="bg-card rounded-2xl border border-slate-200 dark:border-white/5 overflow-hidden shadow-lg p-8 text-center">
+        <div className="flex flex-col items-center justify-center space-y-3">
+          <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+            <Rocket className="w-6 h-6" />
+          </div>
+          <h3 className="text-base font-bold text-theme-heading">No deployments recorded yet</h3>
+          <p className="text-xs text-theme-muted max-w-sm">
+            When users or admins trigger automated builds and project deployments, they will appear here in real time.
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (

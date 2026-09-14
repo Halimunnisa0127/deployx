@@ -47,6 +47,15 @@ export function useProjects() {
     };
   }, []);
 
+  const normalizeFramework = (fw) => {
+    if (!fw) return '';
+    const s = String(fw).toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (s.includes('react')) return 'React';
+    if (s.includes('next')) return 'Next.js';
+    if (s.includes('node')) return 'Node.js';
+    return fw;
+  };
+
   const counts = useMemo(() => {
     const res = {
       all: projects.length,
@@ -59,7 +68,8 @@ export function useProjects() {
     };
     projects.forEach((p) => {
       if (res[p.status] !== undefined) res[p.status]++;
-      if (res[p.framework] !== undefined) res[p.framework]++;
+      const normFw = normalizeFramework(p.framework);
+      if (res[normFw] !== undefined) res[normFw]++;
     });
     return res;
   }, [projects]);
@@ -69,9 +79,9 @@ export function useProjects() {
       if (activeFilter === "active" && p.status !== "active") return false;
       if (activeFilter === "archived" && p.status !== "archived") return false;
       if (activeFilter === "failed" && p.status !== "failed") return false;
-      if (activeFilter === "React" && p.framework !== "React") return false;
-      if (activeFilter === "Next.js" && p.framework !== "Next.js") return false;
-      if (activeFilter === "Node.js" && p.framework !== "Node.js") return false;
+      if (activeFilter === "React" && normalizeFramework(p.framework) !== "React") return false;
+      if (activeFilter === "Next.js" && normalizeFramework(p.framework) !== "Next.js") return false;
+      if (activeFilter === "Node.js" && normalizeFramework(p.framework) !== "Node.js") return false;
       return true;
     });
   }, [projects, activeFilter]);

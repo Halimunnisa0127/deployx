@@ -5,6 +5,8 @@ const telemetry = require('../../../shared/utils/telemetry');
 const Deployment = require('../../deployments/models/Deployment');
 const Project = require('../../projects/models/Project');
 const User = require('../../users/models/User');
+const Domain = require('../../domains/models/Domain');
+const DeploymentLog = require('../../logs/models/DeploymentLog');
 const SystemMetric = require('../models/SystemMetric');
 const ApiError = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
@@ -221,14 +223,25 @@ class AdminHealthService {
    * Get analytics overview KPI metrics
    */
   static async getAnalyticsOverview(days = 30) {
-    const [totalDeployments, successfulDeployments, failedDeployments, totalUsers, totalProjects] =
-      await Promise.all([
-        Deployment.countDocuments(),
-        Deployment.countDocuments({ status: 'ready' }),
-        Deployment.countDocuments({ status: 'failed' }),
-        User.countDocuments(),
-        Project.countDocuments(),
-      ]);
+    const [
+      totalDeployments,
+      successfulDeployments,
+      failedDeployments,
+      activeDeployments,
+      pendingDeployments,
+      totalUsers,
+      totalProjects,
+      activeDomains,
+    ] = await Promise.all([
+      Deployment.countDocuments(),
+      Deployment.countDocuments({ status: 'ready' }),
+      Deployment.countDocuments({ status: 'failed' }),
+      Deployment.countDocuments({ status: { $in: ['building', 'deploying'] } }),
+      Deployment.countDocuments({ status: 'queued' }),
+      User.countDocuments(),
+      Project.countDocuments(),
+      Domain.countDocuments({ status: 'active' }),
+    ]);
 
     const successRate =
       totalDeployments > 0 ? Number(((successfulDeployments / totalDeployments) * 100).toFixed(1)) : 100;
@@ -266,8 +279,14 @@ class AdminHealthService {
       successRate: { value: successRate, trend: 0, previous: successRate },
       failureRate: { value: failureRate, trend: 0, previous: failureRate },
       deploymentDuration: { value: avgDurationSec, trend: 0, previous: avgDurationSec },
-      activeUsers: { value: activeUsersCount, trend: 0, previous: 0 },
+      activeUsers: { value: activeUsersCount > 0 ? activeUsersCount : totalUsers, trend: 0, previous: 0 },
       activeProjects: { value: activeProjectsCount, trend: 0, previous: 0 },
+      activeDeployments: { value: activeDeployments, trend: 0, previous: 0 },
+      failedDeployments: { value: failedDeployments, trend: 0, previous: 0 },
+      pendingDeployments: { value: pendingDeployments, trend: 0, previous: 0 },
+      recentBuilds: { value: totalDeployments, trend: 0, previous: 0 },
+      recentErrors: { value: failedDeployments, trend: 0, previous: 0 },
+      activeDomains: { value: activeDomains, trend: 0, previous: 0 },
       storageUsage: { value: `${(totalProjects * 0.1).toFixed(1)} GB`, trend: 0, previous: '0 GB' },
       bandwidthUsage: { value: 'Not tracked', trend: 0, previous: 'Not tracked' },
       totalUsers: { value: totalUsers },
@@ -481,7 +500,7 @@ class AdminHealthService {
 
     return agg.map((item) => {
       const projName = item.project?.name || 'Unnamed Project';
-      const ownerName = item.owner?.name || item.owner?.email || 'System';
+      const ownerName = item.owner?.fullName || item.owner?.name || item.owner?.email || 'System';
       const successRate = item.deployments > 0 ? Math.round((item.successful / item.deployments) * 100) : 100;
 
       return {
@@ -523,7 +542,7 @@ class AdminHealthService {
       const userProjectsCount = u ? await Project.countDocuments({ owner: u._id }) : 0;
 
       results.push({
-        name: u?.name || 'Anonymous User',
+        name: u?.fullName || u?.name || u?.email || 'Anonymous User',
         email: u?.email || 'N/A',
         projects: userProjectsCount,
         deployments: item.deployments,
@@ -750,6 +769,68 @@ class AdminHealthService {
     }
 
     return performance;
+  }
+
+  /**
+   * Get unified platform logs aggregated across deployment logs and system incidents
+   */
+  static async getPlatformLogs({ page = 1, limit = 50, level = '', search = '' } = {}) {
+    const pageNum = Math.max(1, parseInt(page, 10) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 50));
+    const skip = (pageNum - 1) * limitNum;
+
+    const logQuery = {};
+    if (level && level !== 'all') {
+      if (level === 'warn') {
+        logQuery.level = { $in: ['warn', 'warning'] };
+      } else {
+        logQuery.level = level;
+      }
+    }
+    if (search) {
+      logQuery.message = { $regex: search, $options: 'i' };
+    }
+
+    const [total, rawLogs] = await Promise.all([
+      DeploymentLog.countDocuments(logQuery),
+      DeploymentLog.find(logQuery)
+        .sort({ timestamp: -1 })
+        .skip(skip)
+        .limit(limitNum)
+        .populate('project', 'name slug')
+        .populate('deployment', 'deploymentNumber environment status')
+    ]);
+
+    const mappedLogs = rawLogs.map(l => {
+      let lvl = l.level;
+      if (lvl === 'warning') lvl = 'warn';
+      const projName = l.project?.name || 'Platform';
+      const depNum = l.deployment?.deploymentNumber ? `#${l.deployment.deploymentNumber}` : '';
+      const source = depNum ? `${projName} ${depNum}` : projName;
+
+      return {
+        id: l._id.toString(),
+        timestamp: l.timestamp ? new Date(l.timestamp).toISOString().replace('T', ' ').slice(0, 19) : new Date().toISOString(),
+        level: lvl,
+        source,
+        message: l.message,
+        details: {
+          deploymentId: l.deployment?._id || l.deployment,
+          projectId: l.project?._id || l.project,
+          sequence: l.sequence,
+        }
+      };
+    });
+
+    return {
+      logs: mappedLogs,
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        pages: Math.ceil(total / limitNum)
+      }
+    };
   }
 }
 

@@ -9,22 +9,43 @@ const parseDays = (dateRange) => {
   return match ? parseInt(match[0], 10) : 7;
 };
 
+const extractVal = (obj, fallback = 0) => {
+  if (obj === null || obj === undefined) return fallback;
+  if (typeof obj === 'number' || typeof obj === 'string') return obj;
+  if (typeof obj === 'object' && 'value' in obj) {
+    return extractVal(obj.value, fallback);
+  }
+  return fallback;
+};
+
 export const fetchDashboardStats = async (dateRange = '7d') => {
   const days = parseDays(dateRange);
   try {
     const res = await api.get('/admin/health/analytics', { params: { days } });
     const d = res.data?.data || {};
+
+    const totalUsers = extractVal(d.totalUsers, 0);
+    const activeUsers = extractVal(d.activeUsers, totalUsers);
+    const totalProjects = extractVal(d.totalProjects, 0);
+    const totalDeployments = extractVal(d.totalDeployments, 0);
+    const activeDeployments = extractVal(d.activeDeployments, 0);
+    const failedDeployments = extractVal(d.failedDeployments, 0);
+    const pendingDeployments = extractVal(d.pendingDeployments, 0);
+    const recentBuilds = extractVal(d.recentBuilds, totalDeployments);
+    const recentErrors = extractVal(d.recentErrors, failedDeployments);
+    const activeDomains = extractVal(d.activeDomains, 0);
+
     return {
-      totalUsers: { value: d.totalUsers || 0, change: 0 },
-      activeUsers: { value: d.activeUsers || 0, change: 0 },
-      totalProjects: { value: d.totalProjects || 0, change: 0 },
-      totalDeployments: { value: d.totalDeployments || 0, change: 0 },
-      activeDeployments: { value: d.activeDeployments || 0, change: 0 },
-      failedDeployments: { value: d.failedDeployments || 0, change: 0 },
-      pendingDeployments: { value: d.pendingDeployments || 0, change: 0 },
-      recentBuilds: { value: d.recentBuilds || 0, change: 0 },
-      recentErrors: { value: d.recentErrors || 0, change: 0 },
-      activeDomains: { value: d.activeDomains || 0, change: 0 },
+      totalUsers: { value: totalUsers, change: 0 },
+      activeUsers: { value: activeUsers, change: 0 },
+      totalProjects: { value: totalProjects, change: 0 },
+      totalDeployments: { value: totalDeployments, change: 0 },
+      activeDeployments: { value: activeDeployments, change: 0 },
+      failedDeployments: { value: failedDeployments, change: 0 },
+      pendingDeployments: { value: pendingDeployments, change: 0 },
+      recentBuilds: { value: recentBuilds, change: 0 },
+      recentErrors: { value: recentErrors, change: 0 },
+      activeDomains: { value: activeDomains, change: 0 },
       activeServers: { value: 1, change: 0 },
       platformUptime: { value: 99.99, change: 0 },
     };
