@@ -15,6 +15,7 @@ import {
   Zap,
   X,
   Gauge,
+  ShieldCheck,
 } from 'lucide-react';
 
 import useAuth from '../../../hooks/useAuth';
@@ -85,12 +86,23 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
     );
   }, [workspaces, workspaceSearch]);
 
+  // Include Admin Portal if current user is an admin
+  const effectiveNavItems = useMemo(() => {
+    if (user?.role === 'admin') {
+      return [
+        { id: 'admin-portal', label: 'Admin Portal', href: '/admin', icon: ShieldCheck, badge: 'Admin' },
+        ...NAV_ITEMS,
+      ];
+    }
+    return NAV_ITEMS;
+  }, [user?.role]);
+
   // Filter NAV_ITEMS in real time based on navSearchQuery
   const filteredNavItems = useMemo(() => {
-    if (!navSearchQuery.trim()) return NAV_ITEMS;
+    if (!navSearchQuery.trim()) return effectiveNavItems;
     const query = navSearchQuery.toLowerCase().trim();
-    return NAV_ITEMS.filter((item) => item.label.toLowerCase().includes(query));
-  }, [navSearchQuery]);
+    return effectiveNavItems.filter((item) => item.label.toLowerCase().includes(query));
+  }, [navSearchQuery, effectiveNavItems]);
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
   const toggleMobile = () => {

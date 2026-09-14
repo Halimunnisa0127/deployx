@@ -15,7 +15,13 @@ export default function Login() {
     setLoginError(null);
     const resultAction = await dispatch(loginUser(data));
     if (loginUser.fulfilled.match(resultAction)) {
-      navigate('/dashboard');
+      const payload = resultAction.payload?.data || resultAction.payload;
+      const loggedUser = payload?.user || payload;
+      if (loggedUser?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       setLoginError(resultAction.payload || 'Login failed');
     }
