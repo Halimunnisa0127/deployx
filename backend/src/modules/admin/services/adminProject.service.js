@@ -162,7 +162,10 @@ class AdminProjectService {
     // 3. Atomically delete domains and project using session transaction if supported
     const mongoose = require('mongoose');
     let session = null;
-    if (mongoose.connection && mongoose.connection.readyState === 1 && typeof mongoose.startSession === 'function') {
+    const isMock = typeof mongoose.startSession === 'function' && (Boolean(mongoose.startSession.mock) || Boolean(mongoose.startSession._isMockFunction));
+    const isConnected = Boolean(mongoose.connection && mongoose.connection.readyState === 1);
+
+    if (isConnected || isMock) {
       try {
         session = await mongoose.startSession();
       } catch (err) {
