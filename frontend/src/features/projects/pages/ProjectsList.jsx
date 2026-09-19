@@ -71,7 +71,13 @@ export default function ProjectsList() {
     // Search filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      result = result.filter((item) => item.name.toLowerCase().includes(q));
+      result = result.filter(
+        (item) =>
+          (item.name && item.name.toLowerCase().includes(q)) ||
+          (item.framework && item.framework.toLowerCase().includes(q)) ||
+          (item.branch && item.branch.toLowerCase().includes(q)) ||
+          (item.url && item.url.toLowerCase().includes(q))
+      );
     }
 
     // Status filter

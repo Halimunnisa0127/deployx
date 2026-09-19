@@ -22,6 +22,17 @@ export function useAnalytics(initialDateRange = "30d") {
       if (isRefresh) setRefreshing(true);
       else setLoading(true);
 
+      const results = await Promise.allSettled([
+        analyticsService.getDashboardAnalytics(dateRange),
+        analyticsService.getDeploymentTrend(dateRange),
+        analyticsService.getUserGrowth(dateRange),
+        analyticsService.getProjectGrowth(dateRange),
+        analyticsService.getFrameworkDistribution(),
+        analyticsService.getRegionDistribution(dateRange),
+        analyticsService.getTopProjects(5, dateRange),
+        analyticsService.getTopUsers(5, dateRange),
+      ]);
+
       const [
         kpiRes,
         trendRes,
@@ -31,25 +42,17 @@ export function useAnalytics(initialDateRange = "30d") {
         regRes,
         topProjRes,
         topUsersRes,
-      ] = await Promise.all([
-        analyticsService.getDashboardAnalytics(dateRange),
-        analyticsService.getDeploymentTrend(dateRange),
-        analyticsService.getUserGrowth(dateRange),
-        analyticsService.getProjectGrowth(dateRange),
-        analyticsService.getFrameworkDistribution(),
-        analyticsService.getRegionDistribution(),
-        analyticsService.getTopProjects(),
-        analyticsService.getTopUsers(),
-      ]);
+      ] = results.map((r) => (r.status === "fulfilled" ? r.value : null));
 
-      setKpiData(kpiRes);
-      setDeploymentTrend(trendRes);
-      setUserGrowth(usersRes);
-      setProjectGrowth(projRes);
-      setFrameworks(frameRes);
-      setRegions(regRes);
-      setTopProjects(topProjRes);
-      setTopUsers(topUsersRes);
+      if (kpiRes) setKpiData(kpiRes);
+      if (trendRes) setDeploymentTrend(trendRes);
+      if (usersRes) setUserGrowth(usersRes);
+      if (projRes) setProjectGrowth(projRes);
+      if (frameRes) setFrameworks(frameRes);
+      if (regRes) setRegions(regRes);
+      if (topProjRes) setTopProjects(topProjRes);
+      if (topUsersRes) setTopUsers(topUsersRes);
+
       setHasData(true);
     } catch (error) {
       console.error("Failed to fetch analytics:", error);
@@ -61,42 +64,8 @@ export function useAnalytics(initialDateRange = "30d") {
   }, [dateRange]);
 
   useEffect(() => {
-    let ignore = false;
-    Promise.all([
-      analyticsService.getDashboardAnalytics(dateRange),
-      analyticsService.getDeploymentTrend(dateRange),
-      analyticsService.getUserGrowth(dateRange),
-      analyticsService.getProjectGrowth(dateRange),
-      analyticsService.getFrameworkDistribution(),
-      analyticsService.getRegionDistribution(),
-      analyticsService.getTopProjects(),
-      analyticsService.getTopUsers(),
-    ])
-      .then(([kpiRes, trendRes, usersRes, projRes, frameRes, regRes, topProjRes, topUsersRes]) => {
-        if (!ignore) {
-          setKpiData(kpiRes);
-          setDeploymentTrend(trendRes);
-          setUserGrowth(usersRes);
-          setProjectGrowth(projRes);
-          setFrameworks(frameRes);
-          setRegions(regRes);
-          setTopProjects(topProjRes);
-          setTopUsers(topUsersRes);
-          setHasData(true);
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        if (!ignore) {
-          console.error("Failed to fetch analytics:", error);
-          setHasData(false);
-          setLoading(false);
-        }
-      });
-    return () => {
-      ignore = true;
-    };
-  }, [dateRange]);
+    fetchData();
+  }, [fetchData]);
 
   const handleExport = async (format = "pdf") => {
     try {

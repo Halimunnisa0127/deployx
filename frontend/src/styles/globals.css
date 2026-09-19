@@ -30,6 +30,12 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+
+  --color-theme-heading: var(--theme-heading);
+  --color-theme-secondary: var(--theme-secondary);
+  --color-theme-muted: var(--theme-muted);
+  --color-theme-bg: var(--theme-bg);
+  --color-theme-border: var(--theme-border);
 }
 
 :root {
@@ -40,6 +46,12 @@
   --muted: #f8fafc;
   --muted-foreground: #64748b;
   --border: #e2e8f0;
+
+  --theme-heading: #0f172a;
+  --theme-secondary: #475569;
+  --theme-muted: #64748b;
+  --theme-bg: #f8fafc;
+  --theme-border: #e2e8f0;
 }
 
 .dark {
@@ -50,6 +62,12 @@
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
   --border: #1e293b;
+
+  --theme-heading: #f8fafc;
+  --theme-secondary: #cbd5e1;
+  --theme-muted: #94a3b8;
+  --theme-bg: #0f172a;
+  --theme-border: #1e293b;
 }
 
 

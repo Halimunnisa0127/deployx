@@ -116,34 +116,30 @@ export const useSystemHealth = () => {
       metrics: { cpu: (w.activeWorkersCount || 0) * 20, memory: Math.min(100, (w.activeWorkersCount || 0) * 12) },
     });
 
-    // Mock services matching visual expectations
+    // API Service (Express Backend)
     list.push({
       id: "srv-api",
-      name: "API Service",
+      name: "Backend API Service",
       status: "healthy",
       uptime: 99.9,
       lastCheck: new Date().toISOString(),
       type: "api",
-      metrics: { cpu: 22, memory: 40 },
+      metrics: { cpu: 5, memory: 15 },
     });
-    list.push({
-      id: "srv-scheduler",
-      name: "Scheduler Status",
-      status: "healthy",
-      uptime: 100,
-      lastCheck: new Date().toISOString(),
-      type: "scheduler",
-      metrics: { cpu: 2, memory: 5 },
-    });
-    list.push({
-      id: "srv-ssl",
-      name: "SSL Certificate Service",
-      status: "healthy",
-      uptime: 100,
-      lastCheck: new Date().toISOString(),
-      type: "ssl",
-      metrics: { cpu: 1, memory: 2 },
-    });
+
+    // Storage / Disk
+    if (rawInfra.disk) {
+      const diskHealthy = rawInfra.disk.status !== "critical";
+      list.push({
+        id: "srv-disk",
+        name: "Artifact Storage",
+        status: diskHealthy ? "healthy" : "offline",
+        uptime: diskHealthy ? 100 : 0,
+        lastCheck: new Date().toISOString(),
+        type: "storage",
+        metrics: { cpu: 0, memory: rawInfra.disk.usagePercent || 0 },
+      });
+    }
 
     return list;
   };

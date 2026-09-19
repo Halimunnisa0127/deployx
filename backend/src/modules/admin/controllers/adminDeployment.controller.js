@@ -4,8 +4,8 @@ const adminDeploymentService = require('../services/adminDeployment.service');
 
 class AdminDeploymentController {
   async listDeployments(req, res) {
-    const { page, limit, search, status } = req.query;
-    const result = await adminDeploymentService.listDeployments({ page, limit, search, status });
+    const { page, limit, search, status, days } = req.query;
+    const result = await adminDeploymentService.listDeployments({ page, limit, search, status, days });
     return res.status(StatusCodes.OK).json(ApiResponse.success('Deployments retrieved successfully', result));
   }
 

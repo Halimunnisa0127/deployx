@@ -27,7 +27,7 @@ export default function SidebarItem({
   const content = (
     <NavLink
       to={href}
-      end={href === '/dashboard'}
+      end={href === '/dashboard' || href === '/admin'}
       onClick={onClick}
       className={({ isActive: isLinkActive }) => {
         const active = isActive || isLinkActive;

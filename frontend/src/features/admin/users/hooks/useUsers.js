@@ -72,7 +72,7 @@ export function useUsers() {
   // Setup table features
   const table = useAdminTable({
     data: users,
-    searchKeys: ["name", "email"],
+    searchKeys: ["name", "fullName", "email", "role"],
     initialSort: { key: "name", direction: "asc" },
   });
 

@@ -55,7 +55,7 @@ export default function LineChart({
             name={s.name}
             stroke={s.color}
             strokeWidth={2}
-            dot={false}
+            dot={data.length <= 5 ? { r: 3, strokeWidth: 1, fill: s.color } : false}
             activeDot={{ r: 6, strokeWidth: 0, fill: s.color }}
           />
         ))}

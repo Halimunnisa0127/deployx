@@ -48,7 +48,7 @@ export function useLogs() {
 
   const table = useAdminTable({
     data: logs,
-    searchKeys: ['message', 'source'],
+    searchKeys: ['message', 'source', 'level', 'context', 'service'],
     initialFilters: { level: '' },
     initialSort: { key: 'timestamp', direction: 'desc' },
     itemsPerPage: 10,
@@ -58,6 +58,7 @@ export function useLogs() {
     loading,
     refreshing,
     error,
+    logs,
     fetchData,
     table,
   };

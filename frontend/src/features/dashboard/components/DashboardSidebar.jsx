@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard,
@@ -54,7 +54,7 @@ const INITIAL_WORKSPACES = [
   { id: 'ws-1', name: 'Personal Workspace', plan: 'Hobby', role: 'Owner' },
 ];
 
-// Navigation configuration
+// Navigation configuration for User Workspace
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { id: 'projects', label: 'Projects', href: '/dashboard/projects', icon: FolderGit2 },
@@ -65,6 +65,7 @@ const NAV_ITEMS = [
   { id: 'github', label: 'GitHub', href: '/dashboard/github', icon: GithubIcon },
 ];
 
+// Navigation configuration for Platform Admin
 const ADMIN_NAV_ITEMS = [
   { id: 'dashboard', label: 'Overview', href: '/admin', icon: LayoutDashboard },
   { id: 'users', label: 'Users', href: '/admin/users', icon: Users },
@@ -88,8 +89,10 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
   const [workspaceSearch, setWorkspaceSearch] = useState('');
   const [navSearchQuery, setNavSearchQuery] = useState('');
 
-  const currentWorkspace = user?.role === 'admin'
-    ? { id: 'ws-admin', name: 'Platform Admin', plan: 'Enterprise', role: 'Superadmin' }
+  const isAdmin = user?.role === 'admin';
+
+  const currentWorkspace = isAdmin
+    ? { id: 'ws-admin', name: 'Platform Admin', plan: 'Superadmin', role: 'Superadmin' }
     : (activeWorkspace || workspaces[0] || {
         id: 'ws-1',
         name: user?.name ? `${user.name}'s Workspace` : 'Personal Workspace',
@@ -103,15 +106,11 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
     );
   }, [workspaces, workspaceSearch]);
 
-  // Use ADMIN_NAV_ITEMS directly for admin role so every button uses admin endpoints
   const effectiveNavItems = useMemo(() => {
-    if (user?.role === 'admin') {
-      return ADMIN_NAV_ITEMS;
-    }
-    return NAV_ITEMS;
-  }, [user?.role]);
+    return isAdmin ? ADMIN_NAV_ITEMS : NAV_ITEMS;
+  }, [isAdmin]);
 
-  // Filter NAV_ITEMS in real time based on navSearchQuery
+  // Filter items in real time based on navSearchQuery
   const filteredNavItems = useMemo(() => {
     if (!navSearchQuery.trim()) return effectiveNavItems;
     const query = navSearchQuery.toLowerCase().trim();
@@ -133,8 +132,16 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
         {/* Brand Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/20 ring-1 ring-white/20 flex-shrink-0">
-              <Zap className="w-5 h-5 text-white fill-white/20" />
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-lg ring-1 ring-white/20 flex-shrink-0 ${
+              isAdmin
+                ? 'bg-gradient-to-tr from-rose-600 via-red-600 to-indigo-600 shadow-rose-500/20'
+                : 'bg-gradient-to-tr from-indigo-600 via-violet-600 to-cyan-400 shadow-indigo-500/20'
+            }`}>
+              {isAdmin ? (
+                <ShieldCheck className="w-5 h-5 text-white" />
+              ) : (
+                <Zap className="w-5 h-5 text-white fill-white/20" />
+              )}
             </div>
 
             {!isCollapsed && (
@@ -142,8 +149,12 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                 <span className="font-extrabold text-base tracking-tight bg-gradient-to-r from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent truncate">
                   DeployX
                 </span>
-                <span className="px-1.5 py-0.5 text-xs font-bold tracking-wider uppercase rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
-                  PRO
+                <span className={`px-1.5 py-0.5 text-xs font-bold tracking-wider uppercase rounded border ${
+                  isAdmin
+                    ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
+                    : 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20'
+                }`}>
+                  {isAdmin ? 'ADMIN' : 'PRO'}
                 </span>
               </div>
             )}
@@ -270,7 +281,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
         <ScrollArea className="h-full space-y-1">
           {!isCollapsed && (
             <div className="px-3 py-1.5 text-xs font-extrabold uppercase tracking-wider text-muted-foreground transition-colors">
-              Overview
+              {isAdmin ? 'Administration' : 'Overview'}
             </div>
           )}
 

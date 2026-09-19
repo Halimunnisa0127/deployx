@@ -4,10 +4,11 @@ import OverviewCard from "../../components/OverviewCard";
 
 export default function ProjectsStatisticsCards({ projects = [] }) {
   const stats = useMemo(() => {
-    const total = projects.length;
-    const active = projects.filter((p) => p.status === "active").length;
-    const archived = projects.filter((p) => p.status === "archived").length;
-    const failed = projects.filter((p) => p.status === "failed").length;
+    const list = Array.isArray(projects) ? projects : [];
+    const total = list.length;
+    const active = list.filter((p) => p?.status === "active").length;
+    const archived = list.filter((p) => p?.status === "archived").length;
+    const failed = list.filter((p) => p?.status === "failed").length;
 
     return { total, active, archived, failed };
   }, [projects]);

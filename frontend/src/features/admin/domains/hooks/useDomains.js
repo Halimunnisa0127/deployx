@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import * as domainsService from "../services/domainsService";
 import { useAdminTable } from "../../shared/hooks/useAdminTable";
 
@@ -77,44 +77,57 @@ export function useDomains() {
     }
   };
 
+  const [activeFilter, setActiveFilter] = useState("all");
+
+  const filteredDomains = useMemo(() => {
+    return (domains || []).filter((d) => {
+      if (activeFilter === "all") return true;
+      if (activeFilter === "ssl-expiring") {
+        return d.sslStatus === "expiring" || d.ssl?.status === "expiring";
+      }
+      const vStatus = (d.verificationStatus || d.status || "").toLowerCase();
+      return vStatus === activeFilter.toLowerCase();
+    });
+  }, [domains, activeFilter]);
+
+  const counts = useMemo(() => {
+    return (domains || []).reduce(
+      (acc, d) => {
+        acc.all++;
+        const vStatus = (d.verificationStatus || d.status || "").toLowerCase();
+        if (acc[vStatus] !== undefined) acc[vStatus]++;
+        if (d.sslStatus === "expiring" || d.ssl?.status === "expiring") {
+          acc["ssl-expiring"]++;
+        }
+        return acc;
+      },
+      {
+        all: 0,
+        verified: 0,
+        pending: 0,
+        failed: 0,
+        "ssl-expiring": 0,
+      }
+    );
+  }, [domains]);
+
   // Setup table features
   const table = useAdminTable({
-    data: domains,
-    searchKeys: ["name", "hostname", "project", "owner"],
+    data: filteredDomains,
+    searchKeys: [
+      "name",
+      "hostname",
+      "project",
+      "project.name",
+      "project.slug",
+      "owner",
+      "owner.fullName",
+      "ownerEmail",
+      "owner.email",
+    ],
     initialSort: { key: "name", direction: "asc" },
     itemsPerPage: 1000,
   });
-
-  const activeFilter = table.filters.state.customFilterId || "all";
-
-  const setActiveFilter = (val) => {
-    table.filters.clear();
-    if (val === "all") {
-      table.filters.update("customFilterId", "all");
-    } else if (val === "ssl-expiring") {
-      table.filters.update("sslStatus", "expiring");
-      table.filters.update("customFilterId", "ssl-expiring");
-    } else {
-      table.filters.update("verificationStatus", val);
-      table.filters.update("customFilterId", val);
-    }
-  };
-
-  const counts = (domains || []).reduce(
-    (acc, d) => {
-      acc.all++;
-      if (acc[d.verificationStatus] !== undefined) acc[d.verificationStatus]++;
-      if (d.sslStatus === "expiring") acc["ssl-expiring"]++;
-      return acc;
-    },
-    {
-      all: 0,
-      verified: 0,
-      pending: 0,
-      failed: 0,
-      "ssl-expiring": 0,
-    }
-  );
 
   return {
     domains,

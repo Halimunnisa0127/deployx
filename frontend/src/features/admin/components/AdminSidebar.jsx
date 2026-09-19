@@ -15,7 +15,6 @@ import {
   PanelLeftOpen,
   X,
   ChevronsUpDown,
-  ArrowLeft,
 } from "lucide-react";
 
 import useAuth from "../../../hooks/useAuth";
@@ -28,63 +27,61 @@ import Tooltip from "../../../components/ui/Tooltip";
 import SidebarItem from "../../dashboard/components/SidebarItem";
 import UserProfileDropdown from "../../dashboard/components/UserProfileDropdown";
 
-const ADMIN_NAV_ITEMS = [
-  { id: "dashboard", label: "Overview", href: "/admin", icon: LayoutDashboard },
-  { id: "users", label: "Users", href: "/admin/users", icon: Users },
+const ADMIN_NAV_SECTIONS = [
   {
-    id: "projects",
-    label: "Projects",
-    href: "/admin/projects",
-    icon: FolderGit2,
+    category: "Overview",
+    items: [
+      { id: "dashboard", label: "Overview", href: "/admin", icon: LayoutDashboard },
+    ],
   },
   {
-    id: "deployments",
-    label: "Deployments",
-    href: "/admin/deployments",
-    icon: Rocket,
-  },
-  { id: "domains", label: "Domains", href: "/admin/domains", icon: Globe },
-  { id: "logs", label: "Platform Logs", href: "/admin/logs", icon: Terminal },
-  {
-    id: "analytics",
-    label: "Analytics",
-    href: "/admin/analytics",
-    icon: Activity,
+    category: "Platform Management",
+    items: [
+      { id: "users", label: "Users", href: "/admin/users", icon: Users },
+      { id: "projects", label: "Projects", href: "/admin/projects", icon: FolderGit2 },
+      { id: "deployments", label: "Deployments", href: "/admin/deployments", icon: Rocket },
+      { id: "domains", label: "Domains", href: "/admin/domains", icon: Globe },
+    ],
   },
   {
-    id: "system-health",
-    label: "System Health",
-    href: "/admin/system-health",
-    icon: ShieldCheck,
+    category: "Operations",
+    items: [
+      { id: "logs", label: "Platform Logs", href: "/admin/logs", icon: Terminal },
+      { id: "system-health", label: "System Health", href: "/admin/system-health", icon: ShieldCheck },
+    ],
   },
   {
-    id: "settings",
-    label: "Settings",
-    href: "/admin/settings",
-    icon: Settings,
-  },
-  {
-    id: "workspace",
-    label: "User Workspace",
-    href: "/dashboard?view=developer",
-    icon: ArrowLeft,
+    category: "Configuration & Analytics",
+    items: [
+      { id: "analytics", label: "Analytics", href: "/admin/analytics", icon: Activity },
+      { id: "settings", label: "Platform Settings", href: "/admin/settings", icon: Settings },
+    ],
   },
 ];
 
-export default function AdminSidebar({ onToggleMobileExternal }) {
+export default function AdminSidebar({
+  isMobileOpen: controlledMobileOpen,
+  setIsMobileOpen: setControlledMobileOpen,
+  onToggleMobileExternal,
+}) {
   const location = useLocation();
   const { user } = useAuth();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [internalMobileOpen, setInternalMobileOpen] = useState(false);
+  const isMobileOpen = controlledMobileOpen !== undefined ? controlledMobileOpen : internalMobileOpen;
+  const setIsMobileOpen = setControlledMobileOpen || setInternalMobileOpen;
   const [navSearchQuery, setNavSearchQuery] = useState("");
 
-  const filteredNavItems = useMemo(() => {
-    if (!navSearchQuery.trim()) return ADMIN_NAV_ITEMS;
+  const filteredSections = useMemo(() => {
+    if (!navSearchQuery.trim()) return ADMIN_NAV_SECTIONS;
     const query = navSearchQuery.toLowerCase().trim();
-    return ADMIN_NAV_ITEMS.filter((item) =>
-      item.label.toLowerCase().includes(query),
-    );
+    return ADMIN_NAV_SECTIONS.map((section) => ({
+      ...section,
+      items: section.items.filter((item) =>
+        item.label.toLowerCase().includes(query)
+      ),
+    })).filter((section) => section.items.length > 0);
   }, [navSearchQuery]);
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
@@ -96,9 +93,9 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
   const sidebarWidth = isCollapsed ? "w-20" : "w-64";
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-card text-card-foreground border-r border-border shadow-2xl relative select-none transition-colors duration-300">
+    <div className="flex flex-col h-full bg-card text-card-foreground border-r border-border shadow-sm relative select-none transition-colors duration-300">
       {/* Top Section */}
-      <div className="p-4 flex flex-col gap-3.5 border-b border-border transition-colors duration-300">
+      <div className="p-4 flex flex-col gap-3.5 border-b border-border transition-colors duration-300 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-indigo-600 flex items-center justify-center shadow-lg flex-shrink-0">
@@ -110,7 +107,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
                 <span className="font-extrabold text-base tracking-tight text-foreground truncate">
                   DeployX
                 </span>
-                <span className="text-[10px] font-bold tracking-wider uppercase text-rose-400">
+                <span className="text-[10px] font-bold tracking-wider uppercase text-rose-400 font-semibold">
                   Admin Portal
                 </span>
               </div>
@@ -146,24 +143,26 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
 
       {/* Main Navigation */}
       <div className="flex-1 p-3 min-h-0 overflow-hidden">
-        <ScrollArea className="h-full space-y-1">
-          {!isCollapsed && (
-            <div className="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground transition-colors">
-              Management
-            </div>
-          )}
-
-          {filteredNavItems.length > 0 ? (
-            filteredNavItems.map((item) => (
-              <SidebarItem
-                key={item.id}
-                icon={item.icon}
-                label={item.label}
-                href={item.href}
-                isActive={location.pathname === item.href}
-                isCollapsed={isCollapsed}
-                onClick={() => setIsMobileOpen(false)}
-              />
+        <ScrollArea className="h-full space-y-3 pr-1">
+          {filteredSections.length > 0 ? (
+            filteredSections.map((section) => (
+              <div key={section.category} className="space-y-0.5">
+                {!isCollapsed && (
+                  <div className="px-3 pt-2 pb-1 text-[10px] font-extrabold uppercase tracking-wider text-muted-foreground transition-colors">
+                    {section.category}
+                  </div>
+                )}
+                {section.items.map((item) => (
+                  <SidebarItem
+                    key={item.id}
+                    icon={item.icon}
+                    label={item.label}
+                    href={item.href}
+                    isCollapsed={isCollapsed}
+                    onClick={() => setIsMobileOpen(false)}
+                  />
+                ))}
+              </div>
             ))
           ) : (
             <div className="px-3 py-6 text-center text-xs text-muted-foreground font-medium">
@@ -174,7 +173,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
       </div>
 
       {/* Bottom Section */}
-      <div className="p-3.5 border-t border-border bg-muted/50 space-y-3 transition-colors duration-300">
+      <div className="p-3.5 border-t border-border bg-muted/40 space-y-3 transition-colors duration-300 flex-shrink-0">
         <div
           className={`hidden md:flex ${isCollapsed ? "justify-center" : "justify-end"}`}
         >
@@ -253,7 +252,7 @@ export default function AdminSidebar({ onToggleMobileExternal }) {
   return (
     <>
       <aside
-        className={`hidden md:block sticky top-0 h-screen transition-all duration-300 ease-in-out ${sidebarWidth} z-30 flex-shrink-0`}
+        className={`hidden md:flex flex-col h-screen transition-all duration-300 ease-in-out ${sidebarWidth} z-30 flex-shrink-0 select-none`}
       >
         {sidebarContent}
       </aside>

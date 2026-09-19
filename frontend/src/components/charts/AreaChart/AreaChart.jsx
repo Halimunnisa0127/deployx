@@ -67,6 +67,7 @@ export default function AreaChart({
             strokeWidth={3}
             fillOpacity={1}
             fill={`url(#gradient-${s.key})`}
+            dot={data.length <= 5 ? { r: 3, strokeWidth: 1, fill: s.color } : false}
             activeDot={{ r: 6, strokeWidth: 0, fill: s.color }}
           />
         ))}

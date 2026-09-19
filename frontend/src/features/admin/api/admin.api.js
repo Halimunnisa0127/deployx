@@ -1,10 +1,10 @@
 import api from '../../../lib/axios';
 
 const parseDays = (dateRange) => {
-  if (dateRange === '24h') return 1;
-  if (dateRange === '7d') return 7;
-  if (dateRange === '30d') return 30;
-  if (dateRange === 'all') return 365;
+  if (dateRange === '24h' || dateRange === 1) return 1;
+  if (dateRange === '7d' || dateRange === 7) return 7;
+  if (dateRange === '30d' || dateRange === 30) return 30;
+  if (dateRange === 'all') return 'all';
   const match = String(dateRange).match(/\d+/);
   return match ? parseInt(match[0], 10) : 7;
 };
@@ -14,6 +14,14 @@ const extractVal = (obj, fallback = 0) => {
   if (typeof obj === 'number' || typeof obj === 'string') return obj;
   if (typeof obj === 'object' && 'value' in obj) {
     return extractVal(obj.value, fallback);
+  }
+  return fallback;
+};
+
+const extractTrend = (obj, fallback = 0) => {
+  if (obj === null || obj === undefined) return fallback;
+  if (typeof obj === 'object' && 'trend' in obj) {
+    return typeof obj.trend === 'number' ? obj.trend : fallback;
   }
   return fallback;
 };
@@ -34,20 +42,21 @@ export const fetchDashboardStats = async (dateRange = '7d') => {
     const recentBuilds = extractVal(d.recentBuilds, totalDeployments);
     const recentErrors = extractVal(d.recentErrors, failedDeployments);
     const activeDomains = extractVal(d.activeDomains, 0);
+    const platformUptime = extractVal(d.platformUptime, 99.99);
 
     return {
-      totalUsers: { value: totalUsers, change: 0 },
-      activeUsers: { value: activeUsers, change: 0 },
-      totalProjects: { value: totalProjects, change: 0 },
-      totalDeployments: { value: totalDeployments, change: 0 },
+      totalUsers: { value: totalUsers, change: extractTrend(d.totalUsers, 0) },
+      activeUsers: { value: activeUsers, change: extractTrend(d.activeUsers, 0) },
+      totalProjects: { value: totalProjects, change: extractTrend(d.totalProjects, 0) },
+      totalDeployments: { value: totalDeployments, change: extractTrend(d.totalDeployments, 0) },
       activeDeployments: { value: activeDeployments, change: 0 },
-      failedDeployments: { value: failedDeployments, change: 0 },
+      failedDeployments: { value: failedDeployments, change: extractTrend(d.failedDeployments, 0) },
       pendingDeployments: { value: pendingDeployments, change: 0 },
-      recentBuilds: { value: recentBuilds, change: 0 },
-      recentErrors: { value: recentErrors, change: 0 },
-      activeDomains: { value: activeDomains, change: 0 },
+      recentBuilds: { value: recentBuilds, change: extractTrend(d.recentBuilds, 0) },
+      recentErrors: { value: recentErrors, change: extractTrend(d.recentErrors, 0) },
+      activeDomains: { value: activeDomains, change: extractTrend(d.activeDomains, 0) },
       activeServers: { value: 1, change: 0 },
-      platformUptime: { value: 99.99, change: 0 },
+      platformUptime: { value: platformUptime, change: 0 },
     };
   } catch (err) {
     console.error('Failed to fetch dashboard stats:', err);
@@ -68,16 +77,17 @@ export const fetchDashboardStats = async (dateRange = '7d') => {
   }
 };
 
-export const fetchRecentDeployments = async () => {
+export const fetchRecentDeployments = async (dateRange = '7d') => {
+  const days = parseDays(dateRange);
   try {
-    const res = await api.get('/admin/deployments', { params: { limit: 5 } });
+    const res = await api.get('/admin/deployments', { params: { limit: 5, days } });
     const deps = res.data?.data?.deployments || res.data?.data || [];
     return deps.map((d) => ({
       id: d._id || d.id,
-      project: d.project?.name || (typeof d.project === 'string' ? 'Project' : 'Deployment'),
+      project: d.project?.name || (typeof d.project === 'string' ? d.project : 'Deployment'),
       status: d.status || 'queued',
       region: d.region || 'global',
-      duration: d.duration ? `${d.duration}s` : 'Completed',
+      duration: d.duration ? (String(d.duration).endsWith('s') ? d.duration : `${d.duration}s`) : 'Completed',
       createdAt: d.createdAt,
     }));
   } catch (err) {
@@ -86,9 +96,10 @@ export const fetchRecentDeployments = async () => {
   }
 };
 
-export const fetchRecentUsers = async () => {
+export const fetchRecentUsers = async (dateRange = '7d') => {
+  const days = parseDays(dateRange);
   try {
-    const response = await api.get('/admin/users', { params: { limit: 5 } });
+    const response = await api.get('/admin/users', { params: { limit: 5, days } });
     return response.data?.data?.users || response.data?.data || [];
   } catch (err) {
     console.error('Failed to fetch recent users:', err);

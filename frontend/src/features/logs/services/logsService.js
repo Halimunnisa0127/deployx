@@ -10,11 +10,15 @@ export const logsService = {
         selectedProject === 'all' ||
         log.project === selectedProject;
 
-      const matchesLevel =
-        selectedLevel === 'all' ||
-        log.level === selectedLevel;
+      const normSelectedLevel = String(selectedLevel).toLowerCase();
+      const normLogLevel = String(log.level || '').toLowerCase();
+      const isLevelMatch =
+        normSelectedLevel === 'all' ||
+        normLogLevel === normSelectedLevel ||
+        ((normSelectedLevel === 'warn' || normSelectedLevel === 'warning') &&
+          (normLogLevel === 'warn' || normLogLevel === 'warning'));
 
-      if (!matchesProject || !matchesLevel) return false;
+      if (!matchesProject || !isLevelMatch) return false;
 
       if (!query) return true;
 
@@ -36,9 +40,18 @@ export const logsService = {
     }
 
     return {
-      errorCount: logs.filter((l) => l?.level === 'error').length,
-      warningCount: logs.filter((l) => l?.level === 'warning').length,
-      successCount: logs.filter((l) => l?.level === 'success').length,
+      errorCount: logs.filter((l) => {
+        const lvl = String(l?.level || '').toLowerCase();
+        return lvl === 'error';
+      }).length,
+      warningCount: logs.filter((l) => {
+        const lvl = String(l?.level || '').toLowerCase();
+        return lvl === 'warning' || lvl === 'warn';
+      }).length,
+      successCount: logs.filter((l) => {
+        const lvl = String(l?.level || '').toLowerCase();
+        return lvl === 'success' || lvl === 'ready';
+      }).length,
     };
   },
 

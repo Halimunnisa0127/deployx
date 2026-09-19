@@ -16,14 +16,14 @@ export const analyticsService = {
   getFrameworkDistribution: async () => {
     return analyticsApi.getFrameworkDistribution();
   },
-  getRegionDistribution: async () => {
-    return analyticsApi.getRegionDistribution();
+  getRegionDistribution: async (dateRange) => {
+    return analyticsApi.getRegionDistribution(dateRange);
   },
-  getTopProjects: async () => {
-    return analyticsApi.getTopProjects();
+  getTopProjects: async (limit = 5, dateRange) => {
+    return analyticsApi.getTopProjects(limit, dateRange);
   },
-  getTopUsers: async () => {
-    return analyticsApi.getTopUsers();
+  getTopUsers: async (limit = 5, dateRange) => {
+    return analyticsApi.getTopUsers(limit, dateRange);
   },
   exportReport: async (format) => {
     return analyticsApi.exportReport(format);

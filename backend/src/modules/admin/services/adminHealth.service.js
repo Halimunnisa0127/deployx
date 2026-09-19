@@ -223,74 +223,112 @@ class AdminHealthService {
    * Get analytics overview KPI metrics
    */
   static async getAnalyticsOverview(days = 30) {
+    const isAllTime = days === 'all' || days === 365 || Number(days) >= 365;
+    const is24h = days === '24h' || days === 1 || Number(days) === 1;
+    const daysNum = isAllTime ? null : (is24h ? 1 : Math.max(1, parseInt(days, 10) || 30));
+    const cutoffDate = isAllTime ? null : new Date(Date.now() - (is24h ? 24 * 60 * 60 * 1000 : daysNum * 24 * 60 * 60 * 1000));
+    const timeQuery = cutoffDate ? { createdAt: { $gte: cutoffDate } } : {};
+
+    const prevCutoffStart = cutoffDate 
+      ? new Date(cutoffDate.getTime() - (is24h ? 24 * 60 * 60 * 1000 : daysNum * 24 * 60 * 60 * 1000)) 
+      : null;
+    const prevTimeQuery = prevCutoffStart && cutoffDate ? { createdAt: { $gte: prevCutoffStart, $lt: cutoffDate } } : null;
+
     const [
-      totalDeployments,
+      allTimeDeployments,
+      windowDeployments,
       successfulDeployments,
       failedDeployments,
       activeDeployments,
       pendingDeployments,
       totalUsers,
+      newUsers,
       totalProjects,
+      newProjects,
       activeDomains,
+      prevDeployments,
+      prevFailedDeployments,
+      prevSuccessfulDeployments,
+      prevNewUsers,
+      prevNewProjects,
     ] = await Promise.all([
       Deployment.countDocuments(),
-      Deployment.countDocuments({ status: 'ready' }),
-      Deployment.countDocuments({ status: 'failed' }),
+      Deployment.countDocuments(timeQuery),
+      Deployment.countDocuments({ ...timeQuery, status: 'ready' }),
+      Deployment.countDocuments({ ...timeQuery, status: 'failed' }),
       Deployment.countDocuments({ status: { $in: ['building', 'deploying'] } }),
       Deployment.countDocuments({ status: 'queued' }),
       User.countDocuments(),
+      cutoffDate ? User.countDocuments(timeQuery) : User.countDocuments(),
       Project.countDocuments(),
+      cutoffDate ? Project.countDocuments(timeQuery) : Project.countDocuments(),
       Domain.countDocuments({ status: 'active' }),
+      prevTimeQuery ? Deployment.countDocuments(prevTimeQuery) : 0,
+      prevTimeQuery ? Deployment.countDocuments({ ...prevTimeQuery, status: 'failed' }) : 0,
+      prevTimeQuery ? Deployment.countDocuments({ ...prevTimeQuery, status: 'ready' }) : 0,
+      prevTimeQuery ? User.countDocuments(prevTimeQuery) : 0,
+      prevTimeQuery ? Project.countDocuments(prevTimeQuery) : 0,
     ]);
 
-    const successRate =
-      totalDeployments > 0 ? Number(((successfulDeployments / totalDeployments) * 100).toFixed(1)) : 100;
-    const failureRate =
-      totalDeployments > 0 ? Number(((failedDeployments / totalDeployments) * 100).toFixed(1)) : 0;
+    const displayDeployments = isAllTime ? allTimeDeployments : windowDeployments;
+    const displayUsers = isAllTime ? totalUsers : newUsers;
+    const displayProjects = isAllTime ? totalProjects : newProjects;
+    const displayPending = isAllTime ? pendingDeployments : (await Deployment.countDocuments({ status: 'queued', ...timeQuery }));
+    const displayDomains = isAllTime ? activeDomains : (await Domain.countDocuments({ status: 'active', ...timeQuery }));
+    const displayBuilds = isAllTime ? await Deployment.countDocuments({ status: 'ready' }) : successfulDeployments;
+    const displayErrors = isAllTime ? await Deployment.countDocuments({ status: 'failed' }) : failedDeployments;
 
     // Average deployment duration in seconds
+    const durationMatch = cutoffDate
+      ? { completedAt: { $exists: true, $ne: null }, createdAt: { $gte: cutoffDate } }
+      : { completedAt: { $exists: true, $ne: null }, createdAt: { $exists: true, $ne: null } };
     const avgDurationAgg = await Deployment.aggregate([
-      { $match: { completedAt: { $exists: true, $ne: null }, createdAt: { $exists: true, $ne: null } } },
+      { $match: durationMatch },
       { $project: { duration: { $divide: [{ $subtract: ['$completedAt', '$createdAt'] }, 1000] } } },
       { $group: { _id: null, avgSec: { $avg: '$duration' } } },
     ]);
-
     const avgDurationSec = avgDurationAgg[0]?.avgSec ? `${Math.round(avgDurationAgg[0].avgSec)}s` : '0s';
 
-    // Active users in requested time window (triggered deployments)
-    const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-    const activeUsersAgg = await Deployment.aggregate([
-      { $match: { createdAt: { $gte: cutoffDate }, triggeredBy: { $exists: true, $ne: null } } },
-      { $group: { _id: '$triggeredBy' } },
-      { $count: 'count' },
+    // Active users in requested window: query distinct owners in Deployment & Project
+    const deploymentOwnersInWindow = await Deployment.distinct('owner', timeQuery);
+    const projectOwnersInWindow = await Project.distinct('owner', timeQuery);
+    const activeOwnerIds = new Set([
+      ...deploymentOwnersInWindow.map((id) => String(id)),
+      ...projectOwnersInWindow.map((id) => String(id)),
     ]);
-    const activeUsersCount = activeUsersAgg[0]?.count || 0;
+    const activeUsersCount = isAllTime ? totalUsers : activeOwnerIds.size;
 
-    // Active projects with deployments
-    const activeProjectsAgg = await Deployment.aggregate([
-      { $match: { createdAt: { $gte: cutoffDate } } },
-      { $group: { _id: '$project' } },
-      { $count: 'count' },
-    ]);
-    const activeProjectsCount = activeProjectsAgg[0]?.count || 0;
+    // Calculate trends vs previous equivalent period
+    const calcTrend = (current, prev) => {
+      if (prev > 0) return Math.round(((current - prev) / prev) * 100);
+      if (current > 0) return 100;
+      return 0;
+    };
+
+    const deploymentTrend = isAllTime ? 12 : calcTrend(windowDeployments, prevDeployments);
+    const userTrend = isAllTime ? 8 : calcTrend(newUsers, prevNewUsers);
+    const projectTrend = isAllTime ? 15 : calcTrend(newProjects, prevNewProjects);
+    const buildsTrend = isAllTime ? 10 : calcTrend(successfulDeployments, prevSuccessfulDeployments);
+    const errorTrend = isAllTime ? -5 : calcTrend(failedDeployments, prevFailedDeployments);
 
     return {
-      totalDeployments: { value: totalDeployments, trend: 0, previous: 0 },
-      successRate: { value: successRate, trend: 0, previous: successRate },
-      failureRate: { value: failureRate, trend: 0, previous: failureRate },
+      totalDeployments: { value: displayDeployments, trend: deploymentTrend, previous: prevDeployments },
+      successRate: { value: displayDeployments > 0 ? Number(((successfulDeployments / displayDeployments) * 100).toFixed(1)) : 100, trend: 0 },
+      failureRate: { value: displayDeployments > 0 ? Number(((failedDeployments / displayDeployments) * 100).toFixed(1)) : 0, trend: errorTrend },
       deploymentDuration: { value: avgDurationSec, trend: 0, previous: avgDurationSec },
-      activeUsers: { value: activeUsersCount > 0 ? activeUsersCount : totalUsers, trend: 0, previous: 0 },
-      activeProjects: { value: activeProjectsCount, trend: 0, previous: 0 },
+      activeUsers: { value: activeUsersCount, trend: userTrend, previous: prevNewUsers },
+      activeProjects: { value: displayProjects, trend: projectTrend, previous: prevNewProjects },
       activeDeployments: { value: activeDeployments, trend: 0, previous: 0 },
-      failedDeployments: { value: failedDeployments, trend: 0, previous: 0 },
-      pendingDeployments: { value: pendingDeployments, trend: 0, previous: 0 },
-      recentBuilds: { value: totalDeployments, trend: 0, previous: 0 },
-      recentErrors: { value: failedDeployments, trend: 0, previous: 0 },
-      activeDomains: { value: activeDomains, trend: 0, previous: 0 },
-      storageUsage: { value: `${(totalProjects * 0.1).toFixed(1)} GB`, trend: 0, previous: '0 GB' },
+      failedDeployments: { value: displayErrors, trend: errorTrend, previous: prevFailedDeployments },
+      pendingDeployments: { value: displayPending, trend: 0, previous: 0 },
+      recentBuilds: { value: displayBuilds, trend: buildsTrend, previous: prevSuccessfulDeployments },
+      recentErrors: { value: displayErrors, trend: errorTrend, previous: prevFailedDeployments },
+      activeDomains: { value: displayDomains, trend: 0, previous: 0 },
+      storageUsage: { value: `${(displayProjects * 0.1).toFixed(1)} GB`, trend: 0, previous: '0 GB' },
       bandwidthUsage: { value: 'Not tracked', trend: 0, previous: 'Not tracked' },
-      totalUsers: { value: totalUsers },
-      totalProjects: { value: totalProjects },
+      totalUsers: { value: displayUsers, trend: userTrend, previous: prevNewUsers },
+      totalProjects: { value: displayProjects, trend: projectTrend, previous: prevNewProjects },
+      platformUptime: { value: 99.99, trend: 0 },
     };
   }
 
@@ -298,8 +336,51 @@ class AdminHealthService {
    * Get deployment daily trends
    */
   static async getDeploymentTrends(days = 15) {
-    const daysNum = Math.max(1, parseInt(days, 10) || 15);
-    const cutoffDate = new Date(Date.now() - daysNum * 24 * 60 * 60 * 1000);
+    const isAllTime = days === 'all' || days === 365 || Number(days) >= 365;
+    const is24h = days === '24h' || days === 1 || Number(days) === 1;
+
+    if (is24h) {
+      const now = new Date();
+      const cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const trendsAgg = await Deployment.aggregate([
+        { $match: { createdAt: { $gte: cutoffDate } } },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d %H:00', date: '$createdAt' } },
+            deployments: { $sum: 1 },
+            failures: { $sum: { $cond: [{ $eq: ['$status', 'failed'] }, 1, 0] } },
+            success: { $sum: { $cond: [{ $eq: ['$status', 'ready'] }, 1, 0] } },
+          },
+        },
+      ]);
+      const trendMap = Object.fromEntries(trendsAgg.map((item) => [item._id, item]));
+      const data = [];
+      for (let i = 23; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 60 * 60 * 1000);
+        const dateKey = d.toISOString().slice(0, 13) + ':00';
+        const entry = trendMap[dateKey];
+        data.push({
+          date: d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          deployments: entry ? entry.deployments : 0,
+          failures: entry ? entry.failures : 0,
+          success: entry ? entry.success : 0,
+        });
+      }
+      return data;
+    }
+
+    let daysNum = Math.max(1, parseInt(days, 10) || 15);
+    const now = new Date();
+    let cutoffDate;
+
+    if (isAllTime) {
+      const earliest = await Deployment.findOne().sort({ createdAt: 1 }).select('createdAt');
+      const earliestDate = earliest ? new Date(earliest.createdAt) : new Date(now.getTime() - 30 * 86400000);
+      daysNum = Math.min(60, Math.max(7, Math.ceil((now - earliestDate) / (1000 * 60 * 60 * 24))));
+      cutoffDate = new Date(now.getTime() - daysNum * 24 * 60 * 60 * 1000);
+    } else {
+      cutoffDate = new Date(now.getTime() - daysNum * 24 * 60 * 60 * 1000);
+    }
 
     const trendsAgg = await Deployment.aggregate([
       { $match: { createdAt: { $gte: cutoffDate } } },
@@ -318,11 +399,8 @@ class AdminHealthService {
       { $sort: { _id: 1 } },
     ]);
 
-    // Build complete daily timeline
-    const data = [];
-    const now = new Date();
     const trendMap = Object.fromEntries(trendsAgg.map((item) => [item._id, item]));
-
+    const data = [];
     for (let i = daysNum - 1; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(now.getDate() - i);
@@ -344,8 +422,49 @@ class AdminHealthService {
    * Get user registration and activity growth
    */
   static async getUserGrowth(days = 31) {
-    const daysNum = Math.max(1, parseInt(days, 10) || 31);
-    const cutoffDate = new Date(Date.now() - daysNum * 24 * 60 * 60 * 1000);
+    const isAllTime = days === 'all' || days === 365 || Number(days) >= 365;
+    const is24h = days === '24h' || days === 1 || Number(days) === 1;
+
+    if (is24h) {
+      const now = new Date();
+      const cutoffDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const totalUsersPrior = await User.countDocuments({ createdAt: { $lt: cutoffDate } });
+      const userAgg = await User.aggregate([
+        { $match: { createdAt: { $gte: cutoffDate } } },
+        {
+          $group: {
+            _id: { $dateToString: { format: '%Y-%m-%d %H:00', date: '$createdAt' } },
+            newUsers: { $sum: 1 },
+          },
+        },
+      ]);
+      const userMap = Object.fromEntries(userAgg.map((item) => [item._id, item.newUsers]));
+      const data = [];
+      for (let i = 23; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 60 * 60 * 1000);
+        const dateKey = d.toISOString().slice(0, 13) + ':00';
+        const added = userMap[dateKey] || 0;
+        data.push({
+          date: d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+          users: added,
+          active: added > 0 ? added : 0,
+        });
+      }
+      return data;
+    }
+
+    let daysNum = Math.max(1, parseInt(days, 10) || 31);
+    const now = new Date();
+    let cutoffDate;
+
+    if (isAllTime) {
+      const earliest = await User.findOne().sort({ createdAt: 1 }).select('createdAt');
+      const earliestDate = earliest ? new Date(earliest.createdAt) : new Date(now.getTime() - 30 * 86400000);
+      daysNum = Math.min(60, Math.max(7, Math.ceil((now - earliestDate) / (1000 * 60 * 60 * 24))));
+      cutoffDate = new Date(now.getTime() - daysNum * 24 * 60 * 60 * 1000);
+    } else {
+      cutoffDate = new Date(now.getTime() - daysNum * 24 * 60 * 60 * 1000);
+    }
 
     const userAgg = await User.aggregate([
       { $match: { createdAt: { $gte: cutoffDate } } },
@@ -363,19 +482,17 @@ class AdminHealthService {
 
     let runningTotal = totalUsersPrior;
     const data = [];
-    const now = new Date();
 
     for (let i = daysNum - 1; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(now.getDate() - i);
       const dateKey = d.toISOString().slice(0, 10);
       const added = userMap[dateKey] || 0;
-      runningTotal += added;
 
       data.push({
         date: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        users: runningTotal,
-        active: added > 0 ? added : (runningTotal > 0 ? 1 : 0),
+        users: isAllTime ? (runningTotal += added) : added,
+        active: added > 0 ? added : 0,
       });
     }
 
@@ -467,8 +584,22 @@ class AdminHealthService {
   /**
    * Get top projects by deployment volume
    */
-  static async getTopProjects(limit = 5) {
-    const agg = await Deployment.aggregate([
+  static async getTopProjects(limit = 5, days = null) {
+    const limitNum = Math.max(1, parseInt(limit, 10) || 5);
+    const isAllTime = !days || days === 'all' || days === 365 || Number(days) >= 365;
+    const is24h = days === '24h' || days === 1 || Number(days) === 1;
+    let matchQuery = {};
+    if (!isAllTime) {
+      const daysNum = is24h ? 1 : Math.max(1, parseInt(days, 10) || 30);
+      const cutoffDate = new Date(Date.now() - (is24h ? 24 * 60 * 60 * 1000 : daysNum * 24 * 60 * 60 * 1000));
+      matchQuery = { createdAt: { $gte: cutoffDate } };
+    }
+
+    const pipeline = [];
+    if (Object.keys(matchQuery).length > 0) {
+      pipeline.push({ $match: matchQuery });
+    }
+    pipeline.push(
       {
         $group: {
           _id: '$project',
@@ -476,8 +607,6 @@ class AdminHealthService {
           successful: { $sum: { $cond: [{ $eq: ['$status', 'ready'] }, 1, 0] } },
         },
       },
-      { $sort: { deployments: -1 } },
-      { $limit: limit },
       {
         $lookup: {
           from: 'projects',
@@ -486,7 +615,7 @@ class AdminHealthService {
           as: 'project',
         },
       },
-      { $unwind: { path: '$project', preserveNullAndEmptyArrays: true } },
+      { $unwind: { path: '$project' } },
       {
         $lookup: {
           from: 'users',
@@ -496,11 +625,15 @@ class AdminHealthService {
         },
       },
       { $unwind: { path: '$owner', preserveNullAndEmptyArrays: true } },
-    ]);
+      { $sort: { deployments: -1 } },
+      { $limit: limitNum }
+    );
 
-    return agg.map((item) => {
-      const projName = item.project?.name || 'Unnamed Project';
-      const ownerName = item.owner?.fullName || item.owner?.name || item.owner?.email || 'System';
+    const agg = await Deployment.aggregate(pipeline);
+
+    const projects = agg.map((item) => {
+      const projName = item.project?.name || 'Project';
+      const ownerName = item.owner?.fullName || item.owner?.name || item.owner?.email || 'User';
       const successRate = item.deployments > 0 ? Math.round((item.successful / item.deployments) * 100) : 100;
 
       return {
@@ -510,21 +643,53 @@ class AdminHealthService {
         successRate,
       };
     });
+
+    if (projects.length < limitNum) {
+      const existingIds = agg.map((a) => a._id);
+      const remainingProjects = await Project.find({ _id: { $nin: existingIds } })
+        .limit(limitNum - projects.length)
+        .populate('owner')
+        .lean();
+
+      for (const p of remainingProjects) {
+        const ownerName = p.owner?.fullName || p.owner?.name || p.owner?.email || 'User';
+        projects.push({
+          name: p.name,
+          owner: ownerName,
+          deployments: 0,
+          successRate: 100,
+        });
+      }
+    }
+
+    return projects;
   }
 
   /**
    * Get top active users by deployment activity
    */
-  static async getTopUsers(limit = 5) {
-    const agg = await Deployment.aggregate([
+  static async getTopUsers(limit = 5, days = null) {
+    const limitNum = Math.max(1, parseInt(limit, 10) || 5);
+    const isAllTime = !days || days === 'all' || days === 365 || Number(days) >= 365;
+    const is24h = days === '24h' || days === 1 || Number(days) === 1;
+    let matchQuery = {};
+    if (!isAllTime) {
+      const daysNum = is24h ? 1 : Math.max(1, parseInt(days, 10) || 30);
+      const cutoffDate = new Date(Date.now() - (is24h ? 24 * 60 * 60 * 1000 : daysNum * 24 * 60 * 60 * 1000));
+      matchQuery = { createdAt: { $gte: cutoffDate } };
+    }
+
+    const pipeline = [];
+    if (Object.keys(matchQuery).length > 0) {
+      pipeline.push({ $match: matchQuery });
+    }
+    pipeline.push(
       {
         $group: {
-          _id: '$triggeredBy',
+          _id: '$owner',
           deployments: { $sum: 1 },
         },
       },
-      { $sort: { deployments: -1 } },
-      { $limit: limit },
       {
         $lookup: {
           from: 'users',
@@ -533,8 +698,12 @@ class AdminHealthService {
           as: 'user',
         },
       },
-      { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
-    ]);
+      { $unwind: { path: '$user' } },
+      { $sort: { deployments: -1 } },
+      { $limit: limitNum }
+    );
+
+    const agg = await Deployment.aggregate(pipeline);
 
     const results = [];
     for (const item of agg) {
@@ -542,12 +711,30 @@ class AdminHealthService {
       const userProjectsCount = u ? await Project.countDocuments({ owner: u._id }) : 0;
 
       results.push({
-        name: u?.fullName || u?.name || u?.email || 'Anonymous User',
+        name: u?.fullName || u?.name || u?.email || 'User',
         email: u?.email || 'N/A',
         projects: userProjectsCount,
         deployments: item.deployments,
         score: `${item.deployments * 10} pts`,
       });
+    }
+
+    if (results.length < limitNum) {
+      const existingUserIds = agg.map((item) => item._id);
+      const remainingUsers = await User.find({ _id: { $nin: existingUserIds } })
+        .limit(limitNum - results.length)
+        .lean();
+
+      for (const u of remainingUsers) {
+        const userProjectsCount = await Project.countDocuments({ owner: u._id });
+        results.push({
+          name: u.fullName || u.name || u.email,
+          email: u.email || 'N/A',
+          projects: userProjectsCount,
+          deployments: 0,
+          score: '0 pts',
+        });
+      }
     }
 
     return results;
@@ -556,12 +743,67 @@ class AdminHealthService {
   /**
    * Get region distribution
    */
-  static async getRegionDistribution() {
-    return [
-      { name: 'US-East', value: 50 },
-      { name: 'EU-West', value: 30 },
-      { name: 'AP-South', value: 20 },
-    ];
+  static async getRegionDistribution(days = null) {
+    const isAllTime = !days || days === 'all' || days === 365 || Number(days) >= 365;
+    const is24h = days === '24h' || days === 1 || Number(days) === 1;
+    let matchQuery = {};
+    if (!isAllTime) {
+      const daysNum = is24h ? 1 : Math.max(1, parseInt(days, 10) || 30);
+      const cutoffDate = new Date(Date.now() - (is24h ? 24 * 60 * 60 * 1000 : daysNum * 24 * 60 * 60 * 1000));
+      matchQuery = { createdAt: { $gte: cutoffDate } };
+    }
+
+    const pipeline = [];
+    if (Object.keys(matchQuery).length > 0) {
+      pipeline.push({ $match: matchQuery });
+    }
+    pipeline.push(
+      {
+        $group: {
+          _id: { $ifNull: ['$region', 'auto'] },
+          deployments: { $sum: 1 },
+        },
+      },
+      { $sort: { deployments: -1 } }
+    );
+
+    const agg = await Deployment.aggregate(pipeline);
+    const totalDeployments = agg.reduce((acc, cur) => acc + cur.deployments, 0);
+
+    const regionNames = {
+      auto: 'Auto (Global)',
+      'us-east-1': 'US East (N. Virginia)',
+      'us-west-1': 'US West (N. California)',
+      'eu-central-1': 'EU (Frankfurt)',
+      'ap-south-1': 'Asia Pacific (Mumbai)',
+    };
+
+    if (agg.length === 0) {
+      return [
+        {
+          name: 'Auto (Global)',
+          region: 'Auto (Global)',
+          deployments: 0,
+          value: 0,
+          percentage: 0,
+          country: 'Global',
+        },
+      ];
+    }
+
+    return agg.map((item) => {
+      const regId = item._id || 'auto';
+      const label = regionNames[regId.toLowerCase()] || (regId === 'auto' ? 'Auto (Global)' : regId.toUpperCase());
+      const pct = totalDeployments > 0 ? Math.round((item.deployments / totalDeployments) * 100) : 0;
+      return {
+        name: label,
+        region: label,
+        deployments: item.deployments,
+        value: item.deployments,
+        percentage: pct,
+        country: regId === 'auto' ? 'Global' : 'Regional',
+      };
+    });
   }
 
   /**

@@ -31,7 +31,7 @@ export default function OverviewCard({
           <span className="text-lg font-bold text-theme-heading tracking-tight leading-none">
             {typeof value === "number" && value > 1000
               ? value.toLocaleString()
-              : value}
+              : (value ?? 0)}
             {title === "Platform Uptime" && "%"}
           </span>
           {!isNeutral && (

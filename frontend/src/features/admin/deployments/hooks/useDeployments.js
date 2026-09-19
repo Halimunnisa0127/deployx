@@ -45,6 +45,17 @@ export function useDeployments() {
     };
   }, []);
 
+  const normalizeStatus = (status) => {
+    if (!status) return 'unknown';
+    const s = String(status).toLowerCase();
+    if (s === 'ready' || s === 'success') return 'success';
+    if (s === 'building' || s === 'deploying' || s === 'running') return 'running';
+    if (s === 'queued' || s === 'pending') return 'queued';
+    if (s === 'failed' || s === 'error') return 'failed';
+    if (s === 'canceled' || s === 'cancelled') return 'cancelled';
+    return s;
+  };
+
   const counts = useMemo(() => {
     const res = {
       all: deployments.length,
@@ -55,14 +66,15 @@ export function useDeployments() {
       cancelled: 0,
     };
     deployments.forEach((d) => {
-      if (res[d.status] !== undefined) res[d.status]++;
+      const norm = normalizeStatus(d.status);
+      if (res[norm] !== undefined) res[norm]++;
     });
     return res;
   }, [deployments]);
 
   const tableParams = useAdminTable({
     data: deployments,
-    searchKeys: ['id', 'project', 'owner', 'latestCommit'],
+    searchKeys: ['id', '_id', 'project', 'projectName', 'owner', 'ownerEmail', 'latestCommit', 'commit', 'branch', 'environment'],
     initialFilters: { status: 'all' },
     initialSort: { key: 'createdAt', direction: 'desc' },
     itemsPerPage: 10,
@@ -77,18 +89,31 @@ export function useDeployments() {
   const filteredDeployments = useMemo(() => {
     const query = search.query.trim().toLowerCase();
     return deployments.filter((d) => {
-      if (activeFilter !== "all" && d.status !== activeFilter) return false;
+      const norm = normalizeStatus(d.status);
+      if (activeFilter !== "all" && norm !== activeFilter && d.status !== activeFilter) {
+        return false;
+      }
       if (query) {
+        const idStr = String(d.id || d._id || '').toLowerCase();
+        const projectStr = String(d.project || d.projectName || '').toLowerCase();
+        const ownerStr = String(d.owner || d.ownerEmail || '').toLowerCase();
+        const commitStr = String(d.latestCommit || d.commit || d.commitMessage || '').toLowerCase();
+        const branchStr = String(d.branch || '').toLowerCase();
+        const envStr = String(d.environment || '').toLowerCase();
+
         return (
-          (d.project && d.project.toLowerCase().includes(query)) ||
-          (d.owner && d.owner.toLowerCase().includes(query)) ||
-          (d.id && String(d.id).toLowerCase().includes(query)) ||
-          (d.latestCommit && d.latestCommit.toLowerCase().includes(query))
+          projectStr.includes(query) ||
+          ownerStr.includes(query) ||
+          idStr.includes(query) ||
+          commitStr.includes(query) ||
+          branchStr.includes(query) ||
+          envStr.includes(query)
         );
       }
       return true;
     });
   }, [deployments, activeFilter, search.query]);
+
 
   const handleExport = async () => {
     try {

@@ -22,6 +22,7 @@ export default function ProjectDetailsDrawer({
   onOpenDeployments,
   onOpenDomains,
   onArchive,
+  onOpenProject,
 }) {
   if (!project) return null;
   const isArchived = project.status === "archived";
@@ -132,10 +133,10 @@ export default function ProjectDetailsDrawer({
           <Button
             variant="secondary"
             iconLeft={<Eye className="w-4 h-4" />}
-            onClick={() => onView(project)}
+            onClick={() => (onOpenProject ? onOpenProject(project) : onView?.(project))}
             className="w-full"
           >
-            View Project
+            Open Project
           </Button>
           <Button
             variant="secondary"

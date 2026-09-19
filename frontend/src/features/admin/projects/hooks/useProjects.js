@@ -1,8 +1,10 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import * as projectsService from "../services/projectsService";
 import { useAdminTable } from "../../shared/hooks/useAdminTable";
 
 export function useProjects() {
+  const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,9 +58,12 @@ export function useProjects() {
     return fw;
   };
 
+  const isProjectActive = (p) => p && (p.status === 'live' || p.status === 'active' || p.status === 'building' || p.status === 'draft');
+
   const counts = useMemo(() => {
+    const list = Array.isArray(projects) ? projects : [];
     const res = {
-      all: projects.length,
+      all: list.length,
       active: 0,
       archived: 0,
       failed: 0,
@@ -66,8 +71,10 @@ export function useProjects() {
       "Next.js": 0,
       "Node.js": 0,
     };
-    projects.forEach((p) => {
-      if (res[p.status] !== undefined) res[p.status]++;
+    list.forEach((p) => {
+      if (isProjectActive(p)) res.active++;
+      if (p.status === "archived") res.archived++;
+      if (p.status === "failed") res.failed++;
       const normFw = normalizeFramework(p.framework);
       if (res[normFw] !== undefined) res[normFw]++;
     });
@@ -75,8 +82,10 @@ export function useProjects() {
   }, [projects]);
 
   const filteredProjects = useMemo(() => {
-    return projects.filter((p) => {
-      if (activeFilter === "active" && p.status !== "active") return false;
+    const list = Array.isArray(projects) ? projects : [];
+    return list.filter((p) => {
+      if (!p) return false;
+      if (activeFilter === "active" && !isProjectActive(p)) return false;
       if (activeFilter === "archived" && p.status !== "archived") return false;
       if (activeFilter === "failed" && p.status !== "failed") return false;
       if (activeFilter === "React" && normalizeFramework(p.framework) !== "React") return false;
@@ -88,10 +97,11 @@ export function useProjects() {
 
   const tableParams = useAdminTable({
     data: filteredProjects,
-    searchKeys: ["name", "owner"],
+    searchKeys: ["name", "slug", "owner", "owner.fullName", "owner.email", "framework", "domainUrl"],
     itemsPerPage: 10,
     idKey: "id",
   });
+
 
   const handleExport = async () => {
     try {
@@ -108,15 +118,28 @@ export function useProjects() {
   };
 
   const handleOpenDeployments = (project) => {
-    console.log("Open Deployments for", project.name);
+    navigate("/admin/deployments");
   };
 
   const handleOpenDomains = (project) => {
-    console.log("Open Domains for", project.name);
+    navigate("/admin/domains");
+  };
+
+  const handleOpenProject = (project) => {
+    if (!project) return;
+    const domain = project.connectedDomain || project.domainUrl;
+    if (domain) {
+      const url = domain.startsWith("http://") || domain.startsWith("https://") ? domain : `https://${domain}`;
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      navigate(`/dashboard/projects/${project.id || project._id}`);
+    }
   };
 
   const handleArchiveProject = async (project) => {
-    await projectsService.archiveProject(project.id);
+    const id = project?.id || project?._id;
+    if (!id) return;
+    await projectsService.archiveProject(id);
     fetchData(); 
   };
 
@@ -126,11 +149,12 @@ export function useProjects() {
   };
 
   const handleConfirmDelete = async () => {
-    if (projectToDelete) {
-      await projectsService.deleteProject(projectToDelete.id);
+    const id = projectToDelete?.id || projectToDelete?._id;
+    if (id) {
+      await projectsService.deleteProject(id);
       setIsDeleteModalOpen(false);
       setProjectToDelete(null);
-      if (selectedProject?.id === projectToDelete.id) {
+      if (selectedProject?.id === id || selectedProject?._id === id) {
         setIsDrawerOpen(false);
       }
       fetchData();
@@ -141,6 +165,7 @@ export function useProjects() {
     onView: handleRowClick,
     onOpenDeployments: handleOpenDeployments,
     onOpenDomains: handleOpenDomains,
+    onOpenProject: handleOpenProject,
     onArchive: handleArchiveProject,
     onDelete: handleDeleteClick,
   };
@@ -162,5 +187,7 @@ export function useProjects() {
     projectToDelete,
     handleConfirmDelete,
     actionHandlers,
+    fetchData,
+    refresh: () => fetchData(),
   };
 }
