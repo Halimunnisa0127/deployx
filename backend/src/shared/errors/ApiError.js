@@ -1,7 +1,15 @@
 class ApiError extends Error {
   constructor(message, statusCode, isOperational = true, stack = '') {
-    super(message);
-    this.statusCode = statusCode;
+    let finalMessage = message;
+    let finalStatusCode = statusCode;
+
+    if (typeof message === 'number') {
+      finalStatusCode = message;
+      finalMessage = statusCode || 'API Error';
+    }
+
+    super(finalMessage);
+    this.statusCode = finalStatusCode;
     this.isOperational = isOperational;
     if (stack) {
       this.stack = stack;
@@ -10,4 +18,8 @@ class ApiError extends Error {
     }
   }
 }
+
+
+ApiError.ApiError = ApiError;
 module.exports = ApiError;
+

@@ -1,29 +1,27 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import GithubIcon from '../../../assets/icons/GithubIcon';
-import GoogleIcon from '../../../assets/icons/GoogleIcon';
 import Card from '../../../components/ui/Card';
-import Button from '../../../components/ui/Button';
-import Divider from '../../../components/ui/Divider';
 import LoginForm from '../components/LoginForm';
 import { loginUser } from '../slice/authSlice';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state) => state.auth);
+  const { status } = useSelector((state) => state.auth);
   const [loginError, setLoginError] = useState(null);
-
-  const handleOAuthLogin = () => {
-    // Placeholder for OAuth logic
-  };
 
   const handleEmailLogin = async (data) => {
     setLoginError(null);
     const resultAction = await dispatch(loginUser(data));
     if (loginUser.fulfilled.match(resultAction)) {
-      navigate('/dashboard');
+      const payload = resultAction.payload?.data || resultAction.payload;
+      const loggedUser = payload?.user || payload;
+      if (loggedUser?.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } else {
       setLoginError(resultAction.payload || 'Login failed');
     }

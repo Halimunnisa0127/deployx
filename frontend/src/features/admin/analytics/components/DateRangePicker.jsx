@@ -1,13 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { Calendar, ChevronDown } from "lucide-react";
+import { Calendar, ChevronDown, Check } from "lucide-react";
 
 const RANGES = [
-  { id: "today", label: "Today" },
+  { id: "today", label: "Last 24 Hours" },
   { id: "7d", label: "Last 7 Days" },
   { id: "30d", label: "Last 30 Days" },
   { id: "90d", label: "Last 90 Days" },
-  { id: "this_month", label: "This Month" },
-  { id: "last_month", label: "Last Month" },
+  { id: "all", label: "All Time" },
 ];
 
 export default function DateRangePicker({ value, onChange }) {
@@ -54,7 +53,8 @@ export default function DateRangePicker({ value, onChange }) {
                     : "text-muted-foreground hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white"
                 }`}
               >
-                {range.label}
+                <span>{range.label}</span>
+                {value === range.id && <Check className="w-4 h-4 text-indigo-400" />}
               </button>
             ))}
           </div>

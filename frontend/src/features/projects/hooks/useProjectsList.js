@@ -20,8 +20,24 @@ export function useProjectsList() {
   }, []);
 
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    let ignore = false;
+    projectsService.fetchProjects()
+      .then((data) => {
+        if (!ignore) {
+          setProjects(data);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err.response?.data?.message || err.message || 'Failed to fetch projects');
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return { projects, isLoading, error, refetch: fetchProjects };
 }

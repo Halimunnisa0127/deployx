@@ -20,7 +20,6 @@ export default function UserDetailsDrawer({
   onClose,
   user,
   onEdit,
-  onChangeRole,
   onToggleStatus,
   onResetPassword,
   onDelete,

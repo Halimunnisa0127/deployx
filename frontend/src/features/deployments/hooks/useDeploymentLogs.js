@@ -29,7 +29,7 @@ export function useDeploymentLogs(deploymentId, status) {
               second: '2-digit',
               hour12: false
             });
-          } catch (e) {
+          } catch {
             // Ignore format error
           }
         }
@@ -46,16 +46,57 @@ export function useDeploymentLogs(deploymentId, status) {
       console.error("Failed to fetch logs", err);
       setError(err.response?.data?.message || err.message || 'Failed to fetch logs');
     } finally {
-      if (showLoading) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   }, [deploymentId]);
 
   // Initial load
   useEffect(() => {
-    fetchLogs(true);
-  }, [fetchLogs]);
+    if (!deploymentId) {
+      return;
+    }
+    let ignore = false;
+    deploymentsApi.getDeploymentLogs(deploymentId, 1, 10000)
+      .then((response) => {
+        if (!ignore) {
+          const rawLogs = response.data?.logs || [];
+          const mappedLogs = rawLogs.map(log => {
+            let timeStr = '';
+            if (log.timestamp) {
+              try {
+                timeStr = new Date(log.timestamp).toLocaleTimeString(undefined, {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false
+                });
+              } catch {
+                // Ignore format error
+              }
+            }
+            return {
+              id: log.sequence || log._id,
+              type: log.level || 'info',
+              time: timeStr,
+              text: log.message || '',
+            };
+          });
+          setLogs(mappedLogs);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to fetch logs", err);
+          setError(err.response?.data?.message || err.message || 'Failed to fetch logs');
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [deploymentId]);
 
   // Polling loop for active builds (queued / building)
   useEffect(() => {

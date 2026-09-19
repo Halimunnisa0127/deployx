@@ -12,23 +12,42 @@ class GitHubClient {
     this.accessToken = accessToken;
   }
 
-  getHeaders() {
-    return {
-      'Authorization': `Bearer ${this.accessToken}`,
+  getHeaders(includeAuth = true) {
+    const headers = {
       'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'DeployX',
     };
+    if (includeAuth && this.accessToken) {
+      headers['Authorization'] = `Bearer ${this.accessToken}`;
+    }
+    return headers;
   }
 
   async request(method, endpoint, body = null) {
     const url = `${GITHUB_API_URL}${endpoint}`;
     
     try {
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         method,
-        headers: this.getHeaders(),
+        headers: this.getHeaders(true),
         body: body ? JSON.stringify(body) : undefined,
       });
+
+      // Graceful fallback for public repositories when the user's OAuth token has expired
+      if (response.status === 401 && method === 'GET' && endpoint.startsWith('/repos/')) {
+        try {
+          const publicResponse = await fetch(url, {
+            method: 'GET',
+            headers: this.getHeaders(false),
+          });
+          if (publicResponse.status !== 401) {
+            response = publicResponse;
+          }
+        } catch (pubErr) {
+          // Ignore and proceed with original 401
+        }
+      }
 
       if (!response.ok) {
         let errorData = null;

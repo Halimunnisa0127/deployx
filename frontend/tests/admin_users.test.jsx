@@ -27,9 +27,10 @@ describe('Admin Users API Client Unit Tests', () => {
     });
 
     const users = await fetchUsers();
-    expect(api.get).toHaveBeenCalledWith('/admin/users');
+    expect(api.get).toHaveBeenCalledWith('/admin/users', { params: {} });
     expect(users).toEqual(mockUsers);
   });
+
 
   test('fetchUser calls /admin/users/:id and maps response correctly', async () => {
     const mockUser = { _id: 'usr-1', name: 'John Admin' };

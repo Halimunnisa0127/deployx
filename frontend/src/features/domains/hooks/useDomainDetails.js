@@ -43,8 +43,45 @@ export function useDomainDetails(id) {
   }, [id]);
 
   useEffect(() => {
-    fetchDomainAndInstructions();
-  }, [fetchDomainAndInstructions]);
+    if (!id) return;
+    let ignore = false;
+    Promise.all([
+      domainsApi.getDomain(id),
+      domainsApi.getDomainInstructions(id).catch(() => ({ data: {} })),
+    ])
+      .then(([domainResponse, instructionsResponse]) => {
+        if (!ignore) {
+          const d = domainResponse.data?.domain;
+          if (d) {
+            const mappedDomain = {
+              id: d._id || d.id,
+              name: d.hostname,
+              projectName: d.project?.name || (typeof d.project === 'string' ? 'Project' : 'Custom Domain'),
+              projectId: d.project?._id || d.project,
+              environment: d.targetType === 'production' ? 'Production' : 'Preview',
+              status: d.verificationStatus || 'pending',
+              sslStatus: d.sslStatus || 'pending',
+              dnsStatus: d.verificationStatus === 'verified' ? 'verified' : 'pending',
+              createdAt: d.createdAt ? new Date(d.createdAt).toLocaleDateString() : 'Recent',
+              url: `https://${d.hostname}`,
+              isLive: d.status === 'active',
+            };
+            setDomain(mappedDomain);
+            setInstructions(instructionsResponse.data?.instructions || null);
+          }
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to fetch domain details", err);
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [id]);
 
   const handleRefresh = useCallback(async () => {
     if (!domain) return;

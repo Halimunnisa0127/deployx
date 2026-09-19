@@ -37,7 +37,6 @@ export default function DeploymentSummaryGrid({ deployment }) {
   const {
     id,
     _id,
-    projectName,
     environment,
     framework,
     branch,

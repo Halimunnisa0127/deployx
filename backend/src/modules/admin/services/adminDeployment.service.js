@@ -1,4 +1,8 @@
+const mongoose = require('mongoose');
 const Deployment = require('../../deployments/models/Deployment');
+const Project = require('../../projects/models/Project');
+const User = require('../../users/models/User');
+const Artifact = require('../../storage/models/Artifact');
 const { StatusCodes } = require('http-status-codes');
 const { ApiError } = require('../../../shared/errors/ApiError');
 
@@ -27,8 +31,15 @@ function calculateDuration(dep) {
 }
 
 class AdminDeploymentService {
-  static async listDeployments({ page = 1, limit = 10, search = '', status = '' }) {
+  static async listDeployments({ page = 1, limit = 10, search = '', status = '', days = '' }) {
     const query = {};
+
+    if (days && days !== 'all') {
+      const is24h = days === '24h' || days === '1' || Number(days) === 1;
+      const daysNum = is24h ? 1 : Math.max(1, parseInt(days, 10) || 7);
+      const cutoff = new Date(Date.now() - (is24h ? 24 * 3600 * 1000 : daysNum * 24 * 3600 * 1000));
+      query.createdAt = { $gte: cutoff };
+    }
     
     // Status filter mapping Mongoose to frontend
     if (status && status !== 'all') {
@@ -36,6 +47,8 @@ class AdminDeploymentService {
         query.status = 'ready';
       } else if (status === 'running') {
         query.status = 'building';
+      } else if (status === 'cancelled') {
+        query.status = { $in: ['canceled', 'cancelled'] };
       } else {
         query.status = status;
       }
@@ -46,12 +59,43 @@ class AdminDeploymentService {
     const skip = (pageNum - 1) * limitNum;
 
     if (search) {
-      query.$or = [
-        { commitMessage: { $regex: search, $options: 'i' } },
-        { commitHash: { $regex: search, $options: 'i' } },
-        { triggeredBy: { $regex: search, $options: 'i' } },
+      const searchTrim = search.trim();
+      const matchingProjects = await Project.find({
+        $or: [
+          { name: { $regex: searchTrim, $options: 'i' } },
+          { slug: { $regex: searchTrim, $options: 'i' } }
+        ]
+      }).select('_id');
+      const projectIds = matchingProjects.map(p => p._id);
+
+      const matchingUsers = await User.find({
+        $or: [
+          { fullName: { $regex: searchTrim, $options: 'i' } },
+          { email: { $regex: searchTrim, $options: 'i' } }
+        ]
+      }).select('_id');
+      const userIds = matchingUsers.map(u => u._id);
+
+      const orConditions = [
+        { commitMessage: { $regex: searchTrim, $options: 'i' } },
+        { commitHash: { $regex: searchTrim, $options: 'i' } },
+        { triggeredBy: { $regex: searchTrim, $options: 'i' } },
+        { environment: { $regex: searchTrim, $options: 'i' } },
       ];
+
+      if (projectIds.length > 0) {
+        orConditions.push({ project: { $in: projectIds } });
+      }
+      if (userIds.length > 0) {
+        orConditions.push({ owner: { $in: userIds } });
+      }
+      if (mongoose.Types.ObjectId.isValid(searchTrim)) {
+        orConditions.push({ _id: searchTrim });
+      }
+
+      query.$or = orConditions;
     }
+
 
     const total = await Deployment.countDocuments(query);
     const deployments = await Deployment.find(query)
@@ -65,7 +109,8 @@ class AdminDeploymentService {
     const mappedDeployments = deployments.map(d => {
       let mappedStatus = d.status;
       if (d.status === 'ready') mappedStatus = 'success';
-      if (d.status === 'building') mappedStatus = 'running';
+      if (d.status === 'building' || d.status === 'deploying') mappedStatus = 'running';
+      if (d.status === 'canceled' || d.status === 'cancelled') mappedStatus = 'cancelled';
 
       return {
         id: d._id,
@@ -274,7 +319,8 @@ class AdminDeploymentService {
         const artifact = await Artifact.findById(deployment.artifact);
         if (artifact && artifact.storageKey) {
           const storageProvider = new LocalArtifactStorageProvider();
-          await storageProvider.deleteArtifact(artifact.storageKey).catch(() => {});
+          await storageProvider.delete(artifact.storageKey).catch(() => {});
+
         }
         await Artifact.deleteOne({ _id: deployment.artifact });
       }

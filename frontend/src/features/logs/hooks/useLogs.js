@@ -19,7 +19,7 @@ export function useLogs() {
       try {
         setIsLoading(true);
         const data = await logsApi.getInitialLogs();
-        if (mounted) setLogs(data);
+        if (mounted && Array.isArray(data)) setLogs(data);
       } catch (err) {
         console.error("Failed to fetch initial logs", err);
       } finally {
@@ -38,17 +38,17 @@ export function useLogs() {
     const interval = setInterval(async () => {
       try {
         const randomLog = await logsApi.getStreamEvent();
-        if (mounted) {
+        if (mounted && randomLog && (randomLog.message || randomLog.project)) {
           const now = new Date();
           const timeString = now.toTimeString().split(' ')[0];
           setLogs((prev) => [
             ...prev,
             {
               id: Date.now() + Math.random(),
-              project: randomLog.project,
-              level: randomLog.level,
+              project: randomLog.project || 'deployx-service',
+              level: randomLog.level || 'info',
               timestamp: timeString,
-              message: randomLog.message,
+              message: randomLog.message || '',
             },
           ]);
         }
@@ -102,7 +102,7 @@ export function useLogs() {
     setIsLoading(true);
     try {
       const data = await logsApi.getInitialLogs();
-      setLogs(data);
+      setLogs(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
     } finally {

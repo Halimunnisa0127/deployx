@@ -19,21 +19,22 @@ export const useSystemHealth = () => {
 
   const mapOverviewData = (rawOverview) => {
     if (!rawOverview) return null;
+    const services = rawOverview.services || {};
     
     // Calculate custom health score based on backend statuses
     let score = 100;
     let warningCount = 0;
     let offlineCount = 0;
     
-    if (rawOverview.services.mongodb !== "ready") {
+    if (services.mongodb !== "ready") {
       score -= 50;
       offlineCount++;
     }
-    if (rawOverview.services.redis !== "ready") {
+    if (services.redis !== "ready") {
       score -= 50;
       offlineCount++;
     }
-    if (rawOverview.services.docker !== "ready") {
+    if (services.docker !== "ready") {
       score -= 20;
       warningCount++;
     }
@@ -41,7 +42,7 @@ export const useSystemHealth = () => {
     return {
       healthScore: Math.max(0, score),
       uptime: score === 100 ? 99.9 : score >= 80 ? 95.0 : 0.0,
-      activeServices: Object.values(rawOverview.services).filter(s => s === "ready").length,
+      activeServices: Object.values(services).filter(s => s === "ready").length,
       offlineServices: offlineCount,
       warningServices: warningCount,
       criticalServices: offlineCount > 0 ? 1 : 0,
@@ -55,90 +56,90 @@ export const useSystemHealth = () => {
     const list = [];
 
     // MongoDB
+    const mongoStatus = rawInfra.mongodb?.status === "ready" ? "healthy" : "offline";
     list.push({
       id: "srv-db",
       name: "Database (MongoDB)",
-      status: rawInfra.mongodb.status === "ready" ? "healthy" : "offline",
-      uptime: rawInfra.mongodb.status === "ready" ? 100 : 0,
+      status: mongoStatus,
+      uptime: mongoStatus === "healthy" ? 100 : 0,
       lastCheck: new Date().toISOString(),
       type: "database",
       metrics: { cpu: 12, memory: 34 },
     });
 
     // Redis
+    const redisStatus = rawInfra.redis?.status === "ready" ? "healthy" : "offline";
     list.push({
       id: "srv-redis",
       name: "Redis Cache",
-      status: rawInfra.redis.status === "ready" ? "healthy" : "offline",
-      uptime: rawInfra.redis.status === "ready" ? 99.9 : 0,
+      status: redisStatus,
+      uptime: redisStatus === "healthy" ? 99.9 : 0,
       lastCheck: new Date().toISOString(),
       type: "database",
       metrics: { cpu: 5, memory: 8 },
     });
 
     // Docker
+    const dockerStatus = rawInfra.docker?.status === "ready" ? "healthy" : "offline";
     list.push({
       id: "srv-docker",
       name: "Docker Engine",
-      status: rawInfra.docker.status === "ready" ? "healthy" : "offline",
-      uptime: rawInfra.docker.status === "ready" ? 99.9 : 0,
+      status: dockerStatus,
+      uptime: dockerStatus === "healthy" ? 99.9 : 0,
       lastCheck: new Date().toISOString(),
       type: "docker",
       metrics: { cpu: 15, memory: 20 },
     });
 
     // Queue
-    const q = rawInfra.queue;
+    const q = rawInfra.queue || { active: 0, waiting: 0 };
     list.push({
       id: "srv-queue",
       name: "Deployment Queue",
-      status: rawInfra.redis.status === "ready" ? "healthy" : "offline",
-      uptime: rawInfra.redis.status === "ready" ? 99.9 : 0,
+      status: redisStatus,
+      uptime: redisStatus === "healthy" ? 99.9 : 0,
       lastCheck: new Date().toISOString(),
       type: "queue",
-      metrics: { cpu: q.active * 15, memory: Math.min(100, (q.waiting + q.active) * 2) },
+      metrics: { cpu: (q.active || 0) * 15, memory: Math.min(100, ((q.waiting || 0) + (q.active || 0)) * 2) },
     });
 
     // Workers
-    const w = rawInfra.worker;
+    const w = rawInfra.worker || { status: 'offline', activeWorkersCount: 0 };
+    const workerStatus = w.status === "available" ? "healthy" : "offline";
     list.push({
       id: "srv-worker",
       name: "Deployment Worker",
-      status: w.status === "available" ? "healthy" : "offline",
-      uptime: w.status === "available" ? 100 : 0,
+      status: workerStatus,
+      uptime: workerStatus === "healthy" ? 100 : 0,
       lastCheck: new Date().toISOString(),
       type: "worker",
-      metrics: { cpu: w.activeWorkersCount * 20, memory: Math.min(100, w.activeWorkersCount * 12) },
+      metrics: { cpu: (w.activeWorkersCount || 0) * 20, memory: Math.min(100, (w.activeWorkersCount || 0) * 12) },
     });
 
-    // Mock services matching visual expectations
+    // API Service (Express Backend)
     list.push({
       id: "srv-api",
-      name: "API Service",
+      name: "Backend API Service",
       status: "healthy",
       uptime: 99.9,
       lastCheck: new Date().toISOString(),
       type: "api",
-      metrics: { cpu: 22, memory: 40 },
+      metrics: { cpu: 5, memory: 15 },
     });
-    list.push({
-      id: "srv-scheduler",
-      name: "Scheduler Status",
-      status: "healthy",
-      uptime: 100,
-      lastCheck: new Date().toISOString(),
-      type: "scheduler",
-      metrics: { cpu: 2, memory: 5 },
-    });
-    list.push({
-      id: "srv-ssl",
-      name: "SSL Certificate Service",
-      status: "healthy",
-      uptime: 100,
-      lastCheck: new Date().toISOString(),
-      type: "ssl",
-      metrics: { cpu: 1, memory: 2 },
-    });
+
+    // Storage / Disk
+    if (rawInfra.disk) {
+      const diskHealthy = rawInfra.disk.status !== "critical";
+      list.push({
+        id: "srv-disk",
+        name: "Artifact Storage",
+        status: diskHealthy ? "healthy" : "offline",
+        uptime: diskHealthy ? 100 : 0,
+        lastCheck: new Date().toISOString(),
+        type: "storage",
+        metrics: { cpu: 0, memory: rawInfra.disk.usagePercent || 0 },
+      });
+    }
 
     return list;
   };
@@ -193,8 +194,40 @@ export const useSystemHealth = () => {
   }, [incidentPage, incidentLimit]);
 
   useEffect(() => {
-    fetchData(false, incidentPage);
-  }, [incidentPage]);
+    let ignore = false;
+    Promise.all([
+      systemHealthService.getSystemOverview(),
+      systemHealthService.getInfrastructureStatus(),
+      systemHealthService.getPerformanceMetrics(),
+      systemHealthService.getIncidentTimeline(incidentPage, incidentLimit),
+    ])
+      .then(([overviewRes, infraRes, metricsRes, incidentsRes]) => {
+        if (!ignore) {
+          setOverview(mapOverviewData(overviewRes));
+          setInfrastructure(mapInfraServices(infraRes));
+          setMetrics(metricsRes);
+          if (incidentsRes) {
+            setIncidents(mapTimelineIncidents(incidentsRes.incidents));
+            setPagination({
+              total: incidentsRes.pagination.total,
+              pages: incidentsRes.pagination.pages,
+            });
+          }
+          setHasData(true);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        if (!ignore) {
+          console.error("Failed to fetch system health:", error);
+          setHasData(false);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [incidentPage, incidentLimit]);
 
   // Handle Polling Auto Refresh
   useEffect(() => {

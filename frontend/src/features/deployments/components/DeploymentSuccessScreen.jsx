@@ -99,10 +99,8 @@ export default function DeploymentSuccessScreen({
   productionUrl = '',
   previewUrl = '',
   repository = '',
-  branch = '',
   deploymentId = '',
   commitHash = '',
-  commitMessage = '',
   deploymentDuration = '',
   onCreateAnother,
 }) {

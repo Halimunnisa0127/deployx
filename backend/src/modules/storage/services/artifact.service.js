@@ -27,19 +27,71 @@ const MIME_TYPES = {
   '.map': 'application/json'
 };
 
-const storageProvider = new LocalArtifactStorageProvider();
-
 class ArtifactService {
+  static getStorageProvider() {
+    return new LocalArtifactStorageProvider();
+  }
+
+  /**
+   * Reads the build metadata file written by the container script, if present.
+   */
+  static async readContainerMetadata(container) {
+    if (!container || typeof container.getArchive !== 'function') return null;
+    try {
+      const stream = await container.getArchive({ path: '/workspace/.deployx_build_meta' });
+      return new Promise((resolve) => {
+        const extract = tar.extract();
+        let content = '';
+        extract.on('entry', (header, entryStream, next) => {
+          entryStream.on('data', (chunk) => {
+            content += chunk.toString('utf8');
+          });
+          entryStream.on('end', () => next());
+        });
+        extract.on('finish', () => {
+          const meta = {};
+          content.split('\n').forEach((line) => {
+            const idx = line.indexOf('=');
+            if (idx > 0) {
+              const key = line.slice(0, idx).trim();
+              const val = line.slice(idx + 1).trim();
+              meta[key] = val;
+            }
+          });
+          resolve(meta);
+        });
+        extract.on('error', () => resolve(null));
+        stream.pipe(extract);
+      });
+    } catch (e) {
+      return null;
+    }
+  }
+
   /**
    * Extracts the output directory from the container as a .tar stream, validates it against limits and symlinks,
    * calculates SHA-256 and size, stores it transactionally via StorageProvider, and persists the Artifact MongoDB model.
    */
   static async extractAndStoreArtifact(container, deployment, onLog) {
-    const outputDir = deployment.buildSettings.outputDirectory || 'dist';
-    const rootDir = deployment.buildSettings.rootDirectory && deployment.buildSettings.rootDirectory !== '/'
-      ? deployment.buildSettings.rootDirectory.replace(/^\/|\/$/g, '')
+    const meta = await this.readContainerMetadata(container);
+
+    let outputDir = deployment.buildSettings.outputDirectory || 'dist';
+    let rootDir = deployment.buildSettings.rootDirectory && deployment.buildSettings.rootDirectory !== '/'
+      ? deployment.buildSettings.rootDirectory.replace(/^\/+|\/+$/g, '')
       : '';
-    const containerPath = rootDir ? `/workspace/${rootDir}/${outputDir}` : `/workspace/${outputDir}`;
+    let containerPath = rootDir ? `/workspace/${rootDir}/${outputDir}` : `/workspace/${outputDir}`;
+
+    if (meta && meta.FULL_OUTPUT_PATH) {
+      containerPath = meta.FULL_OUTPUT_PATH;
+      if (meta.OUTPUT_DIR) {
+        outputDir = meta.OUTPUT_DIR;
+        deployment.buildSettings.outputDirectory = outputDir;
+      }
+      if (meta.PROJECT_ROOT) {
+        rootDir = meta.PROJECT_ROOT;
+        deployment.buildSettings.rootDirectory = rootDir;
+      }
+    }
     
     if (onLog) onLog('info', `Attempting to extract artifact from container path: ${containerPath}`);
 
@@ -69,6 +121,12 @@ class ArtifactService {
     // A promise that resolves when extraction, validation, and re-packing are complete
     const processStreamPromise = new Promise((resolve, reject) => {
       extract.on('entry', (header, stream, next) => {
+        // Skip build cache directories (e.g. .next/cache, webpack cache) from final artifact
+        if (header.name.includes('/cache/') || header.name.startsWith('cache/') || header.name.includes('/.cache/')) {
+          stream.resume();
+          return next();
+        }
+
         fileCount++;
         
         if (fileCount > MAX_FILES) {
@@ -117,6 +175,7 @@ class ArtifactService {
     // Pipe raw docker stream into extract parser
     archiveStream.pipe(extract);
 
+    const storageProvider = this.getStorageProvider();
     try {
       if (onLog) onLog('info', `Validating, hashing, and storing artifact to ${storageProvider.constructor.name}...`);
       
@@ -133,6 +192,7 @@ class ArtifactService {
       await storageProvider.delete(storageKey);
       throw processError; // Rethrow to mark deployment failed
     }
+
 
     const checksum = hash.digest('hex');
     
@@ -152,8 +212,12 @@ class ArtifactService {
         checksum
       });
 
-      // Update deployment reference
-      await Deployment.findByIdAndUpdate(deployment._id, { artifact: artifactDoc._id });
+      // Update deployment reference and resolved build settings
+      await Deployment.findByIdAndUpdate(deployment._id, { 
+        artifact: artifactDoc._id,
+        'buildSettings.outputDirectory': outputDir,
+        'buildSettings.rootDirectory': rootDir
+      });
     } catch (dbError) {
       // Cleanup storage if DB fails
       if (onLog) onLog('error', `Failed to persist artifact metadata to DB. Cleaning up stored artifact...`);
@@ -216,8 +280,10 @@ class ArtifactService {
         let fileFound = false;
         
         // We get a readable stream of the .tar
+        const storageProvider = ArtifactService.getStorageProvider();
         const archiveStream = await storageProvider.getArtifactStream(storageKey);
         const extract = tar.extract();
+
 
         extract.on('entry', (header, stream, next) => {
           const isMatch = header.name === normalizedPath || 

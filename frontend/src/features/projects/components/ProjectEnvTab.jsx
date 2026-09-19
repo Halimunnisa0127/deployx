@@ -47,13 +47,14 @@ export default function ProjectEnvTab({ project, onAction, onUpdate }) {
 
   // Format backend envVars for UI
   const displayVars = useMemo(() => {
-    return envVars.map(e => ({
+    const rawVars = project?.environmentVariables || [];
+    return rawVars.map(e => ({
       ...e,
       id: e._id || e.key,
       environment: e.environments?.length === 3 ? 'All' : (e.environments?.[0] || 'Production'),
       updatedAt: 'Just now' // Placeholder until backend tracks env var updates
     }));
-  }, [envVars]);
+  }, [project?.environmentVariables]);
 
   // Search & Environment Filter
   const filteredVars = useMemo(() => {

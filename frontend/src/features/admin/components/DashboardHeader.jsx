@@ -1,20 +1,32 @@
-import { Layers, Bell, User as UserIcon, Search } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Layers, RefreshCw, Calendar, ChevronDown, Check } from "lucide-react";
 
-export default function DashboardHeader({ stats, dateRange, setDateRange, refreshData, refreshing }) {
+const TIME_RANGES = [
+  { id: "24h", label: "Last 24 Hours" },
+  { id: "7d", label: "Last 7 Days" },
+  { id: "30d", label: "Last 30 Days" },
+  { id: "all", label: "All Time" },
+];
+
+export default function DashboardHeader({ dateRange = "7d", setDateRange, refreshData, refreshing }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const selectedItem = TIME_RANGES.find((r) => r.id === dateRange) || TIME_RANGES[1];
+
   return (
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-6">
       <div>
-        <div className="flex items-center gap-2 text-sm text-theme-muted mb-4">
-          <span className="hover:text-theme-body cursor-pointer transition-colors">
-            Home
-          </span>
-          <span>&gt;</span>
-          <span className="hover:text-theme-body cursor-pointer transition-colors">
-            Admin
-          </span>
-          <span>&gt;</span>
-          <span className="text-theme-body font-medium">Dashboard</span>
-        </div>
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
             <Layers className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
@@ -24,54 +36,65 @@ export default function DashboardHeader({ stats, dateRange, setDateRange, refres
           </h1>
         </div>
         <p className="text-sm text-theme-secondary mt-1.5 leading-relaxed">
-          Monitor users, projects, deployments and overall platform health from
-          one centralized dashboard.
+          Monitor platform metrics, user accounts, projects, and active deployments from one centralized console.
         </p>
       </div>
 
-      <div className="flex items-center gap-3">
-        <select
-          value={dateRange || '7d'}
-          onChange={(e) => setDateRange && setDateRange(e.target.value)}
-          className="bg-card border border-border text-sm rounded-xl px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          <option value="24h">Last 24 Hours</option>
-          <option value="7d">Last 7 Days</option>
-          <option value="30d">Last 30 Days</option>
-          <option value="all">All Time</option>
-        </select>
-        <button 
+      <div className="flex items-center gap-2.5">
+        {/* Sleek Custom Time Filter Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-2 h-9 px-3 bg-card border border-border rounded-xl text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
+          >
+            <Calendar className="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />
+            <span>{selectedItem.label}</span>
+            <ChevronDown
+              className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="p-1 space-y-0.5">
+                {TIME_RANGES.map((range) => {
+                  const isSelected = dateRange === range.id;
+                  return (
+                    <button
+                      key={range.id}
+                      type="button"
+                      onClick={() => {
+                        setDateRange?.(range.id);
+                        setIsOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-between ${
+                        isSelected
+                          ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-semibold"
+                          : "text-muted-foreground hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:text-foreground"
+                      }`}
+                    >
+                      <span>{range.label}</span>
+                      {isSelected && <Check className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Refresh Button */}
+        <button
+          type="button"
           onClick={refreshData}
           disabled={refreshing}
-          className="w-9 h-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm disabled:opacity-50"
+          title="Refresh Data"
+          className="w-9 h-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors shadow-sm disabled:opacity-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className={refreshing ? "animate-spin" : ""}
-          >
-            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-            <path d="M3 3v5h5" />
-            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-            <path d="M16 21v-5h5" />
-          </svg>
-        </button>
-        <button className="w-9 h-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm">
-          <Search className="w-4 h-4" />
-        </button>
-        <button className="w-9 h-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative shadow-sm">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-2 right-2.5 w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse"></span>
-        </button>
-        <button className="w-9 h-9 rounded-xl bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors shadow-sm">
-          <UserIcon className="w-4 h-4" />
+          <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin text-indigo-600 dark:text-indigo-400" : ""}`} />
         </button>
       </div>
     </div>

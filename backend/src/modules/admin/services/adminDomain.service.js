@@ -1,5 +1,6 @@
 const Domain = require('../../domains/models/Domain');
 const Project = require('../../projects/models/Project');
+const User = require('../../users/models/User');
 const Deployment = require('../../deployments/models/Deployment');
 const DomainVerificationService = require('../../domains/services/domainVerification.service');
 const { StatusCodes } = require('http-status-codes');
@@ -28,6 +29,7 @@ class AdminDomainService {
     if (search) {
       query.hostname = { $regex: search, $options: 'i' };
     }
+
 
     const pageNum = Math.max(1, parseInt(page, 10) || 1);
     const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 50));

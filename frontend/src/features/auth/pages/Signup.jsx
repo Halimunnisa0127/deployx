@@ -1,10 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import GithubIcon from '../../../assets/icons/GithubIcon';
-import GoogleIcon from '../../../assets/icons/GoogleIcon';
 import Card from '../../../components/ui/Card';
-import Button from '../../../components/ui/Button';
-import Divider from '../../../components/ui/Divider';
 import SignupForm from '../components/SignupForm';
 import { registerUser } from '../slice/authSlice';
 import { useState } from 'react';

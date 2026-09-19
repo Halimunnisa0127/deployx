@@ -47,8 +47,27 @@ export function useNotifications(currentUser) {
   }, [currentUser]);
 
   useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
+    if (!currentUser) return;
+    let ignore = false;
+    notificationService.getNotificationsData()
+      .then((data) => {
+        if (!ignore) {
+          setNotifications(data.notifications || []);
+          setUnreadCount(data.unreadCount || 0);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error('Failed to fetch notifications:', err);
+          setError(err.response?.data?.message || err.message || 'Failed to load notifications');
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [currentUser]);
 
   const handleUpdateSettings = (newSettings) => {
     setSettings(newSettings);

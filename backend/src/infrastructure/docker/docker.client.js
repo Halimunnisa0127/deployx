@@ -134,10 +134,16 @@ class DockerClient {
     const memMB = Math.round((config.docker?.buildMemoryBytes || 2048 * 1024 * 1024) / (1024 * 1024));
     const cpuCores = (config.docker?.buildCpuQuota || 2 * 1e9) / 1e9;
 
+    const cleanRootDir = (deployment.buildSettings?.rootDirectory || '').replace(/^\/+|\/+$/g, '');
     const userInstallCmd = (deployment.buildSettings?.installCommand || 'npm install').trim();
     let normalizedInstallCmd = userInstallCmd;
-    if (userInstallCmd.startsWith('npm ') && !userInstallCmd.includes('--no-audit')) {
-      normalizedInstallCmd = `${userInstallCmd} --prefer-offline --no-audit --no-fund`;
+    if (userInstallCmd.startsWith('npm ')) {
+      if (!userInstallCmd.includes('--include=dev') && !userInstallCmd.includes('--omit=dev')) {
+        normalizedInstallCmd = `${userInstallCmd} --include=dev`;
+      }
+      if (!normalizedInstallCmd.includes('--no-audit')) {
+        normalizedInstallCmd = `${normalizedInstallCmd} --prefer-offline --no-audit --no-fund`;
+      }
     }
 
     // Create the secure script with structured timing and stage logging
@@ -162,29 +168,88 @@ echo "[DeployX] Verified commit ref."
 echo "[DeployX] Verifying environment variables..."
 ${Object.keys(envVars).map(key => `if [ -z "$${key}" ]; then echo "Warning: ${key} is empty or not set"; else echo "Verified ${key} is injected"; fi`).join('\n')}
 
-cd "/workspace/${deployment.buildSettings.rootDirectory || ''}"
+cd /workspace
+CLEAN_ROOT="${cleanRootDir}"
+if [ -n "$CLEAN_ROOT" ] && [ -d "/workspace/$CLEAN_ROOT" ]; then
+  cd "/workspace/$CLEAN_ROOT"
+fi
+
+if [ ! -f "package.json" ]; then
+  echo "[DeployX] No package.json found at $(pwd). Searching for project root..."
+  FOUND_PKG=$(find . -maxdepth 3 -name package.json -not -path "*/node_modules/*" -not -path "*/.git/*" | head -n 1)
+  if [ -n "$FOUND_PKG" ]; then
+    TARGET_DIR=$(dirname "$FOUND_PKG")
+    echo "[DeployX] Auto-detected project root at $TARGET_DIR"
+    cd "$TARGET_DIR"
+  fi
+fi
+
+CURRENT_REL_ROOT=$(pwd | sed 's|^/workspace/*||')
+echo "PROJECT_ROOT=$CURRENT_REL_ROOT" > /workspace/.deployx_build_meta
 
 echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Starting dependency installation..."
 if [ -f "package-lock.json" ] && [ "${userInstallCmd}" = "npm install" ]; then
-  echo "[DeployX] Detected package-lock.json. Executing: npm ci --prefer-offline --no-audit --no-fund"
-  npm ci --prefer-offline --no-audit --no-fund
+  echo "[DeployX] Detected package-lock.json. Executing: npm ci --include=dev --prefer-offline --no-audit --no-fund"
+  npm ci --include=dev --prefer-offline --no-audit --no-fund
 else
   echo "[DeployX] Executing install command: ${normalizedInstallCmd}"
   ${normalizedInstallCmd}
 fi
 echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Dependency installation completed."
 
+if [ -f "tsconfig.json" ] || [ -f "next.config.ts" ]; then
+  if [ ! -d "node_modules/typescript" ]; then
+    echo "[DeployX] Detected TypeScript project without typescript in node_modules. Pre-installing typescript..."
+    npm install --include=dev --no-save --prefer-offline --no-audit --no-fund typescript @types/node @types/react @types/react-dom
+  fi
+fi
+
 echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Starting project build..."
+export NODE_ENV=production
 echo "[DeployX] Executing build command: ${deployment.buildSettings.buildCommand || 'npm run build'}"
 ${deployment.buildSettings.buildCommand || 'npm run build'}
 echo "[DeployX] $(date -u +'%Y-%m-%dT%H:%M:%SZ') -> Project build completed."
+
+# Clean up build cache before packaging to minimize artifact size
+if [ -d ".next/cache" ]; then
+  echo "[DeployX] Cleaning up .next/cache directory to reduce artifact size..."
+  rm -rf .next/cache
+fi
+rm -rf node_modules/.cache 2>/dev/null || true
+
+# Detect and record actual build output directory
+REQ_OUT="${deployment.buildSettings.outputDirectory || ''}"
+ACTUAL_OUT=""
+if [ -d "out" ]; then
+  ACTUAL_OUT="out"
+elif [ -n "$REQ_OUT" ] && [ -d "$REQ_OUT" ]; then
+  ACTUAL_OUT="$REQ_OUT"
+elif [ -d ".next" ]; then
+  ACTUAL_OUT=".next"
+elif [ -d "dist" ]; then
+  ACTUAL_OUT="dist"
+elif [ -d "build" ]; then
+  ACTUAL_OUT="build"
+else
+  ACTUAL_OUT="${deployment.buildSettings.outputDirectory || 'dist'}"
+fi
+
+echo "OUTPUT_DIR=$ACTUAL_OUT" >> /workspace/.deployx_build_meta
+echo "FULL_OUTPUT_PATH=$(pwd)/$ACTUAL_OUT" >> /workspace/.deployx_build_meta
+echo "[DeployX] Resolved build artifact path: $(pwd)/$ACTUAL_OUT"
 
 echo "[DeployX] Build complete."
 exit 0
 `;
 
-    // Map object to Docker Env array format (KEY=VALUE)
-    const dockerEnv = Object.entries(envVars).map(([key, value]) => `${key}=${value}`);
+    // Standard build env vars with user project variables taking precedence
+    const baseEnv = {
+      CI: 'true',
+      NEXT_TELEMETRY_DISABLED: '1',
+      NPM_CONFIG_PRODUCTION: 'false',
+      ...envVars,
+    };
+    const dockerEnv = Object.entries(baseEnv).map(([key, value]) => `${key}=${value}`);
 
     const binds = config.docker?.npmCacheVolume
       ? [`${config.docker.npmCacheVolume}:/root/.npm`]
@@ -209,7 +274,11 @@ exit 0
         Privileged: false,
         Memory: config.docker?.buildMemoryBytes || 2048 * 1024 * 1024,
         NanoCPUs: config.docker?.buildCpuQuota || 2 * 1e9,
-        PidsLimit: 100,
+        PidsLimit: config.docker?.buildPidsLimit || 4096,
+        Ulimits: [
+          { Name: 'nproc', Soft: 65535, Hard: 65535 },
+          { Name: 'nofile', Soft: 65535, Hard: 65535 }
+        ],
         Binds: binds
       }
     };
@@ -534,17 +603,31 @@ exit 0
     }
 
     try {
-      // Configure default Nginx SPA rule
-      const outputDir = deployment.buildSettings.outputDirectory || 'dist';
+      // Configure default Nginx SPA rule with Next.js and static framework support
+      const outputDir = (artifact && artifact.outputDirectory) || deployment.buildSettings.outputDirectory || 'dist';
       const nginxConfig = `
 server {
     listen 80;
     server_name localhost;
 
+    # Support Next.js static assets
+    location /_next/ {
+        alias /usr/share/nginx/html/${outputDir}/;
+        expires 365d;
+        access_log off;
+    }
+
+    # Support generic static directory
+    location /static/ {
+        alias /usr/share/nginx/html/${outputDir}/static/;
+        expires 365d;
+        access_log off;
+    }
+
     location / {
         root /usr/share/nginx/html/${outputDir};
         index index.html index.htm;
-        try_files $uri $uri/ /index.html;
+        try_files $uri $uri/ $uri.html /server/app/$uri.html /server/app/index.html /server/pages/index.html /index.html =404;
     }
 }
 `;

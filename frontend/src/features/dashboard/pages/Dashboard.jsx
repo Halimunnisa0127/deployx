@@ -19,7 +19,6 @@ const DeploymentTrendsCard = lazy(() => import('../components/DeploymentTrendsCa
 function Dashboard() {
   const {
     projects,
-    deployments,
     statMetrics,
     recentDeployments,
     projectOverview,

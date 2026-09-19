@@ -63,7 +63,7 @@ export default function ProjectDeploymentsTab({ project, deployments = [], onAct
     return list.filter(
       (dep) => (dep.environment || 'Production').toLowerCase() === filterEnv.toLowerCase()
     );
-  }, [deployments, project, filterEnv]);
+  }, [deployments, filterEnv]);
 
   return (
     <div className="space-y-6 font-sans">

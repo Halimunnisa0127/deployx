@@ -34,8 +34,34 @@ export function useDeployments(projectId = null) {
   }, [projectId]);
 
   useEffect(() => {
-    fetchDeployments();
-  }, [fetchDeployments]);
+    let ignore = false;
+    const req = projectId 
+      ? deploymentsApi.getProjectDeployments(projectId)
+      : deploymentsApi.getDeployments();
+    
+    req
+      .then((data) => {
+        if (!ignore) {
+          const rawDeployments = data.data?.deployments || [];
+          const mappedDeployments = rawDeployments.map(d => ({
+            ...d,
+            id: d._id,
+            projectName: d.project?.name || '',
+          }));
+          setDeployments(mappedDeployments);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to fetch deployments", err);
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [projectId]);
 
   const statusCounts = useMemo(() => {
     return deploymentsService.getDeploymentCounts(deployments);
@@ -63,7 +89,7 @@ export function useDeployments(projectId = null) {
       });
       fetchDeployments(); // refresh list
       setTimeout(() => setNotification(null), 4000);
-    } catch (err) {
+    } catch {
       setNotification({
         type: 'error',
         message: 'Failed to trigger redeploy',

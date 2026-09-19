@@ -56,7 +56,13 @@ export default function ProjectRow({ project, onRowClick, ...actionProps }) {
       <td className="px-5 py-4 whitespace-nowrap text-theme-muted text-xs">
         <span className="inline-flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 text-theme-muted" />
-          {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : "N/A"}
+          {project.createdAt
+            ? new Date(project.createdAt).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })
+            : "N/A"}
         </span>
       </td>
       <td className="px-5 py-4 text-right">

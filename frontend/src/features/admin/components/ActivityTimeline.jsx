@@ -63,7 +63,7 @@ export default function ActivityTimeline({ activity = [] }) {
       </h3>
 
       <div className="relative border-l border-theme-border ml-3 space-y-6">
-        {activity.map((item, idx) => {
+        {activity.map((item) => {
           const { icon: Icon, color, bg } = getIcon(item.type);
           return (
             <div key={item.id} className="relative pl-6 group">

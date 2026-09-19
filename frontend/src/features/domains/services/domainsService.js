@@ -24,24 +24,24 @@ export const domainsService = {
     return counts;
   },
 
-  filterDomains: (domains, { activeTab, searchQuery }) => {
-    const query = searchQuery.trim().toLowerCase();
+  filterDomains: (domains = [], { activeTab, searchQuery } = {}) => {
+    const query = (searchQuery || '').trim().toLowerCase();
 
-    return domains.filter((domain) => {
+    return (domains || []).filter((domain) => {
       // Status filter
-      if (activeTab !== 'all') {
+      if (activeTab && activeTab !== 'all') {
         if (activeTab === 'production' || activeTab === 'preview') {
-          if (domain.environment.toLowerCase() !== activeTab) return false;
+          if (String(domain.environment || '').toLowerCase() !== activeTab) return false;
         } else {
-          if (domain.status !== activeTab) return false;
+          if (String(domain.status || '').toLowerCase() !== activeTab.toLowerCase()) return false;
         }
       }
 
       // Search filter
       if (query) {
-        const matchName = domain.name.toLowerCase().includes(query);
-        const matchProject = domain.projectName.toLowerCase().includes(query);
-        const matchEnvironment = domain.environment.toLowerCase().includes(query);
+        const matchName = String(domain.name || domain.hostname || '').toLowerCase().includes(query);
+        const matchProject = String(domain.projectName || domain.project?.name || '').toLowerCase().includes(query);
+        const matchEnvironment = String(domain.environment || '').toLowerCase().includes(query);
 
         return matchName || matchProject || matchEnvironment;
       }

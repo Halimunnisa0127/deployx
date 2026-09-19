@@ -6,7 +6,7 @@ export const githubApi = {
       const response = await api.get('/integrations/github/status');
       // response.data.data contains { status, lastSyncedAt, username }
       return response.data?.data || null;
-    } catch (error) {
+    } catch {
       return null;
     }
   },

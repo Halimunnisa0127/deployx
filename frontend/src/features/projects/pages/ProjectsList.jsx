@@ -1,5 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProjectsList } from '../hooks/useProjectsList';
 import ProjectCard from '../components/ProjectCard';
@@ -72,7 +71,13 @@ export default function ProjectsList() {
     // Search filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      result = result.filter((item) => item.name.toLowerCase().includes(q));
+      result = result.filter(
+        (item) =>
+          (item.name && item.name.toLowerCase().includes(q)) ||
+          (item.framework && item.framework.toLowerCase().includes(q)) ||
+          (item.branch && item.branch.toLowerCase().includes(q)) ||
+          (item.url && item.url.toLowerCase().includes(q))
+      );
     }
 
     // Status filter

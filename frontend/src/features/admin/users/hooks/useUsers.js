@@ -21,8 +21,24 @@ export function useUsers() {
   }, []);
 
   useEffect(() => {
-    fetchUsersData();
-  }, [fetchUsersData]);
+    let ignore = false;
+    usersService.getUsers()
+      .then((data) => {
+        if (!ignore) {
+          setUsers(Array.isArray(data) ? data : (data?.users || []));
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err.message || "Failed to fetch users");
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const handleDeleteUser = async (id) => {
     await usersService.deleteUser(id);
@@ -48,10 +64,15 @@ export function useUsers() {
     await usersService.resetPassword(id);
   };
 
+  const handleCreateUser = async (data) => {
+    await usersService.createUser(data);
+    await fetchUsersData();
+  };
+
   // Setup table features
   const table = useAdminTable({
     data: users,
-    searchKeys: ["name", "email"],
+    searchKeys: ["name", "fullName", "email", "role"],
     initialSort: { key: "name", direction: "asc" },
   });
 
@@ -66,6 +87,7 @@ export function useUsers() {
       activateUser: handleActivateUser,
       changeRole: handleChangeRole,
       resetPassword: handleResetPassword,
+      createUser: handleCreateUser,
     },
     table,
   };

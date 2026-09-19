@@ -21,6 +21,7 @@ export default function ProjectsPage() {
   const {
     projects,
     loading,
+    error,
     activeFilter,
     setActiveFilter,
     counts,
@@ -36,6 +37,8 @@ export default function ProjectsPage() {
     actionHandlers,
   } = useProjects();
 
+  const searchedProjects = tableParams?.search?.searchedData || tableParams?.tableData || [];
+
   return (
     <div className="space-y-6 md:space-y-8 pb-10 text-left animate-in fade-in duration-300">
       <ProjectsHeader onExport={handleExport} />
@@ -44,7 +47,7 @@ export default function ProjectsPage() {
       {loading ? (
         <ProjectsStatisticsSkeleton />
       ) : (
-        <ProjectsStatisticsCards projects={projects} />
+        <ProjectsStatisticsCards projects={projects || []} />
       )}
 
       {/* Controls Bar */}
@@ -52,13 +55,13 @@ export default function ProjectsPage() {
         <ProjectsFilters
           activeFilter={activeFilter}
           onFilterChange={setActiveFilter}
-          counts={counts}
+          counts={counts || {}}
         />
 
         <SearchBar
-          value={tableParams.search.query}
-          onChange={(e) => tableParams.search.setQuery(e.target.value)}
-          onClear={() => tableParams.search.setQuery("")}
+          value={tableParams?.search?.query || ""}
+          onChange={(e) => tableParams?.search?.setQuery(e.target.value)}
+          onClear={() => tableParams?.search?.setQuery("")}
           placeholder="Search projects or owners..."
           shortcut="⌘K"
           size="md"
@@ -69,9 +72,9 @@ export default function ProjectsPage() {
       {/* Table / Empty States */}
       {loading ? (
         <ProjectsTableSkeleton />
-      ) : projects.length === 0 ? (
+      ) : !projects || projects.length === 0 ? (
         <NoProjectsEmptyState />
-      ) : tableParams.tableData.length === 0 ? (
+      ) : searchedProjects.length === 0 ? (
         activeFilter === "active" ? (
           <NoActiveProjectsEmptyState onClear={() => setActiveFilter("all")} />
         ) : activeFilter === "archived" ? (
@@ -81,14 +84,14 @@ export default function ProjectsPage() {
         ) : (
           <NoSearchResultsEmptyState
             onClear={() => {
-              tableParams.search.setQuery("");
+              tableParams?.search?.setQuery("");
               setActiveFilter("all");
             }}
           />
         )
       ) : (
         <ProjectsTable
-          projects={tableParams.search.searchedData}
+          projects={searchedProjects}
           onRowClick={actionHandlers.onView}
           actionHandlers={actionHandlers}
         />
@@ -108,7 +111,7 @@ export default function ProjectsPage() {
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         title="Delete Project"
-        message={`Are you sure you want to completely delete ${projectToDelete?.name}? This action cannot be undone.`}
+        message={`Are you sure you want to completely delete ${projectToDelete?.name || "this project"}? This action cannot be undone.`}
         confirmText="Delete Project"
       />
     </div>

@@ -65,8 +65,8 @@ const config = {
   },
 
   artifacts: {
-    maxSizeBytes: Number(process.env.ARTIFACT_MAX_SIZE_BYTES) || 52428800, // 50MB
-    maxFileCount: Number(process.env.ARTIFACT_MAX_FILE_COUNT) || 10000,
+    maxSizeBytes: Number(process.env.ARTIFACT_MAX_SIZE_BYTES) || 262144000, // 250MB
+    maxFileCount: Number(process.env.ARTIFACT_MAX_FILE_COUNT) || 25000,
   },
 
   timeouts: {
@@ -84,6 +84,7 @@ const config = {
     runtimeCpuQuota: (Number(process.env.DOCKER_RUNTIME_CPU || process.env.DOCKER_RUNTIME_CPU_QUOTA) || 0.5) * 1e9,
     buildTimeoutMs: Number(process.env.BUILD_TIMEOUT_MS) || Number(process.env.DEPLOYMENT_BUILD_TIMEOUT_MS) || 600000,
     npmCacheVolume: process.env.DOCKER_NPM_CACHE_VOLUME || 'deployx-npm-cache',
+    buildPidsLimit: Number(process.env.DOCKER_BUILD_PIDS_LIMIT) || 2048,
   },
 
   worker: {

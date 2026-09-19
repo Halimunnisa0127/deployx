@@ -34,11 +34,11 @@ export const systemHealthApi = {
   },
 
   restartService: async (serviceId) => {
-    throw new Error("Service restart is unavailable in this environment.");
+    throw new Error(`Service restart is unavailable in this environment for: ${serviceId}`);
   },
 
   toggleMaintenanceMode: async (serviceId, enable) => {
-    throw new Error("Maintenance mode control is unsupported on this platform.");
+    throw new Error(`Maintenance mode (${enable}) is unsupported on this platform for: ${serviceId}`);
   },
 
   exportHealthReport: async () => {

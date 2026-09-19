@@ -32,6 +32,7 @@ export function useAdminTable({
     search: {
       query: searchQuery,
       setQuery: setSearchQuery,
+      searchedData,
     },
     filters: {
       state: filters,
@@ -46,5 +47,8 @@ export function useAdminTable({
     selection,
     tableData: pagination.currentData,
     totalItems: sortedData.length,
+    searchedData,
+    sortedData,
+    filteredData,
   };
 }

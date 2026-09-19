@@ -2,7 +2,7 @@ import Button from "../../../../components/ui/Button";
 import { Mail, ShieldCheck, Server, Lock } from "lucide-react";
 import Badge from "../../../../components/ui/Badge";
 
-export default function EmailSettingsCard({ register, watch, onTestEmail }) {
+export default function EmailSettingsCard({ watch, onTestEmail }) {
   const emailState = watch("email") || {};
 
   return (

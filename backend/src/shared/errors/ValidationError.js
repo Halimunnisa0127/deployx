@@ -7,4 +7,7 @@ class ValidationError extends ApiError {
     this.errors = errors;
   }
 }
+
+ValidationError.ValidationError = ValidationError;
 module.exports = ValidationError;
+

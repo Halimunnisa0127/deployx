@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from 'vitest';
+import { describe, test, expect } from 'vitest';
 
 // Simulate Vitest mock hooks for rendering testing logic
 describe('Frontend React Tests', () => {
@@ -91,7 +91,6 @@ describe('Frontend React Tests', () => {
     });
 
     test('Admin Deployments API translates statuses timing-safely', () => {
-      const dbStatuses = ['ready', 'building', 'failed'];
       const mapStatus = (status) => {
         if (status === 'ready') return 'success';
         if (status === 'building') return 'running';

@@ -1,7 +1,7 @@
 import { notificationApi } from '../api/notificationApi';
 
 export const notificationService = {
-  getNotifications: async (currentUser, params = {}) => {
+  getNotifications: async (_currentUser, params = {}) => {
     return await notificationApi.getUserNotifications(params);
   },
 
@@ -33,7 +33,7 @@ export const notificationService = {
     // Client preferences persist in localStorage
     try {
       localStorage.setItem('deployx_notification_settings', JSON.stringify(settings));
-    } catch (e) {
+    } catch {
       // Ignore
     }
     return true;

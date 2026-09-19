@@ -3,7 +3,7 @@ import { projectsService } from '../services/projects.service';
 
 export function useProjectDetails(id) {
   const [project, setProject] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(Boolean(id));
   const [error, setError] = useState(null);
 
   const fetchProject = useCallback(async () => {
@@ -21,8 +21,27 @@ export function useProjectDetails(id) {
   }, [id]);
 
   useEffect(() => {
-    fetchProject();
-  }, [fetchProject]);
+    let ignore = false;
+    if (!id) {
+      return;
+    }
+    projectsService.getProject(id)
+      .then((data) => {
+        if (!ignore) {
+          setProject(data);
+          setError(null);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err.response?.data?.message || err.message || 'Failed to fetch project');
+        }
+      })
+      .finally(() => {
+        if (!ignore) setIsLoading(false);
+      });
+    return () => { ignore = true; };
+  }, [id]);
 
   return { project, isLoading, error, refetch: fetchProject };
 }

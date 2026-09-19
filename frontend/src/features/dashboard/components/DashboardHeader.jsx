@@ -12,9 +12,10 @@ import {
   ArrowRight,
   Users,
   Terminal,
+  Activity,
 } from 'lucide-react';
 
-import { useDispatch } from 'react-redux';
+import useAuth from '../../../hooks/useAuth';
 import SearchBar from '../../../components/common/SearchBar';
 import Button from '../../../components/ui/Button';
 import GithubIcon from '../../../components/ui/GithubIcon';
@@ -32,12 +33,28 @@ const BASE_NAVIGATION_ITEMS = [
   { id: 'nav-p-import', name: 'Import Repository', category: 'Projects', link: '/dashboard/projects/import' },
   { id: 'nav-d', name: 'All Deployments', category: 'Deployments', link: '/dashboard/deployments' },
   { id: 'nav-dm', name: 'Custom Domains', category: 'Domains', link: '/dashboard/domains' },
+  { id: 'nav-l', name: 'Live Logs', category: 'Logs', link: '/dashboard/logs' },
   { id: 'nav-u', name: 'Infrastructure Usage', category: 'Usage', link: '/dashboard/usage' },
   { id: 'nav-env', name: 'Environment Variables', category: 'Settings', link: '/dashboard/settings/environment' },
   { id: 'nav-tm', name: 'Team Access', category: 'Settings', link: '/dashboard/settings/team' },
 ];
 
+const ADMIN_NAVIGATION_ITEMS = [
+  { id: 'admin-dash', name: 'Admin Dashboard Overview', category: 'Admin Console', link: '/admin' },
+  { id: 'admin-users', name: 'User Management', category: 'Users', link: '/admin/users' },
+  { id: 'admin-projects', name: 'Project Oversight', category: 'Projects', link: '/admin/projects' },
+  { id: 'admin-deployments', name: 'Global Deployments', category: 'Deployments', link: '/admin/deployments' },
+  { id: 'admin-domains', name: 'Custom Domains Verification', category: 'Domains', link: '/admin/domains' },
+  { id: 'admin-logs', name: 'Platform Runtime Logs', category: 'Logs', link: '/admin/logs' },
+  { id: 'admin-analytics', name: 'Platform Analytics & KPIs', category: 'Analytics', link: '/admin/analytics' },
+  { id: 'admin-health', name: 'System Health & Infrastructure', category: 'Health', link: '/admin/system-health' },
+  { id: 'admin-settings', name: 'Platform Settings', category: 'Settings', link: '/admin/platform-settings' },
+];
+
 const CATEGORY_ICON_MAP = {
+  'Admin Console': <Home className="w-3.5 h-3.5 text-indigo-400" />,
+  Health: <Activity className="w-3.5 h-3.5 text-emerald-400" />,
+  Analytics: <Rocket className="w-3.5 h-3.5 text-purple-400" />,
   Projects: <FolderPlus className="w-3.5 h-3.5 text-indigo-400" />,
   Deployments: <Rocket className="w-3.5 h-3.5 text-purple-400" />,
   Domains: <Globe className="w-3.5 h-3.5 text-sky-400" />,
@@ -49,16 +66,21 @@ const CATEGORY_ICON_MAP = {
 };
 
 export default function DashboardHeader({ onToggleMobile, searchItems = BASE_NAVIGATION_ITEMS }) {
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef(null);
 
+  const isAdmin = user?.role === 'admin' || location.pathname.startsWith('/admin');
+  const itemsToUse = searchItems !== BASE_NAVIGATION_ITEMS
+    ? searchItems
+    : (isAdmin ? ADMIN_NAVIGATION_ITEMS : BASE_NAVIGATION_ITEMS);
+
   // Filter search items based on query
   const filteredSearchItems = searchQuery.trim()
-    ? searchItems.filter(
+    ? itemsToUse.filter(
         (item) =>
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -217,6 +239,7 @@ export default function DashboardHeader({ onToggleMobile, searchItems = BASE_NAV
             </div>
           )}
         </div>
+
 
         {/* Notifications Button with Unread Counter */}
         <Link

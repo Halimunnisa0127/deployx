@@ -64,20 +64,27 @@ class AdminHealthController {
   }
 
   async getTopProjects(req, res) {
-    const { limit } = req.query;
-    const topProjects = await adminHealthService.getTopProjects(limit);
+    const { limit, days } = req.query;
+    const topProjects = await adminHealthService.getTopProjects(limit, days);
     return res.status(StatusCodes.OK).json(ApiResponse.success('Top projects retrieved', topProjects));
   }
 
   async getTopUsers(req, res) {
-    const { limit } = req.query;
-    const topUsers = await adminHealthService.getTopUsers(limit);
+    const { limit, days } = req.query;
+    const topUsers = await adminHealthService.getTopUsers(limit, days);
     return res.status(StatusCodes.OK).json(ApiResponse.success('Top users retrieved', topUsers));
   }
 
   async getRegionDistribution(req, res) {
-    const regions = await adminHealthService.getRegionDistribution();
+    const { days } = req.query;
+    const regions = await adminHealthService.getRegionDistribution(days);
     return res.status(StatusCodes.OK).json(ApiResponse.success('Region distribution retrieved', regions));
+  }
+
+  async getPlatformLogs(req, res) {
+    const { page, limit, level, search } = req.query;
+    const result = await adminHealthService.getPlatformLogs({ page, limit, level, search });
+    return res.status(StatusCodes.OK).json(ApiResponse.success('Platform logs retrieved successfully', result));
   }
 }
 

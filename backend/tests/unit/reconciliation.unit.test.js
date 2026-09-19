@@ -13,7 +13,7 @@ process.env.GOOGLE_CLIENT_SECRET = 'googlesecret';
 process.env.GOOGLE_REDIRECT_URI = 'http://localhost:3000/callback';
 process.env.PROJECT_SECRET_ENCRYPTION_KEY = 'd'.repeat(64);
 
-const envMock = {
+const mockEnv = {
   mongoUri: 'mongodb://localhost:27017/test',
   redis: {
     host: 'localhost',
@@ -30,7 +30,7 @@ const envMock = {
   }
 };
 
-const loggerMock = {
+const mockLogger = {
   info: jest.fn(),
   warn: jest.fn(),
   error: jest.fn(),
@@ -38,21 +38,22 @@ const loggerMock = {
   fatal: jest.fn()
 };
 
-const queueMock = {
+const mockQueue = {
   getJob: jest.fn()
 };
 
-jest.mock('../../src/config/env/env', () => envMock);
-jest.mock('../config/env/env', () => envMock, { virtual: true });
-jest.mock('../../config/env/env', () => envMock, { virtual: true });
+jest.mock('../../src/config/env/env', () => mockEnv);
+jest.mock('../config/env/env', () => mockEnv, { virtual: true });
+jest.mock('../../config/env/env', () => mockEnv, { virtual: true });
 
-jest.mock('../../src/config/logger/logger', () => loggerMock);
-jest.mock('../config/logger/logger', () => loggerMock, { virtual: true });
+jest.mock('../../src/config/logger/logger', () => mockLogger);
+jest.mock('../config/logger/logger', () => mockLogger, { virtual: true });
 
-jest.mock('../../src/infrastructure/queue/deployment.queue', () => queueMock);
-jest.mock('../infrastructure/queue/deployment.queue', () => queueMock, { virtual: true });
+jest.mock('../../src/infrastructure/queue/deployment.queue', () => mockQueue);
+jest.mock('../infrastructure/queue/deployment.queue', () => mockQueue, { virtual: true });
 
 jest.mock('../../src/modules/deployments/models/Deployment');
+
 jest.mock('../../src/infrastructure/docker/docker.client');
 jest.mock('dockerode');
 

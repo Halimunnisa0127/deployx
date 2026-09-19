@@ -1,9 +1,11 @@
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { DashboardSidebar, DashboardHeader } from '../features/dashboard';
 import DeployXAIAssistant from '../features/deployments/components/DeployXAIAssistant';
 import FloatingAIAssistant from '../components/ui/FloatingAIAssistant/FloatingAIAssistant';
 import { setAIAssistantOpen } from '../store/slices/uiSlice';
+import useAuth from '../hooks/useAuth';
 
 /**
  * DashboardLayout
@@ -16,7 +18,26 @@ import { setAIAssistantOpen } from '../store/slices/uiSlice';
  */
 export default function DashboardLayout({ children }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = useAuth();
   const isAIAssistantOpen = useSelector((state) => state.ui.isAIAssistantOpen);
+
+  // Automatically route admin users to the Admin Console instead of empty user dashboard
+  useEffect(() => {
+    if (user?.role === 'admin') {
+      const pathMap = {
+        '/dashboard': '/admin',
+        '/dashboard/projects': '/admin/projects',
+        '/dashboard/deployments': '/admin/deployments',
+        '/dashboard/domains': '/admin/domains',
+        '/dashboard/logs': '/admin/logs',
+      };
+      const target = pathMap[location.pathname] || '/admin';
+      navigate(target, { replace: true });
+    }
+  }, [user, location.pathname, navigate]);
+
 
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 font-sans antialiased transition-colors duration-300">

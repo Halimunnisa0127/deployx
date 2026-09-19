@@ -6,4 +6,7 @@ class NotFoundError extends ApiError {
     super(message, StatusCodes.NOT_FOUND);
   }
 }
+
+NotFoundError.NotFoundError = NotFoundError;
 module.exports = NotFoundError;
+

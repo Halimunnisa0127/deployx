@@ -6,4 +6,7 @@ class ForbiddenError extends ApiError {
     super(message, StatusCodes.FORBIDDEN);
   }
 }
+
+ForbiddenError.ForbiddenError = ForbiddenError;
 module.exports = ForbiddenError;
+

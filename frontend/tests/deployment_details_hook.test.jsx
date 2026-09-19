@@ -89,7 +89,7 @@ describe('useDeploymentDetails Hook Unit Tests', () => {
   });
 
   test('polling flows: building -> ready and then stops polling', async () => {
-    vi.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     
     const mockBuildingResponse = {
       success: true,
@@ -138,7 +138,7 @@ describe('useDeploymentDetails Hook Unit Tests', () => {
   });
 
   test('polling flows: building -> failed and then stops polling', async () => {
-    vi.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     
     const mockBuildingResponse = {
       success: true,
@@ -185,7 +185,7 @@ describe('useDeploymentDetails Hook Unit Tests', () => {
   });
 
   test('polling flows: building -> cancelled and then stops polling', async () => {
-    vi.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     
     const mockBuildingResponse = {
       success: true,

@@ -5,8 +5,16 @@ const { StatusCodes } = require('http-status-codes');
 const { ApiError } = require('../../../shared/errors/ApiError');
 
 class AdminUserService {
-  static async listUsers({ page = 1, limit = 10, search = '', role = '', status = '' }) {
+  static async listUsers({ page = 1, limit = 10, search = '', role = '', status = '', days = '' }) {
     const query = {};
+
+    if (days && days !== 'all') {
+      const is24h = days === '24h' || days === '1' || Number(days) === 1;
+      const daysNum = is24h ? 1 : Math.max(1, parseInt(days, 10) || 7);
+      const cutoff = new Date(Date.now() - (is24h ? 24 * 3600 * 1000 : daysNum * 24 * 3600 * 1000));
+      query.createdAt = { $gte: cutoff };
+    }
+
     if (search) {
       query.$or = [
         { fullName: { $regex: search, $options: 'i' } },

@@ -53,8 +53,51 @@ export function useDomains() {
   }, []);
 
   useEffect(() => {
-    fetchDomains();
-  }, [fetchDomains]);
+    let ignore = false;
+    Promise.allSettled([
+      projectsService.fetchProjects(),
+      domainsApi.getUserDomains(),
+    ])
+      .then(([projectsRes, domainsRes]) => {
+        if (!ignore) {
+          const userProjects = projectsRes.status === 'fulfilled' && Array.isArray(projectsRes.value)
+            ? projectsRes.value
+            : [];
+          setProjects(userProjects);
+
+          const rawDomains = domainsRes.status === 'fulfilled' && domainsRes.value?.data?.domains
+            ? domainsRes.value.data.domains
+            : (domainsRes.status === 'fulfilled' && Array.isArray(domainsRes.value?.data) ? domainsRes.value.data : []);
+
+          const formattedDomains = rawDomains.map((d) => ({
+            id: d._id || d.id,
+            name: d.hostname,
+            projectName: d.project?.name || 'Project',
+            projectId: d.project?._id || d.project,
+            framework: d.project?.framework || 'auto',
+            environment: d.targetType === 'production' ? 'Production' : 'Preview',
+            status: d.verificationStatus || 'pending',
+            sslStatus: d.sslStatus || 'pending',
+            dnsStatus: d.verificationStatus === 'verified' ? 'verified' : 'pending',
+            createdAt: d.createdAt ? new Date(d.createdAt).toLocaleDateString() : 'Recent',
+            url: `https://${d.hostname}`,
+            isLive: d.status === 'active',
+          }));
+
+          setDomains(formattedDomains);
+          setIsLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          console.error("Failed to fetch domains:", err);
+          setIsLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const statusCounts = useMemo(() => {
     return domainsService.getDomainCounts(domains);

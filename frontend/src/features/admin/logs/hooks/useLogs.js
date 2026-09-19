@@ -26,12 +26,29 @@ export function useLogs() {
   };
 
   useEffect(() => {
-    fetchData();
+    let ignore = false;
+    logsService.getLogs()
+      .then((data) => {
+        if (!ignore) {
+          setLogs(data);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!ignore) {
+          setError(err);
+          console.error('Failed to load logs:', err);
+          setLoading(false);
+        }
+      });
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const table = useAdminTable({
     data: logs,
-    searchKeys: ['message', 'source'],
+    searchKeys: ['message', 'source', 'level', 'context', 'service'],
     initialFilters: { level: '' },
     initialSort: { key: 'timestamp', direction: 'desc' },
     itemsPerPage: 10,
@@ -41,6 +58,7 @@ export function useLogs() {
     loading,
     refreshing,
     error,
+    logs,
     fetchData,
     table,
   };

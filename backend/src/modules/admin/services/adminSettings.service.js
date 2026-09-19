@@ -1,8 +1,10 @@
 const PlatformSettings = require('../models/PlatformSettings');
+const User = require('../../users/models/User');
 const config = require('../../../config/env/env');
 const { ApiError } = require('../../../shared/errors/ApiError');
 const { StatusCodes } = require('http-status-codes');
-const { sendEmail } = require('../../../utils/helpers/email.helper');
+const emailHelper = require('../../../utils/helpers/email.helper');
+
 
 class AdminSettingsService {
   /**
@@ -10,7 +12,12 @@ class AdminSettingsService {
    * Strictly excludes all secrets and infrastructure credentials.
    */
   static async getSettings() {
-    const doc = await PlatformSettings.getOrCreateSettings();
+    let doc = null;
+    try {
+      doc = await PlatformSettings.getOrCreateSettings();
+    } catch (err) {
+      doc = {};
+    }
 
     const safeEmailState = {
       smtpConfigured: Boolean(config.email?.isConfigured),
@@ -23,35 +30,35 @@ class AdminSettingsService {
 
     return {
       general: {
-        platformName: doc.general?.platformName || 'DeployX',
-        defaultRegion: doc.general?.defaultRegion || 'us-east-1',
-        timezone: doc.general?.timezone || 'UTC',
-        language: doc.general?.language || 'en',
+        platformName: doc?.general?.platformName || 'DeployX',
+        defaultRegion: doc?.general?.defaultRegion || 'us-east-1',
+        timezone: doc?.general?.timezone || 'UTC',
+        language: doc?.general?.language || 'en',
       },
       branding: {
-        primaryLogo: doc.branding?.primaryLogo || '/logo-full.png',
-        favicon: doc.branding?.favicon || '/favicon.ico',
-        accentColor: doc.branding?.accentColor || '#6366f1',
+        primaryLogo: doc?.branding?.primaryLogo || '/logo-full.png',
+        favicon: doc?.branding?.favicon || '/favicon.ico',
+        accentColor: doc?.branding?.accentColor || '#6366f1',
       },
       maintenance: {
-        enabled: Boolean(doc.maintenance?.enabled),
-        message: doc.maintenance?.message || 'We are currently undergoing scheduled maintenance. We will be back shortly.',
-        allowedIps: doc.maintenance?.allowedIps || '',
+        enabled: Boolean(doc?.maintenance?.enabled),
+        message: doc?.maintenance?.message || 'We are currently undergoing scheduled maintenance. We will be back shortly.',
+        allowedIps: doc?.maintenance?.allowedIps || '',
       },
       features: {
-        betaFeatures: Boolean(doc.features?.betaFeatures),
-        userRegistration: Boolean(doc.features?.userRegistration),
-        githubIntegration: Boolean(doc.features?.githubIntegration),
-        emailNotifications: Boolean(doc.features?.emailNotifications),
+        betaFeatures: Boolean(doc?.features?.betaFeatures),
+        userRegistration: Boolean(doc?.features?.userRegistration),
+        githubIntegration: Boolean(doc?.features?.githubIntegration),
+        emailNotifications: Boolean(doc?.features?.emailNotifications),
       },
       email: safeEmailState,
       security: {
-        sessionTimeout: String(doc.security?.sessionTimeout || '1440'),
-        passwordPolicy: doc.security?.passwordPolicy || 'strong',
-        require2fa: Boolean(doc.security?.require2fa),
-        apiRateLimit: String(doc.security?.apiRateLimit || '1000'),
+        sessionTimeout: String(doc?.security?.sessionTimeout || '1440'),
+        passwordPolicy: doc?.security?.passwordPolicy || 'strong',
+        require2fa: Boolean(doc?.security?.require2fa),
+        apiRateLimit: String(doc?.security?.apiRateLimit || '1000'),
       },
-      updatedAt: doc.updatedAt,
+      updatedAt: doc?.updatedAt || new Date().toISOString(),
     };
   }
 
@@ -261,8 +268,9 @@ class AdminSettingsService {
     const normalizedEmail = recipientEmail.trim().toLowerCase();
 
     try {
-      await sendEmail({
+      await emailHelper.sendEmail({
         to: normalizedEmail,
+
         subject: 'DeployX Platform Settings - SMTP Test',
         text: 'This is a test email sent from the DeployX Admin Platform Settings console to verify outbound SMTP configuration.',
         html: `

@@ -20,7 +20,7 @@ export function useProjectMutations() {
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Failed to update project';
       setError(msg);
-      throw new Error(msg);
+      throw new Error(msg, { cause: err });
     } finally {
       setIsUpdating(false);
     }
@@ -39,7 +39,7 @@ export function useProjectMutations() {
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Failed to delete project';
       setError(msg);
-      throw new Error(msg);
+      throw new Error(msg, { cause: err });
     } finally {
       setIsDeleting(false);
     }

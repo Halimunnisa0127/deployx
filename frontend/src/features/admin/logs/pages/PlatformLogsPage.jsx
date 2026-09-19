@@ -9,7 +9,7 @@ import { LogsSkeleton } from '../components/LogsSkeleton';
 import { LogViewer } from '../components/LogViewer';
 
 export default function PlatformLogsPage() {
-  const { loading, refreshing, fetchData, table } = useLogs();
+  const { loading, refreshing, logs, fetchData, table } = useLogs();
   const [selectedLog, setSelectedLog] = useState(null);
 
   const handleExport = () => {
@@ -19,7 +19,7 @@ export default function PlatformLogsPage() {
   const activeFilter = table.filters.state.level || 'all';
 
   const handleFilterChange = (level) => {
-    table.filters.update('level', level);
+    table.filters.update('level', level === 'all' ? '' : level);
   };
 
   return (
@@ -30,7 +30,8 @@ export default function PlatformLogsPage() {
         isRefreshing={refreshing}
       />
 
-      <LogsStatistics logs={table.tableData} />
+      <LogsStatistics logs={logs || []} />
+
 
       <LogsToolbar 
         filterState={activeFilter}

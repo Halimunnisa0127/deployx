@@ -77,7 +77,7 @@ export default function AdminDashboardPage() {
               <RecentUsersTable users={users} />
             </div>
             <div className="space-y-6">
-              <PlatformHealthCard health={health} />
+              <PlatformHealthCard health={health} onRefresh={refreshData} />
               <QuickActions />
             </div>
           </div>

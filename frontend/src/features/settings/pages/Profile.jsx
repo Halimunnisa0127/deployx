@@ -65,14 +65,27 @@ const LANGUAGE_OPTIONS = [
 export default function Profile() {
   const user = useSelector((state) => state.auth.user);
 
-  const [profile, setProfile] = useState(INITIAL_PROFILE);
-  const [formData, setFormData] = useState(INITIAL_PROFILE);
-  const [isLoading, setIsLoading] = useState(true);
+  const [profile, setProfile] = useState(() => ({
+    ...INITIAL_PROFILE,
+    fullName: user?.fullName || user?.name || '',
+    email: user?.email || '',
+    username: user?.username || user?.email?.split('@')[0] || '',
+    avatarPreset: user?.fullName || user?.name || 'User',
+  }));
+  const [formData, setFormData] = useState(() => ({
+    ...INITIAL_PROFILE,
+    fullName: user?.fullName || user?.name || '',
+    email: user?.email || '',
+    username: user?.username || user?.email?.split('@')[0] || '',
+    avatarPreset: user?.fullName || user?.name || 'User',
+  }));
+  const [prevUser, setPrevUser] = useState(user);
+  const [isLoading, setIsLoading] = useState(!user);
   const [toast, setToast] = useState(null); // { type: 'success' | 'error', message: string }
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
-  // Sync profile data when user is loaded
-  useEffect(() => {
+  if (user !== prevUser) {
+    setPrevUser(user);
     if (user) {
       const userData = {
         ...INITIAL_PROFILE,
@@ -85,7 +98,7 @@ export default function Profile() {
       setFormData(userData);
       setIsLoading(false);
     }
-  }, [user]);
+  }
 
   // Simulate loading fallback if user state takes too long
   useEffect(() => {

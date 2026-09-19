@@ -4,8 +4,8 @@ const adminUserService = require('../services/adminUser.service');
 
 class AdminUserController {
   async listUsers(req, res) {
-    const { page, limit, search, role, status } = req.query;
-    const result = await adminUserService.listUsers({ page, limit, search, role, status });
+    const { page, limit, search, role, status, days } = req.query;
+    const result = await adminUserService.listUsers({ page, limit, search, role, status, days });
     return res.status(StatusCodes.OK).json(ApiResponse.success('Users retrieved successfully', result));
   }
 

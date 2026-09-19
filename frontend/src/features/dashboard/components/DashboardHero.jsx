@@ -125,6 +125,7 @@ export default function DashboardHero({ latestDeployment = null, projectsCount =
           <div className="flex flex-col items-start lg:items-end gap-3 shrink-0">
             {/* Buttons Row */}
             <div className="flex items-center gap-3 flex-wrap">
+
               <Button
                 variant="secondary"
                 size="md"

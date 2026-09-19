@@ -27,13 +27,18 @@ export default function ServiceDetailsDrawer({
   const [details, setDetails] = useState(null);
 
   useEffect(() => {
+    let ignore = false;
     if (isOpen && serviceId) {
-      setLoading(true);
       getServiceDetails(serviceId).then((data) => {
-        setDetails(data);
-        setLoading(false);
+        if (!ignore) {
+          setDetails(data);
+          setLoading(false);
+        }
       });
     }
+    return () => {
+      ignore = true;
+    };
   }, [isOpen, serviceId]);
 
   if (!serviceId) return null;

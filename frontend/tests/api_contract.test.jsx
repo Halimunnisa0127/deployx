@@ -2,9 +2,8 @@ import { describe, test, expect, vi, beforeEach } from 'vitest';
 import api from '../src/lib/axios';
 import { deploymentsApi } from '../src/features/deployments/api/deploymentsApi';
 import { domainsApi } from '../src/features/domains/api/domainsApi';
-import { fetchUsers } from '../src/features/admin/users/api/usersApi';
-import { fetchProjects } from '../src/features/admin/projects/api/projectsApi';
 import { systemHealthApi } from '../src/features/admin/system-health/api/systemHealthApi';
+
 
 vi.mock('../src/lib/axios', () => ({
   default: {

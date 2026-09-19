@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProjectRow from "./ProjectRow";
 import Button from "../../../../components/ui/Button";
 
@@ -7,36 +7,44 @@ export default function ProjectsTable({
   onRowClick,
   actionHandlers,
 }) {
+  const safeProjects = Array.isArray(projects) ? projects : [];
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(projects.length / itemsPerPage);
-  const paginatedData = projects.slice(
+  const totalPages = Math.max(1, Math.ceil(safeProjects.length / itemsPerPage));
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
+
+  const paginatedData = safeProjects.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
   );
 
-  if (!projects.length) return null;
+  if (!safeProjects.length) return null;
 
   return (
-    <div className="bg-card rounded-[18px] border border-slate-200 dark:border-white/5 overflow-hidden shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="overflow-x-auto min-h-[400px]">
+    <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm animate-in fade-in duration-300">
+      <div className="overflow-x-auto min-h-[300px] scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800">
         <table className="w-full text-left text-sm whitespace-nowrap">
-          <thead className="bg-slate-50/90 dark:bg-slate-900/90 text-theme-muted border-b border-border sticky top-0 z-10 backdrop-blur-xl">
+          <thead className="bg-muted/40 text-muted-foreground border-b border-border sticky top-0 z-10 text-xs font-semibold uppercase tracking-wider">
             <tr>
-              <th className="px-5 py-3 font-medium">Project</th>
-              <th className="px-5 py-3 font-medium">Owner</th>
-              <th className="px-5 py-3 font-medium">Framework</th>
-              <th className="px-5 py-3 font-medium">Environment</th>
-              <th className="px-5 py-3 font-medium">Status</th>
-              <th className="px-5 py-3 font-medium">Region</th>
-              <th className="px-5 py-3 font-medium">Created Date</th>
-              <th className="px-5 py-3 font-medium text-right">Actions</th>
+              <th className="px-5 py-3">Project</th>
+              <th className="px-5 py-3">Owner</th>
+              <th className="px-5 py-3">Framework</th>
+              <th className="px-5 py-3">Environment</th>
+              <th className="px-5 py-3">Status</th>
+              <th className="px-5 py-3">Region</th>
+              <th className="px-5 py-3">Created Date</th>
+              <th className="px-5 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
             {paginatedData.map((project) => (
               <ProjectRow
-                key={project.id}
+                key={project.id || project._id}
                 project={project}
                 onRowClick={onRowClick}
                 {...actionHandlers}
@@ -47,11 +55,11 @@ export default function ProjectsTable({
       </div>
 
       {totalPages > 1 && (
-        <div className="px-5 py-4 border-t border-slate-200 dark:border-white/5 flex items-center justify-between text-sm bg-slate-50 dark:bg-slate-900/40">
-          <span className="text-theme-muted">
+        <div className="px-5 py-3.5 border-t border-border flex items-center justify-between text-xs bg-muted/20">
+          <span className="text-muted-foreground">
             Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-            {Math.min(currentPage * itemsPerPage, projects.length)} of{" "}
-            {projects.length}
+            {Math.min(currentPage * itemsPerPage, safeProjects.length)} of{" "}
+            {safeProjects.length}
           </span>
           <div className="flex gap-2">
             <Button
@@ -59,6 +67,7 @@ export default function ProjectsTable({
               size="sm"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
+              className="text-xs py-1 px-2.5 h-auto"
             >
               Previous
             </Button>
@@ -67,6 +76,7 @@ export default function ProjectsTable({
               size="sm"
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
+              className="text-xs py-1 px-2.5 h-auto"
             >
               Next
             </Button>

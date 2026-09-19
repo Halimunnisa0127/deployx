@@ -2,6 +2,13 @@ import api from '../../../../lib/axios';
 
 const parseDays = (dateRange) => {
   if (!dateRange) return 30;
+  if (dateRange === 'today' || dateRange === '24h' || dateRange === 1) return '24h';
+  if (dateRange === '7d' || dateRange === 7) return 7;
+  if (dateRange === '30d' || dateRange === 30) return 30;
+  if (dateRange === '90d' || dateRange === 90) return 90;
+  if (dateRange === 'this_month') return Math.max(1, new Date().getDate());
+  if (dateRange === 'last_month') return 30;
+  if (dateRange === 'all') return 'all';
   const match = String(dateRange).match(/\d+/);
   return match ? parseInt(match[0], 10) : 30;
 };
@@ -35,18 +42,21 @@ export const analyticsApi = {
     return response.data?.data || response.data || [];
   },
 
-  getRegionDistribution: async () => {
-    const response = await api.get('/admin/health/regions');
+  getRegionDistribution: async (dateRange = '30d') => {
+    const days = parseDays(dateRange);
+    const response = await api.get('/admin/health/regions', { params: { days } });
     return response.data?.data || response.data || [];
   },
 
-  getTopProjects: async (limit = 5) => {
-    const response = await api.get('/admin/health/top-projects', { params: { limit } });
+  getTopProjects: async (limit = 5, dateRange = '30d') => {
+    const days = parseDays(dateRange);
+    const response = await api.get('/admin/health/top-projects', { params: { limit, days } });
     return response.data?.data || response.data || [];
   },
 
-  getTopUsers: async (limit = 5) => {
-    const response = await api.get('/admin/health/top-users', { params: { limit } });
+  getTopUsers: async (limit = 5, dateRange = '30d') => {
+    const days = parseDays(dateRange);
+    const response = await api.get('/admin/health/top-users', { params: { limit, days } });
     return response.data?.data || response.data || [];
   },
 

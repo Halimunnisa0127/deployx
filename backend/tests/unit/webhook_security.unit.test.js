@@ -9,10 +9,12 @@ jest.mock('../../src/modules/integrations/github/models/GithubWebhookDelivery');
 jest.mock('../../src/modules/projects/models/Project');
 jest.mock('../../src/modules/deployments/services/deployment.service');
 jest.mock('../../src/config/env/env', () => ({
+  ...jest.requireActual('../../src/config/env/env'),
   github: {
     webhookSecret: 'test-secret'
   }
 }));
+
 
 describe('Webhook Security & Idempotency Unit Tests', () => {
   const secret = 'test-secret';
