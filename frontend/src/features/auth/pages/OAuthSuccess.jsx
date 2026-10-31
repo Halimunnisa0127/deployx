@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAccessToken } from '../slice/authSlice';
+import SEO from '../../../components/common/SEO';
 
 export default function OAuthSuccess() {
   const navigate = useNavigate();
@@ -68,6 +69,11 @@ export default function OAuthSuccess() {
       backgroundColor: 'var(--bg-primary)',
       color: 'var(--text-primary)'
     }}>
+      <SEO
+        title="Connecting Account – DeployX"
+        description="Completing GitHub OAuth authentication for DeployX."
+        robots="noindex,nofollow"
+      />
       {error ? (
         <div style={{ textAlign: 'center' }}>
           <div style={{ color: 'var(--danger)', marginBottom: '16px', fontSize: '24px' }}>

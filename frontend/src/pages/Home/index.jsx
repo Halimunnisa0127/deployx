@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Rocket, Menu, X, Sun, Moon } from 'lucide-react';
 import RocketBackground from '../../components/ui/RocketBackground';
 import Footer from '../../components/layout/Footer';
+import SEO from '../../components/common/SEO';
 
 // Landing Page Modular Sections
 import HeroSection from '../../features/home/HeroSection';
@@ -36,6 +37,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-gray-100 font-sans selection:bg-blue-500/30 relative">
+      <SEO
+        title="DeployX – GitHub Deployment Platform"
+        description="Deploy GitHub projects with automated builds, deployment monitoring, live logs, rollback workflows and AI-powered build diagnostics using DeployX."
+        robots="index,follow"
+        canonical="https://deployx-dun.vercel.app/"
+      />
       {/* Ambient Rocket Background */}
       <RocketBackground />
 

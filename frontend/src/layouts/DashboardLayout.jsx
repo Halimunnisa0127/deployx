@@ -6,6 +6,7 @@ import DeployXAIAssistant from '../features/deployments/components/DeployXAIAssi
 import FloatingAIAssistant from '../components/ui/FloatingAIAssistant/FloatingAIAssistant';
 import { setAIAssistantOpen } from '../store/slices/uiSlice';
 import useAuth from '../hooks/useAuth';
+import SEO from '../components/common/SEO';
 
 /**
  * DashboardLayout
@@ -59,9 +60,14 @@ export default function DashboardLayout({ children }) {
       <FloatingAIAssistant />
 
       {/* Global AI Assistant Drawer */}
-      <DeployXAIAssistant 
-        isOpen={isAIAssistantOpen} 
-        onClose={() => dispatch(setAIAssistantOpen(false))} 
+      <DeployXAIAssistant
+        isOpen={isAIAssistantOpen}
+        onClose={() => dispatch(setAIAssistantOpen(false))}
+      />
+      <SEO
+        title="Dashboard – DeployX"
+        description="Manage your DeployX projects and deployments."
+        robots="noindex,nofollow"
       />
     </div>
   );
