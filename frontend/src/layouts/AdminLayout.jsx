@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "../features/admin/components/AdminSidebar";
 import { DashboardHeader } from "../features/dashboard";
+import SEO from "../components/common/SEO";
 
 export default function AdminLayout({ children }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -16,6 +17,11 @@ export default function AdminLayout({ children }) {
             {children || <Outlet />}
           </div>
         </main>
+        <SEO
+          title="Admin Dashboard – DeployX"
+          description="DeployX platform administration."
+          robots="noindex,nofollow"
+        />
       </div>
     </div>
   );

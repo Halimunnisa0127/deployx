@@ -26,6 +26,7 @@ import {
 } from '../components';
 import { githubApi } from '../../github/api/githubApi';
 import { env } from '../../../config/env';
+import SEO from '../../../components/common/SEO';
 
 export default function CreateProjectWizard() {
   const navigate = useNavigate();
@@ -534,6 +535,11 @@ export default function CreateProjectWizard() {
   return (
     <div className="min-h-screen w-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex flex-col font-sans antialiased relative overflow-x-hidden selection:bg-blue-500 selection:text-white">
       {/* Background Ambient Glows */}
+      <SEO
+        title="Create New Project – DeployX"
+        description="Configure and deploy a new project on DeployX."
+        robots="noindex,nofollow"
+      />
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
