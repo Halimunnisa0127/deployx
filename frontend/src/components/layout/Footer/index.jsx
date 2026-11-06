@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Rocket, BookOpen } from 'lucide-react';
 import GithubIcon from '../../../assets/icons/GithubIcon';
 import Badge from '../../ui/Badge';
@@ -12,12 +13,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-white/10">
           {/* Branding Section */}
           <div className="flex flex-col space-y-3 md:col-span-1">
-            <div className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 focus:outline-none">
               <Rocket className="w-6 h-6 text-blue-500" />
               <span className="text-xl font-bold text-white tracking-tight">DeployX</span>
-            </div>
+            </Link>
             <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
-              Deploy your applications with confidence.
+              Deploy your GitHub applications with confidence, automated builds, and AI diagnostics.
             </p>
           </div>
 
@@ -28,16 +29,32 @@ export const Footer = () => {
             </h3>
             <ul className="space-y-3 text-sm">
               <li>
-                <a
-                  href="#features"
+                <Link
+                  to="/features"
                   className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
                 >
-                  Features
-                </a>
+                  Platform Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/github-deployment"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+                >
+                  GitHub Deployment
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/ai-build-diagnostics"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+                >
+                  AI Build Diagnostics
+                </Link>
               </li>
               <li>
                 <a
-                  href="#how-it-works"
+                  href="/#how-it-works"
                   className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
                 >
                   How It Works
@@ -89,11 +106,21 @@ export const Footer = () => {
               Developers
             </h3>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-center justify-between sm:justify-start gap-2 text-gray-500 cursor-not-allowed select-none">
-                <span>Deployment Guide</span>
-                <Badge variant="neutral" dot={false} style={{ fontSize: '10px', padding: '2px 7px' }}>
-                  Coming Soon
-                </Badge>
+              <li>
+                <Link
+                  to="/github-deployment"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+                >
+                  Deployment Lifecycle
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/ai-build-diagnostics"
+                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+                >
+                  Build Diagnostics
+                </Link>
               </li>
               <li className="flex items-center justify-between sm:justify-start gap-2 text-gray-500 cursor-not-allowed select-none">
                 <span>Roadmap</span>

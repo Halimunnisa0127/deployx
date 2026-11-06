@@ -3,6 +3,9 @@ import RouteErrorBoundary from "./RouteErrorBoundary";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Home from "../pages/Home";
+import GithubDeployment from "../pages/GithubDeployment";
+import Features from "../pages/Features";
+import AiDiagnostics from "../pages/AiDiagnostics";
 import AuthLayout from "../layouts/AuthLayout";
 import { Login, Signup, ForgotPassword, OAuthSuccess } from "../features/auth";
 import Dashboard from "../features/dashboard/pages/Dashboard";
@@ -25,6 +28,18 @@ const router = createBrowserRouter([
   {
     path: "/", errorElement: <RouteErrorBoundary />,
     element: <Home />,
+  },
+  {
+    path: "/github-deployment", errorElement: <RouteErrorBoundary />,
+    element: <GithubDeployment />,
+  },
+  {
+    path: "/features", errorElement: <RouteErrorBoundary />,
+    element: <Features />,
+  },
+  {
+    path: "/ai-build-diagnostics", errorElement: <RouteErrorBoundary />,
+    element: <AiDiagnostics />,
   },
   {
     element: <AuthLayout />, errorElement: <RouteErrorBoundary />,

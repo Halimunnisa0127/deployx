@@ -100,7 +100,7 @@ export default function HeroSection() {
           />
           <br className="hidden sm:inline" />
           <SplitText
-            text="in Minutes"
+            text="with DeployX"
             tag="span"
             className="text-blue-600 dark:text-blue-400"
             delay={30}
