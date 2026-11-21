@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { DashboardSidebar, DashboardHeader } from '../features/dashboard';
@@ -24,6 +24,10 @@ export default function DashboardLayout({ children }) {
   const { user } = useAuth();
   const isAIAssistantOpen = useSelector((state) => state.ui.isAIAssistantOpen);
 
+  // Mobile sidebar state lifted here so both Header and Sidebar can share it
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const toggleMobileSidebar = useCallback(() => setIsMobileSidebarOpen((prev) => !prev), []);
+
   // Automatically route admin users to the Admin Console instead of empty user dashboard
   useEffect(() => {
     if (user?.role === 'admin') {
@@ -41,18 +45,23 @@ export default function DashboardLayout({ children }) {
 
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 font-sans antialiased transition-colors duration-300">
-      {/* Sidebar placement */}
-      <DashboardSidebar />
+    <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-[#0a0a0a] dark:text-slate-100 font-sans antialiased transition-colors duration-300">
+      {/* Sidebar placement — receives mobile open state from layout */}
+      <DashboardSidebar
+        isMobileOpenExternal={isMobileSidebarOpen}
+        onMobileClose={() => setIsMobileSidebarOpen(false)}
+      />
 
       {/* Main content layout & responsive spacing */}
-      <main className="flex-1 flex flex-col min-w-0">
-        {/* Shared Application Header */}
-        <DashboardHeader />
+      <main className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        {/* Shared Application Header — receives toggle so hamburger works */}
+        <DashboardHeader onToggleMobile={toggleMobileSidebar} />
 
-        {/* Dynamic page content */}
-        <div className="flex-1 p-4 md:py-8 md:px-6 w-full mx-auto">
-          {children || <Outlet />}
+        {/* Dynamic page content — scrollable area */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-4 md:py-8 md:px-6 w-full mx-auto">
+            {children || <Outlet />}
+          </div>
         </div>
       </main>
 

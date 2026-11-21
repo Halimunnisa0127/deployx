@@ -100,8 +100,6 @@ export default function SEO({
     const updateCanonical = (canonicalUrl) => {
       const elements = document.querySelectorAll('link[rel="canonical"]');
       let element = elements[0];
-      const existed = Boolean(element);
-      const previousHref = existed ? element.getAttribute("href") : null;
 
       // Remove any duplicate canonical links
       for (let i = 1; i < elements.length; i++) {
@@ -122,24 +120,16 @@ export default function SEO({
         }
       }
 
+      // On cleanup (page unmount / navigation away), always remove the
+      // canonical tag so the next page starts from a clean slate and sets
+      // its own self-referencing URL. Restoring a stale previousHref would
+      // briefly (or permanently, if the new page has no canonical) leave the
+      // wrong canonical in the document — exactly what Google Search Console
+      // was reporting for /ai-build-diagnostics.
       return () => {
-        if (existed) {
-          let currentEl = document.querySelector('link[rel="canonical"]');
-          if (previousHref) {
-            if (!currentEl) {
-              currentEl = document.createElement("link");
-              currentEl.setAttribute("rel", "canonical");
-              document.head.appendChild(currentEl);
-            }
-            currentEl.setAttribute("href", previousHref);
-          } else if (currentEl) {
-            currentEl.remove();
-          }
-        } else {
-          const currentEl = document.querySelector('link[rel="canonical"]');
-          if (currentEl) {
-            currentEl.remove();
-          }
+        const currentEl = document.querySelector('link[rel="canonical"]');
+        if (currentEl) {
+          currentEl.remove();
         }
       };
     };
