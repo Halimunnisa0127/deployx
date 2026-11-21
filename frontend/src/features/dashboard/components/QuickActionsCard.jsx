@@ -56,8 +56,7 @@ const ACCENT_BG = {
 export default function QuickActionsCard({ actions = DEFAULT_QUICK_ACTIONS }) {
   return (
     <Card
-      className="max-w-full p-6"
-      className="relative overflow-hidden hover:-translate-y-[3px] hover:border-amber-500/40 dark:hover:border-amber-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-amber-500 before:to-indigo-500"
+      className="max-w-full p-6 relative overflow-hidden hover:-translate-y-[3px] hover:border-amber-500/40 dark:hover:border-amber-500/30 before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-amber-500 before:to-indigo-500"
     >
       {/* Card Header */}
       <div className="flex items-center gap-2.5 pb-4 border-b border-slate-200 dark:border-white/5 mb-4">

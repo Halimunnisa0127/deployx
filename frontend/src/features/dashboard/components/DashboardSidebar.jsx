@@ -78,12 +78,11 @@ const ADMIN_NAV_ITEMS = [
   { id: 'settings', label: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
-export default function DashboardSidebar({ onToggleMobileExternal }) {
+export default function DashboardSidebar({ isMobileOpenExternal = false, onMobileClose }) {
   const location = useLocation();
   const { user } = useAuth();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [workspaces] = useState(INITIAL_WORKSPACES);
   const [activeWorkspace, setActiveWorkspace] = useState(INITIAL_WORKSPACES[0] || { id: 'ws-1', name: 'Personal Workspace', plan: 'Hobby', role: 'Owner' });
   const [workspaceSearch, setWorkspaceSearch] = useState('');
@@ -118,9 +117,8 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
   }, [navSearchQuery, effectiveNavItems]);
 
   const toggleCollapse = () => setIsCollapsed((prev) => !prev);
-  const toggleMobile = () => {
-    setIsMobileOpen((prev) => !prev);
-    if (onToggleMobileExternal) onToggleMobileExternal();
+  const closeMobile = () => {
+    if (onMobileClose) onMobileClose();
   };
 
   const sidebarWidth = isCollapsed ? 'w-20' : 'w-[280px]';
@@ -166,7 +164,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
               variant="ghost"
               size="sm"
               iconOnly
-              onClick={toggleMobile}
+              onClick={closeMobile}
               aria-label="Close mobile menu"
             >
               <X className="w-5 h-5 text-slate-400" />
@@ -295,7 +293,7 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
                 badge={item.badge}
                 isActive={location.pathname === item.href}
                 isCollapsed={isCollapsed}
-                onClick={() => setIsMobileOpen(false)}
+                onClick={closeMobile}
               />
             ))
           ) : (
@@ -390,22 +388,22 @@ export default function DashboardSidebar({ onToggleMobileExternal }) {
 
   return (
     <>
-      {/* Desktop Sticky Sidebar */}
+      {/* Desktop Sidebar — flex-shrink-0 so it stays fixed width beside main content */}
       <aside
-        className={`hidden md:block sticky top-0 h-screen transition-all duration-300 ease-in-out ${sidebarWidth} z-30 flex-shrink-0`}
+        className={`hidden md:flex flex-col h-screen transition-all duration-300 ease-in-out ${sidebarWidth} z-30 flex-shrink-0`}
       >
         {sidebarContent}
       </aside>
 
       {/* Mobile Drawer Overlay */}
       <AnimatePresence>
-        {isMobileOpen && (
+        {isMobileOpenExternal && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={toggleMobile}
+              onClick={closeMobile}
               className="md:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40"
             />
             <motion.aside

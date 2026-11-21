@@ -4,7 +4,7 @@ const DeploymentLogService = require('../../modules/logs/services/deploymentLog.
 const ProjectService = require('../../modules/projects/services/project.service');
 const config = require('../../config/env/env');
 
-const AI_MODEL = config.ai?.model || process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const AI_MODEL = config.ai?.model || process.env.GEMINI_MODEL || 'gemini-2.5-flash';
 
 const ai = new GoogleGenAI({
   apiKey: config.ai?.apiKey || process.env.GEMINI_API_KEY,

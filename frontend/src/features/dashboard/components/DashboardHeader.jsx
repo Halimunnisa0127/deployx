@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 import useAuth from '../../../hooks/useAuth';
+import { useNotifications } from '../../notifications/hooks/useNotifications';
 import SearchBar from '../../../components/common/SearchBar';
 import Button from '../../../components/ui/Button';
 import GithubIcon from '../../../components/ui/GithubIcon';
@@ -69,6 +70,7 @@ export default function DashboardHeader({ onToggleMobile, searchItems = BASE_NAV
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { unreadCount } = useNotifications(user);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchContainerRef = useRef(null);
@@ -245,12 +247,14 @@ export default function DashboardHeader({ onToggleMobile, searchItems = BASE_NAV
         <Link
           to={location.pathname.startsWith('/admin') ? '/admin/notifications' : '/dashboard/notifications'}
           className="relative p-2 rounded-xl bg-muted hover:bg-muted border border-border hover:border-border text-foreground hover:text-foreground transition-all outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          aria-label="View notifications (2 unread)"
+          aria-label={unreadCount > 0 ? `View notifications (${unreadCount} unread)` : 'View notifications'}
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold font-mono ring-2 ring-background shadow-sm">
-            2
-          </span>
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 min-w-[18px] px-1 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold font-mono ring-2 ring-background shadow-sm text-center">
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </span>
+          )}
         </Link>
       </div>
     </header>
